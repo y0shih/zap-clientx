@@ -57,6 +57,9 @@ Instructions & help down below
        - Change Theme (Change menu theme (Style, Colors) 
 
 # Help
+**Features not working after changing them? (e.g. aim bind)**
+Save config/Load config
+
 **Aimbot not working?**
 
 Check the speed/smoothness, keybind and if you have team gamemode on/off in the wrong mode
