@@ -5,19 +5,19 @@ By **Gerosity**
 
 All credits to original owners
 
-Instructions down below
+Instructions & help down below
 
 # Changelog:
 
     Updated Offsets - UC Forum
     Aimbot:
-       - Keybind & Extra Keybind (If you want aimbot to be on left + right click)
-       - Select Bone (Head, Neck, Upper Chest, Lower Chest, Stomach, Hip)
-       - Select Weapons (e.g. only aim with R-99)
+       - Keybind & Extra Keybind (If you want aimbot to be on left + right click) - https://github.com/GitDev28/xap-client-CG
+       - Select Bone (Head, Neck, Upper Chest, Lower Chest, Stomach, Hip) - https://github.com/GitDev28/xap-client-CG
+       - Select Weapons (e.g. only aim with R-99) - https://github.com/GitDev28/xap-client-CG
     Triggerbot:
        - Keybind (Hold to enabled)
        - Always On (Ignores keybind, always on)
-       - Select Weapons (e.g. only with snipers)
+       - Select Weapons (e.g. only with snipers) - https://github.com/GitDev28/xap-client-CG
     Sense/ESP:
        - Color Picker (Change Visible & Invisible colors for most features)
        - Visibile Only (Only draws ESP on those who are visible)
@@ -31,12 +31,11 @@ Instructions down below
            - Color, Size, Thickness
     Misc:
        - Team Gamemode (Enable for BR, Gun Run or Training. Disable for Control or TDM)
-       - Superglide [!]
+       - Superglide [!] - https://github.com/Savage3e/Nika or https://github.com/FlixEarth/nika-fixed
            - Works (most) of the time, freezes overlay until space is no longer held down (Needs Fix)
     Menu:
        - Layout (Simple or Compact)
-
-
+       
 # ToDo List:
     Multi-Monitor Support (? / ✅) 
        - Doesnt work for me but others have said it works. Needs testing
@@ -55,8 +54,18 @@ Instructions down below
      Themes:
        - Change Theme (Change menu theme (Style, Colors) 
 
+# Help
+**Aimbot not working?**
 
+Check the speed/smoothness, keybind and if you have team gamemode on/off in the wrong mode
 
+**ESP not working?**
+
+Check team gamemode
+
+**Experience Crashes?**
+
+Try toggling features off (namely glow and triggerbot)
 
 xap-client UC Link: https://www.unknowncheats.me/forum/apex-legends/606842-xap-client-aimbot-esp-triggerbot.html
 
