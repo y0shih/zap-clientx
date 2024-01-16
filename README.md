@@ -1,13 +1,40 @@
 # xap-client  [LINUX]
 **Updated to Game Version v3.0.53.30 (16.01.24)**
+
 By **Gerosity**
+
 All credits to original owners
+
+Instructions down below
 
 # Changelog:
 
     Updated Offsets - UC Forum
-    Team Gamemode (Toggle) - https://github.com/Pesci-Apu/Apu
-    
+    Aimbot:
+        Keybind & Extra Keybind (If you want aimbot to be on left + right click)
+        Select Bone (Head, Neck, Upper Chest, Lower Chest, Stomach, Hip)
+        Select Weapons (e.g. only aim with R-99)
+    Triggerbot:
+        Keybind (Hold to enabled)
+        Always On (Ignores keybind, always on)
+        Select Weapons (e.g. only with snipers)
+    Sense/ESP:
+        Color Picker (Change Visible & Invisible colors for most features)
+        Visibile Only (Only draws ESP on those who are visible)
+        Draw Team (Displays ESP on teammates)
+            Draw Team Names
+        Tracer Screen Position (Where tracers start e.g. Top, Middle (Crosshair), Bottom)
+        Tracer Bone Position (Where tracers goto/end e.g. Top (Head), Bottom)
+        Thickness Slider
+            For Box, Tracers, Skeleton, FOV Circle, Crosshair
+        Crosshair
+            Color, Size, Thickness
+    Misc:
+        Team Gamemode (Enable for BR, Gun Run or Training. Disable for Control or TDM)
+        Superglide [!]
+            Works (most) of the time, freezes overlay until space is no longer held down (Needs Fix)
+    Menu:
+        Layout (Simple or Compact)
 
 
 # ToDo List:
@@ -17,11 +44,14 @@ All credits to original owners
        - Visibility Check
     Triggerbot:
        - Crash fix
+       - Hitbox Select (e.g. only shoot if on head)
     ESP/Sense:
+       - Filled FOV
        - Filled Box ESP (?) 
-     Misc:
-       - Superglide (!)
-          - When enabled, breaks the cheat when holding down space. Let go and it fixes. Not good + needs fixing
+       - Health/Shield Bar ESP
+       - Weapon ESP
+       - Deathbox ESP
+       - Item ESP
      Themes:
        - Change Theme (Change menu theme (Style, Colors) 
 
