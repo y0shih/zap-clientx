@@ -21,6 +21,8 @@ Instructions & help down below
     Sense/ESP:
        - Color Picker (Change Visible & Invisible colors for most features)
        - Visibile Only (Only draws ESP on those who are visible)
+       - Show Near (?)
+           - Not sure if it works anymore
        - Draw Team (Displays ESP on teammates)
            - Draw Team Names
        - Tracer Screen Position (Where tracers start e.g. Top, Middle (Crosshair), Bottom)
