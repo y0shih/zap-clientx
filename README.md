@@ -11,30 +11,30 @@ Instructions down below
 
     Updated Offsets - UC Forum
     Aimbot:
-        Keybind & Extra Keybind (If you want aimbot to be on left + right click)
-        Select Bone (Head, Neck, Upper Chest, Lower Chest, Stomach, Hip)
-        Select Weapons (e.g. only aim with R-99)
+       - Keybind & Extra Keybind (If you want aimbot to be on left + right click)
+       - Select Bone (Head, Neck, Upper Chest, Lower Chest, Stomach, Hip)
+       - Select Weapons (e.g. only aim with R-99)
     Triggerbot:
-        Keybind (Hold to enabled)
-        Always On (Ignores keybind, always on)
-        Select Weapons (e.g. only with snipers)
+       - Keybind (Hold to enabled)
+       - Always On (Ignores keybind, always on)
+       - Select Weapons (e.g. only with snipers)
     Sense/ESP:
-        Color Picker (Change Visible & Invisible colors for most features)
-        Visibile Only (Only draws ESP on those who are visible)
-        Draw Team (Displays ESP on teammates)
-            Draw Team Names
-        Tracer Screen Position (Where tracers start e.g. Top, Middle (Crosshair), Bottom)
-        Tracer Bone Position (Where tracers goto/end e.g. Top (Head), Bottom)
-        Thickness Slider
-            For Box, Tracers, Skeleton, FOV Circle, Crosshair
-        Crosshair
-            Color, Size, Thickness
+       - Color Picker (Change Visible & Invisible colors for most features)
+       - Visibile Only (Only draws ESP on those who are visible)
+       - Draw Team (Displays ESP on teammates)
+           - Draw Team Names
+       - Tracer Screen Position (Where tracers start e.g. Top, Middle (Crosshair), Bottom)
+       - Tracer Bone Position (Where tracers goto/end e.g. Top (Head), Bottom)
+       - Thickness Slider
+           - For Box, Tracers, Skeleton, FOV Circle, Crosshair
+       - Crosshair
+           - Color, Size, Thickness
     Misc:
-        Team Gamemode (Enable for BR, Gun Run or Training. Disable for Control or TDM)
-        Superglide [!]
-            Works (most) of the time, freezes overlay until space is no longer held down (Needs Fix)
+       - Team Gamemode (Enable for BR, Gun Run or Training. Disable for Control or TDM)
+       - Superglide [!]
+           - Works (most) of the time, freezes overlay until space is no longer held down (Needs Fix)
     Menu:
-        Layout (Simple or Compact)
+       - Layout (Simple or Compact)
 
 
 # ToDo List:
