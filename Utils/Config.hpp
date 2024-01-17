@@ -28,24 +28,25 @@ constexpr char ConfigFile[] = "config.ini";
 namespace Config {
     namespace Aimbot {
         bool Enabled = true;
-        int AimBind = 56;
-        int ExtraBind = 57;
+        //int AimBind = 56;
+        //int ExtraBind = 57;
         int HitBox = 2;
         
-        bool VisibilityCheck = true;
-        
+        bool OnFire = true;
+        bool OnADS = true;
+             
         bool PredictMovement = true;
         bool PredictBulletDrop = true;
-        bool RecoilControl = false;
+        bool RecoilControl = true;
         float Speed = 20;
-        float Smooth = 0.9;
+        float Smooth = 1;
         float FOV = 10;
         float ZoomScale = 3.0;
         float MinDistance = 1;
         float HipfireDistance = 200;
         float ZoomDistance = 200;
-        float PitchPower = 1;
-        float YawPower = 1;
+        float PitchPower = 4;
+        float YawPower = 4;
         
         //Weapons
 	//Light
@@ -85,6 +86,12 @@ namespace Config {
 	bool Kraber = true;
 	bool Knife = true;
     };
+    
+    namespace NoRecoil{
+        bool Enabled = true;
+        float PitchPower = 30;
+        float YawPower = 30;
+    };
 
     namespace Sense {
     bool GlowEnabled = false;
@@ -95,6 +102,7 @@ namespace Config {
     //Drawings
     bool VisibilityCheck = false;
     bool DrawBox = true;
+    bool DrawFilledBox = false;
     float BoxThickness = 1.0;
     bool Skeleton = true;
     float SkeletonThickness = 1.0;
@@ -103,6 +111,7 @@ namespace Config {
     bool DrawSeer = true;
     bool DrawDistance = true;
     bool DrawFOVCircle = true;
+    bool DrawFilledFOVCircle = false;
     float FOVThickness = 1.0;
     bool DrawNames = true;
     int TracerPos = 0;
@@ -122,6 +131,8 @@ namespace Config {
     //Colors
     ImVec4 InvisibleBoxColor = ImColor(255, 0, 0, 255);
     ImVec4 VisibleBoxColor = ImColor(0, 255, 0, 255);
+    ImVec4 InvisibleFilledBoxColor = ImColor(0, 0, 0, 30);
+    ImVec4 VisibleFilledBoxColor = ImColor(0, 0, 0, 30);
     ImVec4 InvisibleTracerColor = ImColor(255, 0, 0, 255);
     ImVec4 VisibleTracerColor = ImColor(0, 255, 0, 255);
     ImVec4 InvisibleSkeletonColor = ImColor(255, 255, 255, 255);
@@ -131,6 +142,7 @@ namespace Config {
     ImVec4 InvisibleDistanceColor = ImColor(255, 255, 255, 255);
     ImVec4 VisibleDistanceColor = ImColor(255, 255, 255, 255);
     ImVec4 FOVColor = ImColor(255, 255, 255, 255);
+    ImVec4 FilledFOVColor = ImColor(0, 0, 0, 20);
     ImVec4 NearColor = ImColor(255, 255, 255, 255);
     ImVec4 TeamColor = ImColor(0, 255, 255, 255);
     ImVec4 TeamNameColor = ImColor(255, 255, 255, 255);
@@ -139,8 +151,7 @@ namespace Config {
 
     namespace Triggerbot {
         bool Enabled = true;
-        bool AlwaysOn = false;
-        int TriggerBind = 57;
+        bool OnADS = false;
         float Range = 200;
         
         //Weapons
@@ -196,11 +207,11 @@ namespace Modules {
     namespace Aimbot {
         bool Enabled = true;
         HitboxType Hitbox = HitboxType::UpperChest;
-        InputKeyType AimBind = InputKeyType::MOUSE_Left;
-	InputKeyType ExtraBind = InputKeyType::MOUSE_Right;
+        //InputKeyType AimBind = InputKeyType::MOUSE_Left;
+	//InputKeyType ExtraBind = InputKeyType::MOUSE_Right;
         
-        bool VisibilityCheck = true;
-        bool TeamCheck = false;
+        bool OnFire = true;
+        bool OnADS = true;
         
         bool PredictMovement = true;
         bool PredictBulletDrop = true;
@@ -254,9 +265,8 @@ namespace Modules {
 
     namespace Triggerbot {
         bool Enabled = true;
-        bool AlwaysOn = false;
+        bool OnADS = false;
         float Range = 200;
-        InputKeyType TriggerBind = InputKeyType::MOUSE_Right;
     };
     
     namespace Misc {
@@ -276,8 +286,8 @@ void UpdateConfig() {
         WriteSection(Aimbot);
         WritePair(Aimbot, Enabled);
         WritePair(Aimbot, HitBox);
-        WritePair(Aimbot, AimBind);
-        WritePair(Aimbot, ExtraBind);
+        WritePair(Aimbot, OnFire);
+        WritePair(Aimbot, OnADS);
         WritePair(Aimbot, PredictMovement);
         WritePair(Aimbot, PredictBulletDrop);
         WritePair(Aimbot, Speed);
@@ -316,8 +326,7 @@ void UpdateConfig() {
 
         WriteSection(Triggerbot);
         WritePair(Triggerbot, Enabled);
-        WritePair(Triggerbot, AlwaysOn);
-        WritePair(Triggerbot, TriggerBind);
+        WritePair(Triggerbot, OnADS);
         WritePair(Triggerbot, Range);
         WriteSectionEnd();
         
@@ -342,8 +351,8 @@ bool ReadConfig(const std::string &configFile) {
     
     ReadBool(Aimbot, Enabled);
     ReadInt(Aimbot, HitBox);
-    ReadInt(Aimbot, AimBind);
-    ReadInt(Aimbot, ExtraBind);
+    ReadBool(Aimbot, OnFire);
+    ReadBool(Aimbot, OnADS);
     ReadBool(Aimbot, PredictMovement);
     ReadBool(Aimbot, PredictBulletDrop);
     ReadFloat(Aimbot, Speed);
@@ -375,9 +384,8 @@ bool ReadConfig(const std::string &configFile) {
     ReadBool(Sense, TeamNames);
 
     ReadBool(Triggerbot, Enabled);
-    ReadBool(Triggerbot, AlwaysOn);
     ReadFloat(Triggerbot, Range);
-    ReadInt(Triggerbot, TriggerBind);
+    ReadBool(Triggerbot, OnADS);
 
     ReadBool(Aimbot, RecoilControl);
     ReadFloat(Aimbot, PitchPower);
