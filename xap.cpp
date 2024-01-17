@@ -108,8 +108,8 @@ void LoadConfig() {
     // Aimbot //
     AimAssist->AimbotEnabled = Config::Aimbot::Enabled;
     Modules::Aimbot::Hitbox = static_cast<HitboxType>(Config::Aimbot::HitBox);
-    Modules::Aimbot::AimBind = static_cast<InputKeyType>(Config::Aimbot::AimBind);
-    Modules::Aimbot::ExtraBind = static_cast<InputKeyType>(Config::Aimbot::ExtraBind);
+    AimAssist->OnFire = Config::Aimbot::OnFire;
+    AimAssist->OnADS = Config::Aimbot::OnADS;
     AimAssist->PredictMovement = Config::Aimbot::PredictMovement;
     AimAssist->PredictBulletDrop = Config::Aimbot::PredictBulletDrop;
     AimAssist->Speed = Config::Aimbot::Speed;
@@ -164,15 +164,17 @@ void LoadConfig() {
     ESP->ESPMaxDistance = Config::Sense::ESPMaxDistance;
     ESP->ShowSpectators = Config::Sense::ShowSpectators;
     ESP->DrawFOVCircle = Config::Sense::DrawFOVCircle;
+    ESP->DrawFilledFOVCircle = Config::Sense::DrawFilledFOVCircle;
     ESP->FOVThickness = Config::Sense::FOVThickness;
     ESP->GameFOV = Config::Sense::GameFOV;
     ESP->DrawBox = Config::Sense::DrawBox;
+    ESP->DrawFilledBox = Config::Sense::DrawFilledBox;
     ESP->BoxThickness = Config::Sense::BoxThickness;
     ESP->DrawNames = Config::Sense::DrawNames;
     ESP->ShowNear = Config::Sense::ShowNear;
     ESP->Skeleton = Config::Sense::Skeleton;
     ESP->SkeletonThickness = Config::Sense::SkeletonThickness;
-    ESP->TracerPos = Config::Sense::TracerPos;
+    ESP->TracerPosition = Config::Sense::TracerPos;
     ESP->TracerBone = Config::Sense::TracerBone;
     ESP->DrawTracers = Config::Sense::DrawTracers;
     ESP->TracerThickness = Config::Sense::TracerThickness;
@@ -184,8 +186,7 @@ void LoadConfig() {
 
     // Triggerbot //
     Trigger->TriggerbotEnabled = Config::Triggerbot::Enabled;
-    Config::Triggerbot::Enabled;
-    Modules::Triggerbot::TriggerBind = static_cast<InputKeyType>(Config::Triggerbot::TriggerBind);
+    Trigger->OnADS = Config::Triggerbot::OnADS;
     Trigger->TriggerbotRange = Config::Triggerbot::Range;
     //Weapons
     Trigger->P2020 = Config::Aimbot::P2020;
@@ -224,7 +225,7 @@ void LoadConfig() {
     MiscTab->Superglide = Config::Misc::Superglide;
     
     //Themes //
-    Modules::Menu::Layout = Config::Menu::Layout;
+    MenuTab->MenuLayout = Config::Menu::Layout;
 }
 
 void SaveConfig() {
