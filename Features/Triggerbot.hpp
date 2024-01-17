@@ -24,6 +24,7 @@ struct Triggerbot {
     //Toggles
     bool TriggerbotEnabled = true;
     bool AlwaysOn = false;
+    bool OnADS = false;
     float TriggerbotRange = 200;
     
     //Weapon Toggles
@@ -89,11 +90,16 @@ struct Triggerbot {
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		        ImGui::SetTooltip("Will automatically shoot the target\nWill only activate when your crosshair is at target whilst holding down Triggerbot key");
 		    
-		    ImGui::Checkbox("Always On", &AlwaysOn);
-		    int TriggerBind = static_cast<int>(Modules::Triggerbot::TriggerBind);
-		    ImGui::Combo("Triggerbot Key##Aimbot", &TriggerBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-		    Modules::Triggerbot::TriggerBind = static_cast<InputKeyType>(TriggerBind);
+		    ImGui::Separator();  
 		    
+		    ImGui::Text("Triggerbot Conditions");
+		    ImGui::Checkbox("On ADS Only?", &OnADS);
+		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		        ImGui::SetTooltip("Fire only when ADS");
+		        
+		    ImGui::Separator();
+		    
+		    ImGui::Text("Triggerbot Settings");
 		    ImGui::SliderFloat("Triggerbot Range", &TriggerbotRange, 0, 1000, "%.0f");
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		        ImGui::SetTooltip("Triggerbot's activation range.");
@@ -178,14 +184,23 @@ struct Triggerbot {
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		        ImGui::SetTooltip("Will automatically shoot the target\nWill only activate when your crosshair is at target whilst holding down Triggerbot key");
 		    
-		    ImGui::Checkbox("Always On", &AlwaysOn);
-		    int TriggerBind = static_cast<int>(Modules::Triggerbot::TriggerBind);
-		    ImGui::Combo("Triggerbot Key##Aimbot", &TriggerBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-		    Modules::Triggerbot::TriggerBind = static_cast<InputKeyType>(TriggerBind);
+		    ImGui::Separator();  
 		    
+		    ImGui::Text("Triggerbot Conditions");
+		    if (ImGui::CollapsingHeader("Conditions", nullptr)) {
+		    	ImGui::Checkbox("On ADS Only?", &OnADS);
+		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		       		ImGui::SetTooltip("Fire only when ADS");
+		    }
+		    
+		    ImGui::Separator();  
+		    
+		    ImGui::Text("Triggerbot Settings");
+		    if (ImGui::CollapsingHeader("Settings", nullptr)) {
 		    ImGui::SliderFloat("Triggerbot Range", &TriggerbotRange, 0, 1000, "%.0f");
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		        ImGui::SetTooltip("Triggerbot's activation range.");
+		    }
 		        
 		    ImGui::Separator();    
 		        
@@ -273,7 +288,7 @@ struct Triggerbot {
         try {
             Config::Triggerbot::Enabled = TriggerbotEnabled;
             Config::Triggerbot::Range = TriggerbotRange;
-            Config::Triggerbot::TriggerBind = static_cast<int>(Modules::Triggerbot::TriggerBind);
+            Config::Triggerbot::OnADS = OnADS;
             
             //Weapons
             //Light
@@ -391,7 +406,7 @@ struct Triggerbot {
     void Update() {
         //Triggerbot Start
         //Always on - Will always shoot, ignores keybind
-    	if (AlwaysOn) {
+    	if (!OnADS) {
         	if (!TriggerbotEnabled) return;
         	if (!Myself->IsCombatReady()) return;
 
@@ -410,13 +425,13 @@ struct Triggerbot {
         }
         
         //Requires Keybind
-        if (!AlwaysOn) {
+        if (OnADS) {
         	if (!TriggerbotEnabled) return;
         	if (!Myself->IsCombatReady()) return;
 
         	if (WeaponList.find(Myself->WeaponIndex) == WeaponList.end()) return;
         	
-        	if (InputManager::isKeyDown(static_cast<InputKeyType>(Config::Triggerbot::TriggerBind))) {
+        	if (Myself->IsZooming) {
 			for (int i = 0; i < Players->size(); i++) {
 		    		Player* player = Players->at(i);
 		    		if (!player->IsCombatReady()) continue;
