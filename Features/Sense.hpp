@@ -42,6 +42,7 @@ struct Sense {
     //Drawings
     bool VisibilityCheck = false;
     bool DrawBox = true;
+    bool DrawFilledBox = false;
     float BoxThickness = 1.0;
     bool Skeleton = true;
     float SkeletonThickness = 1.0;
@@ -50,9 +51,10 @@ struct Sense {
     bool DrawSeer = true;
     bool DrawDistance = true;
     bool DrawFOVCircle = true;
+    bool DrawFilledFOVCircle = false;
     float FOVThickness = 1.0;
     bool DrawNames = true;
-    int TracerPos = 0;
+    int TracerPosition = 0;
     int TracerBone = 0;
     bool DrawTracers = true;
     float TracerThickness = 2.0;
@@ -69,6 +71,8 @@ struct Sense {
     //Colors
     ImVec4 InvisibleBoxColor = ImColor(255, 0, 0, 255);
     ImVec4 VisibleBoxColor = ImColor(0, 255, 0, 255);
+    ImVec4 InvisibleFilledBoxColor = ImColor(0, 0, 0, 30);
+    ImVec4 VisibleFilledBoxColor = ImColor(0, 0, 0, 30);
     ImVec4 InvisibleTracerColor = ImColor(255, 0, 0, 255);
     ImVec4 VisibleTracerColor = ImColor(0, 255, 0, 255);
     ImVec4 InvisibleSkeletonColor = ImColor(255, 255, 255, 255);
@@ -78,6 +82,7 @@ struct Sense {
     ImVec4 InvisibleDistanceColor = ImColor(255, 255, 255, 255);
     ImVec4 VisibleDistanceColor = ImColor(255, 255, 255, 255);
     ImVec4 FOVColor = ImColor(255, 255, 255, 255);
+    ImVec4 FilledFOVColor = ImColor(0, 0, 0, 20);
     ImVec4 NearColor = ImColor(255, 255, 255, 255);
     ImVec4 TeamColor = ImColor(0, 255, 255, 255);
     ImVec4 TeamNameColor = ImColor(255, 255, 255, 255);
@@ -147,6 +152,13 @@ struct Sense {
 		    ImGui::ColorEdit4("Visible Color##ESPBox", (float*)&VisibleBoxColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
 		    ImGui::SameLine();
 		    ImGui::ColorEdit4("Invisible Color##ESPBox", (float*)&InvisibleBoxColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+		    ImGui::Checkbox("Draw Filled Box", &DrawFilledBox);
+		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		        ImGui::SetTooltip("Draw a Filled box on enemy");
+		    ImGui::SameLine();
+		    ImGui::ColorEdit4("Visible Color##ESPFilledBox", (float*)&VisibleFilledBoxColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+		    ImGui::SameLine();
+		    ImGui::ColorEdit4("Invisible Color##ESPFilledBox", (float*)&InvisibleFilledBoxColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
 		    ImGui::SliderFloat("Box Thickness", &BoxThickness, 1, 10, "%.0f");
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		        ImGui::SetTooltip("Changes the thickness of the boxes");
@@ -162,17 +174,15 @@ struct Sense {
 		    ImGui::SameLine();
 		    ImGui::ColorEdit4("Invisible Color##ESPTracer", (float*)&InvisibleTracerColor, ImGuiColorEditFlags_NoInputs);
 		    const char* TracerPos[] = {"Top", "Crosshair", "Bottom"};
-		    int TracerPosition = static_cast<int>(Config::Sense::TracerPos);
 		    ImGui::Combo("Tracer Position", &TracerPosition, TracerPos, IM_ARRAYSIZE(TracerPos));
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		    	ImGui::SetTooltip("Where tracers will be drawn from.");
-		    Config::Sense::TracerPos = static_cast<int>(TracerPosition);
-		    const char* TracerBone[] = {"Top", "Bottom"};
-		    int TracerBones = static_cast<int>(Config::Sense::TracerBone);
-		    ImGui::Combo("Tracer Bone", &TracerBones, TracerBone, IM_ARRAYSIZE(TracerBone));
+		    Config::Sense::TracerPos = TracerPosition;
+		    const char* TracerBones[] = {"Top", "Bottom"};
+		    ImGui::Combo("Tracer Bone", &TracerBone, TracerBones, IM_ARRAYSIZE(TracerBones));
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		    	ImGui::SetTooltip("Where tracers will be drawn to.");
-		    Config::Sense::TracerBone = static_cast<int>(TracerBones);
+		    Config::Sense::TracerBone = TracerBone;
 		    ImGui::SliderFloat("Tracer Thickness", &TracerThickness, 1, 10, "%.0f");
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		    	ImGui::SetTooltip("Changes the thickness of the tracers");
@@ -231,6 +241,11 @@ struct Sense {
 		    	ImGui::SetTooltip("Draw FOV Circle");
 		    ImGui::SameLine();
 		    ImGui::ColorEdit4("Color##ESPFOV", (float*)&FOVColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+		    ImGui::Checkbox("Draw Filled FOV Circle", &DrawFilledFOVCircle);
+		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		    	ImGui::SetTooltip("Draw a Filled FOV Circle");
+		    ImGui::SameLine();
+		    ImGui::ColorEdit4("Color##ESPFilledFOV", (float*)&FilledFOVColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
 		    ImGui::SliderFloat("FOV Circle Thickness", &FOVThickness, 1, 10, "%.0f");
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		    	ImGui::SetTooltip("Changes the FOV Circle's thickness\n Recomended: 1-2");
@@ -314,41 +329,46 @@ struct Sense {
 		    }
 
 		    if (ImGui::CollapsingHeader("Boxes", nullptr)) {
-		    	ImGui::Checkbox("Draw Box", &DrawBox);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Drawbox on enemy");
-		        ImGui::SameLine();
-		        ImGui::ColorEdit4("Visible Color##ESPBox", (float*)&VisibleBoxColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		        ImGui::SameLine();
-		        ImGui::ColorEdit4("Invisible Color##ESPBox", (float*)&InvisibleBoxColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		        ImGui::SliderFloat("Box Thickness", &BoxThickness, 1, 10, "%.0f");
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Changes the thickness of the boxes");
+			    ImGui::Checkbox("Draw Box", &DrawBox);
+			    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+				ImGui::SetTooltip("Drawbox on enemy");
+			    ImGui::SameLine();
+			    ImGui::ColorEdit4("Visible Color##ESPBox", (float*)&VisibleBoxColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+			    ImGui::SameLine();
+			    ImGui::ColorEdit4("Invisible Color##ESPBox", (float*)&InvisibleBoxColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+			    ImGui::Checkbox("Draw Filled Box", &DrawFilledBox);
+			    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+				ImGui::SetTooltip("Draw a Filled box on enemy");
+			    ImGui::SameLine();
+			    ImGui::ColorEdit4("Visible Color##ESPFilledBox", (float*)&VisibleFilledBoxColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+			    ImGui::SameLine();
+			    ImGui::ColorEdit4("Invisible Color##ESPFilledBox", (float*)&InvisibleFilledBoxColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+			    ImGui::SliderFloat("Box Thickness", &BoxThickness, 1, 10, "%.0f");
+			    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+				ImGui::SetTooltip("Changes the thickness of the boxes");
 		    }
 		    
 		    if (ImGui::CollapsingHeader("Tracers", nullptr)) {
-		    	ImGui::Checkbox("Draw Tracers", &DrawTracers);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Draw lines to enemies");
-		        ImGui::SameLine();
-		        ImGui::ColorEdit4("Visible Color##ESPTracer", (float*)&VisibleTracerColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		        ImGui::SameLine();
-		        ImGui::ColorEdit4("Invisible Color##ESPTracer", (float*)&InvisibleTracerColor, ImGuiColorEditFlags_NoInputs);
-		    	const char* TracerPos[] = {"Top", "Crosshair", "Bottom"};
-		    		int TracerPosition = static_cast<int>(Config::Sense::TracerPos);
-		    		ImGui::Combo("Tracer Position", &TracerPosition, TracerPos, IM_ARRAYSIZE(TracerPos));
-		    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        		ImGui::SetTooltip("Where tracers will be drawn from.");
-		    		Config::Sense::TracerPos = static_cast<int>(TracerPosition);
-		    	const char* TracerBone[] = {"Top", "Bottom"};
-		    	int TracerBones = static_cast<int>(Config::Sense::TracerBone);
-		    	ImGui::Combo("Tracer Bone", &TracerBones, TracerBone, IM_ARRAYSIZE(TracerBone));
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Where tracers will be drawn to.");
-		    	Config::Sense::TracerBone = static_cast<int>(TracerBones);
-		        ImGui::SliderFloat("Tracer Thickness", &TracerThickness, 1, 10, "%.0f");
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Changes the thickness of the tracers");
+			    ImGui::Checkbox("Draw Tracers", &DrawTracers);
+			    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+				ImGui::SetTooltip("Draw lines to enemies");
+			    ImGui::SameLine();
+			    ImGui::ColorEdit4("Visible Color##ESPTracer", (float*)&VisibleTracerColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+			    ImGui::SameLine();
+			    ImGui::ColorEdit4("Invisible Color##ESPTracer", (float*)&InvisibleTracerColor, ImGuiColorEditFlags_NoInputs);
+			    const char* TracerPos[] = {"Top", "Crosshair", "Bottom"};
+			    ImGui::Combo("Tracer Position", &TracerPosition, TracerPos, IM_ARRAYSIZE(TracerPos));
+			    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+			    	ImGui::SetTooltip("Where tracers will be drawn from.");
+			    Config::Sense::TracerPos = TracerPosition;
+			    const char* TracerBones[] = {"Top", "Bottom"};
+			    ImGui::Combo("Tracer Bone", &TracerBone, TracerBones, IM_ARRAYSIZE(TracerBones));
+			    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+			    	ImGui::SetTooltip("Where tracers will be drawn to.");
+			    Config::Sense::TracerBone = TracerBone;
+			    ImGui::SliderFloat("Tracer Thickness", &TracerThickness, 1, 10, "%.0f");
+			    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+			    	ImGui::SetTooltip("Changes the thickness of the tracers");
 		    }
 		    
 		    if (ImGui::CollapsingHeader("Skeleton", nullptr)) {
@@ -393,17 +413,22 @@ struct Sense {
 		    }
 		        	
 		    if (ImGui::CollapsingHeader("FOV Settings", nullptr)) {
-		    	ImGui::Checkbox("Draw FOV Circle", &DrawFOVCircle);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Draw FOV Circle");
-		        ImGui::SameLine();
-		        ImGui::ColorEdit4("Color##ESPFOV", (float*)&FOVColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		        ImGui::SliderFloat("FOV Circle Thickness", &FOVThickness, 1, 10, "%.0f");
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Changes the FOV Circle's thickness\n Recomended: 1-2");
-		    	ImGui::SliderFloat("Game's FOV", &GameFOV, 70, 120, "%.0f");
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Your current FOV in Settings");
+		    ImGui::Checkbox("Draw FOV Circle", &DrawFOVCircle);
+		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		    	ImGui::SetTooltip("Draw FOV Circle");
+		    ImGui::SameLine();
+		    ImGui::ColorEdit4("Color##ESPFOV", (float*)&FOVColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+		    ImGui::Checkbox("Draw Filled FOV Circle", &DrawFilledFOVCircle);
+		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		    	ImGui::SetTooltip("Draw a Filled FOV Circle");
+		    ImGui::SameLine();
+		    ImGui::ColorEdit4("Color##ESPFilledFOV", (float*)&FilledFOVColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+		    ImGui::SliderFloat("FOV Circle Thickness", &FOVThickness, 1, 10, "%.0f");
+		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		    	ImGui::SetTooltip("Changes the FOV Circle's thickness\n Recomended: 1-2");
+		    ImGui::SliderFloat("Game's FOV", &GameFOV, 70, 120, "%.0f");
+		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		    	ImGui::SetTooltip("Your current FOV in Settings");
 		    }
 
 		    ImGui::Separator();
@@ -451,8 +476,10 @@ struct Sense {
             Config::Sense::DrawSeer = DrawSeer;
             Config::Sense::ShowSpectators = ShowSpectators;
             Config::Sense::DrawFOVCircle = DrawFOVCircle;
+            Config::Sense::DrawFilledFOVCircle = DrawFilledFOVCircle;
             Config::Sense::GameFOV = GameFOV;
             Config::Sense::DrawBox = DrawBox;
+            Config::Sense::DrawFilledBox = DrawFilledBox;
             Config::Sense::BoxThickness = BoxThickness;
             Config::Sense::Skeleton = Skeleton;
             Config::Sense::SkeletonThickness = SkeletonThickness;
@@ -467,12 +494,14 @@ struct Sense {
             Config::Sense::ShowTeam = TeamNames;
             Config::Sense::DrawTracers = DrawTracers;
             Config::Sense::TracerThickness = TracerThickness;
-            Config::Sense::TracerPos = static_cast<int>(Modules::Sense::TracerPos);
-            Config::Sense::TracerBone = static_cast<int>(Modules::Sense::TracerBone);
+            Config::Sense::TracerPos = TracerPosition;
+            Config::Sense::TracerBone = TracerBone;
             
             //Colors
             Config::Sense::InvisibleBoxColor = InvisibleBoxColor;
             Config::Sense::VisibleBoxColor = VisibleBoxColor;
+            Config::Sense::InvisibleFilledBoxColor = InvisibleFilledBoxColor;
+            Config::Sense::VisibleFilledBoxColor = VisibleFilledBoxColor;
             Config::Sense::InvisibleTracerColor = InvisibleTracerColor;
             Config::Sense::VisibleTracerColor = VisibleTracerColor;
             Config::Sense::InvisibleSkeletonColor = InvisibleSkeletonColor;
@@ -482,6 +511,7 @@ struct Sense {
             Config::Sense::InvisibleDistanceColor = InvisibleDistanceColor;
             Config::Sense::VisibleDistanceColor = VisibleDistanceColor;
             Config::Sense::FOVColor = FOVColor;
+            Config::Sense::FilledFOVColor = FilledFOVColor;
             Config::Sense::NearColor = NearColor;
             Config::Sense::TeamColor = TeamColor;
             Config::Sense::TeamNameColor = TeamNameColor;
@@ -575,6 +605,14 @@ struct Sense {
             float FOV = std::min(AimAssistState->FOV, AimAssistState->FOV * (AimAssistState->GetFOVScale() * AimAssistState->ZoomScale));
             float Radius = tanf(DEG2RAD(FOV) / 2) / tanf(DEG2RAD(GameFOV) / 2) * ScreenWidth;
             Renderer::DrawCircle(Canvas, Vector2D(ScreenWidth / 2, ScreenHeight / 2), Radius, 40, ImColor(FOVColor), FOVThickness);
+        }
+        
+        // Draw Filled FOV Circle
+        if (DrawFilledFOVCircle && Myself->IsCombatReady())
+        {
+            float FOV = std::min(AimAssistState->FOV, AimAssistState->FOV * (AimAssistState->GetFOVScale() * AimAssistState->ZoomScale));
+            float Radius = tanf(DEG2RAD(FOV) / 2) / tanf(DEG2RAD(GameFOV) / 2) * ScreenWidth;
+            Renderer::DrawCircleFilled(Canvas, Vector2D(ScreenWidth /2, ScreenHeight / 2), Radius, 40, ImColor(FilledFOVColor));
         }
  
         // Draw lot of things
@@ -742,6 +780,34 @@ struct Sense {
 					}
 					if (p->IsAlly) {
 						Renderer::DrawBox(Canvas, Foot, Head, ImColor(TeamColor), BoxThickness);
+					}
+				}
+			}
+			
+			// Draw Filled Box
+			if (DrawFilledBox && p->DistanceToLocalPlayer < (Conversion::ToGameUnits(ESPMaxDistance))) {
+				Vector2D Head, Foot;
+				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
+				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
+				    
+				if (!ShowTeam) {
+					if (p->IsHostile && p->IsVisible) {
+				        	Renderer::DrawFilledBox(Canvas, Foot, Head, ImColor(VisibleFilledBoxColor));
+					}
+					if (p->IsHostile && !p->IsVisible) {
+				        	Renderer::DrawFilledBox(Canvas, Foot, Head, ImColor(InvisibleFilledBoxColor));
+					}
+				}
+				    
+				if (ShowTeam) {
+					if (p->IsHostile && p->IsVisible) {
+				        	Renderer::DrawFilledBox(Canvas, Foot, Head, ImColor(VisibleFilledBoxColor));
+					}
+					if (p->IsHostile && !p->IsVisible) {
+				        	Renderer::DrawFilledBox(Canvas, Foot, Head, ImColor(InvisibleFilledBoxColor));
+					}
+					if (p->IsAlly) {
+						Renderer::DrawFilledBox(Canvas, Foot, Head, ImColor(TeamColor));
 					}
 				}
 			}
