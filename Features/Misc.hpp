@@ -105,8 +105,8 @@ struct Misc {
                 	}
                 	startSg = false;
                 	break;
-                 }
-             }
-        }
+                 	}
+             	}
+	}
     }
 };
