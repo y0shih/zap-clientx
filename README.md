@@ -117,7 +117,7 @@ unknowncheats: basic knowledge and offsets
 **3. Clone repo**
 
     git clone https://github.com/Gerosity/zap-client.git
-    cd xap-client-v3.0.53.30
+    cd zap-client
 
 **4. Build and Run**
 
