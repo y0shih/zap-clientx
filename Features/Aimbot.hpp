@@ -30,7 +30,8 @@
 struct Aimbot {
     bool AimbotEnabled = true;
     
-    bool IgnoreADSBind = true;
+    bool OnFire = true;
+    bool OnADS = true;
     
     bool PredictMovement = true;
     bool PredictBulletDrop = true;
@@ -126,16 +127,12 @@ struct Aimbot {
 		    	Modules::Aimbot::Hitbox = static_cast<HitboxType>(HitboxTypeIndex);
 		    
 		    ImGui::Separator();
-		    
-		    //Aim Bind
-		    ImGui::Text("Aim Bind");
-		    int AimBind = static_cast<int>(Modules::Aimbot::AimBind);
-		    ImGui::Combo("Bind##Aimbot", &AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-		    Modules::Aimbot::AimBind = static_cast<InputKeyType>(AimBind);
-		    int ExtraBind = static_cast<int>(Modules::Aimbot::ExtraBind);
-		    ImGui::Combo("Extra Bind##Aimbot", &ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-		    Modules::Aimbot::ExtraBind = static_cast<InputKeyType>(ExtraBind);
-	   
+	   	    
+	   	    ImGui::Text("Aim Conditions");
+	   	    ImGui::Checkbox("On Fire?", &OnFire);
+	   	    ImGui::SameLine();
+	   	    ImGui::Checkbox("On ADS?", &OnADS);
+	   	    
 		    ImGui::Separator();
 		    
 		    //Select Weapons
@@ -283,16 +280,12 @@ struct Aimbot {
 		    	Modules::Aimbot::Hitbox = static_cast<HitboxType>(HitboxTypeIndex);
 		    
 		    ImGui::Separator();
-		    
-		    //Aim Bind
-		    ImGui::Text("Aim Bind");
-		    int AimBind = static_cast<int>(Modules::Aimbot::AimBind);
-		    ImGui::Combo("Bind##Aimbot", &AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-		    Modules::Aimbot::AimBind = static_cast<InputKeyType>(AimBind);
-		    int ExtraBind = static_cast<int>(Modules::Aimbot::ExtraBind);
-		    ImGui::Combo("Extra Bind##Aimbot", &ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-		    Modules::Aimbot::ExtraBind = static_cast<InputKeyType>(ExtraBind);
-	   
+	   	    
+	   	    ImGui::Text("Aim Conditions");
+	   	    ImGui::Checkbox("On Fire?", &OnFire);
+	   	    ImGui::SameLine();
+	   	    ImGui::Checkbox("On ADS?", &OnADS);
+	   	    
 		    ImGui::Separator();
 		    
 		    //Select Weapons
@@ -439,8 +432,11 @@ struct Aimbot {
         try {
             Config::Aimbot::Enabled = AimbotEnabled;
             Config::Aimbot::HitBox = static_cast<int>(Modules::Aimbot::Hitbox);
-            Config::Aimbot::AimBind = static_cast<int>(Modules::Aimbot::AimBind);
-            Config::Aimbot::ExtraBind = static_cast<int>(Modules::Aimbot::ExtraBind);
+            //Config::Aimbot::AimBind = static_cast<int>(Modules::Aimbot::AimBind);
+            //Config::Aimbot::ExtraBind = static_cast<int>(Modules::Aimbot::ExtraBind);
+            
+            Config::Aimbot::OnFire = OnFire;
+            Config::Aimbot::OnADS = OnADS;
             
             Config::Aimbot::PredictMovement = PredictMovement;
             Config::Aimbot::PredictBulletDrop = PredictBulletDrop;
@@ -569,57 +565,131 @@ struct Aimbot {
     }
 
     void Update() {
-        if (!AimbotEnabled) { ReleaseTarget(); return; }
+    	if (OnFire && OnADS) {
+		if (!AimbotEnabled) { ReleaseTarget(); return; }
 
-        if (Myself->IsZooming)
-            FinalDistance = ZoomDistance;
-        else FinalDistance = HipfireDistance;
+		if (Myself->IsZooming)
+		    FinalDistance = ZoomDistance;
+		else FinalDistance = HipfireDistance;
 
-        if (!Myself->IsCombatReady()) { CurrentTarget = nullptr; return; }
-        
-        if (!InputManager::isKeyDown(static_cast<InputKeyType>(Config::Aimbot::AimBind))) {
-        	if (!InputManager::isKeyDown(static_cast<InputKeyType>(Config::Aimbot::ExtraBind))) {
-		ReleaseTarget(); 
-		TargetSelected = false; 
-		CurrentTarget = nullptr; 
-		return; 
+		if (Myself->IsHoldingGrenade) { ReleaseTarget(); return; }
+		
+		if (!Myself->IsInAttack) {
+			if (!Myself->IsZooming) {
+			ReleaseTarget(); 
+			TargetSelected = false; 
+			CurrentTarget = nullptr; 
+			return; 
+			}
 		}
-        }
-        if (!InputManager::isKeyDown(static_cast<InputKeyType>(Config::Aimbot::ExtraBind))) {
-        	if (!InputManager::isKeyDown(static_cast<InputKeyType>(Config::Aimbot::AimBind))) {
-		ReleaseTarget(); 
-		TargetSelected = false; 
-		CurrentTarget = nullptr; 
-		return; 
+		if (!Myself->IsZooming) {
+			if (!Myself->IsInAttack) {
+			ReleaseTarget(); 
+			TargetSelected = false; 
+			CurrentTarget = nullptr; 
+			return; 
+			}
 		}
-        }
-        if (Myself->IsHoldingGrenade) { ReleaseTarget(); return; }
 
-        Player* Target = CurrentTarget;
-        if (!IsValidTarget(Target)) {
-            if (TargetSelected)
-                return;
+		Player* Target = CurrentTarget;
+		if (!IsValidTarget(Target)) {
+		    if (TargetSelected)
+		        return;
 
-            Target = FindBestTarget();
-            if (!IsValidTarget(Target)) {
-                ReleaseTarget();
-                return;
-            }
-            
-            CurrentTarget = Target;
-            CurrentTarget->IsLockedOn = true;
-            TargetSelected = true;
-        } 
-        
-        if (TargetSelected && CurrentTarget) {
-            std::chrono::milliseconds Now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
-            if (Now >= LastAimTime + std::chrono::milliseconds(10)) {
-                StartAiming();
-                LastAimTime = Now + std::chrono::milliseconds((int)Utils::RandomRange(1, 10));
-            }
-            return;
-        }
-    }
+		    Target = FindBestTarget();
+		    if (!IsValidTarget(Target)) {
+		        ReleaseTarget();
+		        return;
+		    }
+		    
+		    CurrentTarget = Target;
+		    CurrentTarget->IsLockedOn = true;
+		    TargetSelected = true;
+		} 
+		
+		if (TargetSelected && CurrentTarget) {
+		    std::chrono::milliseconds Now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+		    if (Now >= LastAimTime + std::chrono::milliseconds(10)) {
+		        StartAiming();
+		        LastAimTime = Now + std::chrono::milliseconds((int)Utils::RandomRange(1, 10));
+		    }
+		    return;
+		}
+	    }
+    	if (OnFire) {
+		if (!AimbotEnabled) { ReleaseTarget(); return; }
+
+		if (Myself->IsZooming)
+		    FinalDistance = ZoomDistance;
+		else FinalDistance = HipfireDistance;
+		
+		if (!Myself->IsInAttack) { ReleaseTarget(); return; }
+
+		if (Myself->IsHoldingGrenade) { ReleaseTarget(); return; }
+
+		Player* Target = CurrentTarget;
+		if (!IsValidTarget(Target)) {
+		    if (TargetSelected)
+		        return;
+
+		    Target = FindBestTarget();
+		    if (!IsValidTarget(Target)) {
+		        ReleaseTarget();
+		        return;
+		    }
+		    
+		    CurrentTarget = Target;
+		    CurrentTarget->IsLockedOn = true;
+		    TargetSelected = true;
+		} 
+		
+		if (TargetSelected && CurrentTarget) {
+		    std::chrono::milliseconds Now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+		    if (Now >= LastAimTime + std::chrono::milliseconds(10)) {
+		        StartAiming();
+		        LastAimTime = Now + std::chrono::milliseconds((int)Utils::RandomRange(1, 10));
+		    }
+		    return;
+		}
+	    }
+	    
+    	if (OnADS) {
+		if (!AimbotEnabled) { ReleaseTarget(); return; }
+
+		if (Myself->IsZooming)
+		    FinalDistance = ZoomDistance;
+		else FinalDistance = HipfireDistance;
+		
+		if (!Myself->IsZooming) { ReleaseTarget(); return; }
+
+		if (Myself->IsHoldingGrenade) { ReleaseTarget(); return; }
+
+		Player* Target = CurrentTarget;
+		if (!IsValidTarget(Target)) {
+		    if (TargetSelected)
+		        return;
+
+		    Target = FindBestTarget();
+		    if (!IsValidTarget(Target)) {
+		        ReleaseTarget();
+		        return;
+		    }
+		    
+		    CurrentTarget = Target;
+		    CurrentTarget->IsLockedOn = true;
+		    TargetSelected = true;
+		} 
+		
+		if (TargetSelected && CurrentTarget) {
+		    std::chrono::milliseconds Now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+		    if (Now >= LastAimTime + std::chrono::milliseconds(10)) {
+		        StartAiming();
+		        LastAimTime = Now + std::chrono::milliseconds((int)Utils::RandomRange(1, 10));
+		    }
+		    return;
+		}
+	    }
+	}
 
 	
 	
