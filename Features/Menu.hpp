@@ -33,13 +33,12 @@
 
 struct MenuUI {
 
-   int MenuLayout;
+   int MenuLayout = 1;
 
    void RenderUI() {
     	if (ImGui::BeginTabItem("Menu", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
     	    ImGui::Text("Menu Layout");
     	    const char* MenuLayoutChoice[] = {"Simple", "Compact"};
-    	    static int MenuLayout = Modules::Menu::Layout;
     	    ImGui::Combo("Menu Layout", &MenuLayout, MenuLayoutChoice, IM_ARRAYSIZE(MenuLayoutChoice));
 	    Config::Menu::Layout = MenuLayout;
             ImGui::Text("Menu Theme");
