@@ -8,7 +8,19 @@ All credits to original owners
 Instructions & help down below
 
 # Changelog:
+    17.01.24
+    Aimbot:
+       - Removed Keybinds, replaced with On ADS? or On Fire? Self explanitory
+    Triggerbot:
+       - Removed Keybinds, replaced with On ADS? Self explanitory
+    ESP:
+       - Filled Box ESP
+       - Filled FOV Circle
+    Other:
+       - Fixed Config Saving/Loading issues
+           - Colors do not save!
 
+    16.01.24
     Updated Offsets - UC Forum
     Aimbot:
        - Keybind & Extra Keybind (If you want aimbot to be on left + right click) - https://github.com/GitDev28/xap-client-CG
