@@ -1,5 +1,5 @@
 # xap-client  [LINUX]
-**Updated to Game Version v3.0.53.30 (16.01.24)**
+**Updated to Game Version v3.0.54.31 (18.01.24)**
 
 By **Gerosity**
 
@@ -8,6 +8,9 @@ All credits to original owners
 Instructions & help down below
 
 # Changelog:
+    18.01.24
+    Updated Offsets to v3.0.54.31
+
     17.01.24
     Aimbot:
        - Removed Keybinds, replaced with On ADS? or On Fire? Self explanitory
