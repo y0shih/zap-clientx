@@ -114,6 +114,7 @@ void LoadConfig() {
     AimAssist->PredictBulletDrop = Config::Aimbot::PredictBulletDrop;
     AimAssist->Speed = Config::Aimbot::Speed;
     AimAssist->Smooth = Config::Aimbot::Smooth;
+    AimAssist->Delay = Config::Aimbot::Delay;
     AimAssist->FOV = Config::Aimbot::FOV;
     AimAssist->ZoomScale = Config::Aimbot::ZoomScale;
     AimAssist->MinDistance = Config::Aimbot::MinDistance;
@@ -161,6 +162,8 @@ void LoadConfig() {
     ESP->ItemGlow = Config::Sense::ItemGlow;
     ESP->GlowMaxDistance = Config::Sense::GlowMaxDistance;
     ESP->DrawSeer = Config::Sense::DrawSeer;
+    ESP->DrawStatus = Config::Sense::DrawStatus;
+    ESP->ShowMaxStatusValues = Config::Sense::ShowMaxStatusValues;
     ESP->ESPMaxDistance = Config::Sense::ESPMaxDistance;
     ESP->ShowSpectators = Config::Sense::ShowSpectators;
     ESP->DrawFOVCircle = Config::Sense::DrawFOVCircle;
