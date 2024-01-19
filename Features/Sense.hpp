@@ -1,5 +1,6 @@
 #pragma once
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <iomanip>
 #include <iostream>
@@ -28,6 +29,7 @@
 
 // Geometry
 #define DEG2RAD( x  )  ( (float)(x) * (float)(M_PI / 180.f) )
+#define ABS(x)  ((x <0) ? (-x) : (x))
 
 
 
@@ -49,6 +51,9 @@ struct Sense {
     float ESPMaxDistance = 200;
     bool ShowNear = true;
     bool DrawSeer = true;
+    bool DrawStatus = true;
+    bool ShowMaxStatusValues = true;
+    
     bool DrawDistance = true;
     bool DrawFOVCircle = true;
     bool DrawFilledFOVCircle = false;
@@ -208,6 +213,14 @@ struct Sense {
 		    ImGui::Checkbox("Draw Seer", &DrawSeer);
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		    	ImGui::SetTooltip("Draw Seer's abilitiy (Show Health & Armor) on enemies");
+		    	
+		    ImGui::Checkbox("Draw Status", &DrawStatus);
+		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		    	ImGui::SetTooltip("Draw enemies current health and armor");
+		    ImGui::SameLine();
+		    ImGui::Checkbox("Show Max Values", &ShowMaxStatusValues);
+		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		    	ImGui::SetTooltip("Adds their max health and armor at the end.");
 		    
 		    ImGui::Checkbox("Draw Names", &DrawNames);
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -270,9 +283,9 @@ struct Sense {
 		    ImGui::Separator();
 		    
 		    ImGui::Text("Misc");
-		    ImGui::Checkbox("Show Spectators", &ShowSpectators);
+		    ImGui::Checkbox("Show Spectators [!]", &ShowSpectators);
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        ImGui::SetTooltip("Show spectators");
+		        ImGui::SetTooltip("Show spectators\n[!] Cheat/Game will crash after going back to lobby, waiting for fix.");
 		        
 		    ImGui::Separator();
 		        
@@ -385,13 +398,22 @@ struct Sense {
 		    }
 		    
 		    if (ImGui::CollapsingHeader("Player Info", nullptr)) {
+		    
 		        ImGui::Checkbox("Draw Seer", &DrawSeer);
 		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		        	ImGui::SetTooltip("Draw Seer's abilitiy (Show Health & Armor) on enemies");
-		    
-		    	ImGui::Checkbox("Draw Names", &DrawNames);
+		        	
+		    	ImGui::Checkbox("Draw Status", &DrawStatus);
 		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Show enemies names");
+		    		ImGui::SetTooltip("Draw enemies current health and armor");
+		    	ImGui::SameLine();
+		    	ImGui::Checkbox("Show Max Values", &ShowMaxStatusValues);
+		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		    		ImGui::SetTooltip("Adds their max health and armor at the end.");
+		    
+		        ImGui::Checkbox("Draw Names", &DrawNames);
+		        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+			        ImGui::SetTooltip("Show enemies names");
 		        ImGui::SameLine();
 		        ImGui::ColorEdit4("Visible Color##ESPNames", (float*)&VisibleNameColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
 		        ImGui::SameLine();
@@ -450,9 +472,9 @@ struct Sense {
 		    ImGui::Separator();
 		    
 		    ImGui::Text("Misc");
-		    ImGui::Checkbox("Show Spectators", &ShowSpectators);
+		    ImGui::Checkbox("Show Spectators [!]", &ShowSpectators);
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        ImGui::SetTooltip("Show spectators");
+		        ImGui::SetTooltip("Show spectators\n[!] Cheat/Game will crash after going back to lobby, waiting for fix.");
 		        
 		    ImGui::Separator();
 		        
@@ -474,6 +496,8 @@ struct Sense {
             Config::Sense::VisibilityCheck = VisibilityCheck;
             Config::Sense::GlowMaxDistance = GlowMaxDistance;
             Config::Sense::DrawSeer = DrawSeer;
+            Config::Sense::DrawStatus = DrawStatus;
+            Config::Sense::ShowMaxStatusValues = ShowMaxStatusValues;
             Config::Sense::ShowSpectators = ShowSpectators;
             Config::Sense::DrawFOVCircle = DrawFOVCircle;
             Config::Sense::DrawFilledFOVCircle = DrawFilledFOVCircle;
@@ -548,7 +572,7 @@ struct Sense {
         int ScreenHeight;
         OverlayWindow.GetScreenResolution(ScreenWidth, ScreenHeight);
         
-        if (ShowSpectators)
+        if (ShowSpectators) //Crashing
         {
             ImVec2 Center = ImGui::GetMainViewport()->GetCenter();
             ImGui::SetNextWindowPos(ImVec2(0.0f, Center.y), ImGuiCond_Once, ImVec2(0.02f, 0.5f));
@@ -727,32 +751,56 @@ struct Sense {
 
 			// Distance
 			if (DrawDistance) {
-				Vector2D originScreenPosition;
-				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, -4)), originScreenPosition);
+				Vector2D distanceScreenPosition;
+				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head).Add(Vector3D(0, 0, 50)), distanceScreenPosition);
+				
+				
 				
 				if (ShowTeam) {
-					if (!originScreenPosition.IsZeroVector()) {
+					if (!distanceScreenPosition.IsZeroVector()) {
 						if (p->IsAlly) {
-							Renderer::DrawText(Canvas, originScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(255, 255, 255), true, true, false);
+							Renderer::DrawText(Canvas, distanceScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(255, 255, 255), true, true, false);
 						}
 						if (p->IsHostile && p->IsVisible) {
-							Renderer::DrawText(Canvas, originScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(VisibleDistanceColor), true, true, false);
+							Renderer::DrawText(Canvas, distanceScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(VisibleDistanceColor), true, true, false);
 						}
 						if (p->IsHostile && !p->IsVisible) {
-							Renderer::DrawText(Canvas, originScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(InvisibleDistanceColor), true, true, false);
+							Renderer::DrawText(Canvas, distanceScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(InvisibleDistanceColor), true, true, false);
 						}
 					}
 				}
 				if (!ShowTeam) {
-					if (!originScreenPosition.IsZeroVector()) {
+					if (!distanceScreenPosition.IsZeroVector()) {
 						if (p->IsHostile && p->IsVisible) {
-							Renderer::DrawText(Canvas, originScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(VisibleDistanceColor), true, true, false);
+							Renderer::DrawText(Canvas, distanceScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(VisibleDistanceColor), true, true, false);
 						}
 						if (p->IsHostile && !p->IsVisible) {
-							Renderer::DrawText(Canvas, originScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(InvisibleDistanceColor), true, true, false);
+							Renderer::DrawText(Canvas, distanceScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(InvisibleDistanceColor), true, true, false);
 						}
 					}
 				}
+			}
+			
+			// Draw Names
+			Vector2D nameScreenPosition;
+			GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head).Add(Vector3D(0, 0, 45)), nameScreenPosition);
+			if (DrawNames && p->IsHostile && p->IsVisible && !p->IsDummy()) {
+				Renderer::DrawText(Canvas, nameScreenPosition.Subtract(Vector2D(0, 10)), p->GetPlayerName().c_str(), VisibleNameColor, true, true, false);
+			}
+			if (DrawNames && p->IsHostile && !p->IsVisible && !p->IsDummy()) {
+				Renderer::DrawText(Canvas, nameScreenPosition.Subtract(Vector2D(0, 10)), p->GetPlayerName().c_str(), InvisibleNameColor, true, true, false);
+			}
+			
+			if (DrawNames && p->IsVisible && p->IsDummy()) {
+				Renderer::DrawText(Canvas, nameScreenPosition.Subtract(Vector2D(0, 10)), "Dummy", InvisibleNameColor, true, true, false);
+			}
+			if (DrawNames && !p->IsVisible && p->IsDummy()) {
+				Renderer::DrawText(Canvas, nameScreenPosition.Subtract(Vector2D(0, 10)), "Dummy", InvisibleNameColor, true, true, false);
+			}
+			    
+			// Draw Team Names
+			if (ShowTeam && TeamNames && p->IsAlly && !p->IsDummy()) {
+				Renderer::DrawText(Canvas, nameScreenPosition.Add(Vector2D(0, 0)), p->GetPlayerName().c_str(), TeamNameColor, true, true, false);
 			}
 			
 				
@@ -811,36 +859,52 @@ struct Sense {
 					}
 				}
 			}
+			
+			// Draw Health + Shield
+			Vector2D StatusPos;
+			GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), StatusPos);
+			
+			std::stringstream healthValue, shieldValue, maxHealthValue, maxShieldValue;
+			healthValue << p->Health;
+			shieldValue << p->Shield;
+			maxHealthValue << p->MaxHealth;
+			maxShieldValue << p->MaxShield;
+			std::string healthInt = healthValue.str() + " HP";
+			std::string shieldInt = shieldValue.str() + " AP";
+			const char* healthText = (char*)healthInt.c_str();
+			const char* shieldText = (char*)shieldInt.c_str();
+			std::string combinedHealth = healthValue.str() + " / " + maxHealthValue.str() + " HP";
+			const char* combinedHealthText = combinedHealth.c_str();
+			std::string combinedShield = shieldValue.str() + " / " + maxShieldValue.str() + " AP";
+			const char* combinedShieldText = combinedShield.c_str();
 				
-			// Draw Names
-			if (DrawNames && p->IsHostile && p->IsVisible && !p->IsDummy()) {
-				Vector2D originScreenPosition;
-				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 112)), originScreenPosition);
-				Renderer::DrawText(Canvas, originScreenPosition.Add(Vector2D(0, 0)), p->GetPlayerName().c_str(), VisibleNameColor, true, true, false);
+			ImColor ShieldColor;
+			if (p->MaxShield == 50) { //white
+				ShieldColor = ImColor(247, 247, 247);
 			}
-			if (DrawNames && p->IsHostile && !p->IsVisible && !p->IsDummy()) {
-				Vector2D originScreenPosition;
-				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 112)), originScreenPosition);
-				Renderer::DrawText(Canvas, originScreenPosition.Add(Vector2D(0, 0)), p->GetPlayerName().c_str(), InvisibleNameColor, true, true, false);
+			else if (p->MaxShield == 75) { //blue
+				ShieldColor = ImColor(39, 178, 255);
+			}
+			else if (p->MaxShield == 100) { //purple
+				ShieldColor = ImColor(206, 59, 255);
+			}
+			else if (p->MaxShield == 125) { //red
+				ShieldColor = ImColor(219, 2, 2);
+			}
+			else {
+				ShieldColor = ImColor(247, 247, 247);
 			}
 			
-			if (DrawNames && p->IsVisible && p->IsDummy()) {
-				Vector2D originScreenPosition;
-				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 112)), originScreenPosition);
-				Renderer::DrawText(Canvas, originScreenPosition.Add(Vector2D(0, 0)), "Dummy", VisibleNameColor, true, true, false);
+			//Render Text
+			if (DrawStatus && !ShowMaxStatusValues && p->IsHostile) {
+				Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), healthText, ImColor(0, 255, 0), true, true, false);
+				Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), shieldText, ShieldColor, true, true, false);
 			}
-			if (DrawNames && !p->IsVisible && p->IsDummy()) {
-				Vector2D originScreenPosition;
-				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 112)), originScreenPosition);
-				Renderer::DrawText(Canvas, originScreenPosition.Add(Vector2D(0, 0)), "Dummy", InvisibleNameColor, true, true, false);
+			if (DrawStatus && ShowMaxStatusValues && p->IsHostile) {
+				Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), combinedHealthText, ImColor(0, 255, 0), true, true, false);
+				Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), combinedShieldText, ShieldColor, true, true, false);
 			}
-			    
-			// Draw Team Names
-			if (ShowTeam && TeamNames && p->IsAlly && !p->IsDummy()) {
-				Vector2D originScreenPosition;
-				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 110)), originScreenPosition);
-				Renderer::DrawText(Canvas, originScreenPosition.Add(Vector2D(0, 0)), p->GetPlayerName().c_str(), TeamNameColor, true, true, false);
-			}
+			
 				
 			//Draw Skeleton
 			if (Skeleton) {
@@ -1077,18 +1141,26 @@ struct Sense {
 
 			// Distance
 			if (DrawDistance) {
-				Vector2D originScreenPosition;
-				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, -4)), originScreenPosition);
-				
-				
-				if (!originScreenPosition.IsZeroVector()) {
-					if (p->IsAlly && p->IsVisible) {
-						Renderer::DrawText(Canvas, originScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(255, 255, 255), true, true, false);
-				        }
-				        if (p->IsHostile && p->IsVisible) {
-						Renderer::DrawText(Canvas, originScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(VisibleDistanceColor), true, true, false);
-				        }
-			        }
+				Vector2D distanceScreenPosition;
+				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head).Add(Vector3D(0, 0, 36)), distanceScreenPosition);
+
+				if (ShowTeam) {
+					if (!distanceScreenPosition.IsZeroVector()) {
+						if (p->IsAlly && p->IsVisible) {
+							Renderer::DrawText(Canvas, distanceScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(255, 255, 255), true, true, false);
+						}
+						if (p->IsHostile && p->IsVisible) {
+							Renderer::DrawText(Canvas, distanceScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(VisibleDistanceColor), true, true, false);
+						}
+					}
+				}
+				if (!ShowTeam) {
+					if (!distanceScreenPosition.IsZeroVector()) {
+						if (p->IsHostile && p->IsVisible) {
+							Renderer::DrawText(Canvas, distanceScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(VisibleDistanceColor), true, true, false);
+						}
+					}
+				}
 			}
 				
 			// DrawBox
@@ -1132,6 +1204,47 @@ struct Sense {
 				Vector2D originScreenPosition;
 				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 110)), originScreenPosition);
 				Renderer::DrawText(Canvas, originScreenPosition.Add(Vector2D(0, 0)), p->GetPlayerName().c_str(), TeamNameColor, true, true, false);
+			}
+			
+			// Draw Health + Shield
+			Vector2D StatusPos;
+			GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), StatusPos);
+			
+			std::stringstream healthValue, shieldValue, maxHealthValue, maxShieldValue;
+			healthValue << p->Health;
+			shieldValue << p->Shield;
+			maxHealthValue << p->MaxHealth;
+			maxShieldValue << p->MaxShield;
+			std::string healthInt = healthValue.str() + " HP";
+			std::string shieldInt = shieldValue.str() + " AP";
+			const char* healthText = (char*)healthInt.c_str();
+			const char* shieldText = (char*)shieldInt.c_str();
+			std::string combinedHealth = healthValue.str() + " / " + maxHealthValue.str() + " HP";
+			const char* combinedHealthText = combinedHealth.c_str();
+			std::string combinedShield = shieldValue.str() + " / " + maxShieldValue.str() + " AP";
+			const char* combinedShieldText = combinedShield.c_str();
+				
+			ImColor ShieldColor;
+			if (p->MaxShield == 50) { //white
+				ShieldColor = ImColor(247, 247, 247);
+			}
+			else if (p->MaxShield == 75) { //blue
+				ShieldColor = ImColor(39, 178, 255);
+			}
+			else if (p->MaxShield == 100) { //purple
+				ShieldColor = ImColor(206, 59, 255);
+			}
+			else if (p->MaxShield == 125) { //red
+				ShieldColor = ImColor(219, 2, 2);
+			}
+			else {
+				ShieldColor = ImColor(247, 247, 247);
+			}
+			
+			//Render Text
+			if (DrawStatus && !ShowMaxStatusValues && p->IsHostile && p->IsVisible) {
+				Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), healthText, ImColor(0, 255, 0), true, true, false);
+				Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), shieldText, ShieldColor, true, true, false);
 			}
 				
 			//Draw Skeleton
