@@ -39,7 +39,8 @@ namespace Config {
         bool PredictBulletDrop = true;
         bool RecoilControl = true;
         float Speed = 20;
-        float Smooth = 1;
+        float Smooth = 0.9;
+        int Delay = 10;
         float FOV = 10;
         float ZoomScale = 3.0;
         float MinDistance = 1;
@@ -109,7 +110,9 @@ namespace Config {
     float ESPMaxDistance = 200;
     bool ShowNear = true;
     bool DrawSeer = true;
-    bool DrawDistance = true;
+    bool DrawStatus = true;
+    bool ShowMaxStatusValues = true;
+    bool DrawDistance = false;
     bool DrawFOVCircle = true;
     bool DrawFilledFOVCircle = false;
     float FOVThickness = 1.0;
@@ -292,6 +295,7 @@ void UpdateConfig() {
         WritePair(Aimbot, PredictBulletDrop);
         WritePair(Aimbot, Speed);
         WritePair(Aimbot, Smooth);
+        WritePair(Aimbot, Delay);
         WritePair(Aimbot, FOV);
         WritePair(Aimbot, ZoomScale);
         WritePair(Aimbot, MinDistance);
@@ -306,6 +310,8 @@ void UpdateConfig() {
         WritePair(Sense, GlowEnabled);
         WritePair(Sense, ItemGlow);
         WritePair(Sense, DrawSeer);
+        WritePair(Sense, DrawStatus);
+        WritePair(Sense, ShowMaxStatusValues);
         WritePair(Sense, GlowMaxDistance);
         WritePair(Sense, ShowSpectators);
         WritePair(Sense, DrawFOVCircle);
@@ -357,6 +363,7 @@ bool ReadConfig(const std::string &configFile) {
     ReadBool(Aimbot, PredictBulletDrop);
     ReadFloat(Aimbot, Speed);
     ReadFloat(Aimbot, Smooth);
+    ReadInt(Aimbot, Delay);
     ReadFloat(Aimbot, FOV);
     ReadFloat(Aimbot, ZoomScale);
     ReadFloat(Aimbot, MinDistance);
@@ -366,6 +373,8 @@ bool ReadConfig(const std::string &configFile) {
     ReadBool(Sense, GlowEnabled);
     ReadBool(Sense, ItemGlow);
     ReadBool(Sense, DrawSeer);
+    ReadBool(Sense, DrawStatus);
+    ReadBool(Sense, ShowMaxStatusValues);
     ReadFloat(Sense, GlowMaxDistance);
     ReadBool(Sense, ShowSpectators);
     ReadBool(Sense, DrawFOVCircle);
