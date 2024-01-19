@@ -64,8 +64,6 @@ public:
     	float width = height / 2.0f;
     	canvas->AddRectFilled(ImVec2(foot.x - (width / 2), foot.y), ImVec2(head.x + (width/2), head.y+(height*0.2)), color, 0.0f, 0);
     }
-    
-
 
     static void DrawSeer(ImDrawList* Canvas, float x, float y, int shield, int max_shield, int health) {
         int bg_offset = 3;
