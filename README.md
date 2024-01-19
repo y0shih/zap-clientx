@@ -8,6 +8,17 @@ All credits to original owners
 Instructions & help down below
 
 # Changelog:
+    19.01.24
+    Aimbot:
+       - Added Delay (Not sure what its called, but it affects smoothing speed? So good for legit players ig
+    Sense:
+       - Added Status Text (Current Health & Armor)
+           - Added Max Status Text (Max Health & Armor)
+       - Moved Name and distance positions, distance may get in the way of box/skeleton, will fix eventually
+
+    Crashing still occurs after going back to the lobby, not sure while and will do some testing about it tommorow.
+    Not a big deal since you can just run the cheat again after crashing
+
     18.01.24
     Updated Offsets to v3.0.54.31
 
