@@ -38,6 +38,7 @@ struct Aimbot {
     float FinalDistance = 0;
     float Speed = 20;
     float Smooth = 0.9;
+    int Delay = 10;
     float FOV = 10;
     float ZoomScale = 3.0;
     float MinDistance = 1;
@@ -224,6 +225,10 @@ struct Aimbot {
 		    	ImGui::SliderFloat("Smooth", &Smooth, 0, 0.99, "%.3f");
 		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		        	ImGui::SetTooltip("Smoothness for the Aim-Assist\nHigher = Smoother");
+		        	
+		    	ImGui::SliderInt("Delay", &Delay, 1, 50, "%.0f");
+		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		        	ImGui::SetTooltip("Delay time for the aimbot smoothing.\n");
 		    
 		    ImGui::Separator();
 
@@ -382,6 +387,10 @@ struct Aimbot {
 		    	ImGui::SliderFloat("Smooth", &Smooth, 0, 0.99, "%.3f");
 		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		        	ImGui::SetTooltip("Smoothness for the Aim-Assist\nHigher = Smoother");
+		        	
+		    	ImGui::SliderInt("Delay", &Delay, 1, 50);
+		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		        	ImGui::SetTooltip("Delay time for the aimbot smoothing.\n");
 		    }
 		    
 		    ImGui::Separator();
@@ -442,6 +451,7 @@ struct Aimbot {
             Config::Aimbot::PredictBulletDrop = PredictBulletDrop;
             Config::Aimbot::Speed = Speed;
             Config::Aimbot::Smooth = Smooth;
+            Config::Aimbot::Delay = Delay;
             Config::Aimbot::FOV = FOV;
             Config::Aimbot::ZoomScale = ZoomScale;
             Config::Aimbot::MinDistance = MinDistance;
@@ -609,7 +619,7 @@ struct Aimbot {
 		
 		if (TargetSelected && CurrentTarget) {
 		    std::chrono::milliseconds Now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
-		    if (Now >= LastAimTime + std::chrono::milliseconds(10)) {
+		    if (Now >= LastAimTime + std::chrono::milliseconds(Delay)) {
 		        StartAiming();
 		        LastAimTime = Now + std::chrono::milliseconds((int)Utils::RandomRange(1, 10));
 		    }
@@ -645,7 +655,7 @@ struct Aimbot {
 		
 		if (TargetSelected && CurrentTarget) {
 		    std::chrono::milliseconds Now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
-		    if (Now >= LastAimTime + std::chrono::milliseconds(10)) {
+		    if (Now >= LastAimTime + std::chrono::milliseconds(Delay)) {
 		        StartAiming();
 		        LastAimTime = Now + std::chrono::milliseconds((int)Utils::RandomRange(1, 10));
 		    }
@@ -690,9 +700,6 @@ struct Aimbot {
 		}
 	    }
 	}
-
-	
-	
 
     void StartAiming() {
         // Get Target Angle
