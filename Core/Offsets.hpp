@@ -54,6 +54,10 @@ constexpr long OFF_PROJECTILESPEED = 0x04e4 + 0x1978;         //projectile_launc
 constexpr long OFF_OFFHAND_WEAPON = 0x1904;                   //m_latestNonOffhandWeapons
 constexpr long OFF_CURRENTZOOMFOV = 0x1590 + 0x1978;          //m_playerData + m_curZoomFOV
 constexpr long OFF_TARGETZOOMFOV = 0x1590 + 0x1978;           //m_playerData + m_targetZoomFOV
+constexpr long OFF_CUSTOM_SCRIPT_INT = 0x1518;		      //Item IDs
+constexpr long OFF_VIEWMODELS = 0x2dc0;
+constexpr long OFF_SIGNIFIER_NAME = 0x0440;
+
 
 //glow
 constexpr long OFF_GLOW_ENABLE = 0x28c;                       //[DT_HighlightSettings].?
