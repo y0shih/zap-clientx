@@ -17,13 +17,15 @@ struct Player {
 
     std::string Name;
     int Team;
-
+    
     int GlowEnable;
     int GlowThroughWall;
     int HighlightID;
 
     bool IsDead;
     bool IsKnocked;
+    
+    int GetWeaponID;
 
     Vector3D LocalOrigin;
     Vector3D AbsoluteVelocity;
@@ -106,9 +108,11 @@ struct Player {
               
                 IsAlly = friendly;
                 IsHostile = !IsAlly;
-                DistanceToLocalPlayer = Myself->LocalOrigin.Distance(LocalOrigin);
-                Distance2DToLocalPlayer = Myself->LocalOrigin.To2D().Distance(LocalOrigin.To2D());
         }
+        
+        DistanceToLocalPlayer = Myself->LocalOrigin.Distance(LocalOrigin);
+        Distance2DToLocalPlayer = Myself->LocalOrigin.To2D().Distance(LocalOrigin.To2D());
+        
     }
     std::string GetPlayerName(){
         uintptr_t NameIndex = Memory::Read<uintptr_t>(BasePointer + OFF_NAME_INDEX);
@@ -116,7 +120,7 @@ struct Player {
         std::string PlayerName = Memory::ReadPlayerName(NameOffset, 64);
         return PlayerName;
     }
-
+    
     float GetViewYaw() {
         if (!IsDummy() || IsPlayer()) {
             return Memory::Read<float>(BasePointer + OFF_YAW);
