@@ -8,7 +8,20 @@ All credits to original owners
 Instructions & help down below
 
 # Changelog:
-    20.01.24
+    20.01.24 #2
+    RCS - Recoil Control:
+       - Fixed Recoil Control
+       - Seperated Aimbot + Recoil control, now standalone (Credits: https://github.com/GitDev28/xap-client-CG)
+       - Weapon Selection
+       - Conditions (OnADS)
+    Themes
+       - Finally figured out how to add themes. There are currently 4, will be adding many as time goes on
+       - Advanced Menu Settings
+           - Change (almost) everything about the menu. DOES NOT save, will try and add this
+    Other
+       - Fixed Saving/Loading issues
+
+    20.01.24 #1
     Aimbot:
        - Fixed shaking/Twitching?
     No Recoil Fixed (Offset issue)
