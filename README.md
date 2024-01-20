@@ -9,6 +9,8 @@ Instructions & help down below
 
 # Changelog:
     20.01.24
+    Aimbot:
+       - Fixed shaking/Twitching?
     No Recoil Fixed (Offset issue)
 
     19.01.24
