@@ -34,17 +34,15 @@
 struct MenuUI {
 
    int MenuLayout = 1;
+   ImVec4 TextColor = ImColor(255, 255, 255, 255);
 
    void RenderUI() {
-    	if (ImGui::BeginTabItem("Menu", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
+    	if (ImGui::BeginTabItem("Menu", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton)) {
     	    ImGui::Text("Menu Layout");
     	    const char* MenuLayoutChoice[] = {"Simple", "Compact"};
     	    ImGui::Combo("Menu Layout", &MenuLayout, MenuLayoutChoice, IM_ARRAYSIZE(MenuLayoutChoice));
 	    Config::Menu::Layout = MenuLayout;
-            ImGui::Text("Menu Theme");
-	    ImGui::Text("WIP (Work In Progress)");
-            	
-            ImGui::EndTabItem();
+	    ImGui::EndTabItem();
         }
     }
 
@@ -57,6 +55,6 @@ struct MenuUI {
         }
     }
 
-    void Update() { 	
+    void Update() { 
     }
 };
