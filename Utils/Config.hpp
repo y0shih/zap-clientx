@@ -37,7 +37,6 @@ namespace Config {
              
         bool PredictMovement = true;
         bool PredictBulletDrop = true;
-        bool RecoilControl = true;
         float Speed = 20;
         float Smooth = 0.9;
         int Delay = 10;
@@ -46,8 +45,6 @@ namespace Config {
         float MinDistance = 1;
         float HipfireDistance = 200;
         float ZoomDistance = 200;
-        float PitchPower = 4;
-        float YawPower = 4;
         
         //Weapons
 	//Light
@@ -88,10 +85,47 @@ namespace Config {
 	bool Knife = true;
     };
     
-    namespace NoRecoil{
-        bool Enabled = true;
-        float PitchPower = 30;
-        float YawPower = 30;
+    namespace RCS {
+        bool RCSEnabled = true;
+        bool OnADS = true;
+        float PitchPower = 4;
+        float YawPower = 4;
+        
+        //Weapons
+	//Light
+	bool P2020 = false;
+	bool RE45 = true;
+	bool Alternator = true;
+	bool R99 = true;
+	bool R301 = true;
+	bool Spitfire = true;
+	bool G7 = true; 
+	//Heavy
+	bool Flatline = true;
+	bool Hemlock = true;
+	bool Repeater = true;
+	bool Rampage = true;
+	bool CARSMG = true;  
+	//Energy
+	bool Havoc = true;
+	bool Devotion = true;
+	bool LSTAR = true;
+	bool TripleTake = true;
+	bool Volt = true;
+	bool Nemesis = true;
+	//Shotgun
+	bool Mozambique = true;
+	bool EVA8 = true;
+	bool Peacekeeper = true;
+	bool Mastiff = true;   
+	//Snipers
+	bool Longbow = true;
+	bool ChargeRifle = true;
+	bool Sentinel = true;    
+	//Legendary
+	bool Wingman = true; //Emotional damage!
+	bool Prowler = true;
+	bool Kraber = false;
     };
 
     namespace Sense {
@@ -218,7 +252,6 @@ namespace Modules {
         
         bool PredictMovement = true;
         bool PredictBulletDrop = true;
-        bool RecoilControl = true;
         float Speed = 20;
         float Smooth = 0.9;
         float FOV = 10;
@@ -226,8 +259,6 @@ namespace Modules {
         float MinDistance = 1;
         float HipfireDistance = 200;
         float ZoomDistance = 200;
-        float PitchPower = 4;
-        float YawPower = 4;
     };
 
     namespace Sense {
@@ -301,15 +332,91 @@ void UpdateConfig() {
         WritePair(Aimbot, MinDistance);
         WritePair(Aimbot, HipfireDistance);
         WritePair(Aimbot, ZoomDistance);
-        WritePair(Aimbot, RecoilControl);
-        WritePair(Aimbot, PitchPower);
-        WritePair(Aimbot, YawPower);
+        //Weapons
+	//Light
+	WritePair(Aimbot, P2020);
+	WritePair(Aimbot, RE45);
+	WritePair(Aimbot, Alternator);
+	WritePair(Aimbot, R99);
+	WritePair(Aimbot, R301);
+	WritePair(Aimbot, Spitfire);
+	WritePair(Aimbot, G7); 
+	//Heavy
+	WritePair(Aimbot, Flatline);
+	WritePair(Aimbot, Hemlock);
+	WritePair(Aimbot, Repeater);
+	WritePair(Aimbot, Rampage);
+	WritePair(Aimbot, CARSMG);  
+	//Energy
+	WritePair(Aimbot, Havoc);
+	WritePair(Aimbot, Devotion);
+	WritePair(Aimbot, LSTAR);
+	WritePair(Aimbot, TripleTake);
+	WritePair(Aimbot, Volt);
+	WritePair(Aimbot, Nemesis);
+	//Shotgun
+	WritePair(Aimbot, Mozambique);
+	WritePair(Aimbot, EVA8);
+	WritePair(Aimbot, Peacekeeper);
+	WritePair(Aimbot, Mastiff);   
+	//Snipers
+	WritePair(Aimbot, Longbow);
+	WritePair(Aimbot, ChargeRifle);
+	WritePair(Aimbot, Sentinel);    
+	//Legendary
+	WritePair(Aimbot, Wingman); //Emotional damage!
+	WritePair(Aimbot, Prowler);
+	WritePair(Aimbot, Bocek);
+	WritePair(Aimbot, Kraber);
+	WritePair(Aimbot, Knife);
+        
+        WriteSection(RCS);
+        WritePair(RCS, RCSEnabled);
+        WritePair(RCS, OnADS);
+	WritePair(RCS, PitchPower);
+        WritePair(RCS, YawPower);
+        //Weapons
+	//Light
+	WritePair(RCS, P2020);
+	WritePair(RCS, RE45);
+	WritePair(RCS, Alternator);
+	WritePair(RCS, R99);
+	WritePair(RCS, R301);
+	WritePair(RCS, Spitfire);
+	WritePair(RCS, G7); 
+	//Heavy
+	WritePair(RCS, Flatline);
+	WritePair(RCS, Hemlock);
+	WritePair(RCS, Repeater);
+	WritePair(RCS, Rampage);
+	WritePair(RCS, CARSMG);  
+	//Energy
+	WritePair(RCS, Havoc);
+	WritePair(RCS, Devotion);
+	WritePair(RCS, LSTAR);
+	WritePair(RCS, TripleTake);
+	WritePair(RCS, Volt);
+	WritePair(RCS, Nemesis);
+	//Shotgun
+	WritePair(RCS, Mozambique);
+	WritePair(RCS, EVA8);
+	WritePair(RCS, Peacekeeper);
+	WritePair(RCS, Mastiff);   
+	//Snipers
+	WritePair(RCS, Longbow);
+	WritePair(RCS, ChargeRifle);
+	WritePair(RCS, Sentinel);    
+	//Legendary
+	WritePair(RCS, Wingman); //Emotional damage!
+	WritePair(RCS, Prowler);
+	WritePair(RCS, Kraber);
         WriteSectionEnd();
 
         WriteSection(Sense);
         WritePair(Sense, GlowEnabled);
         WritePair(Sense, ItemGlow);
         WritePair(Sense, DrawSeer);
+        WritePair(Sense, DrawDistance);
         WritePair(Sense, DrawStatus);
         WritePair(Sense, ShowMaxStatusValues);
         WritePair(Sense, GlowMaxDistance);
@@ -334,6 +441,43 @@ void UpdateConfig() {
         WritePair(Triggerbot, Enabled);
         WritePair(Triggerbot, OnADS);
         WritePair(Triggerbot, Range);
+        //Weapons
+	//Light
+	WritePair(Triggerbot, P2020);
+	WritePair(Triggerbot, RE45);
+	WritePair(Triggerbot, Alternator);
+	WritePair(Triggerbot, R99);
+	WritePair(Triggerbot, R301);
+	WritePair(Triggerbot, Spitfire);
+	WritePair(Triggerbot, G7); 
+	//Heavy
+	WritePair(Triggerbot, Flatline);
+	WritePair(Triggerbot, Hemlock);
+	WritePair(Triggerbot, Repeater);
+	WritePair(Triggerbot, Rampage);
+	WritePair(Triggerbot, CARSMG);  
+	//Energy
+	WritePair(Triggerbot, Havoc);
+	WritePair(Triggerbot, Devotion);
+	WritePair(Triggerbot, LSTAR);
+	WritePair(Triggerbot, TripleTake);
+	WritePair(Triggerbot, Volt);
+	WritePair(Triggerbot, Nemesis);
+	//Shotgun
+	WritePair(Triggerbot, Mozambique);
+	WritePair(Triggerbot, EVA8);
+	WritePair(Triggerbot, Peacekeeper);
+	WritePair(Triggerbot, Mastiff);   
+	//Snipers
+	WritePair(Triggerbot, Longbow);
+	WritePair(Triggerbot, ChargeRifle);
+	WritePair(Triggerbot, Sentinel);    
+	//Legendary
+	WritePair(Triggerbot, Wingman); //Emotional damage!
+	WritePair(Triggerbot, Prowler);
+	WritePair(Triggerbot, Bocek);
+	WritePair(Triggerbot, Kraber);
+	WritePair(Triggerbot, Knife);
         WriteSectionEnd();
         
         WriteSection(Misc);
@@ -369,6 +513,83 @@ bool ReadConfig(const std::string &configFile) {
     ReadFloat(Aimbot, MinDistance);
     ReadFloat(Aimbot, HipfireDistance);
     ReadFloat(Aimbot, ZoomDistance);
+        //Weapons
+	//Light
+	ReadBool(Aimbot, P2020);
+	ReadBool(Aimbot, RE45);
+	ReadBool(Aimbot, Alternator);
+	ReadBool(Aimbot, R99);
+	ReadBool(Aimbot, R301);
+	ReadBool(Aimbot, Spitfire);
+	ReadBool(Aimbot, G7); 
+	//Heavy
+	ReadBool(Aimbot, Flatline);
+	ReadBool(Aimbot, Hemlock);
+	ReadBool(Aimbot, Repeater);
+	ReadBool(Aimbot, Rampage);
+	ReadBool(Aimbot, CARSMG);  
+	//Energy
+	ReadBool(Aimbot, Havoc);
+	ReadBool(Aimbot, Devotion);
+	ReadBool(Aimbot, LSTAR);
+	ReadBool(Aimbot, TripleTake);
+	ReadBool(Aimbot, Volt);
+	ReadBool(Aimbot, Nemesis);
+	//Shotgun
+	ReadBool(Aimbot, Mozambique);
+	ReadBool(Aimbot, EVA8);
+	ReadBool(Aimbot, Peacekeeper);
+	ReadBool(Aimbot, Mastiff);   
+	//Snipers
+	ReadBool(Aimbot, Longbow);
+	ReadBool(Aimbot, ChargeRifle);
+	ReadBool(Aimbot, Sentinel);    
+	//Legendary
+	ReadBool(Aimbot, Wingman); //Emotional damage!
+	ReadBool(Aimbot, Prowler);
+	ReadBool(Aimbot, Bocek);
+	ReadBool(Aimbot, Kraber);
+	ReadBool(Aimbot, Knife);
+    
+    ReadBool(RCS, RCSEnabled);
+    ReadBool(RCS, OnADS);
+    ReadFloat(RCS, PitchPower);
+    ReadFloat(RCS, YawPower);
+        //Weapons
+	//Light
+	ReadBool(RCS, P2020);
+	ReadBool(RCS, RE45);
+	ReadBool(RCS, Alternator);
+	ReadBool(RCS, R99);
+	ReadBool(RCS, R301);
+	ReadBool(RCS, Spitfire);
+	ReadBool(RCS, G7); 
+	//Heavy
+	ReadBool(RCS, Flatline);
+	ReadBool(RCS, Hemlock);
+	ReadBool(RCS, Repeater);
+	ReadBool(RCS, Rampage);
+	ReadBool(RCS, CARSMG);  
+	//Energy
+	ReadBool(RCS, Havoc);
+	ReadBool(RCS, Devotion);
+	ReadBool(RCS, LSTAR);
+	ReadBool(RCS, TripleTake);
+	ReadBool(RCS, Volt);
+	ReadBool(RCS, Nemesis);
+	//Shotgun
+	ReadBool(RCS, Mozambique);
+	ReadBool(RCS, EVA8);
+	ReadBool(RCS, Peacekeeper);
+	ReadBool(RCS, Mastiff);   
+	//Snipers
+	ReadBool(RCS, Longbow);
+	ReadBool(RCS, ChargeRifle);
+	ReadBool(RCS, Sentinel);    
+	//Legendary
+	ReadBool(RCS, Wingman); //Emotional damage!
+	ReadBool(RCS, Prowler);
+	ReadBool(RCS, Kraber);
 
     ReadBool(Sense, GlowEnabled);
     ReadBool(Sense, ItemGlow);
@@ -386,6 +607,7 @@ bool ReadConfig(const std::string &configFile) {
     ReadFloat(Sense, ESPMaxDistance);
     ReadBool(Sense, ShowNear);
     ReadBool(Sense, DrawNames);
+    ReadBool(Sense, DrawDistance);
     ReadInt(Sense, TracerPos);
     ReadInt(Sense, TracerBone);
     ReadBool(Sense, DrawTracers);
@@ -395,10 +617,43 @@ bool ReadConfig(const std::string &configFile) {
     ReadBool(Triggerbot, Enabled);
     ReadFloat(Triggerbot, Range);
     ReadBool(Triggerbot, OnADS);
-
-    ReadBool(Aimbot, RecoilControl);
-    ReadFloat(Aimbot, PitchPower);
-    ReadFloat(Aimbot, YawPower);
+        //Weapons
+	//Light
+	ReadBool(Triggerbot, P2020);
+	ReadBool(Triggerbot, RE45);
+	ReadBool(Triggerbot, Alternator);
+	ReadBool(Triggerbot, R99);
+	ReadBool(Triggerbot, R301);
+	ReadBool(Triggerbot, Spitfire);
+	ReadBool(Triggerbot, G7); 
+	//Heavy
+	ReadBool(Triggerbot, Flatline);
+	ReadBool(Triggerbot, Hemlock);
+	ReadBool(Triggerbot, Repeater);
+	ReadBool(Triggerbot, Rampage);
+	ReadBool(Triggerbot, CARSMG);  
+	//Energy
+	ReadBool(Triggerbot, Havoc);
+	ReadBool(Triggerbot, Devotion);
+	ReadBool(Triggerbot, LSTAR);
+	ReadBool(Triggerbot, TripleTake);
+	ReadBool(Triggerbot, Volt);
+	ReadBool(Triggerbot, Nemesis);
+	//Shotgun
+	ReadBool(Triggerbot, Mozambique);
+	ReadBool(Triggerbot, EVA8);
+	ReadBool(Triggerbot, Peacekeeper);
+	ReadBool(Triggerbot, Mastiff);   
+	//Snipers
+	ReadBool(Triggerbot, Longbow);
+	ReadBool(Triggerbot, ChargeRifle);
+	ReadBool(Triggerbot, Sentinel);    
+	//Legendary
+	ReadBool(Triggerbot, Wingman); //Emotional damage!
+	ReadBool(Triggerbot, Prowler);
+	ReadBool(Triggerbot, Bocek);
+	ReadBool(Triggerbot, Kraber);
+	ReadBool(Triggerbot, Knife);
     
     ReadBool(Misc, TeamGamemode);
     ReadBool(Misc, Superglide);
