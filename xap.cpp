@@ -22,6 +22,7 @@
 #include "Features/Triggerbot.hpp"
 #include "Features/Misc.hpp"
 #include "Features/Menu.hpp"
+#include "Features/RCS.hpp"
 
 #include "Overlay/Overlay.hpp"
 
@@ -47,9 +48,11 @@ std::vector<Player*>* Players = new std::vector<Player*>;
 // Features
 Sense* ESP = new Sense(Players, GameCamera, Myself);
 Aimbot* AimAssist = new Aimbot(X11Display, Myself, Players);
+RCS* Recoil = new RCS(X11Display, Myself);
 Triggerbot* Trigger = new Triggerbot(X11Display, Myself, Players);
 Misc* MiscTab = new Misc(X11Display, Map, Myself, Players);
 MenuUI* MenuTab = new MenuUI;
+Overlay* OverlayUI = new Overlay;
 
 // Booleans and Variables
 bool IsMenuOpened = true;
@@ -120,9 +123,6 @@ void LoadConfig() {
     AimAssist->MinDistance = Config::Aimbot::MinDistance;
     AimAssist->HipfireDistance = Config::Aimbot::HipfireDistance;
     AimAssist->ZoomDistance = Config::Aimbot::ZoomDistance;
-    AimAssist->RecoilEnabled = Config::Aimbot::RecoilControl;
-    AimAssist->PitchPower = Config::Aimbot::PitchPower;
-    AimAssist->YawPower = Config::Aimbot::YawPower;
     //Weapons
     AimAssist->P2020 = Config::Aimbot::P2020;
     AimAssist->RE45 = Config::Aimbot::RE45;
@@ -155,6 +155,40 @@ void LoadConfig() {
     AimAssist->Kraber = Config::Aimbot::Kraber;
     AimAssist->Knife = Config::Aimbot::Knife;
     
+    //RCS //
+    Recoil->RCSEnabled = Config::RCS::RCSEnabled;
+    Recoil->OnADS = Config::RCS::OnADS;
+    Recoil->PitchPower = Config::RCS::PitchPower;
+    Recoil->YawPower = Config::RCS::YawPower;
+    //Weapons
+    Recoil->P2020 = Config::RCS::P2020;
+    Recoil->RE45 = Config::RCS::RE45;
+    Recoil->Alternator = Config::RCS::Alternator;
+    Recoil->R99 = Config::RCS::R99;
+    Recoil->R301 = Config::RCS::R301;
+    Recoil->Spitfire = Config::RCS::Spitfire;
+    Recoil->G7 = Config::RCS::G7;
+    Recoil->Flatline = Config::RCS::Flatline;
+    Recoil->Hemlock = Config::RCS::Hemlock;
+    Recoil->Repeater = Config::RCS::Repeater;
+    Recoil->Rampage = Config::RCS::Rampage;
+    Recoil->CARSMG = Config::RCS::CARSMG;
+    Recoil->Havoc = Config::RCS::Havoc;
+    Recoil->Devotion = Config::RCS::Devotion;
+    Recoil->LSTAR = Config::RCS::LSTAR;
+    Recoil->TripleTake = Config::RCS::TripleTake;
+    Recoil->Volt = Config::RCS::Volt;
+    Recoil->Nemesis = Config::RCS::Nemesis;
+    Recoil->Mozambique = Config::RCS::Mozambique;
+    Recoil->EVA8 = Config::RCS::EVA8;
+    Recoil->Peacekeeper = Config::RCS::Peacekeeper;
+    Recoil->Mastiff = Config::RCS::Mastiff;
+    Recoil->Longbow = Config::RCS::Longbow;
+    Recoil->ChargeRifle = Config::RCS::ChargeRifle;
+    Recoil->Sentinel = Config::RCS::Sentinel;
+    Recoil->Wingman = Config::RCS::Wingman;
+    Recoil->Prowler = Config::RCS::Prowler;
+    Recoil->Kraber = Config::RCS::Kraber;
     
     // ESP //
     ESP->GlowEnabled = Config::Sense::GlowEnabled;
@@ -170,10 +204,12 @@ void LoadConfig() {
     ESP->DrawFilledFOVCircle = Config::Sense::DrawFilledFOVCircle;
     ESP->FOVThickness = Config::Sense::FOVThickness;
     ESP->GameFOV = Config::Sense::GameFOV;
+    ESP->DrawDistance = Config::Sense::DrawDistance;
     ESP->DrawBox = Config::Sense::DrawBox;
     ESP->DrawFilledBox = Config::Sense::DrawFilledBox;
     ESP->BoxThickness = Config::Sense::BoxThickness;
     ESP->DrawNames = Config::Sense::DrawNames;
+    ESP->DrawDistance = Config::Sense::DrawDistance;
     ESP->ShowNear = Config::Sense::ShowNear;
     ESP->Skeleton = Config::Sense::Skeleton;
     ESP->SkeletonThickness = Config::Sense::SkeletonThickness;
@@ -192,36 +228,36 @@ void LoadConfig() {
     Trigger->OnADS = Config::Triggerbot::OnADS;
     Trigger->TriggerbotRange = Config::Triggerbot::Range;
     //Weapons
-    Trigger->P2020 = Config::Aimbot::P2020;
-    Trigger->RE45 = Config::Aimbot::RE45;
-    Trigger->Alternator = Config::Aimbot::Alternator;
-    Trigger->R99 = Config::Aimbot::R99;
-    Trigger->R301 = Config::Aimbot::R301;
-    Trigger->Spitfire = Config::Aimbot::Spitfire;
-    Trigger->G7 = Config::Aimbot::G7;
-    Trigger->Flatline = Config::Aimbot::Flatline;
-    Trigger->Hemlock = Config::Aimbot::Hemlock;
-    Trigger->Repeater = Config::Aimbot::Repeater;
-    Trigger->Rampage = Config::Aimbot::Rampage;
-    Trigger->CARSMG = Config::Aimbot::CARSMG;
-    Trigger->Havoc = Config::Aimbot::Havoc;
-    Trigger->Devotion = Config::Aimbot::Devotion;
-    Trigger->LSTAR = Config::Aimbot::LSTAR;
-    Trigger->TripleTake = Config::Aimbot::TripleTake;
-    Trigger->Volt = Config::Aimbot::Volt;
-    Trigger->Nemesis = Config::Aimbot::Nemesis;
-    Trigger->Mozambique = Config::Aimbot::Mozambique;
-    Trigger->EVA8 = Config::Aimbot::EVA8;
-    Trigger->Peacekeeper = Config::Aimbot::Peacekeeper;
-    Trigger->Mastiff = Config::Aimbot::Mastiff;
-    Trigger->Longbow = Config::Aimbot::Longbow;
-    Trigger->ChargeRifle = Config::Aimbot::ChargeRifle;
-    Trigger->Sentinel = Config::Aimbot::Sentinel;
-    Trigger->Wingman = Config::Aimbot::Wingman;
-    Trigger->Prowler = Config::Aimbot::Prowler;
-    Trigger->Bocek = Config::Aimbot::Bocek;
-    Trigger->Kraber = Config::Aimbot::Kraber;
-    Trigger->Knife = Config::Aimbot::Knife;
+    Trigger->P2020 = Config::Triggerbot::P2020;
+    Trigger->RE45 = Config::Triggerbot::RE45;
+    Trigger->Alternator = Config::Triggerbot::Alternator;
+    Trigger->R99 = Config::Triggerbot::R99;
+    Trigger->R301 = Config::Triggerbot::R301;
+    Trigger->Spitfire = Config::Triggerbot::Spitfire;
+    Trigger->G7 = Config::Triggerbot::G7;
+    Trigger->Flatline = Config::Triggerbot::Flatline;
+    Trigger->Hemlock = Config::Triggerbot::Hemlock;
+    Trigger->Repeater = Config::Triggerbot::Repeater;
+    Trigger->Rampage = Config::Triggerbot::Rampage;
+    Trigger->CARSMG = Config::Triggerbot::CARSMG;
+    Trigger->Havoc = Config::Triggerbot::Havoc;
+    Trigger->Devotion = Config::Triggerbot::Devotion;
+    Trigger->LSTAR = Config::Triggerbot::LSTAR;
+    Trigger->TripleTake = Config::Triggerbot::TripleTake;
+    Trigger->Volt = Config::Triggerbot::Volt;
+    Trigger->Nemesis = Config::Triggerbot::Nemesis;
+    Trigger->Mozambique = Config::Triggerbot::Mozambique;
+    Trigger->EVA8 = Config::Triggerbot::EVA8;
+    Trigger->Peacekeeper = Config::Triggerbot::Peacekeeper;
+    Trigger->Mastiff = Config::Triggerbot::Mastiff;
+    Trigger->Longbow = Config::Triggerbot::Longbow;
+    Trigger->ChargeRifle = Config::Triggerbot::ChargeRifle;
+    Trigger->Sentinel = Config::Triggerbot::Sentinel;
+    Trigger->Wingman = Config::Triggerbot::Wingman;
+    Trigger->Prowler = Config::Triggerbot::Prowler;
+    Trigger->Bocek = Config::Triggerbot::Bocek;
+    Trigger->Kraber = Config::Triggerbot::Kraber;
+    Trigger->Knife = Config::Triggerbot::Knife;
     
     //Misc //
     MiscTab->TeamGamemode = Config::Misc::TeamGamemode;
@@ -233,6 +269,7 @@ void LoadConfig() {
 
 void SaveConfig() {
     if (!AimAssist->Save()) std::cout << "something went wrong trying to save Aimbot settings" << std::endl;
+    if (!Recoil->Save()) std::cout << "something went wrong trying to save RCS settings" << std::endl;
     if (!ESP->Save()) std::cout << "something went wrong trying to save ESP settings" << std::endl;
     if (!Trigger->Save()) std::cout << "something went wrong trying to save Triggerbot settings" << std::endl;
     if (!MiscTab->Save()) std::cout << "something went wrong trying to save Misc settings" << std::endl;
@@ -285,10 +322,12 @@ void RenderUI() {
     if (ImGui::BeginTabBar("Menus"), ImGuiTabBarFlags_NoCloseWithMiddleMouseButton) {
         // Draw Settings //
         AimAssist->RenderUI();
+        Recoil->RenderUI();
         Trigger->RenderUI();
         ESP->RenderUI();
         MiscTab->RenderUI();
         MenuTab->RenderUI();
+        OverlayUI->SetUIStyle();
 
         // Draw Credits //
         if (ImGui::BeginTabItem("Credits", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
@@ -343,6 +382,7 @@ bool UpdateCore() {
         // Updates //
         GameCamera->Update();
         ESP->Update();
+        Recoil->Update();
         AimAssist->Update();
         Trigger->Update();
         MiscTab->Update();
