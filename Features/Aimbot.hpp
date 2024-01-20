@@ -44,10 +44,6 @@ struct Aimbot {
     float MinDistance = 1;
     float HipfireDistance = 60;
     float ZoomDistance = 160;
-
-    bool RecoilEnabled = true;
-    float PitchPower = 3;
-    float YawPower = 3;
     
     //Weapon Toggles
     //Light
@@ -112,9 +108,10 @@ struct Aimbot {
     void RenderUI() {
     	if (Config::Menu::Layout == 0) {
 		if (ImGui::BeginTabItem("Aim", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
-		    ImGui::Checkbox("Aim - Assist", &AimbotEnabled);
+		    ImGui::Text("Aimbot");
+		    ImGui::Checkbox("Enabled", &AimbotEnabled);
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        ImGui::SetTooltip("Toggle the Aim-Assist");
+		        ImGui::SetTooltip("Toggle the Aimbot");
 		        
 		    ImGui::Separator();
 		    
@@ -202,20 +199,6 @@ struct Aimbot {
 		    
 		    ImGui::Separator();
 		    
-		    //Recoil Control
-		    ImGui::Text("Recoil Control");
-		        ImGui::Checkbox("Enabled", &RecoilEnabled);
-		        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		            ImGui::SetTooltip("Reduce the intensity of weapon's recoil.");
-		        ImGui::SliderFloat("Pitch", &PitchPower, 1, 10, "%.1f");
-		        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		            ImGui::SetTooltip("Pitch Power");
-		        ImGui::SliderFloat("Yaw", &YawPower, 1, 10, "%.1f");
-		        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		            ImGui::SetTooltip("Yaw Power");
-		    
-		    ImGui::Separator();
-		    
 		    //Smoothness Settings
 		    ImGui::Text("Smoothness");
 		    	ImGui::SliderFloat("Speed", &Speed, 1, 100, "%.0f");
@@ -269,9 +252,10 @@ struct Aimbot {
     
     	if (Config::Menu::Layout == 1) {
 		if (ImGui::BeginTabItem("Aim", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
-		    ImGui::Checkbox("Aim - Assist", &AimbotEnabled);
+		    ImGui::Text("Aimbot");
+		    ImGui::Checkbox("Enabled", &AimbotEnabled);
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        ImGui::SetTooltip("Toggle the Aim-Assist");
+		        ImGui::SetTooltip("Toggle the Aimbot");
 		        
 		    ImGui::Separator();
 		    
@@ -361,22 +345,6 @@ struct Aimbot {
 		    
 		    ImGui::Separator();
 		    
-		    //Recoil Control
-		    ImGui::Text("Recoil Control");
-		    if (ImGui::CollapsingHeader("Recoil Settings", nullptr)) {
-		        ImGui::Checkbox("Enabled", &RecoilEnabled);
-		        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		            ImGui::SetTooltip("Reduce the intensity of weapon's recoil.");
-		        ImGui::SliderFloat("Pitch", &PitchPower, 1, 10, "%.1f");
-		        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		            ImGui::SetTooltip("Pitch Power");
-		        ImGui::SliderFloat("Yaw", &YawPower, 1, 10, "%.1f");
-		        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		            ImGui::SetTooltip("Yaw Power");
-		    }
-		    
-		    ImGui::Separator();
-		    
 		    //Smoothness Settings
 		    ImGui::Text("Smoothness");
 		    if (ImGui::CollapsingHeader("Smoothness Settings", nullptr)) {
@@ -441,8 +409,6 @@ struct Aimbot {
         try {
             Config::Aimbot::Enabled = AimbotEnabled;
             Config::Aimbot::HitBox = static_cast<int>(Modules::Aimbot::Hitbox);
-            //Config::Aimbot::AimBind = static_cast<int>(Modules::Aimbot::AimBind);
-            //Config::Aimbot::ExtraBind = static_cast<int>(Modules::Aimbot::ExtraBind);
             
             Config::Aimbot::OnFire = OnFire;
             Config::Aimbot::OnADS = OnADS;
@@ -457,9 +423,6 @@ struct Aimbot {
             Config::Aimbot::MinDistance = MinDistance;
             Config::Aimbot::HipfireDistance = HipfireDistance;
             Config::Aimbot::ZoomDistance = ZoomDistance;
-            Config::Aimbot::RecoilControl = RecoilEnabled;
-            Config::Aimbot::PitchPower = PitchPower;
-            Config::Aimbot::YawPower = YawPower;
             
             //Weapons
             //Light
@@ -707,9 +670,6 @@ struct Aimbot {
         if (!GetAngle(CurrentTarget, DesiredAngles))
             return;
 
-        // Recoil Control
-        RecoilControl(DesiredAngles);
-
         // Smoothing
         SmoothAngle(DesiredAngles);
 
@@ -845,16 +805,6 @@ struct Aimbot {
             }
         }
         return 1.0;
-    }
-
-    void RecoilControl(QAngle& Angle) {
-        QAngle CurrentPunch = QAngle(Myself->PunchAngles.x, Myself->PunchAngles.y).NormalizeAngles();
-        QAngle NewPunch = { CurrentPunch.x - RCSLastPunch.x, CurrentPunch.y - RCSLastPunch.y };
-
-		Angle.x -= NewPunch.x * YawPower;
-		Angle.y -= NewPunch.y * PitchPower;
-
-        RCSLastPunch = CurrentPunch;
     }
 
     int GetBestBone(Player* Target) {
