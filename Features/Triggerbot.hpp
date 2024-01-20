@@ -180,7 +180,8 @@ struct Triggerbot {
     	}
     	if (Config::Menu::Layout == 1) {
 		if (ImGui::BeginTabItem("Triggerbot", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
-		    ImGui::Checkbox("Triggerbot", &TriggerbotEnabled);
+		    ImGui::Text("Triggerbot");
+		    ImGui::Checkbox("Enabled", &TriggerbotEnabled);
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		        ImGui::SetTooltip("Will automatically shoot the target\nWill only activate when your crosshair is at target whilst holding down Triggerbot key");
 		    
