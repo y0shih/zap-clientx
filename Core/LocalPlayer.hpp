@@ -18,6 +18,8 @@ struct LocalPlayer {
 
     Vector2D ViewAngles;
     Vector2D PunchAngles;
+    Vector2D PunchAnglesPrevious;
+    Vector2D PunchAnglesDifferent;
 
     int WeaponIndex;
     float WeaponProjectileSpeed;
@@ -47,6 +49,9 @@ struct LocalPlayer {
         CameraPosition = Memory::Read<Vector3D>(BasePointer + OFF_CAMERAORIGIN);
         ViewAngles = Memory::Read<Vector2D>(BasePointer + OFF_VIEW_ANGLES);
         PunchAngles = Memory::Read<Vector2D>(BasePointer + OFF_PUNCH_ANGLES);
+        PunchAnglesDifferent = PunchAnglesPrevious.Subtract(PunchAngles);
+        PunchAnglesPrevious = PunchAngles;
+
 
         ViewYaw = Memory::Read<float>(BasePointer + OFF_YAW);
 
