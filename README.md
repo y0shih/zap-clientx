@@ -8,6 +8,9 @@ All credits to original owners
 Instructions & help down below
 
 # Changelog:
+    20.01.24
+    No Recoil Fixed (Offset issue)
+
     19.01.24
     Aimbot:
        - Added Delay (Not sure what its called, but it affects smoothing speed? So good for legit players ig
