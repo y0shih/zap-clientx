@@ -41,9 +41,8 @@ constexpr long OFF_BLEEDOUT_STATE = 0x26a0;                   //[RecvTable.DT_Pl
 constexpr long OFF_LAST_VISIBLE_TIME = 0x194d + 0x3;          //[RecvTable.DT_BaseCombatCharacter]->m_hudInfo_visibilityTestAlwaysPasses + 0x3
 constexpr long OFF_LAST_AIMEDAT_TIME = 0x194d + 0x3 + 0x8;    //[RecvTable.DT_BaseCombatCharacter]->m_hudInfo_visibilityTestAlwaysPasses + 0x3 + 0x8
 constexpr long OFF_VIEW_ANGLES = 0x24f4 - 0x14;               //[DataMap.C_Player]-> m_ammoPoolCapacity - 0x14
-constexpr long OFF_PUNCH_ANGLES = 0x23ec;                     //[DataMap.C_Player]->m_currentFrameLocalPlayer.m_vecPunchWeapon_Angle
+constexpr long OFF_PUNCH_ANGLES = 0x23f8;                     //[DataMap.C_Player]->m_currentFrameLocalPlayer.m_vecPunchWeapon_Angle
 constexpr long OFF_YAW = 0x21fc - 0x8;                        //m_currentFramePlayer.m_ammoPoolCount - 0x8
-
 constexpr long LOCAL_ORIGIN = 0x0188;                         // [DataMap.CBaseViewModel] -> m_localOrigin
 
 // Weapon 
@@ -52,12 +51,8 @@ constexpr long OFF_WEAPON_INDEX = 0x1738;                     //[RecvTable.DT_We
 constexpr long OFF_PROJECTILESCALE = 0x04ec + 0x1978;         //projectile_gravity_scale + [WeaponSettingsMeta]base
 constexpr long OFF_PROJECTILESPEED = 0x04e4 + 0x1978;         //projectile_launch_speed + [WeaponSettingsMeta]base
 constexpr long OFF_OFFHAND_WEAPON = 0x1904;                   //m_latestNonOffhandWeapons
-constexpr long OFF_CURRENTZOOMFOV = 0x1590 + 0x1978;          //m_playerData + m_curZoomFOV
-constexpr long OFF_TARGETZOOMFOV = 0x1590 + 0x1978;           //m_playerData + m_targetZoomFOV
-constexpr long OFF_CUSTOM_SCRIPT_INT = 0x1518;		      //Item IDs
-constexpr long OFF_VIEWMODELS = 0x2dc0;
-constexpr long OFF_SIGNIFIER_NAME = 0x0440;
-
+constexpr long OFF_CURRENTZOOMFOV = 0x1590 + 0x00b8;          //m_playerData + m_curZoomFOV
+constexpr long OFF_TARGETZOOMFOV = 0x1590 + 0x00bc;           //m_playerData + m_targetZoomFOV
 
 //glow
 constexpr long OFF_GLOW_ENABLE = 0x28c;                       //[DT_HighlightSettings].?
