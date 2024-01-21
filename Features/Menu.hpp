@@ -34,7 +34,8 @@
 struct MenuUI {
 
    int MenuLayout = 1;
-   ImVec4 TextColor = ImColor(255, 255, 255, 255);
+   int MenuX = 550;
+   int MenuY = 730;
 
    void RenderUI() {
     	if (ImGui::BeginTabItem("Menu", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton)) {
@@ -42,6 +43,11 @@ struct MenuUI {
     	    const char* MenuLayoutChoice[] = {"Simple", "Compact"};
     	    ImGui::Combo("Menu Layout", &MenuLayout, MenuLayoutChoice, IM_ARRAYSIZE(MenuLayoutChoice));
 	    Config::Menu::Layout = MenuLayout;
+	    
+	    ImGui::Text("Menu Size");
+	    ImGui::SliderInt("X", &MenuX, 250, 1920);
+	    ImGui::SliderInt("Y", &MenuY, 250, 1080);
+	    
 	    ImGui::EndTabItem();
         }
     }
@@ -49,6 +55,8 @@ struct MenuUI {
     bool Save() {
         try {
             Config::Menu::Layout = MenuLayout;
+            Config::Menu::MenuX = MenuX;
+            Config::Menu::MenuY = MenuY;
             return true;
         } catch (...) {
             return false;
