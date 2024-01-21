@@ -25,6 +25,7 @@ struct LocalPlayer {
     float WeaponProjectileSpeed;
     float WeaponProjectileScale;
     bool IsHoldingGrenade;
+    long WeaponEntity;
 
     float ZoomFOV;
     float TargetZoomFOV;
@@ -58,7 +59,7 @@ struct LocalPlayer {
         if (!IsDead && !IsKnocked) {
             long WeaponHandle = Memory::Read<long>(BasePointer + OFF_WEAPON_HANDLE);
             long WeaponHandleMasked = WeaponHandle & 0xffff;
-            long WeaponEntity = Memory::Read<long>(OFF_REGION + OFF_ENTITY_LIST + (WeaponHandleMasked << 5));
+            WeaponEntity = Memory::Read<long>(OFF_REGION + OFF_ENTITY_LIST + (WeaponHandleMasked << 5));
 
             int OffHandWeaponID = Memory::Read<int>(BasePointer + OFF_OFFHAND_WEAPON);
             IsHoldingGrenade = OffHandWeaponID == -251 ? true : false;
