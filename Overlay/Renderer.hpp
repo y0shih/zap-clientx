@@ -5,6 +5,8 @@
 #include "../Utils/Color.hpp"
 #include "../Math/Vector2D.hpp"
 #include "../Math/Vector4D.hpp"
+#include "../Core/LocalPlayer.hpp"
+#include "../Core/Player.hpp"
 
 class Renderer {
 public:
@@ -63,6 +65,40 @@ public:
     	float height = head.y - foot.y;
     	float width = height / 2.0f;
     	canvas->AddRectFilled(ImVec2(foot.x - (width / 2), foot.y), ImVec2(head.x + (width/2), head.y+(height*0.2)), color, 0.0f, 0);
+    }
+
+    static void DrawHealthBar(ImDrawList* canvas, Vector2D& Foot, Vector2D& Head, int health, float thickness)
+    {
+    	int heightTest = Foot.y - Head.y;
+    	int dX = (Foot.x - Head.x);
+    	float heatlhPerc = health / 100.0f;
+    	ImVec2 bottomHP, topHP;
+    	int healthHeight = heightTest * heatlhPerc;
+    	
+    	bottomHP.y = Foot.y;
+    	bottomHP.x = Foot.x - (heightTest / 2.5f);
+    	
+    	topHP.y = (Head.y - 5) + heightTest - healthHeight;
+    	topHP.x = Foot.x - (heightTest / 2.5) - (dX * heatlhPerc);
+    	
+    	canvas->AddLine(bottomHP, topHP, ImColor(0, 255, 0), thickness);
+    }
+    
+    static void DrawShieldBar(ImDrawList* canvas, Vector2D& Foot, Vector2D& Head, int shield, const ImColor &shieldBarColor, float thickness)
+    {
+    	int heightTest = Foot.y - Head.y;
+    	int dX = (Foot.x - Head.x);
+    	float shieldPerc = shield / 100.0f;
+    	ImVec2 bottomAP, topAP;
+    	int shieldHeight = heightTest * shieldPerc;
+    	
+    	bottomAP.y = Foot.y;
+    	bottomAP.x = Foot.x - (heightTest / 2.5f);
+    	
+    	topAP.y = (Head.y - 5) + heightTest - shieldHeight;
+    	topAP.x = Foot.x - (heightTest / 2.5) - (dX * shieldPerc);
+    	
+    	canvas->AddLine(bottomAP, topAP, shieldBarColor, thickness);
     }
 
     static void DrawSeer(ImDrawList* Canvas, float x, float y, int shield, int max_shield, int health) {
