@@ -145,6 +145,9 @@ namespace Config {
     bool ShowNear = true;
     bool DrawSeer = true;
     bool DrawStatus = true;
+    bool HealthBar = true;
+    bool ShieldBar = true;
+    float BarThickness = 2.0;
     bool ShowMaxStatusValues = true;
     bool DrawDistance = false;
     bool DrawFOVCircle = true;
@@ -233,10 +236,54 @@ namespace Config {
     namespace Misc {
         bool Superglide = false;
 	bool TeamGamemode = true;
+	bool SkinChanger = false;
+	    //Weapon IDs
+	    //Light
+	    int SkinP2020 = 1;
+	    int SkinRE45 = 1;
+	    int SkinALTERNATOR = 1;
+	    int SkinR99 = 1;
+	    int SkinR301 = 1;
+	    int SkinSPITFIRE = 1;
+	    int SkinG7 = 1;
+	    
+	    //Heavy
+	    int SkinFLATLINE = 1;
+	    int SkinHEMLOCK = 1;
+	    int SkinREPEATER = 1;
+	    int SkinRAMPAGE = 1;
+	    int SkinCAR = 1;
+	    
+	    //Energy
+	    int SkinHAVOC = 1;
+	    int SkinDEVOTION = 1;
+	    int SkinLSTAR = 1;
+	    int SkinTRIPLETAKE = 1;
+	    int SkinVOLT = 1;
+	    int SkinNEMESIS = 1;
+	    
+	    //Shotgun
+	    int SkinMOZAMBIQUE = 1;
+	    int SkinEVA8 = 1;
+	    int SkinPEACEKEEPER = 1;
+	    int SkinMASTIFF = 1;
+	    
+	    //Snipers
+	    int SkinLONGBOW = 1;
+	    int SkinCHARGE_RIFLE = 1;
+	    int SkinSENTINEL = 1; 
+	    
+	    //Legendary
+	    int SkinWINGMAN = 1;
+	    int SkinPROWLER = 1;
+	    int SkinBOCEK = 1;
+	    int SkinKRABER = 1;
     };
     
     namespace Menu {
         int Layout = 1;
+        int MenuX = 550;
+        int MenuY = 730;	
     };
 };
 
@@ -419,6 +466,9 @@ void UpdateConfig() {
         WritePair(Sense, DrawDistance);
         WritePair(Sense, DrawStatus);
         WritePair(Sense, ShowMaxStatusValues);
+        WritePair(Sense, HealthBar);
+        WritePair(Sense, ShieldBar);
+        WritePair(Sense, BarThickness);
         WritePair(Sense, GlowMaxDistance);
         WritePair(Sense, ShowSpectators);
         WritePair(Sense, DrawFOVCircle);
@@ -483,10 +533,49 @@ void UpdateConfig() {
         WriteSection(Misc);
         WritePair(Misc, TeamGamemode);
         WritePair(Misc, Superglide);
+        WritePair(Misc, SkinChanger);
+        //Weapons
+	//Light
+	WritePair(Misc, SkinP2020);
+	WritePair(Misc, SkinRE45);
+	WritePair(Misc, SkinALTERNATOR);
+	WritePair(Misc, SkinR99);
+	WritePair(Misc, SkinR301);
+	WritePair(Misc, SkinSPITFIRE);
+	WritePair(Misc, SkinG7);
+	//Heavy
+	WritePair(Misc, SkinFLATLINE);
+	WritePair(Misc, SkinHEMLOCK);
+	WritePair(Misc, SkinREPEATER);
+	WritePair(Misc, SkinRAMPAGE);
+	WritePair(Misc, SkinCAR);
+	//Energy
+	WritePair(Misc, SkinHAVOC);
+	WritePair(Misc, SkinDEVOTION);
+	WritePair(Misc, SkinLSTAR);
+	WritePair(Misc, SkinTRIPLETAKE);
+	WritePair(Misc, SkinVOLT);
+	WritePair(Misc, SkinNEMESIS);
+	//Shotgun
+	WritePair(Misc, SkinMOZAMBIQUE);
+	WritePair(Misc, SkinEVA8);
+	WritePair(Misc, SkinPEACEKEEPER);
+	WritePair(Misc, SkinMASTIFF);
+	//Snipers
+	WritePair(Misc, SkinLONGBOW);
+	WritePair(Misc, SkinCHARGE_RIFLE);
+	WritePair(Misc, SkinSENTINEL);
+	//Legendary
+	WritePair(Misc, SkinWINGMAN);
+	WritePair(Misc, SkinPROWLER);
+	WritePair(Misc, SkinKRABER);
+	WritePair(Misc, SkinBOCEK);
         WriteSectionEnd();
         
         WriteSection(Menu);
         WritePair(Menu, Layout);
+        WritePair(Menu, MenuX);
+        WritePair(Menu, MenuY);
         WriteSectionEnd();
         conf.close();
     }
@@ -596,6 +685,9 @@ bool ReadConfig(const std::string &configFile) {
     ReadBool(Sense, DrawSeer);
     ReadBool(Sense, DrawStatus);
     ReadBool(Sense, ShowMaxStatusValues);
+    ReadBool(Sense, HealthBar);
+    ReadBool(Sense, ShieldBar);
+    ReadFloat(Sense, BarThickness);
     ReadFloat(Sense, GlowMaxDistance);
     ReadBool(Sense, ShowSpectators);
     ReadBool(Sense, DrawFOVCircle);
@@ -657,8 +749,48 @@ bool ReadConfig(const std::string &configFile) {
     
     ReadBool(Misc, TeamGamemode);
     ReadBool(Misc, Superglide);
+    ReadBool(Misc, SkinChanger);
+	//Weapons
+	//Light
+	ReadInt(Misc, SkinP2020);
+	ReadInt(Misc, SkinRE45);
+	ReadInt(Misc, SkinALTERNATOR);
+	ReadInt(Misc, SkinR99);
+	ReadInt(Misc, SkinR301);
+	ReadInt(Misc, SkinSPITFIRE);
+	ReadInt(Misc, SkinG7);
+	//Heavy
+	ReadInt(Misc, SkinFLATLINE);
+	ReadInt(Misc, SkinHEMLOCK);
+	ReadInt(Misc, SkinREPEATER);
+	ReadInt(Misc, SkinRAMPAGE);
+	ReadInt(Misc, SkinCAR);
+	//Energy
+	ReadInt(Misc, SkinHAVOC);
+	ReadInt(Misc, SkinDEVOTION);
+	ReadInt(Misc, SkinLSTAR);
+	ReadInt(Misc, SkinTRIPLETAKE);
+	ReadInt(Misc, SkinVOLT);
+	ReadInt(Misc, SkinNEMESIS);
+	//Shotgun
+	ReadInt(Misc, SkinMOZAMBIQUE);
+	ReadInt(Misc, SkinEVA8);
+	ReadInt(Misc, SkinPEACEKEEPER);
+	ReadInt(Misc, SkinMASTIFF);
+	//Snipers
+	ReadInt(Misc, SkinLONGBOW);
+	ReadInt(Misc, SkinCHARGE_RIFLE);
+	ReadInt(Misc, SkinSENTINEL);
+	//Legendary
+	ReadInt(Misc, SkinWINGMAN);
+	ReadInt(Misc, SkinPROWLER);
+	ReadInt(Misc, SkinKRABER);
+	ReadInt(Misc, SkinBOCEK);
+    
 
     ReadInt(Menu, Layout);
+    ReadInt(Menu, MenuX);
+    ReadInt(Menu, MenuY);
 
     UpdateConfig();
     return true;
