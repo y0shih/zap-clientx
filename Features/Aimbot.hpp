@@ -547,6 +547,8 @@ struct Aimbot {
 
 		if (Myself->IsHoldingGrenade) { ReleaseTarget(); return; }
 		
+		if (AimList.find(Myself->WeaponIndex) == AimList.end()) return;
+		
 		if (!Myself->IsInAttack) {
 			if (!Myself->IsZooming) {
 			ReleaseTarget(); 
@@ -595,6 +597,8 @@ struct Aimbot {
 		if (Myself->IsZooming)
 		    FinalDistance = ZoomDistance;
 		else FinalDistance = HipfireDistance;
+		
+		if (AimList.find(Myself->WeaponIndex) == AimList.end()) return;
 		
 		if (!Myself->IsInAttack) { ReleaseTarget(); return; }
 
