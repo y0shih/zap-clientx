@@ -8,7 +8,7 @@ All credits to original owners
 Instructions & help down below
 
 # Changelog:
-    21.01.24 #2
+    21.01.24
     Aimbot
        - Fixed Weapon selection
     Sense
