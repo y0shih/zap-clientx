@@ -7,7 +7,6 @@ constexpr long OFF_LOCAL_PLAYER = 0x21615d8;                  //[Miscellaneous]-
 constexpr long OFF_ENTITY_LIST = 0x1db2ed8;                   //[Miscellaneous]->cl_entitylist
 constexpr long OFF_NAME_LIST = 0xc5ea050;                     //[Miscellaneous]->NameList
 constexpr long OFF_NAME_INDEX = 0x38;                           //nameIndex (same)
-constexpr long OFF_TIME_BASE = 0x2048;				//[DataMap.C_Player]->m_currentFramePlayer.timeBase=0x2048
 
 // HUD
 constexpr long OFF_VIEWRENDER = 0x73cc460;                    //[Miscellaneous]->ViewRenderer
@@ -53,10 +52,14 @@ constexpr long OFF_PROJECTILESPEED = 0x04e4 + 0x1978;         //projectile_launc
 constexpr long OFF_OFFHAND_WEAPON = 0x1904;                   //m_latestNonOffhandWeapons
 constexpr long OFF_CURRENTZOOMFOV = 0x1590 + 0x00b8;          //m_playerData + m_curZoomFOV
 constexpr long OFF_TARGETZOOMFOV = 0x1590 + 0x00bc;           //m_playerData + m_targetZoomFOV
+constexpr long OFF_SKIN = 0x0d18;                             //m_nSkin
+constexpr long OFF_TIME_BASE = 0x2048;                     //m_currentFramePlayer.timeBase
+constexpr long OFF_WEAPON_DISCARDED = 0x1559;                 //[RecvTable.DT_WeaponX]->m_discarded
 
 //glow
-constexpr long OFF_GLOW_ENABLE = 0x28c;                       //[DT_HighlightSettings].?
-constexpr long OFF_GLOW_THROUGH_WALL = 0x26c;                 //[DT_HighlightSettings].?
+constexpr long OFF_HIGHLIGHT_TYPE_SIZE = 0x34;
+constexpr long OFF_GLOW_ENABLE = 0x26c;                       //[DT_HighlightSettings].?
+constexpr long OFF_GLOW_THROUGH_WALL = 0x28c;                 //[DT_HighlightSettings].?
 constexpr long OFF_GLOW_FIX = 0x268;
-constexpr long OFF_GLOW_HIGHLIGHT_ID = 0x28c;                 //[DT_HighlightSettings].m_highlightServerActiveStates
+constexpr long OFF_GLOW_HIGHLIGHT_ID = 0x28C;                 //[DT_HighlightSettings].m_highlightServerActiveStates
 constexpr long OFF_GLOW_HIGHLIGHTS = 0xB93E050;
