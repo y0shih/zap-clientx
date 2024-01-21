@@ -48,6 +48,9 @@ struct Sense {
     float BoxThickness = 1.0;
     bool Skeleton = true;
     float SkeletonThickness = 1.0;
+    bool HealthBar = true;
+    bool ShieldBar = true;
+    float BarThickness = 2.0;
     float ESPMaxDistance = 200;
     bool ShowNear = true;
     bool DrawSeer = true;
@@ -221,6 +224,19 @@ struct Sense {
 		    ImGui::Checkbox("Show Max Values", &ShowMaxStatusValues);
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		    	ImGui::SetTooltip("Adds their max health and armor at the end.");
+		    	
+		    ImGui::Checkbox("Draw Health Bar", &HealthBar);
+		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		    	ImGui::SetTooltip("Draw enemies current health as a bar");
+		    ImGui::SameLine();
+		    ImGui::Checkbox("Draw Shield Bar", &ShieldBar);
+		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		    	ImGui::SetTooltip("Draw enemies current shield as a bar");
+		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		    	ImGui::SetTooltip("Draw enemies current shield as a bar");
+		    ImGui::SliderFloat("Bar Thickness", &BarThickness, 1, 10, "%.0f");
+		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		    	ImGui::SetTooltip("Thickness of the health/shield bar");
 		    
 		    ImGui::Checkbox("Draw Names", &DrawNames);
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -410,6 +426,17 @@ struct Sense {
 		    	ImGui::Checkbox("Show Max Values", &ShowMaxStatusValues);
 		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		    		ImGui::SetTooltip("Adds their max health and armor at the end.");
+		    		
+		    	ImGui::Checkbox("Draw Health Bar", &HealthBar);
+		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		    		ImGui::SetTooltip("Draw enemies current health as a bar");
+		    	ImGui::SameLine();
+		    	ImGui::Checkbox("Draw Shield Bar", &ShieldBar);
+		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		    		ImGui::SetTooltip("Draw enemies current shield as a bar");
+			ImGui::SliderFloat("Bar Thickness", &BarThickness, 1, 10, "%.0f");
+		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		    		ImGui::SetTooltip("Thickness of the health/shield bar");
 		    
 		        ImGui::Checkbox("Draw Names", &DrawNames);
 		        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -896,15 +923,111 @@ struct Sense {
 			}
 			
 			//Render Text
-			if (DrawStatus && !ShowMaxStatusValues && p->IsHostile) {
-				Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), healthText, ImColor(0, 255, 0), true, true, false);
-				Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), shieldText, ShieldColor, true, true, false);
+			if (ShowTeam) {
+				if (DrawStatus && !ShowMaxStatusValues) {
+					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), healthText, ImColor(0, 255, 0), true, true, false);
+					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), shieldText, ShieldColor, true, true, false);
+				}
+				if (DrawStatus && ShowMaxStatusValues) {
+					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), combinedHealthText, ImColor(0, 255, 0), true, true, false);
+					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), combinedShieldText, ShieldColor, true, true, false);
+				}
 			}
-			if (DrawStatus && ShowMaxStatusValues && p->IsHostile) {
-				Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), combinedHealthText, ImColor(0, 255, 0), true, true, false);
-				Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), combinedShieldText, ShieldColor, true, true, false);
+			if (!ShowTeam) {
+				if (DrawStatus && !ShowMaxStatusValues && p->IsHostile) {
+					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), healthText, ImColor(0, 255, 0), true, true, false);
+					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), shieldText, ShieldColor, true, true, false);
+				}
+				if (DrawStatus && ShowMaxStatusValues && p->IsHostile) {
+					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), combinedHealthText, ImColor(0, 255, 0), true, true, false);
+					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), combinedShieldText, ShieldColor, true, true, false);
+				}
 			}
 			
+			//Draw Health Bar
+			if (ShowTeam) {
+				if (HealthBar) {
+					Vector2D Head, Foot;
+					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
+					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
+					
+					int health = p->Health;
+					
+					Renderer::DrawHealthBar(Canvas, Foot, Head, health, 2);
+				}
+			}
+			if (!ShowTeam) {
+				if (HealthBar && p->IsHostile) {
+					Vector2D Head, Foot;
+					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
+					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
+					
+					int health = p->Health;
+					
+					Renderer::DrawHealthBar(Canvas, Foot, Head, health, 2);
+				}
+			}
+			
+			//Draw Shield Bar
+			if (ShowTeam) {
+				if (ShieldBar) {
+					Vector2D Head, Foot;
+					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
+					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
+					
+					int shield = p->Shield;
+					
+					ImColor shieldBarColor;
+					if (p->MaxShield == 50) { //white
+						shieldBarColor = ImColor(247, 247, 247);
+					}
+					else if (p->MaxShield == 75) { //blue
+						shieldBarColor = ImColor(39, 178, 255);
+					}
+					else if (p->MaxShield == 100) { //purple
+						shieldBarColor = ImColor(206, 59, 255);
+					}
+					else if (p->MaxShield == 125) { //red
+						shieldBarColor = ImColor(219, 2, 2);
+					}
+					else {
+						shieldBarColor = ImColor(247, 247, 247);
+					}
+					
+					
+					Renderer::DrawShieldBar(Canvas, Foot, Head, shield, shieldBarColor, BarThickness);
+				}
+			}
+			
+			if (!ShowTeam) {
+				if (ShieldBar && p->IsHostile) {
+					Vector2D Head, Foot;
+					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
+					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
+					
+					int shield = p->Shield;
+					
+					ImColor shieldBarColor;
+					if (p->MaxShield == 50) { //white
+						shieldBarColor = ImColor(247, 247, 247);
+					}
+					else if (p->MaxShield == 75) { //blue
+						shieldBarColor = ImColor(39, 178, 255);
+					}
+					else if (p->MaxShield == 100) { //purple
+						shieldBarColor = ImColor(206, 59, 255);
+					}
+					else if (p->MaxShield == 125) { //red
+						shieldBarColor = ImColor(219, 2, 2);
+					}
+					else {
+						shieldBarColor = ImColor(247, 247, 247);
+					}
+					
+					
+					Renderer::DrawShieldBar(Canvas, Foot, Head, shield, shieldBarColor, BarThickness);
+				}
+			}
 				
 			//Draw Skeleton
 			if (Skeleton) {
@@ -1242,9 +1365,110 @@ struct Sense {
 			}
 			
 			//Render Text
-			if (DrawStatus && !ShowMaxStatusValues && p->IsHostile && p->IsVisible) {
-				Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), healthText, ImColor(0, 255, 0), true, true, false);
-				Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), shieldText, ShieldColor, true, true, false);
+			if (ShowTeam) {
+				if (DrawStatus && !ShowMaxStatusValues && p->IsVisible) {
+					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), healthText, ImColor(0, 255, 0), true, true, false);
+					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), shieldText, ShieldColor, true, true, false);
+				}
+				if (DrawStatus && ShowMaxStatusValues && p->IsVisible) {
+					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), combinedHealthText, ImColor(0, 255, 0), true, true, false);
+					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), combinedShieldText, ShieldColor, true, true, false);
+				}
+			}
+			if (!ShowTeam) {
+				if (DrawStatus && !ShowMaxStatusValues && p->IsHostile && p->IsVisible) {
+					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), healthText, ImColor(0, 255, 0), true, true, false);
+					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), shieldText, ShieldColor, true, true, false);
+				}
+				if (DrawStatus && ShowMaxStatusValues && p->IsHostile && p->IsVisible) {
+					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), combinedHealthText, ImColor(0, 255, 0), true, true, false);
+					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), combinedShieldText, ShieldColor, true, true, false);
+				}
+			}
+			
+			//Draw Health Bar
+			if (ShowTeam) {
+				if (HealthBar && p->IsVisible) {
+					Vector2D Head, Foot;
+					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
+					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
+					
+					int health = p->Health;
+					
+					Renderer::DrawHealthBar(Canvas, Foot, Head, health, 2);
+				}
+			}
+			if (!ShowTeam) {
+				if (HealthBar && p->IsHostile && p->IsVisible) {
+					Vector2D Head, Foot;
+					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
+					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
+					
+					int health = p->Health;
+					
+					Renderer::DrawHealthBar(Canvas, Foot, Head, health, 2);
+				}
+			}
+			
+			//Draw Shield Bar
+			if (ShowTeam) {
+				if (ShieldBar && p->IsVisible) {
+					Vector2D Head, Foot;
+					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
+					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
+					
+					int shield = p->Shield;
+					
+					ImColor shieldBarColor;
+					if (p->MaxShield == 50) { //white
+						shieldBarColor = ImColor(247, 247, 247);
+					}
+					else if (p->MaxShield == 75) { //blue
+						shieldBarColor = ImColor(39, 178, 255);
+					}
+					else if (p->MaxShield == 100) { //purple
+						shieldBarColor = ImColor(206, 59, 255);
+					}
+					else if (p->MaxShield == 125) { //red
+						shieldBarColor = ImColor(219, 2, 2);
+					}
+					else {
+						shieldBarColor = ImColor(247, 247, 247);
+					}
+					
+					
+					Renderer::DrawShieldBar(Canvas, Foot, Head, shield, shieldBarColor, BarThickness);
+				}
+			}
+			
+			if (!ShowTeam) {
+				if (ShieldBar && p->IsHostile && p->IsVisible) {
+					Vector2D Head, Foot;
+					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
+					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
+					
+					int shield = p->Shield;
+					
+					ImColor shieldBarColor;
+					if (p->MaxShield == 50) { //white
+						shieldBarColor = ImColor(247, 247, 247);
+					}
+					else if (p->MaxShield == 75) { //blue
+						shieldBarColor = ImColor(39, 178, 255);
+					}
+					else if (p->MaxShield == 100) { //purple
+						shieldBarColor = ImColor(206, 59, 255);
+					}
+					else if (p->MaxShield == 125) { //red
+						shieldBarColor = ImColor(219, 2, 2);
+					}
+					else {
+						shieldBarColor = ImColor(247, 247, 247);
+					}
+					
+					
+					Renderer::DrawShieldBar(Canvas, Foot, Head, shield, shieldBarColor, BarThickness);
+				}
 			}
 				
 			//Draw Skeleton
@@ -1374,7 +1598,7 @@ struct Sense {
 
     void Update() {
         const long HighlightSettingsPointer = Memory::Read<long>(OFF_REGION + OFF_GLOW_HIGHLIGHTS);
-        const long HighlightSize = 0x34;
+        const long HighlightSize = OFF_HIGHLIGHT_TYPE_SIZE;
 
         // Item Glow //
         if (ItemGlow) {
