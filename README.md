@@ -8,6 +8,19 @@ All credits to original owners
 Instructions & help down below
 
 # Changelog:
+    21.01.24 #2
+    Aimbot
+       - Fixed Weapon selection
+    Sense
+       - Added Health & Shield Bar (Rushed, will make better sometime)
+    Misc
+       - Added SkinChanger (Id's are capped at 11 until I find the max id for each weapon (Going over it can crash)
+    Menu
+       - Can now change the size of the menu
+    Might have missed something
+    Havent fully tested this + May still crash
+
+
     20.01.24 #2
     RCS - Recoil Control:
        - Fixed Recoil Control
