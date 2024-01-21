@@ -198,6 +198,9 @@ void LoadConfig() {
     ESP->DrawSeer = Config::Sense::DrawSeer;
     ESP->DrawStatus = Config::Sense::DrawStatus;
     ESP->ShowMaxStatusValues = Config::Sense::ShowMaxStatusValues;
+    ESP->HealthBar = Config::Sense::DrawStatus;
+    ESP->ShieldBar = Config::Sense::DrawStatus;
+    ESP->BarThickness = Config::Sense::BarThickness;
     ESP->ESPMaxDistance = Config::Sense::ESPMaxDistance;
     ESP->ShowSpectators = Config::Sense::ShowSpectators;
     ESP->DrawFOVCircle = Config::Sense::DrawFOVCircle;
@@ -227,7 +230,7 @@ void LoadConfig() {
     Trigger->TriggerbotEnabled = Config::Triggerbot::Enabled;
     Trigger->OnADS = Config::Triggerbot::OnADS;
     Trigger->TriggerbotRange = Config::Triggerbot::Range;
-    //Weapons
+    // Weapons //
     Trigger->P2020 = Config::Triggerbot::P2020;
     Trigger->RE45 = Config::Triggerbot::RE45;
     Trigger->Alternator = Config::Triggerbot::Alternator;
@@ -259,12 +262,45 @@ void LoadConfig() {
     Trigger->Kraber = Config::Triggerbot::Kraber;
     Trigger->Knife = Config::Triggerbot::Knife;
     
-    //Misc //
+    // Misc //
     MiscTab->TeamGamemode = Config::Misc::TeamGamemode;
     MiscTab->Superglide = Config::Misc::Superglide;
+    MiscTab->SkinChanger = Config::Misc::SkinChanger;
+    // Weapons //
+    MiscTab->SkinP2020 = Config::Misc::SkinP2020;
+    MiscTab->SkinRE45 = Config::Misc::SkinRE45;
+    MiscTab->SkinALTERNATOR = Config::Misc::SkinALTERNATOR;
+    MiscTab->SkinR99 = Config::Misc::SkinR99;
+    MiscTab->SkinR301 = Config::Misc::SkinR301;
+    MiscTab->SkinSPITFIRE = Config::Misc::SkinSPITFIRE;
+    MiscTab->SkinG7 = Config::Misc::SkinG7;
+    MiscTab->SkinFLATLINE = Config::Misc::SkinFLATLINE;
+    MiscTab->SkinHEMLOCK = Config::Misc::SkinHEMLOCK;
+    MiscTab->SkinREPEATER = Config::Misc::SkinREPEATER;
+    MiscTab->SkinRAMPAGE = Config::Misc::SkinRAMPAGE;
+    MiscTab->SkinCAR = Config::Misc::SkinCAR;
+    MiscTab->SkinHAVOC = Config::Misc::SkinHAVOC;
+    MiscTab->SkinDEVOTION = Config::Misc::SkinDEVOTION;
+    MiscTab->SkinLSTAR = Config::Misc::SkinLSTAR;
+    MiscTab->SkinTRIPLETAKE = Config::Misc::SkinTRIPLETAKE;
+    MiscTab->SkinVOLT = Config::Misc::SkinVOLT;
+    MiscTab->SkinNEMESIS = Config::Misc::SkinNEMESIS;
+    MiscTab->SkinMOZAMBIQUE = Config::Misc::SkinMOZAMBIQUE;
+    MiscTab->SkinEVA8 = Config::Misc::SkinEVA8;
+    MiscTab->SkinPEACEKEEPER = Config::Misc::SkinPEACEKEEPER;
+    MiscTab->SkinMASTIFF = Config::Misc::SkinMASTIFF;
+    MiscTab->SkinLONGBOW = Config::Misc::SkinLONGBOW;
+    MiscTab->SkinCHARGE_RIFLE = Config::Misc::SkinCHARGE_RIFLE;
+    MiscTab->SkinSENTINEL = Config::Misc::SkinSENTINEL;
+    MiscTab->SkinWINGMAN = Config::Misc::SkinWINGMAN;
+    MiscTab->SkinPROWLER = Config::Misc::SkinPROWLER;
+    MiscTab->SkinBOCEK = Config::Misc::SkinBOCEK;
+    MiscTab->SkinKRABER = Config::Misc::SkinKRABER;
     
-    //Themes //
+    // Menu //
     MenuTab->MenuLayout = Config::Menu::Layout;
+    MenuTab->MenuX = Config::Menu::MenuX;
+    MenuTab->MenuY = Config::Menu::MenuY;
 }
 
 void SaveConfig() {
@@ -301,15 +337,15 @@ void RenderUI() {
     if (!IsMenuOpened) return;
 
     // Menu
-    ImGui::SetNextWindowSizeConstraints(ImVec2(440, 490), ImVec2(440, 490));
-    ImGui::SetNextWindowSize(ImVec2(440, 490), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSizeConstraints(ImVec2(MenuTab->MenuX, MenuTab->MenuY), ImVec2(MenuTab->MenuX, MenuTab->MenuY));
+    ImGui::SetNextWindowSize(ImVec2(MenuTab->MenuX, MenuTab->MenuY), ImGuiCond_FirstUseEver);
     ImGui::Begin("zap-client", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
     
     ProcessingTimeColor = OverlayWindow.ProcessingTime > 20 ? ProcessingTimeColor = ImVec4(1, 0.343, 0.475, 1) : ProcessingTimeColor = ImVec4(0.4, 1, 0.343, 1);
     ImGui::TextColored(ProcessingTimeColor, "Processing Time: %02dms", OverlayWindow.ProcessingTime);
     ImGui::SameLine();
 
-    if (OverlayWindow.AlignedButton("Save Config")) {
+    /*if (OverlayWindow.AlignedButton("Save Config")) {
         SaveConfig();
         std::cout << "config saved" << std::endl;
     }    
@@ -317,7 +353,7 @@ void RenderUI() {
     if (OverlayWindow.AlignedButton("Load Config")) {
         LoadConfig();
         std::cout << "config loaded" << std::endl;
-    }   
+    }*/   
 
     if (ImGui::BeginTabBar("Menus"), ImGuiTabBarFlags_NoCloseWithMiddleMouseButton) {
         // Draw Settings //
@@ -328,6 +364,21 @@ void RenderUI() {
         MiscTab->RenderUI();
         MenuTab->RenderUI();
         OverlayUI->SetUIStyle();
+        
+    	if (ImGui::BeginTabItem("Config", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
+    		ImGui::Text("Config Options");
+    		if (ImGui::Button("Save Config")) {
+    			SaveConfig();
+        		std::cout << "Config Saved!" << std::endl;
+    		}
+    		ImGui::SameLine();
+    		if (ImGui::Button("Load Config")) {
+    			LoadConfig();
+        		std::cout << "Config Loaded!" << std::endl;
+        	}
+        	ImGui::EndTabItem();
+        }
+    
 
         // Draw Credits //
         if (ImGui::BeginTabItem("Credits", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
