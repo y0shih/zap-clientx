@@ -631,10 +631,10 @@ struct Aimbot {
 			    	
 			    	if (Bocek) {
 			    			ImGui::Text("Bocek Compound Bow");
-					    	ImGui::SliderFloat("Speed##AdvancedKraber", &BocekSpeed, 1, 100, "%.0f");
+					    	ImGui::SliderFloat("Speed##AdvancedBocek", &BocekSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Bocek Compound Bow\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedKraber", &BocekSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Smoothing##AdvancedBocek", &BocekSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Bocek Compound Bow\nHigher = Smoother");
 			    	}
@@ -651,10 +651,10 @@ struct Aimbot {
 			    	
 			    	if (Knife) {
 			    			ImGui::Text("Throwing Knife");
-					    	ImGui::SliderFloat("Speed##AdvancedKraber", &ThrowingKnifeSpeed, 1, 100, "%.0f");
+					    	ImGui::SliderFloat("Speed##AdvancedKnife", &ThrowingKnifeSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Throwing Knife\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedKraber", &ThrowingKnifeSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Smoothing##AdvancedKnife", &ThrowingKnifeSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Throwing Knife\nHigher = Smoother");
 			    	}
