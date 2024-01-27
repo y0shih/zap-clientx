@@ -11,7 +11,7 @@
 class Renderer {
 public:
     static void DrawText(ImDrawList* canvas, const Vector2D& pos, const char* text, ImColor color, bool outline, bool centered, bool adjustHeight) {
-		const auto textColor = color;
+	const auto textColor = color;
         const auto outlineColor = ImColor(0, 0, 0);
 
         const auto textSize = ImGui::CalcTextSize(text);
