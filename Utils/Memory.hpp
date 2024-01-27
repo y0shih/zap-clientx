@@ -5,6 +5,7 @@
 #include <filesystem>
 #include <sys/uio.h>
 #include <math.h>
+#include "Config.hpp"
 namespace fs = std::filesystem;
 
 namespace Memory {
@@ -89,7 +90,7 @@ namespace Memory {
     T Read(long Address) {
         T buffer;
         bool success = Read(Address, &buffer, sizeof(T));
-        if (!success)
+        if (!success && Config::Home::ErrorLogging)
         {
             PID = 0;
             throw std::invalid_argument(
@@ -101,7 +102,7 @@ namespace Memory {
     template <class T>
     void Write(long Address, T Value) {
         bool success = Write(Address, &Value, sizeof(T));
-        if (!success) {
+        if (!success && Config::Home::ErrorLogging) {
             PID = 0;
             throw std::invalid_argument(
                 "Failed to set " + std::to_string(sizeof(T)) + " at: " + std::to_string(Address));
@@ -112,15 +113,23 @@ namespace Memory {
         int size = sizeof(std::string);
         char buffer[size] = {0};
         bool success = Read(address, &buffer, size);
-        if (!success)
+        if (!success && Config::Home::ErrorLogging)
             throw new std::invalid_argument("Failed to read string at address: " + address);
+        return std::string(buffer);
+    }
+    
+    std::string ReadLegend(long address, int size) {
+        char buffer[size] = { 0 };
+        bool success = Read(address, &buffer, size);
+        if (!success && Config::Home::ErrorLogging)
+            throw std::invalid_argument("Failed to read Legend String at address: " + address);
         return std::string(buffer);
     }
 
     std::string ReadPlayerName(long address, int size) {
         char buffer[size] = { 0 };
         bool success = Read(address, &buffer, size);
-        if (!success)
+        if (!success && Config::Home::ErrorLogging)
             throw new std::invalid_argument("Failed to read Player Name at address: " + address);
         return std::string(buffer);
     }
