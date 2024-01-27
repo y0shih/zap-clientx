@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.9)
 
-project(zapclient VERSION 0.1)
+project(zapclient VERSION 0.2)
 
 # Set C++ standard to C++23
 set(CMAKE_CXX_STANDARD 23)
