@@ -8,6 +8,12 @@
 #include "../Math/Vector2D.hpp"
 #include "../Math/Vector3D.hpp"
 #include "../Math/Matrix.hpp"
+#include "../Overlay/Overlay.hpp"
+#include "GlowMode.hpp"
+
+#include "../imgui/imgui.h"
+#include "../imgui/imgui_impl_glfw.h"
+#include "../imgui/imgui_impl_opengl3.h"
 
 struct Player {
     LocalPlayer* Myself;
@@ -24,8 +30,6 @@ struct Player {
 
     bool IsDead;
     bool IsKnocked;
-    
-    int GetWeaponID;
 
     Vector3D LocalOrigin;
     Vector3D AbsoluteVelocity;
@@ -48,6 +52,10 @@ struct Player {
     bool IsHostile;
     bool nonBR;
     bool friendly;
+
+    int WeaponIndex;
+    bool IsHoldingGrenade;
+    long WeaponEntity;
 
     float DistanceToLocalPlayer;
     float Distance2DToLocalPlayer;
@@ -92,16 +100,27 @@ struct Player {
         Shield = Memory::Read<int>(BasePointer + OFF_SHIELD);
         MaxShield = Memory::Read<int>(BasePointer + OFF_MAXSHIELD);
         
-        if (Myself->IsValid() && Config::Misc::TeamGamemode) {
+        if (!IsDead && !IsKnocked && IsHostile) {
+            long WeaponHandle = Memory::Read<long>(BasePointer + OFF_WEAPON_HANDLE);
+            long WeaponHandleMasked = WeaponHandle & 0xffff;
+            WeaponEntity = Memory::Read<long>(OFF_REGION + OFF_ENTITY_LIST + (WeaponHandleMasked << 5));
+
+            int OffHandWeaponID = Memory::Read<int>(BasePointer + OFF_OFFHAND_WEAPON);
+            IsHoldingGrenade = OffHandWeaponID == -251 ? true : false;
+            
+            WeaponIndex = Memory::Read<int>(WeaponEntity + OFF_WEAPON_INDEX);
+        }
+        
+        if (Myself->IsValid() && Config::Home::TeamGamemode) {
         	IsLocal = Myself->BasePointer == BasePointer;
                 IsAlly = Myself->Team == Team;
                 IsHostile = !IsAlly;
                 DistanceToLocalPlayer = Myself->LocalOrigin.Distance(LocalOrigin);
                 Distance2DToLocalPlayer = Myself->LocalOrigin.To2D().Distance(LocalOrigin.To2D());
         }
-        else if (Myself->IsValid() && !Config::Misc::TeamGamemode) {
+        else if (Myself->IsValid() && !Config::Home::TeamGamemode) {
                 IsLocal = Myself->BasePointer == BasePointer;
-                nonBR = !Config::Misc::TeamGamemode;
+                nonBR = !Config::Home::TeamGamemode;
                 friendly = (nonBR)
                     ? (Myself->Team % 2 == 0 && Team % 2 == 0) || (Myself->Team % 2 != 0 && Team % 2 != 0)
                     : Myself->Team == Team;
@@ -119,6 +138,43 @@ struct Player {
         uintptr_t NameOffset = Memory::Read<uintptr_t>(OFF_REGION + OFF_NAME_LIST + ((NameIndex - 1) << 4 ));
         std::string PlayerName = Memory::ReadPlayerName(NameOffset, 64);
         return PlayerName;
+    }
+    
+    std::string getPlayerModelName(){
+        uintptr_t modelOffset = Memory::Read<uintptr_t>(BasePointer + OFF_MODELNAME);
+        std::string modelName = Memory::ReadLegend(modelOffset, 1024);
+        // Check for different player names
+        if (modelName.find("dummie") != std::string::npos) modelName = "Dummie";
+        else if (modelName.find("ash") != std::string::npos) modelName = "Ash";
+        else if (modelName.find("ballistic") != std::string::npos) modelName = "Ballistic";
+        else if (modelName.find("bangalore") != std::string::npos) modelName = "Bangalore";
+        else if (modelName.find("bloodhound") != std::string::npos) modelName = "Bloodhound";
+        else if (modelName.find("catalyst") != std::string::npos) modelName = "Catalyst";
+        else if (modelName.find("caustic") != std::string::npos) modelName = "Caustic";
+        else if (modelName.find("conduit") != std::string::npos) modelName = "Conduit";
+        else if (modelName.find("crypto") != std::string::npos) modelName = "Crypto";
+        else if (modelName.find("fuse") != std::string::npos) modelName = "Fuse";
+        else if (modelName.find("gibraltar") != std::string::npos) modelName = "Gibraltar";
+        else if (modelName.find("horizon") != std::string::npos) modelName = "Horizon";
+        else if (modelName.find("nova") != std::string::npos) modelName = "Horizon";
+        else if (modelName.find("holo") != std::string::npos) modelName = "Mirage";
+        else if (modelName.find("mirage") != std::string::npos) modelName = "Mirage";
+        else if (modelName.find("lifeline") != std::string::npos) modelName = "Lifeline";
+        else if (modelName.find("loba") != std::string::npos) modelName = "Loba";
+        else if (modelName.find("madmaggie") != std::string::npos) modelName = "Mad Maggie";
+        else if (modelName.find("newcastle") != std::string::npos) modelName = "Newcastle";
+        else if (modelName.find("octane") != std::string::npos) modelName = "Octane";
+        else if (modelName.find("pathfinder") != std::string::npos) modelName = "Pathfinder";
+        else if (modelName.find("rampart") != std::string::npos) modelName = "Rampart";
+        else if (modelName.find("revenant") != std::string::npos) modelName = "Revenant";
+        else if (modelName.find("seer") != std::string::npos) modelName = "Seer";
+        else if (modelName.find("stim") != std::string::npos) modelName = "Octane";
+        else if (modelName.find("valkyrie") != std::string::npos) modelName = "Valkyrie";
+        else if (modelName.find("vantage") != std::string::npos) modelName = "Vantage";
+        else if (modelName.find("wattson") != std::string::npos) modelName = "Wattson";
+        else if (modelName.find("wraith") != std::string::npos) modelName = "Wraith";
+        
+        return modelName;
     }
     
     float GetViewYaw() {
