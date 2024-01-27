@@ -12,6 +12,7 @@
 #include "../Utils/Conversion.hpp"
 #include "../Utils/Config.hpp"
 #include "../Utils/Weapons.hpp"
+#include "../Core/Level.hpp"
 
 // UI //
 #include "../imgui/imgui.h"
@@ -19,12 +20,9 @@
 #include "../imgui/imgui_impl_opengl3.h"
 
 struct Triggerbot {
-    //Select Weapon - https://github.com/GitDev28/xap-client-CG/blob/master/Features/Triggerbot.hpp
-
     //Toggles
     bool TriggerbotEnabled = true;
-    bool AlwaysOn = false;
-    bool OnADS = false;
+    bool OnADS = true;
     float TriggerbotRange = 200;
     
     //Weapon Toggles
@@ -76,109 +74,17 @@ struct Triggerbot {
     XDisplay* X11Display;
     LocalPlayer* Myself;
     std::vector<Player*>* Players;
+    Level* Map;
 
-    Triggerbot(XDisplay* X11Display, LocalPlayer* Myself, std::vector<Player*>* GamePlayers) {
+    Triggerbot(XDisplay* X11Display, Level* Map, LocalPlayer* Myself, std::vector<Player*>* GamePlayers) {
         this->X11Display = X11Display;
+        this->Map = Map;
         this->Myself = Myself;
         this->Players = GamePlayers;
     }
 
     void RenderUI() {
-    	if (Config::Menu::Layout == 0) {
-		if (ImGui::BeginTabItem("Triggerbot", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
-		    ImGui::Checkbox("Triggerbot", &TriggerbotEnabled);
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        ImGui::SetTooltip("Will automatically shoot the target\nWill only activate when your crosshair is at target whilst holding down Triggerbot key");
-		    
-		    ImGui::Separator();  
-		    
-		    ImGui::Text("Triggerbot Conditions");
-		    ImGui::Checkbox("On ADS Only?", &OnADS);
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        ImGui::SetTooltip("Fire only when ADS");
-		        
-		    ImGui::Separator();
-		    
-		    ImGui::Text("Triggerbot Settings");
-		    ImGui::SliderFloat("Triggerbot Range", &TriggerbotRange, 0, 1000, "%.0f");
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        ImGui::SetTooltip("Triggerbot's activation range.");
-		        
-		    ImGui::Separator();    
-		        
-		    //Select Weapons
-		    ImGui::Text("Weapons");
-		    ImGui::Text("Light Weapons");
-		            ImGui::Checkbox("P2020", &P2020);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("RE-45 Auto", &RE45);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("Alternator SMG", &Alternator);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("R-99 SMG", &R99);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("R-301 Carbine", &R301);
-
-		            ImGui::Checkbox("M600 Spitfire", &Spitfire);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("G7 Scout", &G7);
-		    
-		    ImGui::Text("Heavy Weapons");
-		            ImGui::Checkbox("VK-47 Flatline", &Flatline);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("Hemlock Burst AR", &Hemlock);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("30-30 Repeater", &Repeater);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("Rampage LMG", &Rampage);
-		            
-		            ImGui::Checkbox("C.A.R SMG", &CARSMG);
-		    
-		    ImGui::Text("Energy Weapons");
-		            ImGui::Checkbox("Havoc Rifle", &Havoc);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("Devotion LMG", &Devotion);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("L-Star EMG", &LSTAR);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("Triple-Take", &TripleTake);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("Volt", &Volt);
-
-		            ImGui::Checkbox("Nemesis Burst AR", &Nemesis);
-
-		    ImGui::Text("Shotguns");
-		            ImGui::Checkbox("Mozambique", &Mozambique);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("EVA-8 Auto", &EVA8);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("Peacekeeper", &Peacekeeper);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("Mastiff", &Mastiff);
-
-		    ImGui::Text("Snipers");
-		            ImGui::Checkbox("Longbow DMR", &Longbow);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("Charge Rifle", &ChargeRifle);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("Sentinel", &Sentinel);
-		    
-		    ImGui::Text("Legendary Weapons");
-		            ImGui::Checkbox("Wingman", &Wingman);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("Prowler Burst SMG", &Prowler);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("Bocek Compound Bow", &Bocek);
-
-		            ImGui::Checkbox("Kraber .50-CAL Sniper", &Kraber);
-		            ImGui::SameLine();
-		            ImGui::Checkbox("Throwing Knife", &Knife);
-		    
-		    ImGui::EndTabItem();
-		    UpdateWeaponList();
-		}
-    	}
-    	if (Config::Menu::Layout == 1) {
+    	if (Config::Home::Layout == 0 or Config::Home::Layout == 1) {
 		if (ImGui::BeginTabItem("Triggerbot", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
 		    ImGui::Text("Triggerbot");
 		    ImGui::Checkbox("Enabled", &TriggerbotEnabled);
@@ -405,6 +311,7 @@ struct Triggerbot {
     }
 
     void Update() {
+    	if(!Map->IsPlayable) return;
         //Triggerbot Start
         //Always on - Will always shoot, ignores keybind
     	if (!OnADS) {
