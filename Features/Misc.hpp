@@ -142,7 +142,7 @@ struct Misc {
             if (ImGui::CollapsingHeader("Snipers", nullptr)) {
             	ImGui::SliderInt("Longbow DMR", &SkinLONGBOW, 0, 11);
             	ImGui::SliderInt("Charge Rifle", &SkinCHARGE_RIFLE, 0, 11);
-            	ImGui::SliderInt("Sentinel", &SkinSENTINEL, 0, 11);
+            	ImGui::SliderInt("Sentinel", &SkinSENTINEL, 0, 10);
             }
             
             if (ImGui::CollapsingHeader("Legendary", nullptr)) {
