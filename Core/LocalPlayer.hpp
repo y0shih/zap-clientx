@@ -11,6 +11,7 @@ struct LocalPlayer {
     bool IsInAttack;
     bool IsKnocked;
     bool IsZooming;
+    bool InJump;
 
     int Team;
     Vector3D LocalOrigin;
@@ -44,6 +45,7 @@ struct LocalPlayer {
         IsKnocked = Memory::Read<short>(BasePointer + OFF_BLEEDOUT_STATE) > 0;
         IsZooming = Memory::Read<short>(BasePointer + OFF_ZOOMING) > 0;
         IsInAttack = Memory::Read<short>(OFF_REGION + OFF_INATTACK) > 0;
+        InJump = Memory::Read<bool>(OFF_REGION + OFF_IN_JUMP) > 0;
 
         Team = Memory::Read<int>(BasePointer + OFF_TEAM_NUMBER);
         LocalOrigin = Memory::Read<Vector3D>(BasePointer + OFF_LOCAL_ORIGIN);
