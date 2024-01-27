@@ -30,6 +30,7 @@ namespace Config {
         bool Enabled = true;
         //int AimBind = 56;
         //int ExtraBind = 57;
+        bool ClosestHitbox = false;
         int HitBox = 2;
         
         bool OnFire = true;
@@ -78,11 +79,83 @@ namespace Config {
 	bool ChargeRifle = true;
 	bool Sentinel = true;    
 	//Legendary
-	bool Wingman = true; //Emotional damage!
+	bool Wingman = true;
 	bool Prowler = true;
 	bool Bocek = true;
 	bool Kraber = true;
 	bool Knife = true;
+	
+	//---------------Advanced---------------//
+	bool AdvancedAim = false;
+    
+	//Weapons
+	//Light
+	float P2020Speed = 10;
+	float P2020Smooth = 0.9;
+	float RE45Speed = 10;
+	float RE45Smooth = 0.9;
+	float AlternatorSpeed = 10;
+	float AlternatorSmooth = 0.9;
+	float R99Speed = 10;
+	float R99Smooth = 0.9;
+	float R301Speed = 10;
+	float R301Smooth = 0.9;
+	float SpitfireSpeed = 10;
+	float SpitfireSmooth = 0.9;
+	float G7Speed = 10;
+	float G7Smooth = 0.9;
+	//Heavy
+	float FlatlineSpeed = 10;
+	float FlatlineSmooth = 0.9;
+	float HemlockSpeed = 10;
+	float HemlockSmooth = 0.9;
+	float RepeaterSpeed = 10;
+	float RepeaterSmooth = 0.9;
+	float RampageSpeed = 10;
+	float RampageSmooth = 0.9;
+	float CARSMGSpeed = 10;
+	float CARSMGSmooth = 0.9;
+	//Energy
+	float HavocSpeed = 10;
+	float HavocSmooth = 0.9;
+	float DevotionSpeed = 10;
+	float DevotionSmooth = 0.9;
+	float LSTARSpeed = 10;
+	float LSTARSmooth = 0.9;
+	float TripleTakeSpeed = 10;
+	float TripleTakeSmooth = 0.9;
+	float VoltSpeed = 10;
+	float VoltSmooth = 0.9;
+	float NemesisSpeed = 10;
+	float NemesisSmooth = 0.9;
+	//Shotguns
+	float MozambiqueSpeed = 10;
+	float MozambiqueSmooth = 0.9;
+	float EVA8Speed = 10;
+	float EVA8Smooth = 0.9;
+	float PeacekeeperSpeed = 10;
+	float PeacekeeperSmooth = 0.9;
+	float MastiffSpeed = 10;
+	float MastiffSmooth = 0.9;
+	//Snipers
+	float LongbowSpeed = 10;
+	float LongbowSmooth = 0.9;
+	float ChargeRifleSpeed = 10;
+	float ChargeRifleSmooth = 0.9;
+	float SentinelSpeed = 10;
+	float SentinelSmooth = 0.9;
+	//Legendary
+	float WingmanSpeed = 10;
+	float WingmanSmooth = 0.9;
+	float ProwlerSpeed = 10;
+	float ProwlerSmooth = 0.9;
+	float BocekSpeed = 10;
+	float BocekSmooth = 0.9;
+	float KraberSpeed = 10;
+	float KraberSmooth = 0.9;
+	float ThrowingKnifeSpeed = 10;
+	float ThrowingKnifeSmooth = 0.9;
+	
     };
     
     namespace RCS {
@@ -126,14 +199,97 @@ namespace Config {
 	bool Wingman = true; //Emotional damage!
 	bool Prowler = true;
 	bool Kraber = false;
+	
+	//---------------Advanced---------------//
+	bool AdvancedRCS = false;
+	float AdvancedPitchPower = 10;
+	float AdvancedYawPower = 10;
+    
+	//Weapons
+	//Light
+	float P2020Pitch = 10;
+	float P2020Yaw = 10;
+	float RE45Pitch = 10;
+	float RE45Yaw = 10;
+	float AlternatorPitch = 10;
+	float AlternatorYaw = 10;
+	float R99Pitch = 10;
+	float R99Yaw = 10;
+	float R301Pitch = 10;
+	float R301Yaw = 10;
+	float SpitfirePitch = 10;
+	float SpitfireYaw = 10;
+	float G7Pitch = 10;
+	float G7Yaw = 10;
+	//Heavy
+	float FlatlinePitch = 10;
+	float FlatlineYaw = 10;
+	float HemlockPitch = 10;
+	float HemlockYaw = 10;
+	float RepeaterPitch = 10;
+	float RepeaterYaw = 10;
+	float RampagePitch = 10;
+	float RampageYaw = 10;
+	float CARSMGPitch = 10;
+	float CARSMGYaw = 10;
+	//Energy
+	float HavocPitch = 10;
+	float HavocYaw = 10;
+	float DevotionPitch = 10;
+	float DevotionYaw = 10;
+	float LSTARPitch = 10;
+	float LSTARYaw = 10;
+	float TripleTakePitch = 10;
+	float TripleTakeYaw = 10;
+	float VoltPitch = 10;
+	float VoltYaw = 10;
+	float NemesisPitch = 10;
+	float NemesisYaw = 10;
+	//Shotguns
+	float MozambiquePitch = 10;
+	float MozambiqueYaw = 10;
+	float EVA8Pitch = 10;
+	float EVA8Yaw = 10;
+	float PeacekeeperPitch = 10;
+	float PeacekeeperYaw = 10;
+	float MastiffPitch = 10;
+	float MastiffYaw = 10;
+	//Snipers
+	float LongbowPitch = 10;
+	float LongbowYaw = 10;
+	float ChargeRiflePitch = 10;
+	float ChargeRifleYaw = 10;
+	float SentinelPitch = 10;
+	float SentinelYaw = 10;
+	//Legendary
+	float WingmanPitch = 10;
+	float WingmanYaw = 10;
+	float ProwlerPitch = 10;
+	float ProwlerYaw = 10;
+	float KraberPitch = 10;
+	float KraberYaw = 10;
+    };
+    
+    namespace Glow {
+        // Glow
+        bool GlowEnabled = false; //OLD GLOW
+        bool NewGlow = true;
+        float GlowMaxDistance = 200;
+        int GlowColorMode = 0;
+        int GlowColorShieldMode = 0;
+        int GlowRadius = 64;
+        int InsideFunction = 2; //Leave
+        int OutlineFunction = 125; //Leave
+        int BodyStyle = 13;
+        int OutlineStyle = 1;
+        bool ItemGlow = true;
+        //Colors
+        float InvisibleGlowColor[3] = {1, 0, 0};
+        float VisibleGlowColor[3] = {0, 1, 0};
+	    
     };
 
     namespace Sense {
-    bool GlowEnabled = false;
-    float GlowMaxDistance = 200;
-
-    bool ItemGlow = true;
-    
     //Drawings
     bool VisibilityCheck = false;
     bool DrawBox = true;
@@ -147,6 +303,9 @@ namespace Config {
     bool DrawStatus = true;
     bool HealthBar = true;
     bool ShieldBar = true;
+    bool DrawWeapon = false;
+    bool ShowLegend = false;
+    bool WeaponColorType = false;
     float BarThickness = 2.0;
     bool ShowMaxStatusValues = true;
     bool DrawDistance = false;
@@ -167,6 +326,13 @@ namespace Config {
     float GameFOV = 120;
     bool ShowTeam = false;
     bool TeamNames = false;
+    
+    //Player Info Positions (0-2 = Top, 3-4 = bottom)
+    int LegendPosition = 2;
+    int NamePosition = 3;
+    int DistancePosition = 4;
+    int StatusPosition = 0;
+    int WeaponPosition = 1;
         
     //Colors
     ImVec4 InvisibleBoxColor = ImColor(255, 0, 0, 255);
@@ -191,7 +357,7 @@ namespace Config {
 
     namespace Triggerbot {
         bool Enabled = true;
-        bool OnADS = false;
+        bool OnADS = true;
         float Range = 200;
         
         //Weapons
@@ -234,8 +400,6 @@ namespace Config {
     };
     
     namespace Misc {
-        bool Superglide = false;
-	bool TeamGamemode = true;
 	bool SkinChanger = false;
 	    //Weapon IDs
 	    //Light
@@ -280,10 +444,16 @@ namespace Config {
 	    int SkinKRABER = 1;
     };
     
-    namespace Menu {
-        int Layout = 1;
-        int MenuX = 550;
-        int MenuY = 730;	
+    namespace Home {
+    	int Layout = 1;
+    	bool TeamGamemode = true;
+        int AsciiArt = 5; //change the starting ascii art. 0 = cat 1, 1 = shotgun, 2 = glock, 3 = racoon, 4 = cat 2,
+        int AsciiArtSpeed = 100; //Speed (in milliseconds) of the ascii art
+    	int Style = 5;
+    	int Color = 5;
+        int MenuX = 754;
+        int MenuY = 605;
+        bool ErrorLogging = false;
     };
 };
 
@@ -349,16 +519,6 @@ namespace Modules {
         bool OnADS = false;
         float Range = 200;
     };
-    
-    namespace Misc {
-        bool Superglide = false;
-	bool TeamGamemode = true;
-    };
-    
-    namespace Menu {
-        int Layout = 1;
-    	
-    };
 };
 
 void UpdateConfig() {
@@ -366,6 +526,7 @@ void UpdateConfig() {
     if (conf.is_open()) {
         WriteSection(Aimbot);
         WritePair(Aimbot, Enabled);
+        WritePair(Aimbot, ClosestHitbox);
         WritePair(Aimbot, HitBox);
         WritePair(Aimbot, OnFire);
         WritePair(Aimbot, OnADS);
@@ -411,11 +572,81 @@ void UpdateConfig() {
 	WritePair(Aimbot, ChargeRifle);
 	WritePair(Aimbot, Sentinel);    
 	//Legendary
-	WritePair(Aimbot, Wingman); //Emotional damage!
+	WritePair(Aimbot, Wingman);
 	WritePair(Aimbot, Prowler);
 	WritePair(Aimbot, Bocek);
 	WritePair(Aimbot, Kraber);
 	WritePair(Aimbot, Knife);
+	
+	//---------------Advanced---------------//
+	WritePair(Aimbot, AdvancedAim);
+        //Weapons
+	//Light
+	WritePair(Aimbot, P2020Speed);
+	WritePair(Aimbot, P2020Smooth);
+	WritePair(Aimbot, RE45Speed);
+	WritePair(Aimbot, RE45Smooth);
+	WritePair(Aimbot, AlternatorSpeed);
+	WritePair(Aimbot, AlternatorSmooth);
+	WritePair(Aimbot, R99Speed);
+	WritePair(Aimbot, R99Smooth);
+	WritePair(Aimbot, R301Speed);
+	WritePair(Aimbot, R301Smooth);
+	WritePair(Aimbot, SpitfireSpeed);
+	WritePair(Aimbot, SpitfireSmooth);
+	WritePair(Aimbot, G7Speed); 
+	WritePair(Aimbot, G7Smooth);
+	//Heavy
+	WritePair(Aimbot, FlatlineSpeed);
+	WritePair(Aimbot, FlatlineSmooth);
+	WritePair(Aimbot, HemlockSpeed);
+	WritePair(Aimbot, HemlockSmooth);
+	WritePair(Aimbot, RepeaterSpeed);
+	WritePair(Aimbot, RepeaterSmooth);
+	WritePair(Aimbot, RampageSpeed);
+	WritePair(Aimbot, RampageSmooth);
+	WritePair(Aimbot, CARSMGSpeed);
+	WritePair(Aimbot, CARSMGSmooth);
+	//Energy
+	WritePair(Aimbot, HavocSpeed);
+	WritePair(Aimbot, HavocSmooth);
+	WritePair(Aimbot, DevotionSpeed);
+	WritePair(Aimbot, DevotionSmooth);
+	WritePair(Aimbot, LSTARSpeed);
+	WritePair(Aimbot, LSTARSmooth);
+	WritePair(Aimbot, TripleTakeSpeed);
+	WritePair(Aimbot, TripleTakeSmooth);
+	WritePair(Aimbot, VoltSpeed);
+	WritePair(Aimbot, VoltSmooth);
+	WritePair(Aimbot, NemesisSpeed);
+	WritePair(Aimbot, NemesisSmooth);
+	//Shotgun
+	WritePair(Aimbot, MozambiqueSpeed);
+	WritePair(Aimbot, MozambiqueSmooth);
+	WritePair(Aimbot, EVA8Speed);
+	WritePair(Aimbot, EVA8Smooth);
+	WritePair(Aimbot, PeacekeeperSpeed);
+	WritePair(Aimbot, PeacekeeperSmooth);
+	WritePair(Aimbot, MastiffSpeed);
+	WritePair(Aimbot, MastiffSmooth);   
+	//Snipers
+	WritePair(Aimbot, LongbowSpeed);
+	WritePair(Aimbot, LongbowSmooth);
+	WritePair(Aimbot, ChargeRifleSpeed);
+	WritePair(Aimbot, ChargeRifleSmooth);
+	WritePair(Aimbot, SentinelSpeed);    
+	WritePair(Aimbot, SentinelSmooth);
+	//Legendary
+	WritePair(Aimbot, WingmanSpeed);
+	WritePair(Aimbot, WingmanSmooth);
+	WritePair(Aimbot, ProwlerSpeed);
+	WritePair(Aimbot, ProwlerSmooth);
+	WritePair(Aimbot, BocekSpeed);
+	WritePair(Aimbot, BocekSmooth);
+	WritePair(Aimbot, KraberSpeed);
+	WritePair(Aimbot, KraberSmooth);
+	WritePair(Aimbot, ThrowingKnifeSpeed);
+	WritePair(Aimbot, ThrowingKnifeSmooth);
         
         WriteSection(RCS);
         WritePair(RCS, RCSEnabled);
@@ -457,19 +688,100 @@ void UpdateConfig() {
 	WritePair(RCS, Wingman); //Emotional damage!
 	WritePair(RCS, Prowler);
 	WritePair(RCS, Kraber);
+	
+	//---------------Advanced---------------//
+	WritePair(RCS, AdvancedRCS);
+        //Weapons
+	//Light
+	WritePair(RCS, P2020Pitch);
+	WritePair(RCS, P2020Yaw);
+	WritePair(RCS, RE45Pitch);
+	WritePair(RCS, RE45Yaw);
+	WritePair(RCS, AlternatorPitch);
+	WritePair(RCS, AlternatorYaw);
+	WritePair(RCS, R99Pitch);
+	WritePair(RCS, R99Yaw);
+	WritePair(RCS, R301Pitch);
+	WritePair(RCS, R301Yaw);
+	WritePair(RCS, SpitfirePitch);
+	WritePair(RCS, SpitfireYaw);
+	WritePair(RCS, G7Pitch); 
+	WritePair(RCS, G7Yaw);
+	//Heavy
+	WritePair(RCS, FlatlinePitch);
+	WritePair(RCS, FlatlineYaw);
+	WritePair(RCS, HemlockPitch);
+	WritePair(RCS, HemlockYaw);
+	WritePair(RCS, RepeaterPitch);
+	WritePair(RCS, RepeaterYaw);
+	WritePair(RCS, RampagePitch);
+	WritePair(RCS, RampageYaw);
+	WritePair(RCS, CARSMGPitch);
+	WritePair(RCS, CARSMGYaw);
+	//Energy
+	WritePair(RCS, HavocPitch);
+	WritePair(RCS, HavocYaw);
+	WritePair(RCS, DevotionPitch);
+	WritePair(RCS, DevotionYaw);
+	WritePair(RCS, LSTARPitch);
+	WritePair(RCS, LSTARYaw);
+	WritePair(RCS, TripleTakePitch);
+	WritePair(RCS, TripleTakeYaw);
+	WritePair(RCS, VoltPitch);
+	WritePair(RCS, VoltYaw);
+	WritePair(RCS, NemesisPitch);
+	WritePair(RCS, NemesisYaw);
+	//Shotgun
+	WritePair(RCS, MozambiquePitch);
+	WritePair(RCS, MozambiqueYaw);
+	WritePair(RCS, EVA8Pitch);
+	WritePair(RCS, EVA8Yaw);
+	WritePair(RCS, PeacekeeperPitch);
+	WritePair(RCS, PeacekeeperYaw);
+	WritePair(RCS, MastiffPitch);
+	WritePair(RCS, MastiffYaw);   
+	//Snipers
+	WritePair(RCS, LongbowPitch);
+	WritePair(RCS, LongbowYaw);
+	WritePair(RCS, ChargeRiflePitch);
+	WritePair(RCS, ChargeRifleYaw);
+	WritePair(RCS, SentinelPitch);    
+	WritePair(RCS, SentinelYaw);
+	//Legendary
+	WritePair(RCS, WingmanPitch);
+	WritePair(RCS, WingmanYaw);
+	WritePair(RCS, ProwlerPitch);
+	WritePair(RCS, ProwlerYaw);
+	WritePair(RCS, KraberPitch);
+	WritePair(RCS, KraberYaw);
         WriteSectionEnd();
-
+        
+        WriteSection(Glow);
+        WritePair(Glow, GlowEnabled); //
+        WritePair(Glow, ItemGlow);
+        WritePair(Glow, GlowMaxDistance);
+        WritePair(Glow, NewGlow);
+        WritePair(Glow, GlowColorMode);
+        WritePair(Glow, GlowColorShieldMode);
+        WritePair(Glow, GlowRadius);
+        WritePair(Glow, InsideFunction);
+        WritePair(Glow, OutlineFunction);
+        WritePair(Glow, BodyStyle);
+        WritePair(Glow, OutlineStyle);
+        WritePair(Glow, InvisibleGlowColor[3]);
+        WritePair(Glow, VisibleGlowColor[3]);
+        
         WriteSection(Sense);
-        WritePair(Sense, GlowEnabled);
-        WritePair(Sense, ItemGlow);
         WritePair(Sense, DrawSeer);
         WritePair(Sense, DrawDistance);
         WritePair(Sense, DrawStatus);
         WritePair(Sense, ShowMaxStatusValues);
         WritePair(Sense, HealthBar);
         WritePair(Sense, ShieldBar);
+        WritePair(Sense, DrawWeapon);
+        WritePair(Sense, WeaponColorType);
+        WritePair(Sense, ShowLegend);
         WritePair(Sense, BarThickness);
-        WritePair(Sense, GlowMaxDistance);
         WritePair(Sense, ShowSpectators);
         WritePair(Sense, DrawFOVCircle);
         WritePair(Sense, GameFOV);
@@ -531,8 +843,7 @@ void UpdateConfig() {
         WriteSectionEnd();
         
         WriteSection(Misc);
-        WritePair(Misc, TeamGamemode);
-        WritePair(Misc, Superglide);
+        //WritePair(Misc, Superglide);
         WritePair(Misc, SkinChanger);
         //Weapons
 	//Light
@@ -572,10 +883,15 @@ void UpdateConfig() {
 	WritePair(Misc, SkinBOCEK);
         WriteSectionEnd();
         
-        WriteSection(Menu);
-        WritePair(Menu, Layout);
-        WritePair(Menu, MenuX);
-        WritePair(Menu, MenuY);
+        WriteSection(Home);
+        WritePair(Home, AsciiArt);
+        WritePair(Home, AsciiArtSpeed);
+        WritePair(Home, TeamGamemode);
+        WritePair(Home, MenuX);
+        WritePair(Home, MenuY);
+        WritePair(Home, Style);
+        WritePair(Home, Color);
+        WritePair(Home, ErrorLogging);
         WriteSectionEnd();
         conf.close();
     }
@@ -589,6 +905,7 @@ bool ReadConfig(const std::string &configFile) {
     }
     
     ReadBool(Aimbot, Enabled);
+    ReadBool(Aimbot, ClosestHitbox);
     ReadInt(Aimbot, HitBox);
     ReadBool(Aimbot, OnFire);
     ReadBool(Aimbot, OnADS);
@@ -639,6 +956,76 @@ bool ReadConfig(const std::string &configFile) {
 	ReadBool(Aimbot, Bocek);
 	ReadBool(Aimbot, Kraber);
 	ReadBool(Aimbot, Knife);
+	
+	//---------------Advanced---------------//
+	ReadBool(Aimbot, AdvancedAim);
+        //Weapons
+	//Light
+	ReadFloat(Aimbot, P2020Speed);
+	ReadFloat(Aimbot, P2020Smooth);
+	ReadFloat(Aimbot, RE45Speed);
+	ReadFloat(Aimbot, RE45Smooth);
+	ReadFloat(Aimbot, AlternatorSpeed);
+	ReadFloat(Aimbot, AlternatorSmooth);
+	ReadFloat(Aimbot, R99Speed);
+	ReadFloat(Aimbot, R99Smooth);
+	ReadFloat(Aimbot, R301Speed);
+	ReadFloat(Aimbot, R301Smooth);
+	ReadFloat(Aimbot, SpitfireSpeed);
+	ReadFloat(Aimbot, SpitfireSmooth);
+	ReadFloat(Aimbot, G7Speed); 
+	ReadFloat(Aimbot, G7Smooth);
+	//Heavy
+	ReadFloat(Aimbot, FlatlineSpeed);
+	ReadFloat(Aimbot, FlatlineSmooth);
+	ReadFloat(Aimbot, HemlockSpeed);
+	ReadFloat(Aimbot, HemlockSmooth);
+	ReadFloat(Aimbot, RepeaterSpeed);
+	ReadFloat(Aimbot, RepeaterSmooth);
+	ReadFloat(Aimbot, RampageSpeed);
+	ReadFloat(Aimbot, RampageSmooth);
+	ReadFloat(Aimbot, CARSMGSpeed);
+	ReadFloat(Aimbot, CARSMGSmooth);
+	//Energy
+	ReadFloat(Aimbot, HavocSpeed);
+	ReadFloat(Aimbot, HavocSmooth);
+	ReadFloat(Aimbot, DevotionSpeed);
+	ReadFloat(Aimbot, DevotionSmooth);
+	ReadFloat(Aimbot, LSTARSpeed);
+	ReadFloat(Aimbot, LSTARSmooth);
+	ReadFloat(Aimbot, TripleTakeSpeed);
+	ReadFloat(Aimbot, TripleTakeSmooth);
+	ReadFloat(Aimbot, VoltSpeed);
+	ReadFloat(Aimbot, VoltSmooth);
+	ReadFloat(Aimbot, NemesisSpeed);
+	ReadFloat(Aimbot, NemesisSmooth);
+	//Shotgun
+	ReadFloat(Aimbot, MozambiqueSpeed);
+	ReadFloat(Aimbot, MozambiqueSmooth);
+	ReadFloat(Aimbot, EVA8Speed);
+	ReadFloat(Aimbot, EVA8Smooth);
+	ReadFloat(Aimbot, PeacekeeperSpeed);
+	ReadFloat(Aimbot, PeacekeeperSmooth);
+	ReadFloat(Aimbot, MastiffSpeed);
+	ReadFloat(Aimbot, MastiffSmooth);   
+	//Snipers
+	ReadFloat(Aimbot, LongbowSpeed);
+	ReadFloat(Aimbot, LongbowSmooth);
+	ReadFloat(Aimbot, ChargeRifleSpeed);
+	ReadFloat(Aimbot, ChargeRifleSmooth);
+	ReadFloat(Aimbot, SentinelSpeed);    
+	ReadFloat(Aimbot, SentinelSmooth);
+	//Legendary
+	ReadFloat(Aimbot, WingmanSpeed);
+	ReadFloat(Aimbot, WingmanSmooth);
+	ReadFloat(Aimbot, ProwlerSpeed);
+	ReadFloat(Aimbot, ProwlerSmooth);
+	ReadFloat(Aimbot, BocekSpeed);
+	ReadFloat(Aimbot, BocekSmooth);
+	ReadFloat(Aimbot, KraberSpeed);
+	ReadFloat(Aimbot, KraberSmooth);
+	ReadFloat(Aimbot, ThrowingKnifeSpeed);
+	ReadFloat(Aimbot, ThrowingKnifeSmooth);
     
     ReadBool(RCS, RCSEnabled);
     ReadBool(RCS, OnADS);
@@ -679,16 +1066,93 @@ bool ReadConfig(const std::string &configFile) {
 	ReadBool(RCS, Wingman); //Emotional damage!
 	ReadBool(RCS, Prowler);
 	ReadBool(RCS, Kraber);
+	
+	//---------------Advanced---------------//
+	ReadBool(RCS, AdvancedRCS);
+        //Weapons
+	//Light
+	ReadFloat(RCS, P2020Pitch);
+	ReadFloat(RCS, P2020Yaw);
+	ReadFloat(RCS, RE45Pitch);
+	ReadFloat(RCS, RE45Yaw);
+	ReadFloat(RCS, AlternatorPitch);
+	ReadFloat(RCS, AlternatorYaw);
+	ReadFloat(RCS, R99Pitch);
+	ReadFloat(RCS, R99Yaw);
+	ReadFloat(RCS, R301Pitch);
+	ReadFloat(RCS, R301Yaw);
+	ReadFloat(RCS, SpitfirePitch);
+	ReadFloat(RCS, SpitfireYaw);
+	ReadFloat(RCS, G7Pitch); 
+	ReadFloat(RCS, G7Yaw);
+	//Heavy
+	ReadFloat(RCS, FlatlinePitch);
+	ReadFloat(RCS, FlatlineYaw);
+	ReadFloat(RCS, HemlockPitch);
+	ReadFloat(RCS, HemlockYaw);
+	ReadFloat(RCS, RepeaterPitch);
+	ReadFloat(RCS, RepeaterYaw);
+	ReadFloat(RCS, RampagePitch);
+	ReadFloat(RCS, RampageYaw);
+	ReadFloat(RCS, CARSMGPitch);
+	ReadFloat(RCS, CARSMGYaw);
+	//Energy
+	ReadFloat(RCS, HavocPitch);
+	ReadFloat(RCS, HavocYaw);
+	ReadFloat(RCS, DevotionPitch);
+	ReadFloat(RCS, DevotionYaw);
+	ReadFloat(RCS, LSTARPitch);
+	ReadFloat(RCS, LSTARYaw);
+	ReadFloat(RCS, TripleTakePitch);
+	ReadFloat(RCS, TripleTakeYaw);
+	ReadFloat(RCS, VoltPitch);
+	ReadFloat(RCS, VoltYaw);
+	ReadFloat(RCS, NemesisPitch);
+	ReadFloat(RCS, NemesisYaw);
+	//Shotgun
+	ReadFloat(RCS, MozambiquePitch);
+	ReadFloat(RCS, MozambiqueYaw);
+	ReadFloat(RCS, EVA8Pitch);
+	ReadFloat(RCS, EVA8Yaw);
+	ReadFloat(RCS, PeacekeeperPitch);
+	ReadFloat(RCS, PeacekeeperYaw);
+	ReadFloat(RCS, MastiffPitch);
+	ReadFloat(RCS, MastiffYaw);   
+	//Snipers
+	ReadFloat(RCS, LongbowPitch);
+	ReadFloat(RCS, LongbowYaw);
+	ReadFloat(RCS, ChargeRiflePitch);
+	ReadFloat(RCS, ChargeRifleYaw);
+	ReadFloat(RCS, SentinelPitch);    
+	ReadFloat(RCS, SentinelYaw);
+	//Legendary
+	ReadFloat(RCS, WingmanPitch);
+	ReadFloat(RCS, WingmanYaw);
+	ReadFloat(RCS, ProwlerPitch);
+	ReadFloat(RCS, ProwlerYaw);
+	ReadFloat(RCS, KraberPitch);
+	ReadFloat(RCS, KraberYaw);
+	
+    ReadBool(Glow, GlowEnabled);
+    ReadBool(Glow, ItemGlow);
+    ReadFloat(Glow, GlowMaxDistance);
+    ReadBool(Glow, NewGlow);
+    ReadInt(Glow, GlowColorMode);
+    ReadInt(Glow, GlowColorShieldMode);
+    ReadInt(Glow, GlowRadius);
+    ReadInt(Glow, InsideFunction);
+    ReadInt(Glow, OutlineFunction);
+    ReadInt(Glow, BodyStyle);
+    ReadInt(Glow, OutlineStyle);
+    ReadFloat(Glow, InvisibleGlowColor[3]);
+    ReadFloat(Glow, VisibleGlowColor[3]);
 
-    ReadBool(Sense, GlowEnabled);
-    ReadBool(Sense, ItemGlow);
     ReadBool(Sense, DrawSeer);
     ReadBool(Sense, DrawStatus);
     ReadBool(Sense, ShowMaxStatusValues);
     ReadBool(Sense, HealthBar);
     ReadBool(Sense, ShieldBar);
     ReadFloat(Sense, BarThickness);
-    ReadFloat(Sense, GlowMaxDistance);
     ReadBool(Sense, ShowSpectators);
     ReadBool(Sense, DrawFOVCircle);
     ReadFloat(Sense, GameFOV);
@@ -699,6 +1163,9 @@ bool ReadConfig(const std::string &configFile) {
     ReadFloat(Sense, ESPMaxDistance);
     ReadBool(Sense, ShowNear);
     ReadBool(Sense, DrawNames);
+    ReadBool(Sense, DrawWeapon);
+    ReadBool(Sense, ShowLegend);
+    ReadBool(Sense, WeaponColorType);
     ReadBool(Sense, DrawDistance);
     ReadInt(Sense, TracerPos);
     ReadInt(Sense, TracerBone);
@@ -747,8 +1214,7 @@ bool ReadConfig(const std::string &configFile) {
 	ReadBool(Triggerbot, Kraber);
 	ReadBool(Triggerbot, Knife);
     
-    ReadBool(Misc, TeamGamemode);
-    ReadBool(Misc, Superglide);
+    //ReadBool(Misc, Superglide);
     ReadBool(Misc, SkinChanger);
 	//Weapons
 	//Light
@@ -787,10 +1253,14 @@ bool ReadConfig(const std::string &configFile) {
 	ReadInt(Misc, SkinKRABER);
 	ReadInt(Misc, SkinBOCEK);
     
-
-    ReadInt(Menu, Layout);
-    ReadInt(Menu, MenuX);
-    ReadInt(Menu, MenuY);
+    ReadInt(Home, AsciiArt);
+    ReadInt(Home, AsciiArtSpeed);
+    ReadBool(Home, TeamGamemode);
+    ReadInt(Home, MenuX);
+    ReadInt(Home, MenuY);
+    ReadInt(Home, Style);
+    ReadInt(Home, Color);
+    ReadBool(Home, ErrorLogging);
 
     UpdateConfig();
     return true;
