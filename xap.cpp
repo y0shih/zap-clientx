@@ -56,8 +56,8 @@ Overlay* Home = new Overlay;
 
 // Booleans and Variables
 bool IsMenuOpened = true;
-int AsciiArt = 5;
-int AsciiArtSpeed = 50;
+int AsciiArt = Config::Home::AsciiArt;
+int AsciiArtSpeed = Config::Home::AsciiArtSpeed;
 
 // Thread
 std::atomic_bool StopThread(false);
