@@ -65,7 +65,7 @@ public:
             float travelTime = horizontalDistance / (bulletSpeed * cosf(angle));
             if (travelTime <= time){
                 result.x = -angle  * (180 / M_PI);
-                result.y = atan2f(direction.y, direction.x)  * (180 / M_PI);
+                result.y = atan2f(direction.y, direction.x)  * (180 / M_PI); //180
                 return true;
             }
             time += timeStep;
