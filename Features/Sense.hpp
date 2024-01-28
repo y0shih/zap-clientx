@@ -348,9 +348,9 @@ struct Sense {
 		    ImGui::Separator();
 		    
 		    ImGui::Text("Misc");
-		    ImGui::Checkbox("Show Spectators [!]", &ShowSpectators);
+		    ImGui::Checkbox("Show Spectators", &ShowSpectators);
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        ImGui::SetTooltip("Show spectators\n[!] Cheat/Game will crash after going back to lobby, waiting for fix.");
+		        ImGui::SetTooltip("Show spectators");
 		        
 		    ImGui::Separator();
 		        
@@ -450,7 +450,7 @@ struct Sense {
 		}
 	}*/
         if(!Map->IsPlayable) return;
-        if (ShowSpectators) //Crashing
+        if (ShowSpectators)
         {
             ImVec2 Center = ImGui::GetMainViewport()->GetCenter();
             ImGui::SetNextWindowPos(ImVec2(0.0f, Center.y), ImGuiCond_Once, ImVec2(0.02f, 0.5f));
