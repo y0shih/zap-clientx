@@ -23,6 +23,7 @@ struct Triggerbot {
     //Toggles
     bool TriggerbotEnabled = true;
     bool OnADS = true;
+    bool HipfireShotguns = false;
     float TriggerbotRange = 200;
     
     //Weapon Toggles
@@ -98,6 +99,11 @@ struct Triggerbot {
 		    	ImGui::Checkbox("On ADS Only?", &OnADS);
 		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		       		ImGui::SetTooltip("Fire only when ADS");
+		    	if (OnADS) {
+		    		ImGui::Checkbox("Always On For Shotguns", &HipfireShotguns);
+		    	    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		            		ImGui::SetTooltip("Overrides The Triggerbot Condition (OnADS?) For Shotguns Only.\nSimple Terms: Other Guns Require ADS, Shotguns Will Not.");
+		    	}
 		    }
 		    
 		    ImGui::Separator();  
@@ -196,6 +202,7 @@ struct Triggerbot {
             Config::Triggerbot::Enabled = TriggerbotEnabled;
             Config::Triggerbot::Range = TriggerbotRange;
             Config::Triggerbot::OnADS = OnADS;
+            Config::Triggerbot::HipfireShotguns = HipfireShotguns;
             
             //Weapons
             //Light
@@ -319,17 +326,16 @@ struct Triggerbot {
         	if (!Myself->IsCombatReady()) return;
 
         	if (WeaponList.find(Myself->WeaponIndex) == WeaponList.end()) return;
-
-        	for (int i = 0; i < Players->size(); i++) {
-            		Player* player = Players->at(i);
-            		if (!player->IsCombatReady()) continue;
-            		if (!player->IsHostile) continue;
-            		if (!player->IsAimedAt) continue;
-            		if (player->DistanceToLocalPlayer < Conversion::ToGameUnits(TriggerbotRange)) {
-               	        	X11Display->MouseClickLeft();
-               	        	break;
-                 	}	
-        	}
+			for (int i = 0; i < Players->size(); i++) {
+		    		Player* player = Players->at(i);
+		    		if (!player->IsCombatReady()) continue;
+		    		if (!player->IsHostile) continue;
+		    		if (!player->IsAimedAt) continue;
+		    		if (player->DistanceToLocalPlayer < Conversion::ToGameUnits(TriggerbotRange)) {
+		       	        	X11Display->MouseClickLeft();
+		       	        	break;
+                 		}	
+        		}
         }
         
         //Requires Keybind
@@ -339,19 +345,51 @@ struct Triggerbot {
 
         	if (WeaponList.find(Myself->WeaponIndex) == WeaponList.end()) return;
         	
-        	if (Myself->IsZooming) {
-			for (int i = 0; i < Players->size(); i++) {
-		    		Player* player = Players->at(i);
-		    		if (!player->IsCombatReady()) continue;
-		    		if (!player->IsHostile) continue;
-		    		if (!player->IsAimedAt) continue;
-		    		
-		    		if (player->DistanceToLocalPlayer < Conversion::ToGameUnits(TriggerbotRange)) {
-		       	        	X11Display->MouseClickLeft();
-		       	        	break;
-                 		}		
-        		}
-        	}
+        	if (!HipfireShotguns) {
+			if (Myself->IsZooming) {
+				for (int i = 0; i < Players->size(); i++) {
+			    		Player* player = Players->at(i);
+			    		if (!player->IsCombatReady()) continue;
+			    		if (!player->IsHostile) continue;
+			    		if (!player->IsAimedAt) continue;
+			    		
+			    		if (player->DistanceToLocalPlayer < Conversion::ToGameUnits(TriggerbotRange)) {
+			       	        	X11Display->MouseClickLeft();
+			       	        	break;
+		         		}		
+				}
+			}
+	       }
+        	if (HipfireShotguns) {
+			if (Myself->IsZooming) {
+					for (int i = 0; i < Players->size(); i++) {
+				    		Player* player = Players->at(i);
+				    		if (!player->IsCombatReady()) continue;
+				    		if (!player->IsHostile) continue;
+				    		if (!player->IsAimedAt) continue;
+				    		if (player->DistanceToLocalPlayer < Conversion::ToGameUnits(TriggerbotRange)) {
+				       	        	X11Display->MouseClickLeft();
+				       	        	break;
+				 		}	
+					}
+			}
+			if (!Myself->IsZooming) {
+				if (Myself->WeaponIndex == 96 or Myself->WeaponIndex == 87 or Myself->WeaponIndex == 103 or Myself->WeaponIndex == 95) {
+
+					for (int i = 0; i < Players->size(); i++) {
+					    	Player* player = Players->at(i);
+					    	if (!player->IsCombatReady()) continue;
+					    	if (!player->IsHostile) continue;
+					    	if (!player->IsAimedAt) continue;
+					    	if (player->DistanceToLocalPlayer < Conversion::ToGameUnits(TriggerbotRange)) {
+					       	        X11Display->MouseClickLeft();
+					       	        break;
+						}
+					}
+				}
+			}
+	       }
+	       
         }
-    }
+     }
 };
