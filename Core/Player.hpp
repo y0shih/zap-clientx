@@ -111,16 +111,16 @@ struct Player {
             WeaponIndex = Memory::Read<int>(WeaponEntity + OFF_WEAPON_INDEX);
         }
         
-        if (Myself->IsValid() && Config::Home::TeamGamemode) {
+        if (Myself->IsValid() && Modules::Home::TeamGamemode) {
         	IsLocal = Myself->BasePointer == BasePointer;
                 IsAlly = Myself->Team == Team;
                 IsHostile = !IsAlly;
                 DistanceToLocalPlayer = Myself->LocalOrigin.Distance(LocalOrigin);
                 Distance2DToLocalPlayer = Myself->LocalOrigin.To2D().Distance(LocalOrigin.To2D());
         }
-        else if (Myself->IsValid() && !Config::Home::TeamGamemode) {
+        else if (Myself->IsValid() && !Modules::Home::TeamGamemode) {
                 IsLocal = Myself->BasePointer == BasePointer;
-                nonBR = !Config::Home::TeamGamemode;
+                nonBR = !Modules::Home::TeamGamemode;
                 friendly = (nonBR)
                     ? (Myself->Team % 2 == 0 && Team % 2 == 0) || (Myself->Team % 2 != 0 && Team % 2 != 0)
                     : Myself->Team == Team;
