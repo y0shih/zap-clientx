@@ -101,102 +101,164 @@ struct Aimbot {
     float AdvancedSmooth = 0.99;
     float AdvancedHipfireSmooth = 0.99;
     float AdvancedADSSmooth = 0.99;
+    bool AdvancedFire = true;
+    bool AdvancedADS = false;
             
     float P2020Speed = 10;
     float P2020HipfireSmooth = 0.99;
     float P2020ADSSmooth = 0.99;
+    bool P2020Fire = true;
+    bool P2020ADS = false;
     float RE45Speed = 0.99;
     float RE45HipfireSmooth = 10;
     float RE45ADSSmooth = 0.99;
+    bool RE45Fire = true;
+    bool RE45ADS = false;
     float AlternatorSpeed = 10;
     float AlternatorHipfireSmooth = 0.99;
     float AlternatorADSSmooth = 0.99;
+    bool AlternatorFire = true;
+    bool AlternatorADS = false;
     float R99Speed = 10;
     float R99HipfireSmooth = 0.99;
     float R99ADSSmooth = 0.99;
+    bool R99Fire = true;
+    bool R99ADS = false;
     float R301Speed = 10;
     float R301HipfireSmooth = 0.99;
     float R301ADSSmooth = 0.99;
+    bool R301Fire = true;
+    bool R301ADS = false;
     float SpitfireSpeed = 10;
     float SpitfireHipfireSmooth = 0.99;
     float SpitfireADSSmooth = 0.99;
+    bool SpitfireFire = true;
+    bool SpitfireADS = false;
     float G7Speed = 10;
     float G7HipfireSmooth = 0.99;
     float G7ADSSmooth = 0.99;
+    bool G7Fire = true;
+    bool G7ADS = false;
     //Heavy
     float FlatlineSpeed = 10;
     float FlatlineHipfireSmooth = 0.99;
     float FlatlineADSSmooth = 0.99;
+    bool FlatlineFire = true;
+    bool FlatlineADS = false;
     float HemlockSpeed = 10;
     float HemlockHipfireSmooth = 0.99;
     float HemlockADSSmooth = 0.99;
+    bool HemlockFire = true;
+    bool HemlockADS = false;
     float RepeaterSpeed = 10;
     float RepeaterHipfireSmooth = 0.99;
     float RepeaterADSSmooth = 0.99;
+    bool RepeaterFire = true;
+    bool RepeaterADS = false;
     float RampageSpeed = 10;
     float RampageHipfireSmooth = 0.99;
     float RampageADSSmooth = 0.99;
+    bool RampageFire = true;
+    bool RampageADS = false;
     float CARSMGSpeed = 10;
     float CARSMGHipfireSmooth = 0.99;
     float CARSMGADSSmooth = 0.99;
+    bool CARSMGFire = true;
+    bool CARSMGADS = false;
     //Energy
     float HavocSpeed = 10;
     float HavocHipfireSmooth = 0.99;
     float HavocADSSmooth = 0.99;
+    bool HavocFire = true;
+    bool HavocADS = false;
     float DevotionSpeed = 10;
     float DevotionHipfireSmooth = 0.99;
     float DevotionADSSmooth = 0.99;
+    bool DevotionFire = true;
+    bool DevotionADS = false;
     float LSTARSpeed = 10;
     float LSTARHipfireSmooth = 0.99;
     float LSTARADSSmooth = 0.99;
+    bool LSTARFire = true;
+    bool LSTARADS = false;
     float TripleTakeSpeed = 10;
     float TripleTakeHipfireSmooth = 0.99;
     float TripleTakeADSSmooth = 0.99;
+    bool TripleTakeFire = true;
+    bool TripleTakeADS = false;
     float VoltSpeed = 10;
     float VoltHipfireSmooth = 0.99;
     float VoltADSSmooth = 0.99;
+    bool VoltFire = true;
+    bool VoltADS = false;
     float NemesisSpeed = 10;
     float NemesisHipfireSmooth = 0.99;
     float NemesisADSSmooth = 0.99;
+    bool NemesisFire = true;
+    bool NemesisADS = false;
     //Shotguns
     float MozambiqueSpeed = 10;
     float MozambiqueHipfireSmooth = 0.99;
     float MozambiqueADSSmooth = 0.99;
+    bool MozambiqueFire = true;
+    bool MozambiqueADS = false;
     float EVA8Speed = 10;
     float EVA8HipfireSmooth = 0.99;
     float EVA8ADSSmooth = 0.99;
+    bool EVA8Fire = true;
+    bool EVA8ADS = false;
     float PeacekeeperSpeed = 10;
     float PeacekeeperHipfireSmooth = 0.99;
     float PeacekeeperADSSmooth = 0.99;
+    bool PeacekeeperFire = true;
+    bool PeacekeeperADS = false;
     float MastiffSpeed = 10;
     float MastiffHipfireSmooth = 0.99;
     float MastiffADSSmooth = 0.99;
+    bool MastiffFire = true;
+    bool MastiffADS = false;
     //Snipers
     float LongbowSpeed = 10;
     float LongbowHipfireSmooth = 0.99;
     float LongbowADSSmooth = 0.99;
+    bool LongbowFire = true;
+    bool LongbowADS = false;
     float ChargeRifleSpeed = 10;
     float ChargeRifleHipfireSmooth = 0.99;
     float ChargeRifleADSSmooth = 0.99;
+    bool ChargeRifleFire = true;
+    bool ChargeRifleADS = false;
     float SentinelSpeed = 10;
     float SentinelHipfireSmooth = 0.99;
     float SentinelADSSmooth = 0.99;
+    bool SentinelFire = true;
+    bool SentinelADS = false;
     //Legendary
     float WingmanSpeed = 10;
     float WingmanHipfireSmooth = 0.99;
     float WingmanADSSmooth = 0.99;
+    bool WingmanFire = true;
+    bool WingmanADS = false;
     float ProwlerSpeed = 10;
     float ProwlerHipfireSmooth = 0.99;
     float ProwlerADSSmooth = 0.99;
+    bool ProwlerFire = true;
+    bool ProwlerADS = false;
     float KraberSpeed = 10;
     float KraberHipfireSmooth = 0.99;
     float KraberADSSmooth = 0.99;
+    bool KraberFire = true;
+    bool KraberADS = false;
     float BocekSpeed = 10;
     float BocekHipfireSmooth = 0.99;
     float BocekADSSmooth = 0.99;
+    bool BocekFire = true;
+    bool BocekADS = false;
     float ThrowingKnifeSpeed = 10;
     float ThrowingKnifeHipfireSmooth = 0.99;
     float ThrowingKnifeADSSmooth = 0.99;
+    bool ThrowingKnifeFire = true;
+    bool ThrowingKnifeADS = false;
 
     XDisplay* X11Display;
     LocalPlayer* Myself;
@@ -242,14 +304,15 @@ struct Aimbot {
 		    ImGui::Separator();
 	   	    
 	   	    ImGui::Text("Aim Conditions");
-	   	    ImGui::Checkbox("On Fire?", &OnFire);
-	   	    ImGui::SameLine();
-	   	    ImGui::Checkbox("On ADS?", &OnADS);
-	   	    ImGui::SameLine();
+		    ImGui::Checkbox("On Fire?", &OnFire);
+		    ImGui::SameLine();
+		    ImGui::Checkbox("On ADS?", &OnADS);
+		    ImGui::SameLine();
 	   	    ImGui::Checkbox("Visibility Check", &VisCheck);
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		    	ImGui::SetTooltip("Aims At Only Visible Enemies.");
-	   	    ImGui::Checkbox("Team Check##Aimbot", &TeamCheck);
+		    ImGui::SameLine();
+		    ImGui::Checkbox("Team Check##Aimbot", &TeamCheck);
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		    	ImGui::SetTooltip("Disable this if doing 1v1s in the firing range.");
 	   	    
@@ -382,7 +445,7 @@ struct Aimbot {
 		    if (ImGui::CollapsingHeader("Distance Settings", nullptr)) {
 		    	ImGui::SliderFloat("Hipfire Max Distance", &HipfireDistance, 1, 500, "%.0f");
 		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Minimum Hipfire distance for Aim-Assist to work");
+		        	ImGui::SetTooltip("Maximum Hipfire distance for Aim-Assist to work");
 		    	ImGui::SliderFloat("Zoom Max Distance", &ZoomDistance, 1, 500, "%.0f");
 		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		        	ImGui::SetTooltip("Maximum ADS Distance for Aim-Assist to work");
@@ -398,6 +461,9 @@ struct Aimbot {
 		    	if (ImGui::CollapsingHeader("Light", nullptr)) {
 		    		if (P2020) {
 			    		ImGui::Text("P2020");
+			    		ImGui::Checkbox("On Fire?##AdvancedP2020", &P2020Fire);
+			    		ImGui::SameLine();
+			    		ImGui::Checkbox("On ADS?##AdvancedP2020", &P2020ADS);
 			    		ImGui::SliderFloat("Speed##AdvancedP2020", &P2020Speed, 1, 100, "%.0f");
 			    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 			    			ImGui::SetTooltip("Speed Of The Aim-Assist For The P2020\nHigher = Faster");
@@ -410,6 +476,9 @@ struct Aimbot {
 			    	}
 			    	if (RE45) {
 			    			ImGui::Text("RE-45 Auto");
+			    			ImGui::Checkbox("On Fire?##AdvancedP2020", &RE45Fire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedP2020", &RE45ADS);
 					    	ImGui::SliderFloat("Speed##AdvancedRE45", &RE45Speed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The RE-45 Auto\nHigher = Faster");
@@ -423,6 +492,9 @@ struct Aimbot {
 			    		
 			    	if (Alternator) {
 			    			ImGui::Text("Alternator SMG");
+			    			ImGui::Checkbox("On Fire?##AdvancedP2020", &AlternatorFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedP2020", &AlternatorADS);
 					    	ImGui::SliderFloat("Speed##AdvancedAlternator", &AlternatorSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Alternator SMG\nHigher = Faster");
@@ -436,6 +508,9 @@ struct Aimbot {
 			    		
 			    	if (R99) {
 			    			ImGui::Text("R-99 SMG");
+			    			ImGui::Checkbox("On Fire?##AdvancedR99", &R99Fire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedR99", &R99ADS);
 					    	ImGui::SliderFloat("Speed##AdvancedR99", &R99Speed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The R-99 SMG\nHigher = Faster");
@@ -449,6 +524,9 @@ struct Aimbot {
 			    		
 			    	if (R301) {
 			    			ImGui::Text("R-301 Carbine");
+			    			ImGui::Checkbox("On Fire?##AdvancedR301", &R301Fire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedR301", &R301ADS);
 					    	ImGui::SliderFloat("Speed##AdvancedR301", &R301Speed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The R-301 Carbine\nHigher = Faster");
@@ -462,6 +540,9 @@ struct Aimbot {
 			    		
 			    	if (Spitfire) {
 			    			ImGui::Text("M600 Spitfire");
+			    			ImGui::Checkbox("On Fire?##AdvancedSpitfire", &SpitfireFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedSpitfire", &SpitfireADS);
 					    	ImGui::SliderFloat("Speed##AdvancedSpitfire", &SpitfireSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The M600 Spitfire\nHigher = Faster");
@@ -475,6 +556,9 @@ struct Aimbot {
 			    		
 			    	if (G7) {
 			    			ImGui::Text("G7 Scout");
+			    			ImGui::Checkbox("On Fire?##AdvancedG7", &G7Fire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedG7", &G7ADS);
 					    	ImGui::SliderFloat("Speed##AdvancedG7", &G7Speed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The G7 Scout\nHigher = Faster");
@@ -490,6 +574,9 @@ struct Aimbot {
 		    	if (ImGui::CollapsingHeader("Heavy", nullptr)) {
 			    	if (Flatline) {
 			    		ImGui::Text("VK-47 Flatline");
+			    			ImGui::Checkbox("On Fire?##AdvancedFlatline", &FlatlineFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedFlatline", &FlatlineADS);
 					    	ImGui::SliderFloat("Speed##AdvancedFlatline", &FlatlineSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The VK-47 Flatline\nHigher = Faster");
@@ -503,6 +590,9 @@ struct Aimbot {
 			    		
 			    	if (Hemlock) {
 			    			ImGui::Text("Hemlock Burst AR");
+			    			ImGui::Checkbox("On Fire?##AdvancedHemlock", &HemlockFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedHemlock", &HemlockADS);
 					    	ImGui::SliderFloat("Speed##AdvancedHemlock", &HemlockSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Hemlock Burst AR\nHigher = Faster");
@@ -516,6 +606,9 @@ struct Aimbot {
 			    		
 			    	if (Repeater) {
 			    			ImGui::Text("30-30 Repeater");
+			    			ImGui::Checkbox("On Fire?##AdvancedRepeater", &RepeaterFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedRepeater", &RepeaterADS);
 					    	ImGui::SliderFloat("Speed##AdvancedRepeater", &RepeaterSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The 30-30 Repeater\nHigher = Faster");
@@ -529,6 +622,9 @@ struct Aimbot {
 			    		
 			    	if (Rampage) {
 			    			ImGui::Text("Rampage LMG");
+			    			ImGui::Checkbox("On Fire?##AdvancedRampage", &RampageFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedRampage", &RampageADS);
 					    	ImGui::SliderFloat("Speed##AdvancedRampage", &RampageSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Rampage LMG\nHigher = Faster");
@@ -542,6 +638,9 @@ struct Aimbot {
 			    		
 			    	if (CARSMG) {
 			    			ImGui::Text("C.A.R SMG");
+			    			ImGui::Checkbox("On Fire?##AdvancedCARSMG", &CARSMGFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedCARSMG", &CARSMGADS);
 					    	ImGui::SliderFloat("Speed##AdvancedCARSMG", &CARSMGSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The C.A.R SMG\nHigher = Faster");
@@ -557,6 +656,9 @@ struct Aimbot {
 		    	if (ImGui::CollapsingHeader("Energy", nullptr)) {
 			    	if (Havoc) {
 			    			ImGui::Text("Havoc");
+			    			ImGui::Checkbox("On Fire?##AdvancedHavoc", &HavocFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedHavoc", &HavocADS);
 					    	ImGui::SliderFloat("Speed##AdvancedHavoc", &HavocSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Havoc\nHigher = Faster");
@@ -570,6 +672,9 @@ struct Aimbot {
 			    		
 			    	if (Devotion) {
 			    			ImGui::Text("Devotion LMG");
+			    			ImGui::Checkbox("On Fire?##AdvancedDevotion", &DevotionFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedDevotion", &DevotionADS);
 					    	ImGui::SliderFloat("Speed##AdvancedDevotion", &DevotionSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Devotion LMG\nHigher = Faster");
@@ -583,6 +688,9 @@ struct Aimbot {
 			    		
 			    	if (LSTAR) {
 			    			ImGui::Text("L-Star EMG");
+			    			ImGui::Checkbox("On Fire?##AdvancedLSTAR", &LSTARFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedLSTAR", &LSTARADS);
 					    	ImGui::SliderFloat("Speed##AdvancedLSTAR", &LSTARSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The L-Star EMG\nHigher = Faster");
@@ -596,6 +704,9 @@ struct Aimbot {
 			    		
 			    	if (TripleTake) {
 			    			ImGui::Text("Triple-Take");
+			    			ImGui::Checkbox("On Fire?##AdvancedTripleTake", &TripleTakeFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedTripleTake", &TripleTakeADS);
 					    	ImGui::SliderFloat("Speed##AdvancedTripleTake", &TripleTakeSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Triple-Take\nHigher = Faster");
@@ -609,6 +720,9 @@ struct Aimbot {
 			    		
 			    	if (Volt) {
 			    			ImGui::Text("Volt");
+			    			ImGui::Checkbox("On Fire?##AdvancedVolt", &VoltFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedVolt", &VoltADS);
 					    	ImGui::SliderFloat("Speed##AdvancedVolt", &VoltSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Volt\nHigher = Faster");
@@ -622,6 +736,9 @@ struct Aimbot {
 			    		
 			    	if (Nemesis) {
 			    			ImGui::Text("Nemesis Burst AR");
+			    			ImGui::Checkbox("On Fire?##AdvancedNemesis", &NemesisFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedNemesis", &NemesisADS);
 					    	ImGui::SliderFloat("Speed##AdvancedNemesis", &NemesisSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Nemesis Burst AR\nHigher = Faster");
@@ -637,6 +754,9 @@ struct Aimbot {
 		    	if (ImGui::CollapsingHeader("Shotguns", nullptr)) {
 			    	if (Mozambique) {
 			    			ImGui::Text("Mozambique");
+			    			ImGui::Checkbox("On Fire?##AdvancedMozambique", &MozambiqueFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedMozambique", &MozambiqueADS);
 					    	ImGui::SliderFloat("Speed##AdvancedMozambique", &MozambiqueSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Mozambique\nHigher = Faster");
@@ -650,6 +770,9 @@ struct Aimbot {
 			    		
 			    	if (EVA8) {
 			    			ImGui::Text("EVA-8 Auto");
+			    			ImGui::Checkbox("On Fire?##AdvancedEVA8", &EVA8Fire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedEVA8", &EVA8ADS);
 					    	ImGui::SliderFloat("Speed##AdvancedEVA8", &EVA8Speed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The EVA-8 Auto\nHigher = Faster");
@@ -663,6 +786,9 @@ struct Aimbot {
 			    		
 			    	if (Peacekeeper) {
 			    			ImGui::Text("Peacekeeper");
+			    			ImGui::Checkbox("On Fire?##AdvancedPeacekeeper", &PeacekeeperFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedPeacekeeper", &PeacekeeperADS);
 					    	ImGui::SliderFloat("Speed##AdvancedPeacekeeper", &PeacekeeperSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Peacekeeper\nHigher = Faster");
@@ -676,6 +802,9 @@ struct Aimbot {
 			    		
 			    	if (Mastiff) {
 			    			ImGui::Text("Mastiff");
+			    			ImGui::Checkbox("On Fire?##AdvancedMastiff", &MastiffFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedMastiff", &MastiffADS);
 					    	ImGui::SliderFloat("Speed##AdvancedMastiff", &MastiffSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Mastiff\nHigher = Faster");
@@ -691,6 +820,9 @@ struct Aimbot {
 		    	if (ImGui::CollapsingHeader("Snipers", nullptr)) {
 			    	if (Longbow) {
 			    			ImGui::Text("Longbow DMR");
+			    			ImGui::Checkbox("On Fire?##AdvancedLongbow", &LongbowFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedLongbow", &LongbowADS);
 					    	ImGui::SliderFloat("Speed##AdvancedLongbow", &LongbowSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Longbow DMR\nHigher = Faster");
@@ -704,6 +836,9 @@ struct Aimbot {
 			    		
 			    	if (ChargeRifle) {
 			    			ImGui::Text("Charge Rifle");
+			    			ImGui::Checkbox("On Fire?##AdvancedChargeRifle", &ChargeRifleFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedChargeRifle", &ChargeRifleADS);
 					    	ImGui::SliderFloat("Speed##AdvancedChargeRifle", &ChargeRifleSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Charge Rifle\nHigher = Faster");
@@ -717,6 +852,9 @@ struct Aimbot {
 			    		
 			    	if (Sentinel) {
 			    			ImGui::Text("Sentinel");
+			    			ImGui::Checkbox("On Fire?##AdvancedSentinel", &SentinelFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedSentinel", &SentinelADS);
 					    	ImGui::SliderFloat("Speed##AdvancedSentinel", &SentinelSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Sentinel\nHigher = Faster");
@@ -732,6 +870,9 @@ struct Aimbot {
 		    	if (ImGui::CollapsingHeader("Legendary", nullptr)) {
 			    	if (Wingman) {
 			    			ImGui::Text("Wingman");
+			    			ImGui::Checkbox("On Fire?##AdvancedWingman", &WingmanFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedWingman", &WingmanADS);
 					    	ImGui::SliderFloat("Speed##AdvancedWingman", &WingmanSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Wingman\nHigher = Faster");
@@ -745,6 +886,9 @@ struct Aimbot {
 			    		
 			    	if (Prowler) {
 			    			ImGui::Text("Prowler Burst SMG");
+			    			ImGui::Checkbox("On Fire?##AdvancedProwler", &ProwlerFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedProwler", &ProwlerADS);
 					    	ImGui::SliderFloat("Speed##AdvancedProwler", &ProwlerSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Prowler Burst SMG\nHigher = Faster");
@@ -758,6 +902,9 @@ struct Aimbot {
 			    	
 			    	if (Bocek) {
 			    			ImGui::Text("Bocek Compound Bow");
+			    			ImGui::Checkbox("On Fire?##AdvancedBocek", &BocekFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedBocek", &BocekADS);
 					    	ImGui::SliderFloat("Speed##AdvancedBocek", &BocekSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Bocek Compound Bow\nHigher = Faster");
@@ -770,7 +917,10 @@ struct Aimbot {
 			    	}
 			    		
 			    	if (Kraber) {
-			    			ImGui::Text("Kraber .50-CAL Sniper");
+			    			ImGui::Text("Kraber .50-CAL Sniper");;
+			    			ImGui::Checkbox("On Fire?##AdvancedKraber", &KraberFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedKraber", &KraberADS);
 					    	ImGui::SliderFloat("Speed##AdvancedKraber", &KraberSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Kraber .50-CAL Sniper\nHigher = Faster");
@@ -784,6 +934,9 @@ struct Aimbot {
 			    	
 			    	if (Knife) {
 			    			ImGui::Text("Throwing Knife");
+			    			ImGui::Checkbox("On Fire?##AdvancedKnife", &ThrowingKnifeFire);
+			    			ImGui::SameLine();
+			    			ImGui::Checkbox("On ADS?##AdvancedKnife", &ThrowingKnifeADS);
 					    	ImGui::SliderFloat("Speed##AdvancedKnife", &ThrowingKnifeSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Throwing Knife\nHigher = Faster");
@@ -874,24 +1027,38 @@ struct Aimbot {
             
             //Advanced Weapons
             //Light
+            Config::Aimbot::P2020Fire = P2020Fire;
+            Config::Aimbot::P2020ADS = P2020ADS;
             Config::Aimbot::P2020Speed = P2020Speed;
             Config::Aimbot::P2020HipfireSmooth = P2020HipfireSmooth;
             Config::Aimbot::P2020ADSSmooth = P2020ADSSmooth;
+            Config::Aimbot::RE45Fire = RE45Fire;
+            Config::Aimbot::RE45ADS = RE45ADS;
             Config::Aimbot::RE45Speed = RE45Speed;
             Config::Aimbot::RE45HipfireSmooth = RE45HipfireSmooth;
             Config::Aimbot::RE45ADSSmooth = RE45ADSSmooth;
+            Config::Aimbot::AlternatorFire = AlternatorFire;
+            Config::Aimbot::AlternatorADS = AlternatorADS;
             Config::Aimbot::AlternatorSpeed = AlternatorSpeed;
             Config::Aimbot::AlternatorHipfireSmooth = AlternatorHipfireSmooth;
             Config::Aimbot::AlternatorADSSmooth = AlternatorADSSmooth;
+            Config::Aimbot::R99Fire = R99Fire;
+            Config::Aimbot::R99ADS = R99ADS;
             Config::Aimbot::R99Speed = R99Speed;
             Config::Aimbot::R99HipfireSmooth = R99HipfireSmooth;
             Config::Aimbot::R99ADSSmooth = R99ADSSmooth;
+            Config::Aimbot::R301Fire = R301Fire;
+            Config::Aimbot::R301ADS = R301ADS;
             Config::Aimbot::R301Speed = R301Speed;
             Config::Aimbot::R301HipfireSmooth = R301HipfireSmooth;
             Config::Aimbot::R301ADSSmooth = R301ADSSmooth;
+            Config::Aimbot::SpitfireFire = SpitfireFire;
+            Config::Aimbot::SpitfireADS = SpitfireADS;
             Config::Aimbot::SpitfireSpeed = SpitfireSpeed;
             Config::Aimbot::SpitfireHipfireSmooth = SpitfireHipfireSmooth;
             Config::Aimbot::SpitfireADSSmooth = SpitfireADSSmooth;
+            Config::Aimbot::G7Fire = G7Fire;
+            Config::Aimbot::G7ADS = G7ADS;
             Config::Aimbot::G7Speed = G7Speed;
             Config::Aimbot::G7HipfireSmooth = G7HipfireSmooth;
             Config::Aimbot::G7ADSSmooth = G7ADSSmooth;
@@ -899,76 +1066,122 @@ struct Aimbot {
             Config::Aimbot::FlatlineSpeed = FlatlineSpeed;
             Config::Aimbot::FlatlineHipfireSmooth = FlatlineHipfireSmooth;
             Config::Aimbot::FlatlineADSSmooth = FlatlineADSSmooth;
+            Config::Aimbot::SpitfireFire = SpitfireFire;
+            Config::Aimbot::SpitfireADS = SpitfireADS;
             Config::Aimbot::HemlockSpeed = HemlockSpeed;
             Config::Aimbot::HemlockHipfireSmooth = HemlockHipfireSmooth;
             Config::Aimbot::HemlockADSSmooth = HemlockADSSmooth;
+            Config::Aimbot::SpitfireFire = SpitfireFire;
+            Config::Aimbot::SpitfireADS = SpitfireADS;
             Config::Aimbot::RepeaterSpeed = RepeaterSpeed;
             Config::Aimbot::RepeaterHipfireSmooth = RepeaterHipfireSmooth;
             Config::Aimbot::RepeaterADSSmooth = RepeaterADSSmooth;
+            Config::Aimbot::SpitfireFire = SpitfireFire;
+            Config::Aimbot::SpitfireADS = SpitfireADS;
             Config::Aimbot::RampageSpeed = RampageSpeed;
             Config::Aimbot::RampageHipfireSmooth = RampageHipfireSmooth;
             Config::Aimbot::RampageADSSmooth = RampageADSSmooth;
+            Config::Aimbot::SpitfireFire = SpitfireFire;
+            Config::Aimbot::SpitfireADS = SpitfireADS;
             Config::Aimbot::CARSMGSpeed = CARSMGSpeed;
             Config::Aimbot::CARSMGHipfireSmooth = CARSMGHipfireSmooth;
             Config::Aimbot::CARSMGADSSmooth = CARSMGADSSmooth;
+            Config::Aimbot::SpitfireFire = SpitfireFire;
+            Config::Aimbot::SpitfireADS = SpitfireADS;
             //Energy
             Config::Aimbot::HavocSpeed = HavocSpeed;
             Config::Aimbot::HavocHipfireSmooth = HavocHipfireSmooth;
             Config::Aimbot::HavocADSSmooth = HavocADSSmooth;
+            Config::Aimbot::HavocFire = HavocFire;
+            Config::Aimbot::HavocADS = HavocADS;
             Config::Aimbot::DevotionSpeed = DevotionSpeed;
             Config::Aimbot::DevotionHipfireSmooth = DevotionHipfireSmooth;
             Config::Aimbot::DevotionADSSmooth = DevotionADSSmooth;
+            Config::Aimbot::DevotionFire = DevotionFire;
+            Config::Aimbot::DevotionADS = DevotionADS;
             Config::Aimbot::LSTARSpeed = LSTARSpeed;
             Config::Aimbot::LSTARHipfireSmooth = LSTARHipfireSmooth;
             Config::Aimbot::LSTARADSSmooth = LSTARADSSmooth;
+            Config::Aimbot::LSTARFire = LSTARFire;
+            Config::Aimbot::LSTARADS = LSTARADS;
             Config::Aimbot::TripleTakeSpeed = TripleTakeSpeed;
             Config::Aimbot::TripleTakeHipfireSmooth = TripleTakeHipfireSmooth;
             Config::Aimbot::TripleTakeADSSmooth = TripleTakeADSSmooth;
+            Config::Aimbot::TripleTakeFire = TripleTakeFire;
+            Config::Aimbot::TripleTakeADS = TripleTakeADS;
             Config::Aimbot::VoltSpeed = VoltSpeed;
             Config::Aimbot::VoltHipfireSmooth = VoltHipfireSmooth;
             Config::Aimbot::VoltADSSmooth = VoltADSSmooth;
+            Config::Aimbot::VoltFire = VoltFire;
+            Config::Aimbot::VoltADS = VoltADS;
             Config::Aimbot::NemesisSpeed = NemesisSpeed;
             Config::Aimbot::NemesisHipfireSmooth = NemesisHipfireSmooth;
             Config::Aimbot::NemesisADSSmooth = NemesisADSSmooth;
+            Config::Aimbot::NemesisFire = NemesisFire;
+            Config::Aimbot::NemesisADS = NemesisADS;
             //Shotguns
             Config::Aimbot::MozambiqueSpeed = MozambiqueSpeed;
             Config::Aimbot::MozambiqueHipfireSmooth = MozambiqueHipfireSmooth;
             Config::Aimbot::MozambiqueADSSmooth = MozambiqueADSSmooth;
+            Config::Aimbot::MozambiqueFire = MozambiqueFire;
+            Config::Aimbot::MozambiqueADS = MozambiqueADS;
             Config::Aimbot::EVA8Speed = EVA8Speed;
             Config::Aimbot::EVA8HipfireSmooth = EVA8HipfireSmooth;
             Config::Aimbot::EVA8ADSSmooth = EVA8ADSSmooth;
+            Config::Aimbot::EVA8Fire = EVA8Fire;
+            Config::Aimbot::EVA8ADS = EVA8ADS;
             Config::Aimbot::PeacekeeperSpeed = PeacekeeperSpeed;
             Config::Aimbot::PeacekeeperHipfireSmooth = PeacekeeperHipfireSmooth;
             Config::Aimbot::PeacekeeperADSSmooth = PeacekeeperADSSmooth;
+            Config::Aimbot::PeacekeeperFire = PeacekeeperFire;
+            Config::Aimbot::PeacekeeperADS = PeacekeeperADS;
             Config::Aimbot::MastiffSpeed = MastiffSpeed;
             Config::Aimbot::MastiffHipfireSmooth = MastiffHipfireSmooth;
             Config::Aimbot::MastiffADSSmooth = MastiffADSSmooth;
+            Config::Aimbot::MastiffFire = MastiffFire;
+            Config::Aimbot::MastiffADS = MastiffADS;
             //Snipers
             Config::Aimbot::LongbowSpeed = LongbowSpeed;
             Config::Aimbot::LongbowHipfireSmooth = LongbowHipfireSmooth;
             Config::Aimbot::LongbowADSSmooth = LongbowADSSmooth;
+            Config::Aimbot::LongbowFire = LongbowFire;
+            Config::Aimbot::LongbowADS = LongbowADS;
             Config::Aimbot::ChargeRifleSpeed = ChargeRifleSpeed;
             Config::Aimbot::ChargeRifleHipfireSmooth = ChargeRifleHipfireSmooth;
             Config::Aimbot::ChargeRifleADSSmooth = ChargeRifleADSSmooth;
+            Config::Aimbot::ChargeRifleFire = ChargeRifleFire;
+            Config::Aimbot::ChargeRifleADS = ChargeRifleADS;
             Config::Aimbot::SentinelSpeed = SentinelSpeed;
             Config::Aimbot::SentinelHipfireSmooth = SentinelHipfireSmooth;
             Config::Aimbot::SentinelADSSmooth = SentinelADSSmooth;
+            Config::Aimbot::SentinelFire = SentinelFire;
+            Config::Aimbot::SentinelADS = SentinelADS;
             //Legendary
             Config::Aimbot::WingmanSpeed = WingmanSpeed;
             Config::Aimbot::WingmanHipfireSmooth = WingmanHipfireSmooth;
             Config::Aimbot::WingmanADSSmooth = WingmanADSSmooth;
+            Config::Aimbot::WingmanFire = WingmanFire;
+            Config::Aimbot::WingmanADS = WingmanADS;
             Config::Aimbot::ProwlerSpeed = ProwlerSpeed;
             Config::Aimbot::ProwlerHipfireSmooth = ProwlerHipfireSmooth;
             Config::Aimbot::ProwlerADSSmooth = ProwlerADSSmooth;
+            Config::Aimbot::ProwlerFire = ProwlerFire;
+            Config::Aimbot::ProwlerADS = ProwlerADS;
             Config::Aimbot::BocekSpeed = BocekSpeed;
             Config::Aimbot::BocekHipfireSmooth = BocekHipfireSmooth;
             Config::Aimbot::BocekADSSmooth = BocekADSSmooth;
+            Config::Aimbot::BocekFire = BocekFire;
+            Config::Aimbot::BocekADS = BocekADS;
             Config::Aimbot::KraberSpeed = KraberSpeed;
             Config::Aimbot::KraberHipfireSmooth = KraberHipfireSmooth;
             Config::Aimbot::KraberADSSmooth = KraberADSSmooth;
+            Config::Aimbot::KraberFire = KraberFire;
+            Config::Aimbot::KraberADS = KraberADS;
             Config::Aimbot::ThrowingKnifeSpeed = ThrowingKnifeSpeed;
             Config::Aimbot::ThrowingKnifeHipfireSmooth = ThrowingKnifeHipfireSmooth;
             Config::Aimbot::ThrowingKnifeADSSmooth = ThrowingKnifeADSSmooth;
+            Config::Aimbot::ThrowingKnifeFire = ThrowingKnifeFire;
+            Config::Aimbot::ThrowingKnifeADS = ThrowingKnifeADS;
             
             return true;
         } catch (...) {
@@ -1053,155 +1266,215 @@ struct Aimbot {
     		int weaponHeld = Myself->WeaponIndex;
     		//Light Weapons
     		if (weaponHeld == 105) { //P2020
+    			Aimbot::OnFire = Aimbot::P2020Fire;
+    			Aimbot::OnADS = Aimbot::P2020ADS;
     			Aimbot::AdvancedSpeed = Aimbot::P2020Speed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::P2020HipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::P2020ADSSmooth;
     		}
-    		if (weaponHeld == 81) { //RE-45
+    		if (weaponHeld == 81) { //RE45
+    			Aimbot::OnFire = Aimbot::RE45Fire;
+    			Aimbot::OnADS = Aimbot::RE45ADS;
     			Aimbot::AdvancedSpeed = Aimbot::RE45Speed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::RE45HipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::RE45ADSSmooth;
     		}
     		if (weaponHeld == 80) { //Alternator
+    			Aimbot::OnFire = Aimbot::AlternatorFire;
+    			Aimbot::OnADS = Aimbot::AlternatorADS;
     			Aimbot::AdvancedSpeed = Aimbot::AlternatorSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::AlternatorHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::AlternatorADSSmooth;
     		}
-    		if (weaponHeld == 104) { //R-99
+    		if (weaponHeld == 104) { //R99
+    			Aimbot::OnFire = Aimbot::R99Fire;
+    			Aimbot::OnADS = Aimbot::R99ADS;
     			Aimbot::AdvancedSpeed = Aimbot::R99Speed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::R99HipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::R99ADSSmooth;
     		}
-    		if (weaponHeld == 0) { //R-301
+    		if (weaponHeld == 0) { //R301
+    			Aimbot::OnFire = Aimbot::R301Fire;
+    			Aimbot::OnADS = Aimbot::R301ADS;
     			Aimbot::AdvancedSpeed = Aimbot::R301Speed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::R301HipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::R301ADSSmooth;
     		}
     		if (weaponHeld == 106) { //Spitfire
+    			Aimbot::OnFire = Aimbot::SpitfireFire;
+    			Aimbot::OnADS = Aimbot::SpitfireADS;
     			Aimbot::AdvancedSpeed = Aimbot::SpitfireSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::SpitfireHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::SpitfireADSSmooth;
     		}
     		if (weaponHeld == 89) { //G7
+    			Aimbot::OnFire = Aimbot::G7Fire;
+    			Aimbot::OnADS = Aimbot::G7ADS;
     			Aimbot::AdvancedSpeed = Aimbot::G7Speed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::G7HipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::G7ADSSmooth;
     		}
     		//Heavy Weapons
     		if (weaponHeld == 112) { //CARSMG
+    			Aimbot::OnFire = Aimbot::CARSMGFire;
+    			Aimbot::OnADS = Aimbot::CARSMGADS;
     			Aimbot::AdvancedSpeed = Aimbot::CARSMGSpeed;
     			Aimbot::AdvancedADSSmooth = Aimbot::CARSMGADSSmooth;
     		}
     		if (weaponHeld == 21) { //Rampage
+    			Aimbot::OnFire = Aimbot::RampageFire;
+    			Aimbot::OnADS = Aimbot::RampageADS;
     			Aimbot::AdvancedSpeed = Aimbot::RampageSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::RampageHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::RampageADSSmooth;
     		}
     		if (weaponHeld == 111) { //Repeater
+    			Aimbot::OnFire = Aimbot::RepeaterFire;
+    			Aimbot::OnADS = Aimbot::RepeaterADS;
     			Aimbot::AdvancedSpeed = Aimbot::RepeaterSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::RepeaterHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::RepeaterADSSmooth;
     		}
     		if (weaponHeld == 90) { //Hemlock
+    			Aimbot::OnFire = Aimbot::HemlockFire;
+    			Aimbot::OnADS = Aimbot::HemlockADS;
     			Aimbot::AdvancedSpeed = Aimbot::HemlockSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::HemlockHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::HemlockADSSmooth;
     		}
     		if (weaponHeld == 88) { //Flatline
+    			Aimbot::OnFire = Aimbot::FlatlineFire;
+    			Aimbot::OnADS = Aimbot::FlatlineADS;
     			Aimbot::AdvancedSpeed = Aimbot::FlatlineSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::FlatlineHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::FlatlineADSSmooth;
     		}
     		//Energy Weapons
     		if (weaponHeld == 113) { //Nemesis
+    			Aimbot::OnFire = Aimbot::NemesisFire;
+    			Aimbot::OnADS = Aimbot::NemesisADS;
     			Aimbot::AdvancedSpeed = Aimbot::NemesisSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::NemesisHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::NemesisADSSmooth;
     		}
     		if (weaponHeld == 110) { //Volt
+    			Aimbot::OnFire = Aimbot::VoltFire;
+    			Aimbot::OnADS = Aimbot::VoltADS;
     			Aimbot::AdvancedSpeed = Aimbot::VoltSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::VoltHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::VoltADSSmooth;
     		}
     		if (weaponHeld == 107) { //TripleTake
+    			Aimbot::OnFire = Aimbot::TripleTakeFire;
+    			Aimbot::OnADS = Aimbot::TripleTakeADS;
     			Aimbot::AdvancedSpeed = Aimbot::TripleTakeSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::TripleTakeHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::TripleTakeADSSmooth;
     		}
     		if (weaponHeld == 93) { //LSTAR
+    			Aimbot::OnFire = Aimbot::LSTARFire;
+    			Aimbot::OnADS = Aimbot::LSTARADS;
     			Aimbot::AdvancedSpeed = Aimbot::LSTARSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::LSTARHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::LSTARADSSmooth;
     		}
     		if (weaponHeld == 84) { //Devotion
+    			Aimbot::OnFire = Aimbot::DevotionFire;
+    			Aimbot::OnADS = Aimbot::DevotionADS;
     			Aimbot::AdvancedSpeed = Aimbot::DevotionSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::DevotionHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::DevotionADSSmooth;
     		}
     		if (weaponHeld == 86) { //Havoc
+    			Aimbot::OnFire = Aimbot::HavocFire;
+    			Aimbot::OnADS = Aimbot::HavocADS;
     			Aimbot::AdvancedSpeed = Aimbot::HavocSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::HavocHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::HavocADSSmooth;
     		}
     		//Shotguns
     		if (weaponHeld == 96) { //Mozambique
+    			Aimbot::OnFire = Aimbot::MozambiqueFire;
+    			Aimbot::OnADS = Aimbot::MozambiqueADS;
     			Aimbot::AdvancedSpeed = Aimbot::MozambiqueSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::MozambiqueHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::MozambiqueADSSmooth;
     		}
     		if (weaponHeld == 87) { //EVA8
+    			Aimbot::OnFire = Aimbot::EVA8Fire;
+    			Aimbot::OnADS = Aimbot::EVA8ADS;
     			Aimbot::AdvancedSpeed = Aimbot::EVA8Speed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::EVA8HipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::EVA8ADSSmooth;
     		}
     		if (weaponHeld == 103) { //Peacekeeper
+    			Aimbot::OnFire = Aimbot::PeacekeeperFire;
+    			Aimbot::OnADS = Aimbot::PeacekeeperADS;
     			Aimbot::AdvancedSpeed = Aimbot::PeacekeeperSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::PeacekeeperHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::PeacekeeperADSSmooth;
     		}
     		if (weaponHeld == 95) { //Mastiff
+    			Aimbot::OnFire = Aimbot::MastiffFire;
+    			Aimbot::OnADS = Aimbot::MastiffADS;
     			Aimbot::AdvancedSpeed = Aimbot::MastiffSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::MastiffHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::MastiffADSSmooth;
     		}
     		//Snipers
     		if (weaponHeld == 1) { //Sentinel
+    			Aimbot::OnFire = Aimbot::SentinelFire;
+    			Aimbot::OnADS = Aimbot::SentinelADS;
     			Aimbot::AdvancedSpeed = Aimbot::SentinelSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::SentinelHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::SentinelADSSmooth;
     		}
     		if (weaponHeld == 83) { //ChargeRifle
+    			Aimbot::OnFire = Aimbot::ChargeRifleFire;
+    			Aimbot::OnADS = Aimbot::ChargeRifleADS;
     			Aimbot::AdvancedSpeed = Aimbot::ChargeRifleSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::ChargeRifleHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::ChargeRifleADSSmooth;
     		}
     		if (weaponHeld == 85) { //Longbow
+    			Aimbot::OnFire = Aimbot::LongbowFire;
+    			Aimbot::OnADS = Aimbot::LongbowADS;
     			Aimbot::AdvancedSpeed = Aimbot::LongbowSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::LongbowHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::LongbowADSSmooth;
     		}
     		//Legendary Weapons
     		if (weaponHeld == 109) { //Wingman
+    			Aimbot::OnFire = Aimbot::WingmanFire;
+    			Aimbot::OnADS = Aimbot::WingmanADS;
     			Aimbot::AdvancedSpeed = Aimbot::WingmanSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::WingmanHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::WingmanADSSmooth;
     		}
     		if (weaponHeld == 102) { //Prowler
+    			Aimbot::OnFire = Aimbot::ProwlerFire;
+    			Aimbot::OnADS = Aimbot::ProwlerADS;
     			Aimbot::AdvancedSpeed = Aimbot::ProwlerSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::ProwlerHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::ProwlerADSSmooth;
     		}
     		if (weaponHeld == 2) { //Bocek
+    			Aimbot::OnFire = Aimbot::BocekFire;
+    			Aimbot::OnADS = Aimbot::BocekADS;
     			Aimbot::AdvancedSpeed = Aimbot::BocekSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::BocekHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::BocekADSSmooth;
     		}
     		if (weaponHeld == 92) { //Kraber
+    			Aimbot::OnFire = Aimbot::KraberFire;
+    			Aimbot::OnADS = Aimbot::KraberADS;
     			Aimbot::AdvancedSpeed = Aimbot::KraberSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::KraberHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::KraberADSSmooth;
     		}
     		if (weaponHeld == 163) { //ThrowingKnife
+    			Aimbot::OnFire = Aimbot::ThrowingKnifeFire;
+    			Aimbot::OnADS = Aimbot::ThrowingKnifeADS;
     			Aimbot::AdvancedSpeed = Aimbot::ThrowingKnifeSpeed;
     			Aimbot::AdvancedHipfireSmooth = Aimbot::ThrowingKnifeHipfireSmooth;
     			Aimbot::AdvancedADSSmooth = Aimbot::ThrowingKnifeADSSmooth;
@@ -1337,6 +1610,7 @@ struct Aimbot {
 		}
 	    }
 	}
+
 
     void StartAiming() {
         // Get Target Angle
