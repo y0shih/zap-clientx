@@ -8,6 +8,27 @@ All credits to original owners
 Instructions & Menu Previews are down below
 
 # Current Changelog:
+    28.01.24
+    Main Things:
+       - You no longer need to save config after enabling/disabling "Team Gamemode"
+       - Somethings should save to config now (Still Not Colors)
+    Aimbot:
+       - Replaced "Smoothing" with "Hipfire Smoothing" and "ADS Smoothing"; Self Explanitory
+           - Applied to advanced aim settings aswell, dont worry.
+    Triggerbot:
+       - Added "Always On For Shotguns". If OnADS + Always On For Shotguns is enabled, then you dont need 
+         to ADS with a shotgun to shoot with triggerbot, it will always shoot.
+    Glow:
+       - Added Shield Color Pickers
+       - Added No Shield/Low HP Color Picker (Should fix players having the same color behind wall)
+    Sense:
+       - Updated Visibility Check
+    Notes:
+       - Glow Max Distance doesnt work (?)
+       - For legit players I recommend not using Aimbot Prediction & RCS
+
+------------------------------------------------------------------------------------------------------------
+
     27.01.24 - The Advanced Update
     Main Things:
        - Removed Theme + Menu Tab, moved to Home.
