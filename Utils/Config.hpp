@@ -35,11 +35,16 @@ namespace Config {
         
         bool OnFire = true;
         bool OnADS = true;
+        bool VisCheck = true;
+        bool TeamCheck = true;
              
         bool PredictMovement = true;
         bool PredictBulletDrop = true;
         float Speed = 20;
         float Smooth = 0.9;
+        float HipfireSmooth = 0.9;
+        float ADSSmooth = 0.9;
+        float SmoothDistance = 100;
         int Delay = 10;
         float FOV = 10;
         float ZoomScale = 3.0;
@@ -85,76 +90,108 @@ namespace Config {
 	bool Kraber = true;
 	bool Knife = true;
 	
-	//---------------Advanced---------------//
-	bool AdvancedAim = false;
-    
-	//Weapons
-	//Light
-	float P2020Speed = 10;
-	float P2020Smooth = 0.9;
-	float RE45Speed = 10;
-	float RE45Smooth = 0.9;
-	float AlternatorSpeed = 10;
-	float AlternatorSmooth = 0.9;
-	float R99Speed = 10;
-	float R99Smooth = 0.9;
-	float R301Speed = 10;
-	float R301Smooth = 0.9;
-	float SpitfireSpeed = 10;
-	float SpitfireSmooth = 0.9;
-	float G7Speed = 10;
-	float G7Smooth = 0.9;
-	//Heavy
-	float FlatlineSpeed = 10;
-	float FlatlineSmooth = 0.9;
-	float HemlockSpeed = 10;
-	float HemlockSmooth = 0.9;
-	float RepeaterSpeed = 10;
-	float RepeaterSmooth = 0.9;
-	float RampageSpeed = 10;
-	float RampageSmooth = 0.9;
-	float CARSMGSpeed = 10;
-	float CARSMGSmooth = 0.9;
-	//Energy
-	float HavocSpeed = 10;
-	float HavocSmooth = 0.9;
-	float DevotionSpeed = 10;
-	float DevotionSmooth = 0.9;
-	float LSTARSpeed = 10;
-	float LSTARSmooth = 0.9;
-	float TripleTakeSpeed = 10;
-	float TripleTakeSmooth = 0.9;
-	float VoltSpeed = 10;
-	float VoltSmooth = 0.9;
-	float NemesisSpeed = 10;
-	float NemesisSmooth = 0.9;
-	//Shotguns
-	float MozambiqueSpeed = 10;
-	float MozambiqueSmooth = 0.9;
-	float EVA8Speed = 10;
-	float EVA8Smooth = 0.9;
-	float PeacekeeperSpeed = 10;
-	float PeacekeeperSmooth = 0.9;
-	float MastiffSpeed = 10;
-	float MastiffSmooth = 0.9;
-	//Snipers
-	float LongbowSpeed = 10;
-	float LongbowSmooth = 0.9;
-	float ChargeRifleSpeed = 10;
-	float ChargeRifleSmooth = 0.9;
-	float SentinelSpeed = 10;
-	float SentinelSmooth = 0.9;
-	//Legendary
-	float WingmanSpeed = 10;
-	float WingmanSmooth = 0.9;
-	float ProwlerSpeed = 10;
-	float ProwlerSmooth = 0.9;
-	float BocekSpeed = 10;
-	float BocekSmooth = 0.9;
-	float KraberSpeed = 10;
-	float KraberSmooth = 0.9;
-	float ThrowingKnifeSpeed = 10;
-	float ThrowingKnifeSmooth = 0.9;
+	    //---------------Advanced---------------//
+	    bool AdvancedAim = false;
+	    float AdvancedSpeed = 20;
+	    float AdvancedSmooth = 0.99;
+	    float AdvancedHipfireSmooth = 0.99;
+	    float AdvancedADSSmooth = 0.99;
+		    
+	    float P2020Speed = 10;
+	    float P2020HipfireSmooth = 0.99;
+	    float P2020ADSSmooth = 0.99;
+	    float RE45Speed = 0.99;
+	    float RE45HipfireSmooth = 10;
+	    float RE45ADSSmooth = 0.99;
+	    float AlternatorSpeed = 10;
+	    float AlternatorHipfireSmooth = 0.99;
+	    float AlternatorADSSmooth = 0.99;
+	    float R99Speed = 10;
+	    float R99HipfireSmooth = 0.99;
+	    float R99ADSSmooth = 0.99;
+	    float R301Speed = 10;
+	    float R301HipfireSmooth = 0.99;
+	    float R301ADSSmooth = 0.99;
+	    float SpitfireSpeed = 10;
+	    float SpitfireHipfireSmooth = 0.99;
+	    float SpitfireADSSmooth = 0.99;
+	    float G7Speed = 10;
+	    float G7HipfireSmooth = 0.99;
+	    float G7ADSSmooth = 0.99;
+	    //Heavy
+	    float FlatlineSpeed = 10;
+	    float FlatlineHipfireSmooth = 0.99;
+	    float FlatlineADSSmooth = 0.99;
+	    float HemlockSpeed = 10;
+	    float HemlockHipfireSmooth = 0.99;
+	    float HemlockADSSmooth = 0.99;
+	    float RepeaterSpeed = 10;
+	    float RepeaterHipfireSmooth = 0.99;
+	    float RepeaterADSSmooth = 0.99;
+	    float RampageSpeed = 10;
+	    float RampageHipfireSmooth = 0.99;
+	    float RampageADSSmooth = 0.99;
+	    float CARSMGSpeed = 10;
+	    float CARSMGHipfireSmooth = 0.99;
+	    float CARSMGADSSmooth = 0.99;
+	    //Energy
+	    float HavocSpeed = 10;
+	    float HavocHipfireSmooth = 0.99;
+	    float HavocADSSmooth = 0.99;
+	    float DevotionSpeed = 10;
+	    float DevotionHipfireSmooth = 0.99;
+	    float DevotionADSSmooth = 0.99;
+	    float LSTARSpeed = 10;
+	    float LSTARHipfireSmooth = 0.99;
+	    float LSTARADSSmooth = 0.99;
+	    float TripleTakeSpeed = 10;
+	    float TripleTakeHipfireSmooth = 0.99;
+	    float TripleTakeADSSmooth = 0.99;
+	    float VoltSpeed = 10;
+	    float VoltHipfireSmooth = 0.99;
+	    float VoltADSSmooth = 0.99;
+	    float NemesisSpeed = 10;
+	    float NemesisHipfireSmooth = 0.99;
+	    float NemesisADSSmooth = 0.99;
+	    //Shotguns
+	    float MozambiqueSpeed = 10;
+	    float MozambiqueHipfireSmooth = 0.99;
+	    float MozambiqueADSSmooth = 0.99;
+	    float EVA8Speed = 10;
+	    float EVA8HipfireSmooth = 0.99;
+	    float EVA8ADSSmooth = 0.99;
+	    float PeacekeeperSpeed = 10;
+	    float PeacekeeperHipfireSmooth = 0.99;
+	    float PeacekeeperADSSmooth = 0.99;
+	    float MastiffSpeed = 10;
+	    float MastiffHipfireSmooth = 0.99;
+	    float MastiffADSSmooth = 0.99;
+	    //Snipers
+	    float LongbowSpeed = 10;
+	    float LongbowHipfireSmooth = 0.99;
+	    float LongbowADSSmooth = 0.99;
+	    float ChargeRifleSpeed = 10;
+	    float ChargeRifleHipfireSmooth = 0.99;
+	    float ChargeRifleADSSmooth = 0.99;
+	    float SentinelSpeed = 10;
+	    float SentinelHipfireSmooth = 0.99;
+	    float SentinelADSSmooth = 0.99;
+	    //Legendary
+	    float WingmanSpeed = 10;
+	    float WingmanHipfireSmooth = 0.99;
+	    float WingmanADSSmooth = 0.99;
+	    float ProwlerSpeed = 10;
+	    float ProwlerHipfireSmooth = 0.99;
+	    float ProwlerADSSmooth = 0.99;
+	    float KraberSpeed = 10;
+	    float KraberHipfireSmooth = 0.99;
+	    float KraberADSSmooth = 0.99;
+	    float BocekSpeed = 10;
+	    float BocekHipfireSmooth = 0.99;
+	    float BocekADSSmooth = 0.99;
+	    float ThrowingKnifeSpeed = 10;
+	    float ThrowingKnifeHipfireSmooth = 0.99;
+	    float ThrowingKnifeADSSmooth = 0.99;
 	
     };
     
@@ -298,24 +335,24 @@ namespace Config {
     bool Skeleton = true;
     float SkeletonThickness = 1.0;
     float ESPMaxDistance = 200;
-    bool ShowNear = false;
-    bool DrawSeer = false;
+    bool ShowNear = true;
+    bool DrawSeer = true;
     bool DrawStatus = true;
     bool HealthBar = true;
     bool ShieldBar = true;
-    bool DrawWeapon = true;
+    bool DrawWeapon = false;
     bool ShowLegend = false;
-    bool WeaponColorType = true;
+    bool WeaponColorType = false;
     float BarThickness = 2.0;
     bool ShowMaxStatusValues = true;
     bool DrawDistance = false;
     bool DrawFOVCircle = true;
     bool DrawFilledFOVCircle = false;
     float FOVThickness = 1.0;
-    bool DrawNames = false;
+    bool DrawNames = true;
     int TracerPos = 0;
     int TracerBone = 0;
-    bool DrawTracers = false;
+    bool DrawTracers = true;
     float TracerThickness = 2.0;
     bool ShowSpectators = true;
     bool DrawCrosshair = true;
@@ -358,6 +395,7 @@ namespace Config {
     namespace Triggerbot {
         bool Enabled = true;
         bool OnADS = true;
+        bool HipfireShotguns = false;
         float Range = 200;
         
         //Weapons
@@ -519,6 +557,10 @@ namespace Modules {
         bool OnADS = false;
         float Range = 200;
     };
+    
+    namespace Home {
+    	bool TeamGamemode = true;
+    };
 };
 
 void UpdateConfig() {
@@ -530,11 +572,16 @@ void UpdateConfig() {
         WritePair(Aimbot, HitBox);
         WritePair(Aimbot, OnFire);
         WritePair(Aimbot, OnADS);
+        WritePair(Aimbot, VisCheck);
+        WritePair(Aimbot, TeamCheck);
         WritePair(Aimbot, PredictMovement);
         WritePair(Aimbot, PredictBulletDrop);
         WritePair(Aimbot, Speed);
         WritePair(Aimbot, Smooth);
+        WritePair(Aimbot, HipfireSmooth);
+        WritePair(Aimbot, ADSSmooth);
         WritePair(Aimbot, Delay);
+        WritePair(Aimbot, SmoothDistance);
         WritePair(Aimbot, FOV);
         WritePair(Aimbot, ZoomScale);
         WritePair(Aimbot, MinDistance);
@@ -580,73 +627,107 @@ void UpdateConfig() {
 	
 	//---------------Advanced---------------//
 	WritePair(Aimbot, AdvancedAim);
+	WritePair(Aimbot, AdvancedSpeed);
+	WritePair(Aimbot, AdvancedSmooth);
+	WritePair(Aimbot, AdvancedHipfireSmooth);
+	WritePair(Aimbot, AdvancedADSSmooth);
         //Weapons
 	//Light
 	WritePair(Aimbot, P2020Speed);
-	WritePair(Aimbot, P2020Smooth);
+	WritePair(Aimbot, P2020HipfireSmooth);
+	WritePair(Aimbot, P2020ADSSmooth);
 	WritePair(Aimbot, RE45Speed);
-	WritePair(Aimbot, RE45Smooth);
+	WritePair(Aimbot, RE45HipfireSmooth);
+	WritePair(Aimbot, RE45ADSSmooth);
 	WritePair(Aimbot, AlternatorSpeed);
-	WritePair(Aimbot, AlternatorSmooth);
+	WritePair(Aimbot, AlternatorHipfireSmooth);
+	WritePair(Aimbot, AlternatorADSSmooth);
 	WritePair(Aimbot, R99Speed);
-	WritePair(Aimbot, R99Smooth);
+	WritePair(Aimbot, R99HipfireSmooth);
+	WritePair(Aimbot, R99ADSSmooth);
 	WritePair(Aimbot, R301Speed);
-	WritePair(Aimbot, R301Smooth);
+	WritePair(Aimbot, R301HipfireSmooth);
+	WritePair(Aimbot, R301ADSSmooth);
 	WritePair(Aimbot, SpitfireSpeed);
-	WritePair(Aimbot, SpitfireSmooth);
+	WritePair(Aimbot, SpitfireHipfireSmooth);
+	WritePair(Aimbot, SpitfireADSSmooth);
 	WritePair(Aimbot, G7Speed); 
-	WritePair(Aimbot, G7Smooth);
+	WritePair(Aimbot, G7HipfireSmooth);
+	WritePair(Aimbot, G7ADSSmooth);
 	//Heavy
 	WritePair(Aimbot, FlatlineSpeed);
-	WritePair(Aimbot, FlatlineSmooth);
+	WritePair(Aimbot, FlatlineHipfireSmooth);
+	WritePair(Aimbot, FlatlineADSSmooth);
 	WritePair(Aimbot, HemlockSpeed);
-	WritePair(Aimbot, HemlockSmooth);
+	WritePair(Aimbot, HemlockHipfireSmooth);
+	WritePair(Aimbot, HemlockADSSmooth);
 	WritePair(Aimbot, RepeaterSpeed);
-	WritePair(Aimbot, RepeaterSmooth);
+	WritePair(Aimbot, RepeaterHipfireSmooth);
+	WritePair(Aimbot, RepeaterADSSmooth);
 	WritePair(Aimbot, RampageSpeed);
-	WritePair(Aimbot, RampageSmooth);
+	WritePair(Aimbot, RampageHipfireSmooth);
+	WritePair(Aimbot, RampageADSSmooth);
 	WritePair(Aimbot, CARSMGSpeed);
-	WritePair(Aimbot, CARSMGSmooth);
+	WritePair(Aimbot, CARSMGHipfireSmooth);
+	WritePair(Aimbot, CARSMGADSSmooth);
 	//Energy
 	WritePair(Aimbot, HavocSpeed);
-	WritePair(Aimbot, HavocSmooth);
+	WritePair(Aimbot, HavocHipfireSmooth);
+	WritePair(Aimbot, HavocADSSmooth);
 	WritePair(Aimbot, DevotionSpeed);
-	WritePair(Aimbot, DevotionSmooth);
+	WritePair(Aimbot, DevotionHipfireSmooth);
+	WritePair(Aimbot, DevotionADSSmooth);
 	WritePair(Aimbot, LSTARSpeed);
-	WritePair(Aimbot, LSTARSmooth);
+	WritePair(Aimbot, LSTARHipfireSmooth);
+	WritePair(Aimbot, LSTARADSSmooth);
 	WritePair(Aimbot, TripleTakeSpeed);
-	WritePair(Aimbot, TripleTakeSmooth);
+	WritePair(Aimbot, TripleTakeHipfireSmooth);
+	WritePair(Aimbot, TripleTakeADSSmooth);
 	WritePair(Aimbot, VoltSpeed);
-	WritePair(Aimbot, VoltSmooth);
+	WritePair(Aimbot, VoltHipfireSmooth);
+	WritePair(Aimbot, VoltADSSmooth);
 	WritePair(Aimbot, NemesisSpeed);
-	WritePair(Aimbot, NemesisSmooth);
+	WritePair(Aimbot, NemesisHipfireSmooth);
+	WritePair(Aimbot, NemesisADSSmooth);
 	//Shotgun
 	WritePair(Aimbot, MozambiqueSpeed);
-	WritePair(Aimbot, MozambiqueSmooth);
+	WritePair(Aimbot, MozambiqueHipfireSmooth);
+	WritePair(Aimbot, MozambiqueADSSmooth);
 	WritePair(Aimbot, EVA8Speed);
-	WritePair(Aimbot, EVA8Smooth);
+	WritePair(Aimbot, EVA8HipfireSmooth);
+	WritePair(Aimbot, EVA8ADSSmooth);
 	WritePair(Aimbot, PeacekeeperSpeed);
-	WritePair(Aimbot, PeacekeeperSmooth);
+	WritePair(Aimbot, PeacekeeperHipfireSmooth);
+	WritePair(Aimbot, PeacekeeperADSSmooth);
 	WritePair(Aimbot, MastiffSpeed);
-	WritePair(Aimbot, MastiffSmooth);   
+	WritePair(Aimbot, MastiffHipfireSmooth);
+	WritePair(Aimbot, MastiffADSSmooth);
 	//Snipers
 	WritePair(Aimbot, LongbowSpeed);
-	WritePair(Aimbot, LongbowSmooth);
+	WritePair(Aimbot, LongbowHipfireSmooth);
+	WritePair(Aimbot, LongbowADSSmooth);
 	WritePair(Aimbot, ChargeRifleSpeed);
-	WritePair(Aimbot, ChargeRifleSmooth);
+	WritePair(Aimbot, ChargeRifleHipfireSmooth);
+	WritePair(Aimbot, ChargeRifleADSSmooth);
 	WritePair(Aimbot, SentinelSpeed);    
-	WritePair(Aimbot, SentinelSmooth);
+	WritePair(Aimbot, SentinelHipfireSmooth);
+	WritePair(Aimbot, SentinelADSSmooth);
 	//Legendary
 	WritePair(Aimbot, WingmanSpeed);
-	WritePair(Aimbot, WingmanSmooth);
+	WritePair(Aimbot, WingmanHipfireSmooth);
+	WritePair(Aimbot, WingmanADSSmooth);
 	WritePair(Aimbot, ProwlerSpeed);
-	WritePair(Aimbot, ProwlerSmooth);
+	WritePair(Aimbot, ProwlerHipfireSmooth);
+	WritePair(Aimbot, ProwlerADSSmooth);
 	WritePair(Aimbot, BocekSpeed);
-	WritePair(Aimbot, BocekSmooth);
+	WritePair(Aimbot, BocekHipfireSmooth);
+	WritePair(Aimbot, BocekADSSmooth);
 	WritePair(Aimbot, KraberSpeed);
-	WritePair(Aimbot, KraberSmooth);
+	WritePair(Aimbot, KraberHipfireSmooth);
+	WritePair(Aimbot, KraberADSSmooth);
 	WritePair(Aimbot, ThrowingKnifeSpeed);
-	WritePair(Aimbot, ThrowingKnifeSmooth);
+	WritePair(Aimbot, ThrowingKnifeHipfireSmooth);
+	WritePair(Aimbot, ThrowingKnifeADSSmooth);
         
         WriteSection(RCS);
         WritePair(RCS, RCSEnabled);
@@ -802,6 +883,7 @@ void UpdateConfig() {
         WriteSection(Triggerbot);
         WritePair(Triggerbot, Enabled);
         WritePair(Triggerbot, OnADS);
+        WritePair(Triggerbot, HipfireShotguns);
         WritePair(Triggerbot, Range);
         //Weapons
 	//Light
@@ -909,10 +991,15 @@ bool ReadConfig(const std::string &configFile) {
     ReadInt(Aimbot, HitBox);
     ReadBool(Aimbot, OnFire);
     ReadBool(Aimbot, OnADS);
+    ReadBool(Aimbot, VisCheck);
+    ReadBool(Aimbot, TeamCheck);
     ReadBool(Aimbot, PredictMovement);
     ReadBool(Aimbot, PredictBulletDrop);
     ReadFloat(Aimbot, Speed);
     ReadFloat(Aimbot, Smooth);
+    ReadFloat(Aimbot, HipfireSmooth);
+    ReadFloat(Aimbot, ADSSmooth);
+    ReadFloat(Aimbot, SmoothDistance);
     ReadInt(Aimbot, Delay);
     ReadFloat(Aimbot, FOV);
     ReadFloat(Aimbot, ZoomScale);
@@ -959,73 +1046,107 @@ bool ReadConfig(const std::string &configFile) {
 	
 	//---------------Advanced---------------//
 	ReadBool(Aimbot, AdvancedAim);
+	ReadFloat(Aimbot, AdvancedSpeed);
+	ReadFloat(Aimbot, AdvancedSmooth);
+	ReadFloat(Aimbot, AdvancedHipfireSmooth);
+	ReadFloat(Aimbot, AdvancedADSSmooth);
         //Weapons
 	//Light
 	ReadFloat(Aimbot, P2020Speed);
-	ReadFloat(Aimbot, P2020Smooth);
+	ReadFloat(Aimbot, P2020HipfireSmooth);
+	ReadFloat(Aimbot, P2020ADSSmooth);
 	ReadFloat(Aimbot, RE45Speed);
-	ReadFloat(Aimbot, RE45Smooth);
+	ReadFloat(Aimbot, RE45HipfireSmooth);
+	ReadFloat(Aimbot, RE45ADSSmooth);
 	ReadFloat(Aimbot, AlternatorSpeed);
-	ReadFloat(Aimbot, AlternatorSmooth);
+	ReadFloat(Aimbot, AlternatorHipfireSmooth);
+	ReadFloat(Aimbot, AlternatorADSSmooth);
 	ReadFloat(Aimbot, R99Speed);
-	ReadFloat(Aimbot, R99Smooth);
+	ReadFloat(Aimbot, R99HipfireSmooth);
+	ReadFloat(Aimbot, R99ADSSmooth);
 	ReadFloat(Aimbot, R301Speed);
-	ReadFloat(Aimbot, R301Smooth);
+	ReadFloat(Aimbot, R301HipfireSmooth);
+	ReadFloat(Aimbot, R301ADSSmooth);
 	ReadFloat(Aimbot, SpitfireSpeed);
-	ReadFloat(Aimbot, SpitfireSmooth);
+	ReadFloat(Aimbot, SpitfireHipfireSmooth);
+	ReadFloat(Aimbot, SpitfireADSSmooth);
 	ReadFloat(Aimbot, G7Speed); 
-	ReadFloat(Aimbot, G7Smooth);
+	ReadFloat(Aimbot, G7HipfireSmooth);
+	ReadFloat(Aimbot, G7ADSSmooth);
 	//Heavy
 	ReadFloat(Aimbot, FlatlineSpeed);
-	ReadFloat(Aimbot, FlatlineSmooth);
+	ReadFloat(Aimbot, FlatlineHipfireSmooth);
+	ReadFloat(Aimbot, FlatlineADSSmooth);
 	ReadFloat(Aimbot, HemlockSpeed);
-	ReadFloat(Aimbot, HemlockSmooth);
+	ReadFloat(Aimbot, HemlockHipfireSmooth);
+	ReadFloat(Aimbot, HemlockADSSmooth);
 	ReadFloat(Aimbot, RepeaterSpeed);
-	ReadFloat(Aimbot, RepeaterSmooth);
+	ReadFloat(Aimbot, RepeaterHipfireSmooth);
+	ReadFloat(Aimbot, RepeaterADSSmooth);
 	ReadFloat(Aimbot, RampageSpeed);
-	ReadFloat(Aimbot, RampageSmooth);
+	ReadFloat(Aimbot, RampageHipfireSmooth);
+	ReadFloat(Aimbot, RampageADSSmooth);
 	ReadFloat(Aimbot, CARSMGSpeed);
-	ReadFloat(Aimbot, CARSMGSmooth);
+	ReadFloat(Aimbot, CARSMGHipfireSmooth);
+	ReadFloat(Aimbot, CARSMGADSSmooth);
 	//Energy
 	ReadFloat(Aimbot, HavocSpeed);
-	ReadFloat(Aimbot, HavocSmooth);
+	ReadFloat(Aimbot, HavocHipfireSmooth);
+	ReadFloat(Aimbot, HavocADSSmooth);
 	ReadFloat(Aimbot, DevotionSpeed);
-	ReadFloat(Aimbot, DevotionSmooth);
+	ReadFloat(Aimbot, DevotionHipfireSmooth);
+	ReadFloat(Aimbot, DevotionADSSmooth);
 	ReadFloat(Aimbot, LSTARSpeed);
-	ReadFloat(Aimbot, LSTARSmooth);
+	ReadFloat(Aimbot, LSTARHipfireSmooth);
+	ReadFloat(Aimbot, LSTARADSSmooth);
 	ReadFloat(Aimbot, TripleTakeSpeed);
-	ReadFloat(Aimbot, TripleTakeSmooth);
+	ReadFloat(Aimbot, TripleTakeHipfireSmooth);
+	ReadFloat(Aimbot, TripleTakeADSSmooth);
 	ReadFloat(Aimbot, VoltSpeed);
-	ReadFloat(Aimbot, VoltSmooth);
+	ReadFloat(Aimbot, VoltHipfireSmooth);
+	ReadFloat(Aimbot, VoltADSSmooth);
 	ReadFloat(Aimbot, NemesisSpeed);
-	ReadFloat(Aimbot, NemesisSmooth);
+	ReadFloat(Aimbot, NemesisHipfireSmooth);
+	ReadFloat(Aimbot, NemesisADSSmooth);
 	//Shotgun
 	ReadFloat(Aimbot, MozambiqueSpeed);
-	ReadFloat(Aimbot, MozambiqueSmooth);
+	ReadFloat(Aimbot, MozambiqueHipfireSmooth);
+	ReadFloat(Aimbot, MozambiqueADSSmooth);
 	ReadFloat(Aimbot, EVA8Speed);
-	ReadFloat(Aimbot, EVA8Smooth);
+	ReadFloat(Aimbot, EVA8HipfireSmooth);
+	ReadFloat(Aimbot, EVA8ADSSmooth);
 	ReadFloat(Aimbot, PeacekeeperSpeed);
-	ReadFloat(Aimbot, PeacekeeperSmooth);
+	ReadFloat(Aimbot, PeacekeeperHipfireSmooth);
+	ReadFloat(Aimbot, PeacekeeperADSSmooth);
 	ReadFloat(Aimbot, MastiffSpeed);
-	ReadFloat(Aimbot, MastiffSmooth);   
+	ReadFloat(Aimbot, MastiffHipfireSmooth);
+	ReadFloat(Aimbot, MastiffADSSmooth);
 	//Snipers
 	ReadFloat(Aimbot, LongbowSpeed);
-	ReadFloat(Aimbot, LongbowSmooth);
+	ReadFloat(Aimbot, LongbowHipfireSmooth);
+	ReadFloat(Aimbot, LongbowADSSmooth);
 	ReadFloat(Aimbot, ChargeRifleSpeed);
-	ReadFloat(Aimbot, ChargeRifleSmooth);
+	ReadFloat(Aimbot, ChargeRifleHipfireSmooth);
+	ReadFloat(Aimbot, ChargeRifleADSSmooth);
 	ReadFloat(Aimbot, SentinelSpeed);    
-	ReadFloat(Aimbot, SentinelSmooth);
+	ReadFloat(Aimbot, SentinelHipfireSmooth);
+	ReadFloat(Aimbot, SentinelADSSmooth);
 	//Legendary
 	ReadFloat(Aimbot, WingmanSpeed);
-	ReadFloat(Aimbot, WingmanSmooth);
+	ReadFloat(Aimbot, WingmanHipfireSmooth);
+	ReadFloat(Aimbot, WingmanADSSmooth);
 	ReadFloat(Aimbot, ProwlerSpeed);
-	ReadFloat(Aimbot, ProwlerSmooth);
+	ReadFloat(Aimbot, ProwlerHipfireSmooth);
+	ReadFloat(Aimbot, ProwlerADSSmooth);
 	ReadFloat(Aimbot, BocekSpeed);
-	ReadFloat(Aimbot, BocekSmooth);
+	ReadFloat(Aimbot, BocekHipfireSmooth);
+	ReadFloat(Aimbot, BocekADSSmooth);
 	ReadFloat(Aimbot, KraberSpeed);
-	ReadFloat(Aimbot, KraberSmooth);
+	ReadFloat(Aimbot, KraberHipfireSmooth);
+	ReadFloat(Aimbot, KraberADSSmooth);
 	ReadFloat(Aimbot, ThrowingKnifeSpeed);
-	ReadFloat(Aimbot, ThrowingKnifeSmooth);
+	ReadFloat(Aimbot, ThrowingKnifeHipfireSmooth);
+	ReadFloat(Aimbot, ThrowingKnifeADSSmooth);
     
     ReadBool(RCS, RCSEnabled);
     ReadBool(RCS, OnADS);
@@ -1176,6 +1297,7 @@ bool ReadConfig(const std::string &configFile) {
     ReadBool(Triggerbot, Enabled);
     ReadFloat(Triggerbot, Range);
     ReadBool(Triggerbot, OnADS);
+    ReadBool(Triggerbot, HipfireShotguns);
         //Weapons
 	//Light
 	ReadBool(Triggerbot, P2020);
