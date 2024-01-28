@@ -1,1890 +1,943 @@
 #pragma once
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <iomanip>
 #include <iostream>
 #include <vector>
-#include "../Core/Player.hpp"
 #include "../Core/LocalPlayer.hpp"
 #include "../Core/Offsets.hpp"
-#include "../Core/GlowMode.hpp"
-#include "../Core/Camera.hpp"
-#include "../Core/Level.hpp"
 
-#include "../Features/Aimbot.hpp"
-
-#include "../Overlay/Overlay.hpp"
-#include "../Overlay/Renderer.hpp"
+#include "../Math/Vector2D.hpp"
+#include "../Math/Vector3D.hpp"
+#include "../Math/QAngle.hpp"
+#include "../Math/Resolver.hpp"
 
 #include "../Utils/Memory.hpp"
-#include "../Utils/Color.hpp"
+#include "../Utils/XDisplay.hpp"
 #include "../Utils/Conversion.hpp"
 #include "../Utils/Config.hpp"
 #include "../Utils/HitboxType.hpp"
+#include "../Utils/InputManager.hpp"
+#include "../Utils/InputTypes.hpp"
+#include "../Utils/Weapons.hpp"
 
 // UI //
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_glfw.h"
 #include "../imgui/imgui_impl_opengl3.h"
 
-// Geometry
+// Conversion
 #define DEG2RAD( x  )  ( (float)(x) * (float)(M_PI / 180.f) )
-#define ABS(x)  ((x <0) ? (-x) : (x))
 
-struct Sense {
-    //Drawings
-    bool VisibilityCheck = false;
-    bool DrawBox = true;
-    bool DrawFilledBox = false;
-    float BoxThickness = 1.0;
-    bool Skeleton = true;
-    float SkeletonThickness = 1.0;
-    bool HealthBar = true;
-    bool ShieldBar = true;
-    float BarThickness = 2.0;
-    float ESPMaxDistance = 200;
-    bool ShowNear = true;
-    bool DrawSeer = true;
-    bool DrawStatus = true;
-    bool DrawWeapon = false;
-    bool WeaponColorType = false;
-    bool ShowLegend = false;
-    bool ShowMaxStatusValues = true;
+struct RCS {
+    bool RCSEnabled = true;
+    bool OnADS = true;
+    float PitchPower = 3;
+    float YawPower = 3;
     
-    bool DrawDistance = true;
-    bool DrawFOVCircle = true;
-    bool DrawFilledFOVCircle = false;
-    float FOVThickness = 1.0;
-    bool DrawNames = true;
-    int TracerPosition = 0;
-    int TracerBone = 0;
-    bool DrawTracers = true;
-    float TracerThickness = 2.0;
-    bool ShowSpectators = true;
-    bool DrawCrosshair = true;
-    float CrosshairSize = 7.0;
-    float CrosshairThickness = 1.0;
+    //Weapon Toggles
+    //Light
+    bool P2020 = true;
+    bool RE45 = true;
+    bool Alternator = true;
+    bool R99 = true;
+    bool R301 = true;
+    bool Spitfire = true;
+    bool G7 = true;
     
-    //Settings
-    float GameFOV = 120;
-    bool ShowTeam = false;
-    bool TeamNames = false;
+    //Heavy
+    bool Flatline = true;
+    bool Hemlock = true;
+    bool Repeater = true;
+    bool Rampage = true;
+    bool CARSMG = true;
     
-    //Position Changer
-    float StatusVec3Y = 0;
-    float StatusVec2Y = 0;
+    //Energy
+    bool Havoc = true;
+    bool Devotion = true;
+    bool LSTAR = true;
+    bool TripleTake = true;
+    bool Volt = true;
+    bool Nemesis = true;
     
-    ImVec4 InvisibleBoxColor = ImColor(255, 0, 0, 255);
-    ImVec4 VisibleBoxColor = ImColor(0, 255, 0, 255);
-    ImVec4 InvisibleFilledBoxColor = ImColor(0, 0, 0, 30);
-    ImVec4 VisibleFilledBoxColor = ImColor(0, 0, 0, 30);
-    ImVec4 InvisibleTracerColor = ImColor(255, 0, 0, 255);
-    ImVec4 VisibleTracerColor = ImColor(0, 255, 0, 255);
-    ImVec4 InvisibleSkeletonColor = ImColor(255, 255, 255, 255);
-    ImVec4 VisibleSkeletonColor = ImColor(255, 255, 255, 255);
-    ImVec4 InvisibleNameColor = ImColor(255, 255, 255, 255);
-    ImVec4 VisibleNameColor = ImColor(255, 255, 255, 255);
-    ImVec4 InvisibleDistanceColor = ImColor(255, 255, 255, 255);
-    ImVec4 VisibleDistanceColor = ImColor(255, 255, 255, 255);
-    ImVec4 FOVColor = ImColor(255, 255, 255, 255);
-    ImVec4 FilledFOVColor = ImColor(0, 0, 0, 20);
-    ImVec4 WeaponColor = ImColor(255, 255, 255, 255);
-    ImVec4 NearColor = ImColor(255, 255, 255, 255);
-    ImVec4 TeamColor = ImColor(0, 255, 255, 255);
-    ImVec4 TeamNameColor = ImColor(255, 255, 255, 255);
-    ImVec4 CrosshairColor = ImColor(255, 255, 255, 255);
-    //WeaponESP Colors
-    ImVec4 LightWeaponColor = ImColor(255, 153, 0, 255);
-    ImVec4 HeavyWeaponColor = ImColor(69, 255, 184, 255);
-    ImVec4 EnergyWeaponColor = ImColor(83, 242, 15, 255);
-    ImVec4 ShotgunWeaponColor = ImColor(255, 0, 0, 255);
-    ImVec4 SniperWeaponColor = ImColor(66, 85, 255, 255);
-    ImVec4 LegendaryWeaponColor = ImColor(255, 130, 245, 255);
-    ImVec4 MeleeWeaponColor = ImColor(255, 255, 255, 255);
-    ImVec4 ThrowableWeaponColor = ImColor(255, 255, 0, 255);
-
-    // Variables
-    Camera* GameCamera;
+    //Shotgun
+    bool Mozambique = true;
+    bool EVA8 = true;
+    bool Peacekeeper = true;
+    bool Mastiff = true;
+    
+    //Snipers
+    bool Longbow = true;
+    bool ChargeRifle = true;
+    bool Sentinel = true; 
+    
+    //Legendary
+    bool Wingman = true; //Emotional damage!
+    bool Prowler = true;
+    bool Kraber = false;
+    
+    //---------------Advanced---------------//
+    bool AdvancedRCS = false;
+    float AdvancedPitchPower = 10;
+    float AdvancedYawPower = 10;
+    
+    //Weapons
+    //Light
+    float P2020Pitch = 10;
+    float P2020Yaw = 10;
+    float RE45Pitch = 10;
+    float RE45Yaw = 10;
+    float AlternatorPitch = 10;
+    float AlternatorYaw = 10;
+    float R99Pitch = 10;
+    float R99Yaw = 10;
+    float R301Pitch = 10;
+    float R301Yaw = 10;
+    float SpitfirePitch = 10;
+    float SpitfireYaw = 10;
+    float G7Pitch = 10;
+    float G7Yaw = 10;
+    //Heavy
+    float FlatlinePitch = 10;
+    float FlatlineYaw = 10;
+    float HemlockPitch = 10;
+    float HemlockYaw = 10;
+    float RepeaterPitch = 10;
+    float RepeaterYaw = 10;
+    float RampagePitch = 10;
+    float RampageYaw = 10;
+    float CARSMGPitch = 10;
+    float CARSMGYaw = 10;
+    //Energy
+    float HavocPitch = 10;
+    float HavocYaw = 10;
+    float DevotionPitch = 10;
+    float DevotionYaw = 10;
+    float LSTARPitch = 10;
+    float LSTARYaw = 10;
+    float TripleTakePitch = 10;
+    float TripleTakeYaw = 10;
+    float VoltPitch = 10;
+    float VoltYaw = 10;
+    float NemesisPitch = 10;
+    float NemesisYaw = 10;
+    //Shotguns
+    float MozambiquePitch = 10;
+    float MozambiqueYaw = 10;
+    float EVA8Pitch = 10;
+    float EVA8Yaw = 10;
+    float PeacekeeperPitch = 10;
+    float PeacekeeperYaw = 10;
+    float MastiffPitch = 10;
+    float MastiffYaw = 10;
+    //Snipers
+    float LongbowPitch = 10;
+    float LongbowYaw = 10;
+    float ChargeRiflePitch = 10;
+    float ChargeRifleYaw = 10;
+    float SentinelPitch = 10;
+    float SentinelYaw = 10;
+    //Legendary
+    float WingmanPitch = 10;
+    float WingmanYaw = 10;
+    float ProwlerPitch = 10;
+    float ProwlerYaw = 10;
+    float KraberPitch = 10;
+    float KraberYaw = 10;
+    
+    
+    XDisplay* X11Display;
     LocalPlayer* Myself;
-    std::vector<Player*>* Players;
-    std::chrono::milliseconds LastUpdateTime;
-    int TotalSpectators = 0;
-    std::vector<std::string> Spectators;
     Level* Map;
+    
+    Vector2D previous_weaponPunchAngles;
+    QAngle RCSLastPunch;
+    
+    std::set<int> RCSList = {};
 
-    Sense(Level* Map, std::vector<Player*>* Players, Camera* GameCamera, LocalPlayer* Myself) {
-        this->Players = Players;
-        this->GameCamera = GameCamera;
+    RCS(XDisplay* X11Display, Level* Map, LocalPlayer* Myself) {
+        this->X11Display = X11Display;
         this->Map = Map;
         this->Myself = Myself;
     }
 
-
     void RenderUI() {
-    	if (Config::Home::Layout == 1 or Config::Home::Layout == 0) { //Removed the choice of having two menus. OR is for people still using old configs.
-		if (ImGui::BeginTabItem("ESP", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
-		    // Drawings
-		    ImGui::Text("ESP");
+    	if (Config::Home::Layout == 0 or Config::Home::Layout == 1) { //Removed the choice of having two menus. OR is for people still using old configs.
+		if (ImGui::BeginTabItem("RCS", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
+		    ImGui::Text("RCS - Recoil Control");
+		    ImGui::Checkbox("Enabled", &RCSEnabled);
+		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		        ImGui::SetTooltip("Toggle the RCS (Recoil Control)\nReduce the intensity of weapon's recoil.");
 		    
-		    if (ImGui::CollapsingHeader("Checks", nullptr)) {
-		    	ImGui::Checkbox("Visibility Check", &VisibilityCheck);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Draw's ESP ONLY on visible players");
-		        ImGui::Checkbox("Show Team", &ShowTeam);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Draw's ESP on Teammates");
-		        ImGui::SameLine();
-		        ImGui::ColorEdit4("Color##ESPTeam", (float*)&TeamColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Changes the color of teammates\nRecomended: Blue");
-		        
-		        ImGui::Checkbox("Show Team Names", &TeamNames);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Draw Name ESP on Teammates");
-		        ImGui::SameLine();
-		        ImGui::ColorEdit4("Color##ESPTeamName", (float*)&TeamNameColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Changes the color of teammate's names\nRecomended: White");
-		    }
-		    
-		    ImGui::Separator();
+		    if (RCSEnabled) {
+			    ImGui::Separator();    
+				
+		   	    ImGui::Text("RCS Conditions");
+		   	    if (ImGui::CollapsingHeader("Conditions", nullptr)) {
+		   	    ImGui::Checkbox("On ADS?", &OnADS);
+		   	    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+				ImGui::SetTooltip("Toggle when the RCS will take control\nEnabled = Only when aiming.\nDisabled = Always.");
+			    }    
+				
+			    ImGui::Separator();
+			       
+			    ImGui::Text("Intensity Settings");
+			    if (ImGui::CollapsingHeader("Settings", nullptr)) {
+			    	ImGui::SliderFloat("Pitch", &PitchPower, 1, 50, "%.1f");
+			    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+					ImGui::SetTooltip("Pitch Power");
+			    	ImGui::SliderFloat("Yaw", &YawPower, 1, 50, "%.1f");
+			    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+					ImGui::SetTooltip("Yaw Power");
+			    }
+			     
+			    ImGui::Separator();
+			    
+			    //Select Weapons
+			    ImGui::Text("Toggle Weapons");
+			    if (ImGui::CollapsingHeader("Light Weapons", nullptr)) {
+				    ImGui::Checkbox("P2020", &P2020);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("RE-45 Auto", &RE45);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("Alternator SMG", &Alternator);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("R-99 SMG", &R99);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("R-301 Carbine", &R301);
 
-		    if (ImGui::CollapsingHeader("Boxes", nullptr)) {
-			    ImGui::Checkbox("Draw Box", &DrawBox);
-			    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-				ImGui::SetTooltip("Drawbox on enemy");
-			    ImGui::SameLine();
-			    ImGui::ColorEdit4("Visible Color##ESPBox", (float*)&VisibleBoxColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-			    ImGui::SameLine();
-			    ImGui::ColorEdit4("Invisible Color##ESPBox", (float*)&InvisibleBoxColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-			    ImGui::Checkbox("Draw Filled Box", &DrawFilledBox);
-			    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-				ImGui::SetTooltip("Draw a Filled box on enemy");
-			    ImGui::SameLine();
-			    ImGui::ColorEdit4("Visible Color##ESPFilledBox", (float*)&VisibleFilledBoxColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-			    ImGui::SameLine();
-			    ImGui::ColorEdit4("Invisible Color##ESPFilledBox", (float*)&InvisibleFilledBoxColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-			    ImGui::SliderFloat("Box Thickness", &BoxThickness, 1, 10, "%.0f");
-			    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-				ImGui::SetTooltip("Changes the thickness of the boxes");
-		    }
-		    
-		    ImGui::Separator();
-		    
-		    if (ImGui::CollapsingHeader("Tracers", nullptr)) {
-			    ImGui::Checkbox("Draw Tracers", &DrawTracers);
-			    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-				ImGui::SetTooltip("Draw lines to enemies");
-			    ImGui::SameLine();
-			    ImGui::ColorEdit4("Visible Color##ESPTracer", (float*)&VisibleTracerColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-			    ImGui::SameLine();
-			    ImGui::ColorEdit4("Invisible Color##ESPTracer", (float*)&InvisibleTracerColor, ImGuiColorEditFlags_NoInputs);
-			    const char* TracerPos[] = {"Top", "Crosshair", "Bottom"};
-			    ImGui::Combo("Tracer Position", &TracerPosition, TracerPos, IM_ARRAYSIZE(TracerPos));
-			    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-			    	ImGui::SetTooltip("Where tracers will be drawn from.");
-			    Config::Sense::TracerPos = TracerPosition;
-			    const char* TracerBones[] = {"Top", "Bottom"};
-			    ImGui::Combo("Tracer Bone", &TracerBone, TracerBones, IM_ARRAYSIZE(TracerBones));
-			    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-			    	ImGui::SetTooltip("Where tracers will be drawn to.");
-			    Config::Sense::TracerBone = TracerBone;
-			    ImGui::SliderFloat("Tracer Thickness", &TracerThickness, 1, 10, "%.0f");
-			    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-			    	ImGui::SetTooltip("Changes the thickness of the tracers");
-		    }
-		    
-		    ImGui::Separator();
-		    
-		    if (ImGui::CollapsingHeader("Skeleton", nullptr)) {
-		    	ImGui::Checkbox("Draw Skeleton", &Skeleton);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Draw the enemies skeletons (Spooky)");
-		        ImGui::SameLine();
-		        ImGui::ColorEdit4("Visible Color##ESPSkeleton", (float*)&VisibleSkeletonColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		        ImGui::SameLine();
-		        ImGui::ColorEdit4("Invisible Color##ESPSkeleton", (float*)&InvisibleSkeletonColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		        ImGui::SliderFloat("Skeleton Thickness", &SkeletonThickness, 1, 10, "%.0f");
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Changes the thickness of the bones");	
-		    }
-		    
-		    ImGui::Separator();
-		    
-		    if (ImGui::CollapsingHeader("Player Info", nullptr)) {
-		    
-		        ImGui::Checkbox("Draw Seer", &DrawSeer);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Draw Seer's abilitiy (Show Health & Armor) on enemies");
-		        	
-		        ImGui::Separator();
-		        	
-		    	ImGui::Checkbox("Draw Status", &DrawStatus);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		    		ImGui::SetTooltip("Draw enemies current health and armor");
-		    	ImGui::SameLine();
-		    	ImGui::Checkbox("Show Max Values", &ShowMaxStatusValues);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		    		ImGui::SetTooltip("Adds their max health and armor at the end.");
-		    		
-		    	ImGui::Separator();
-		    		
-		    	ImGui::Checkbox("Draw Health Bar", &HealthBar);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		    		ImGui::SetTooltip("Draw enemies current health as a bar");
-		    	ImGui::SameLine();
-		    	ImGui::Checkbox("Draw Shield Bar", &ShieldBar);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		    		ImGui::SetTooltip("Draw enemies current shield as a bar");
-			ImGui::SliderFloat("Bar Thickness", &BarThickness, 1, 10, "%.0f");
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		    		ImGui::SetTooltip("Thickness of the health/shield bar");
-		    		
-		    	ImGui::Separator();
-		    		
-		    	ImGui::Checkbox("Draw Legend", &ShowLegend);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		    		ImGui::SetTooltip("Show What Legend The Enemy Is Playing As.");
-		    		
-		    	ImGui::Separator();
-		    		
-		        ImGui::Checkbox("Draw Weapon", &DrawWeapon);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Show what weapon an enemy is currently holding.");
-		        ImGui::SameLine();
-		        ImGui::Checkbox("Multiple Weapon Colors", &WeaponColorType);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Changes The Weapon Text Color To The Ammo Type Of The Weapon.");
-		        if (!WeaponColorType) {
-		        	ImGui::SameLine();
-		        	ImGui::ColorEdit4("Color##ESPWeapon", (float*)&WeaponColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		        }
-		        if(WeaponColorType) {
-				ImGui::Text("Weapon ESP Colors");
-				ImGui::ColorEdit4("Light##ESPWeaponColor", (float*)&LightWeaponColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-				ImGui::SameLine();
-				ImGui::ColorEdit4("Heavy##ESPWeaponColor", (float*)&HeavyWeaponColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-				ImGui::SameLine();
-				ImGui::ColorEdit4("Energy##ESPWeaponColor", (float*)&EnergyWeaponColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-				ImGui::SameLine();
-				ImGui::ColorEdit4("Shotguns##ESPWeaponColor", (float*)&ShotgunWeaponColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-				//ImGui::SameLine();
-				ImGui::ColorEdit4("Snipers##ESPWeaponColor", (float*)&SniperWeaponColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-				ImGui::SameLine();
-				ImGui::ColorEdit4("Legendary##ESPWeaponColor", (float*)&LegendaryWeaponColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-				ImGui::SameLine();
-				ImGui::ColorEdit4("Throwables##ESPWeapon", (float*)&ThrowableWeaponColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-				ImGui::SameLine();
-				ImGui::ColorEdit4("Melee##ESPWeapon", (float*)&MeleeWeaponColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		        }
-		        
-		        ImGui::Separator();
-		    
-		        ImGui::Checkbox("Draw Names", &DrawNames);
-		        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-			        ImGui::SetTooltip("Show enemies names");
-		        ImGui::SameLine();
-		        ImGui::ColorEdit4("Visible Color##ESPNames", (float*)&VisibleNameColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		        ImGui::SameLine();
-		        ImGui::ColorEdit4("Invisible Color##ESPNames", (float*)&InvisibleNameColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		        
-		        ImGui::Separator();
-		        
-		        ImGui::Checkbox("Draw Distance", &DrawDistance);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Show how far away the enemies are");
-		        ImGui::SameLine();
-		        ImGui::ColorEdit4("Visible Color##ESPDistance", (float*)&VisibleDistanceColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		        ImGui::SameLine();
-		        ImGui::ColorEdit4("Invisible Color##ESPDistance", (float*)&InvisibleDistanceColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+				    ImGui::Checkbox("M600 Spitfire", &Spitfire);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("G7 Scout", &G7);
+			    }
+			    
+			    if (ImGui::CollapsingHeader("Heavy Weapons", nullptr)) {
+				    ImGui::Checkbox("VK-47 Flatline", &Flatline);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("Hemlock Burst AR", &Hemlock);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("30-30 Repeater", &Repeater);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("Rampage LMG", &Rampage);
+				    
+				    ImGui::Checkbox("C.A.R SMG", &CARSMG);
+			    }
+			    
+			    if (ImGui::CollapsingHeader("Energy Weapons", nullptr)) {
+				    ImGui::Checkbox("Havoc Rifle", &Havoc);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("Devotion LMG", &Devotion);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("L-Star EMG", &LSTAR);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("Triple-Take", &TripleTake);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("Volt", &Volt);
 
-			ImGui::Separator();
+				    ImGui::Checkbox("Nemesis Burst AR", &Nemesis);
+			    }
 
-		        ImGui::Checkbox("Show Enemy Count Near", &ShowNear);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Show how many enemies are near");
-		        ImGui::SameLine();
-		        ImGui::ColorEdit4("Color##ESPNear", (float*)&NearColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		    }
-		    
-		    ImGui::Separator();
-		        	
-		    if (ImGui::CollapsingHeader("FOV Settings", nullptr)) {
-		    ImGui::Checkbox("Draw FOV Circle", &DrawFOVCircle);
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		    	ImGui::SetTooltip("Draw FOV Circle");
-		    ImGui::SameLine();
-		    ImGui::ColorEdit4("Color##ESPFOV", (float*)&FOVColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		    ImGui::Checkbox("Draw Filled FOV Circle", &DrawFilledFOVCircle);
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		    	ImGui::SetTooltip("Draw a Filled FOV Circle");
-		    ImGui::SameLine();
-		    ImGui::ColorEdit4("Color##ESPFilledFOV", (float*)&FilledFOVColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		    ImGui::SliderFloat("FOV Circle Thickness", &FOVThickness, 1, 10, "%.0f");
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		    	ImGui::SetTooltip("Changes the FOV Circle's thickness\n Recomended: 1-2");
-		    ImGui::SliderFloat("Game's FOV", &GameFOV, 70, 120, "%.0f");
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		    	ImGui::SetTooltip("Your current FOV in Settings");
-		    }
+			    if (ImGui::CollapsingHeader("Shotguns", nullptr)) {
+				    ImGui::Checkbox("Mozambique", &Mozambique);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("EVA-8 Auto", &EVA8);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("Peacekeeper", &Peacekeeper);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("Mastiff", &Mastiff);
+			    }
 
-		    ImGui::Separator();
-		    
-		    if (ImGui::CollapsingHeader("Crosshair Settings", nullptr)) {
-		    	ImGui::Checkbox("Draw Crosshair", &DrawCrosshair);
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Draws a crosshair");
-		        ImGui::SameLine();
-		        ImGui::ColorEdit4("Color##ESPCrosshair", (float*)&CrosshairColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		    	ImGui::SliderFloat("Crosshair Size", &CrosshairSize, 0, 1000, "%.0f");
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Changes the size of the crosshair");
-		        ImGui::SliderFloat("Crosshair Thickness", &CrosshairThickness, 1, 50, "%.0f");
-		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Changes the Crosshair's thickness");
-		    }
-		    
-		    ImGui::Separator();
-		    
-		    ImGui::Text("Misc");
-		    ImGui::Checkbox("Show Spectators", &ShowSpectators);
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        ImGui::SetTooltip("Show spectators\n[!] Cheat/Game will crash after going back to lobby, waiting for fix.");
-		        
-		    ImGui::Separator();
-		        
-		    //Sense Settings
-		    ImGui::Text("Sense Settings");
-		    ImGui::SliderFloat("ESP Max Distance", &ESPMaxDistance, 0, 1000, "%.0f");
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Only those in range will ESP");
+			    if (ImGui::CollapsingHeader("Snipers", nullptr)) {
+				    ImGui::Checkbox("Longbow DMR", &Longbow);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("Charge Rifle", &ChargeRifle);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("Sentinel", &Sentinel);
+			    }
+			    
+			    if (ImGui::CollapsingHeader("Legendary Weapons", nullptr)) {
+				    ImGui::Checkbox("Wingman", &Wingman);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("Prowler Burst SMG", &Prowler);
+				    ImGui::SameLine();
+				    ImGui::Checkbox("Kraber .50-CAL Sniper", &Kraber);
+			    }
 
+			    ImGui::Separator();
+			    
+			    ImGui::Text("Advanced RCS Settings");
+			    ImGui::Checkbox("Enabled Advanced RCS", &AdvancedRCS);
+			    if (AdvancedRCS) {
+			    	ImGui::Separator();
+			    	ImGui::Text("Weapon Intensity Settings");
+			    	if (ImGui::CollapsingHeader("Light", nullptr)) {
+			    		if (P2020) {
+			    			ImGui::Text("P2020");
+					    	ImGui::SliderFloat("Pitch##AdvancedP2020", &P2020Pitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the P2020.");
+					    	ImGui::SliderFloat("Yaw##AdvancedP2020", &P2020Yaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the P2020.");
+			    		}
+			    		
+			    		if (RE45) {
+			    			ImGui::Text("RE-45 Auto");
+					    	ImGui::SliderFloat("Pitch##AdvancedRE45", &RE45Pitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the RE-45 Auto.");
+					    	ImGui::SliderFloat("Yaw##AdvancedRE45", &RE45Yaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the RE-45 Auto.");
+			    		}
+			    		
+			    		if (Alternator) {
+			    			ImGui::Text("Alternator SMG");
+					    	ImGui::SliderFloat("Pitch##AdvancedAlternator", &AlternatorPitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the Alternator SMG.");
+					    	ImGui::SliderFloat("Yaw##AdvancedAlternator", &AlternatorYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the Alternator SMG.");
+			    		}
+			    		
+			    		if (R99) {
+			    			ImGui::Text("R-99 SMG");
+					    	ImGui::SliderFloat("Pitch##AdvancedR99", &R99Pitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the R-99.");
+					    	ImGui::SliderFloat("Yaw##AdvancedR99", &R99Yaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the R-99.");
+			    		}
+			    		
+			    		if (R301) {
+			    			ImGui::Text("R-301 Carbine");
+					    	ImGui::SliderFloat("Pitch##AdvancedR301", &R301Pitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the R-301 Carbine.");
+					    	ImGui::SliderFloat("Yaw##AdvancedR301", &R301Yaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the R-301 Carbine.");
+			    		}
+			    		
+			    		if (Spitfire) {
+			    			ImGui::Text("M600 Spitfire");
+					    	ImGui::SliderFloat("Pitch##AdvancedSpitfire", &SpitfirePitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the M600 Spitfire.");
+					    	ImGui::SliderFloat("Yaw##AdvancedSpitfire", &SpitfireYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the M600 Spitfire.");
+			    		}
+			    		
+			    		if (G7) {
+			    			ImGui::Text("G7 Scout");
+					    	ImGui::SliderFloat("Pitch##AdvancedG7", &G7Pitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the G7 Scout.");
+					    	ImGui::SliderFloat("Yaw##AdvancedG7", &G7Yaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the G7 Scout.");
+			    		}
+			    	}
+			    	
+			    	if (ImGui::CollapsingHeader("Heavy", nullptr)) {
+			    		if (Flatline) {
+			    			ImGui::Text("VK-47 Flatline");
+					    	ImGui::SliderFloat("Pitch##AdvancedFlatline", &FlatlinePitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the VK-47 Flatline.");
+					    	ImGui::SliderFloat("Yaw##AdvancedFlatline", &FlatlineYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the VK-47 Flatline.");
+			    		}
+			    		
+			    		if (Hemlock) {
+			    			ImGui::Text("Hemlock Burst AR");
+					    	ImGui::SliderFloat("Pitch##AdvancedHemlock", &HemlockPitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the Hemlock Burst AR.");
+					    	ImGui::SliderFloat("Yaw##AdvancedHemlock", &HemlockYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the Hemlock Burst AR.");
+			    		}
+			    		
+			    		if (Repeater) {
+			    			ImGui::Text("30-30 Repeater");
+					    	ImGui::SliderFloat("Pitch##AdvancedRepeater", &RepeaterPitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the 30-30 Repeater.");
+					    	ImGui::SliderFloat("Yaw##AdvancedRepeater", &RepeaterYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the 30-30 Repeater.");
+			    		}
+			    		
+			    		if (Rampage) {
+			    			ImGui::Text("Rampage LMG");
+					    	ImGui::SliderFloat("Pitch##AdvancedRampage", &RampagePitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the Rampage LMG.");
+					    	ImGui::SliderFloat("Yaw##AdvancedRampage", &RampageYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the Rampage LMG.");
+			    		}
+			    		
+			    		if (CARSMG) {
+			    			ImGui::Text("C.A.R SMG");
+					    	ImGui::SliderFloat("Pitch##AdvancedCARSMG", &CARSMGPitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the C.A.R SMG.");
+					    	ImGui::SliderFloat("Yaw##AdvancedCARSMG", &CARSMGYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the C.A.R SMG.");
+			    		}
+			    	}
+			    	
+				if (ImGui::CollapsingHeader("Energy", nullptr)) {
+			    		if (Havoc) {
+			    			ImGui::Text("Havoc");
+					    	ImGui::SliderFloat("Pitch##AdvancedHavoc", &HavocPitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the Havoc Rifle.");
+					    	ImGui::SliderFloat("Yaw##AdvancedHavoc", &HavocYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the Havoc Rifle.");
+			    		}
+			    		
+			    		if (Devotion) {
+			    			ImGui::Text("Devotion LMG");
+					    	ImGui::SliderFloat("Pitch##AdvancedDevotion", &DevotionPitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the Devotion LMG.");
+					    	ImGui::SliderFloat("Yaw##AdvancedDevotion", &DevotionYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the Devotion LMG.");
+			    		}
+			    		
+			    		if (LSTAR) {
+			    			ImGui::Text("L-Star EMG");
+					    	ImGui::SliderFloat("Pitch##AdvancedLSTAR", &LSTARPitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the L-Star EMG.");
+					    	ImGui::SliderFloat("Yaw##AdvancedLSTAR", &LSTARYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the L-Star EMG.");
+			    		}
+			    		
+			    		if (TripleTake) {
+			    			ImGui::Text("Triple-Take");
+					    	ImGui::SliderFloat("Pitch##AdvancedTripleTake", &TripleTakePitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the Triple-Take.");
+					    	ImGui::SliderFloat("Yaw##AdvancedTripleTake", &TripleTakeYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the Triple-Take.");
+			    		}
+			    		
+			    		if (Volt) {
+			    			ImGui::Text("Volt");
+					    	ImGui::SliderFloat("Pitch##AdvancedVolt", &VoltPitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the Volt.");
+					    	ImGui::SliderFloat("Yaw##AdvancedVolt", &VoltYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the Volt.");
+			    		}
+			    		
+			    		if (Nemesis) {
+			    			ImGui::Text("Nemesis Burst AR");
+					    	ImGui::SliderFloat("Pitch##AdvancedNemesis", &NemesisPitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the Nemesis Burst AR.");
+					    	ImGui::SliderFloat("Yaw##AdvancedNemesis", &NemesisYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the Nemesis Burst AR.");
+			    		}
+				}
+				
+				if (ImGui::CollapsingHeader("Shotguns", nullptr)) {
+			    		if (Mozambique) {
+			    			ImGui::Text("Mozambique");
+					    	ImGui::SliderFloat("Pitch##AdvancedMozambique", &MozambiquePitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the Mozambique.");
+					    	ImGui::SliderFloat("Yaw##AdvancedMozambique", &MozambiqueYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the Mozambique.");
+			    		}
+			    		
+			    		if (EVA8) {
+			    			ImGui::Text("EVA-8 Auto");
+					    	ImGui::SliderFloat("Pitch##AdvancedEVA8", &EVA8Pitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the EVA-8 Auto.");
+					    	ImGui::SliderFloat("Yaw##AdvancedEVA8", &EVA8Yaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the EVA-8 Auto.");
+			    		}
+			    		
+			    		if (Peacekeeper) {
+			    			ImGui::Text("Peacekeeper");
+					    	ImGui::SliderFloat("Pitch##AdvancedPeacekeeper", &PeacekeeperPitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the Peacekeeper.");
+					    	ImGui::SliderFloat("Yaw##AdvancedPeacekeeper", &PeacekeeperYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the Peacekeeper.");
+			    		}
+			    		
+			    		if (Mastiff) {
+			    			ImGui::Text("Mastiff");
+					    	ImGui::SliderFloat("Pitch##AdvancedMastiff", &MastiffPitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the Mastiff.");
+					    	ImGui::SliderFloat("Yaw##AdvancedMastiff", &MastiffYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the Mastiff.");
+			    		}
+				}
+				
+				if (ImGui::CollapsingHeader("Snipers", nullptr)) {
+			    		if (Longbow) {
+			    			ImGui::Text("Longbow DMR");
+					    	ImGui::SliderFloat("Pitch##AdvancedLongbow", &LongbowPitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the Longbow DMR.");
+					    	ImGui::SliderFloat("Yaw##AdvancedLongbow", &LongbowYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the Longbow DMR.");
+			    		}
+			    		
+			    		if (ChargeRifle) {
+			    			ImGui::Text("Charge Rifle");
+					    	ImGui::SliderFloat("Pitch##AdvancedChargeRifle", &ChargeRiflePitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the Charge Rifle.");
+					    	ImGui::SliderFloat("Yaw##AdvancedChargeRifle", &ChargeRifleYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the Charge Rifle.");
+			    		}
+			    		
+			    		if (Sentinel) {
+			    			ImGui::Text("Sentinel");
+					    	ImGui::SliderFloat("Pitch##AdvancedSentinel", &SentinelPitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the Sentinel.");
+					    	ImGui::SliderFloat("Yaw##AdvancedSentinel", &SentinelYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the Sentinel.");
+			    		}
+				}
+				
+				if (ImGui::CollapsingHeader("Legendary", nullptr)) {
+			    		if (Wingman) {
+			    			ImGui::Text("Wingman");
+					    	ImGui::SliderFloat("Pitch##AdvancedWingman", &WingmanPitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the Wingman.");
+					    	ImGui::SliderFloat("Yaw##AdvancedWingman", &WingmanYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the Wingman.");
+			    		}
+			    		
+			    		if (Prowler) {
+			    			ImGui::Text("Prowler Burst SMG");
+					    	ImGui::SliderFloat("Pitch##AdvancedProwler", &ProwlerPitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the Prowler Burst SMG.");
+					    	ImGui::SliderFloat("Yaw##AdvancedProwler", &ProwlerYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the Prowler Burst SMG.");
+			    		}
+			    		
+			    		if (Kraber) {
+			    			ImGui::Text("Kraber .50-CAL Sniper");
+					    	ImGui::SliderFloat("Pitch##AdvancedKraber", &KraberPitch, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Pitch Power for the Kraber .50-CAL Sniper.");
+					    	ImGui::SliderFloat("Yaw##AdvancedKraber", &KraberYaw, 1, 50, "%.1f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Yaw Power for the Kraber .50-CAL Sniper.");
+			    		}
+				}
+			    }
+		    }
 		    ImGui::EndTabItem();
-		}
-	}
+		    UpdateRCSList();
+	    	}
+    	}
     }
-    
+
     bool Save() {
         try {
-            Config::Sense::VisibilityCheck = VisibilityCheck;
-            Config::Sense::DrawSeer = DrawSeer;
-            Config::Sense::DrawStatus = DrawStatus;
-            Config::Sense::ShowMaxStatusValues = ShowMaxStatusValues;
-            Config::Sense::ShowSpectators = ShowSpectators;
-            Config::Sense::DrawFOVCircle = DrawFOVCircle;
-            Config::Sense::DrawFilledFOVCircle = DrawFilledFOVCircle;
-            Config::Sense::GameFOV = GameFOV;
-            Config::Sense::DrawBox = DrawBox;
-            Config::Sense::DrawFilledBox = DrawFilledBox;
-            Config::Sense::BoxThickness = BoxThickness;
-            Config::Sense::Skeleton = Skeleton;
-            Config::Sense::SkeletonThickness = SkeletonThickness;
-            Config::Sense::ESPMaxDistance = ESPMaxDistance;
-            Config::Sense::ShowNear = ShowNear;
-            Config::Sense::DrawNames = DrawNames;
-            Config::Sense::DrawDistance = DrawDistance;
-            Config::Sense::DrawCrosshair = DrawCrosshair;
-            Config::Sense::CrosshairSize = CrosshairSize;
-            Config::Sense::CrosshairThickness = CrosshairThickness;
-            Config::Sense::ShowTeam = ShowTeam;
-            Config::Sense::ShowTeam = TeamNames;
-            Config::Sense::DrawTracers = DrawTracers;
-            Config::Sense::ShowLegend = ShowLegend;
-            Config::Sense::DrawWeapon = DrawWeapon;
-            Config::Sense::WeaponColorType = WeaponColorType;
-            Config::Sense::TracerThickness = TracerThickness;
-            Config::Sense::TracerPos = TracerPosition;
-            Config::Sense::TracerBone = TracerBone;
+            Config::RCS::RCSEnabled = RCSEnabled;
+            Config::RCS::OnADS = OnADS;
+            Config::RCS::PitchPower = PitchPower;
+            Config::RCS::YawPower = YawPower;
             
-            //Colors
-            Config::Sense::InvisibleBoxColor = InvisibleBoxColor;
-            Config::Sense::VisibleBoxColor = VisibleBoxColor;
-            Config::Sense::InvisibleFilledBoxColor = InvisibleFilledBoxColor;
-            Config::Sense::VisibleFilledBoxColor = VisibleFilledBoxColor;
-            Config::Sense::InvisibleTracerColor = InvisibleTracerColor;
-            Config::Sense::VisibleTracerColor = VisibleTracerColor;
-            Config::Sense::InvisibleSkeletonColor = InvisibleSkeletonColor;
-            Config::Sense::VisibleSkeletonColor = VisibleSkeletonColor;
-            Config::Sense::InvisibleNameColor = InvisibleNameColor;
-            Config::Sense::VisibleNameColor = VisibleNameColor;
-            Config::Sense::InvisibleDistanceColor = InvisibleDistanceColor;
-            Config::Sense::VisibleDistanceColor = VisibleDistanceColor;
-            Config::Sense::FOVColor = FOVColor;
-            Config::Sense::FilledFOVColor = FilledFOVColor;
-            Config::Sense::NearColor = NearColor;
-            Config::Sense::TeamColor = TeamColor;
-            Config::Sense::TeamNameColor = TeamNameColor;
-            Config::Sense::CrosshairColor = CrosshairColor;
+            //Weapons
+            //Light
+            Config::RCS::P2020 = P2020;
+            Config::RCS::RE45 = RE45;
+            Config::RCS::Alternator = Alternator;
+            Config::RCS::R99 = R99;
+            Config::RCS::R301 = R301;
+            Config::RCS::Spitfire = Spitfire;
+            Config::RCS::G7 = G7;
+            //Heavy
+            Config::RCS::Flatline = Flatline;
+            Config::RCS::Hemlock = Hemlock;
+            Config::RCS::Repeater = Repeater;
+            Config::RCS::Rampage = Rampage;
+            Config::RCS::CARSMG = CARSMG;
+            //Energy
+            Config::RCS::Havoc = Havoc;
+            Config::RCS::Devotion = Devotion;
+            Config::RCS::LSTAR = LSTAR;
+            Config::RCS::TripleTake = TripleTake;
+            Config::RCS::Volt = Volt;
+            Config::RCS::Nemesis = Nemesis;
+            //Shotguns
+            Config::RCS::Mozambique = Mozambique;
+            Config::RCS::EVA8 = EVA8;
+            Config::RCS::Peacekeeper = Peacekeeper;
+            Config::RCS::Mastiff = Mastiff;
+            //Snipers
+            Config::RCS::Longbow = Longbow;
+            Config::RCS::ChargeRifle = ChargeRifle;
+            Config::RCS::Sentinel = Sentinel;
+            //Legendary
+            Config::RCS::Wingman = Wingman;
+            Config::RCS::Prowler = Prowler;
+            Config::RCS::Kraber = Kraber;
             
+            //----------Advanced Settings----------//
+            Config::RCS::AdvancedRCS = AdvancedRCS;
+            //Advanced Weapons
+            //Light
+            Config::RCS::P2020Pitch = P2020Pitch;
+            Config::RCS::P2020Yaw = P2020Yaw;
+            Config::RCS::RE45Pitch = RE45Pitch;
+            Config::RCS::RE45Yaw = RE45Yaw;
+            Config::RCS::AlternatorPitch = AlternatorPitch;
+            Config::RCS::AlternatorYaw = AlternatorYaw;
+            Config::RCS::R99Pitch = R99Pitch;
+            Config::RCS::R99Yaw = R99Yaw;
+            Config::RCS::R301Pitch = R301Pitch;
+            Config::RCS::R301Yaw = R301Yaw;
+            Config::RCS::SpitfirePitch = SpitfirePitch;
+            Config::RCS::SpitfireYaw = SpitfireYaw;
+            Config::RCS::G7Pitch = G7Pitch;
+            Config::RCS::G7Yaw = G7Yaw;
+            //Heavy
+            Config::RCS::FlatlinePitch = FlatlinePitch;
+            Config::RCS::FlatlineYaw = FlatlineYaw;
+            Config::RCS::HemlockPitch = HemlockPitch;
+            Config::RCS::HemlockYaw = HemlockYaw;
+            Config::RCS::RepeaterPitch = RepeaterPitch;
+            Config::RCS::RepeaterYaw = RepeaterYaw;
+            Config::RCS::RampagePitch = RampagePitch;
+            Config::RCS::RampageYaw = RampageYaw;
+            Config::RCS::CARSMGPitch = CARSMGPitch;
+            Config::RCS::CARSMGYaw = CARSMGYaw;
+            //Energy
+            Config::RCS::HavocPitch = HavocPitch;
+            Config::RCS::HavocYaw = HavocYaw;
+            Config::RCS::DevotionPitch = DevotionPitch;
+            Config::RCS::DevotionYaw = DevotionYaw;
+            Config::RCS::LSTARPitch = LSTARPitch;
+            Config::RCS::LSTARYaw = LSTARYaw;
+            Config::RCS::TripleTakePitch = TripleTakePitch;
+            Config::RCS::TripleTakeYaw = TripleTakeYaw;
+            Config::RCS::VoltPitch = VoltPitch;
+            Config::RCS::VoltYaw = VoltYaw;
+            Config::RCS::NemesisPitch = NemesisPitch;
+            Config::RCS::NemesisYaw = NemesisYaw;
+            //Shotguns
+            Config::RCS::MozambiquePitch = MozambiquePitch;
+            Config::RCS::MozambiqueYaw = MozambiqueYaw;
+            Config::RCS::EVA8Pitch = EVA8Pitch;
+            Config::RCS::EVA8Yaw = EVA8Yaw;
+            Config::RCS::PeacekeeperPitch = PeacekeeperPitch;
+            Config::RCS::PeacekeeperYaw = PeacekeeperYaw;
+            Config::RCS::MastiffPitch = MastiffPitch;
+            Config::RCS::MastiffYaw = MastiffYaw;
+            //Snipers
+            Config::RCS::LongbowPitch = LongbowPitch;
+            Config::RCS::LongbowYaw = LongbowYaw;
+            Config::RCS::ChargeRiflePitch = ChargeRiflePitch;
+            Config::RCS::ChargeRifleYaw = ChargeRifleYaw;
+            Config::RCS::SentinelPitch = SentinelPitch;
+            Config::RCS::SentinelYaw = SentinelYaw;
+            //Legendary
+            Config::RCS::WingmanPitch = WingmanPitch;
+            Config::RCS::WingmanYaw = WingmanYaw;
+            Config::RCS::ProwlerPitch = ProwlerPitch;
+            Config::RCS::ProwlerYaw = ProwlerYaw;
+            Config::RCS::KraberPitch = KraberPitch;
+            Config::RCS::KraberYaw = KraberYaw;
             return true;
         } catch (...) {
             return false;
         }
     }
-
-    void RenderDrawings(ImDrawList *Canvas, Aimbot *AimAssistState, LocalPlayer *Myself, Overlay OverlayWindow)
-    {
-        int ScreenWidth;
-        int ScreenHeight;
-        OverlayWindow.GetScreenResolution(ScreenWidth, ScreenHeight);
-        
-	/*bool GetWeaponID = true; //For finding weapon IDs (Local Player) DONT USE WITH SHOW SPECTATORS
-	if (GetWeaponID) {
-		if (!Myself->IsDead) {
-				
-		ImVec2 Center = ImGui::GetMainViewport()->GetCenter();
-                ImGui::SetNextWindowPos(ImVec2(0.0f, Center.y), ImGuiCond_Once, ImVec2(0.02f, 0.5f));
-                ImGui::SetNextWindowBgAlpha(0.3f);
-		ImGui::Begin("Current Weapon ID", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar);
-					
-		std::stringstream LocalwepID;
-		LocalwepID << Myself->WeaponHandle;
-		std::string LocalwepInt = LocalwepID.str() + " ";
-		const char* LocalwepText = (char*)LocalwepInt.c_str();
-		
-            	ImGui::Text("Current ID: ");
-            	ImGui::SameLine();
-            	ImGui::Text(LocalwepText);
-            	ImGui::End();
-		}
-	}*/
-        if(!Map->IsPlayable) return;
-        if (ShowSpectators)
-        {
-            ImVec2 Center = ImGui::GetMainViewport()->GetCenter();
-            ImGui::SetNextWindowPos(ImVec2(0.0f, Center.y), ImGuiCond_Once, ImVec2(0.02f, 0.5f));
-            ImGui::SetNextWindowBgAlpha(0.3f);
-            ImGui::Begin("Spectators", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar);
- 
-            std::chrono::milliseconds Now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
-            if (Now >= LastUpdateTime + std::chrono::milliseconds(1500))
-            {
-                int TempTotalSpectators = 0;
-                std::vector<std::string> TempSpectators;
- 
-                for (int i = 0; i < Players->size(); i++)
-                {
-                    Player *p = Players->at(i);
-                    if (p->BasePointer == Myself->BasePointer)
-                        continue;
-                    if (p->GetViewYaw() == Myself->ViewYaw && p->IsDead)
-                    {
-                        TempTotalSpectators++;
-                        TempSpectators.push_back(p->GetPlayerName());
-                    }
-                }
- 
-                TotalSpectators = TempTotalSpectators;
-                Spectators = TempSpectators;
-                LastUpdateTime = Now;
-            }
-            ImGui::Text("Spectators: ");
-            ImGui::SameLine();
-            ImGui::TextColored(TotalSpectators > 0 ? ImVec4(1, 0.343, 0.475, 1) : ImVec4(0.4, 1, 0.343, 1), "%d", TotalSpectators);
-            if (static_cast<int>(Spectators.size()) > 0)
-            {
-                ImGui::Separator();
-                for (int i = 0; i < static_cast<int>(Spectators.size()); i++)
-                {
-                    ImGui::TextColored(ImVec4(1, 0.343, 0.475, 1), "> %s", Spectators.at(i).c_str());
-                }
-            }
-            ImGui::End();
-        }
-        
-        // Draw Crosshair
-        if (DrawCrosshair) {
-        	int x = (int)(ScreenWidth * 0.5f);
-        	int y = (int)(ScreenHeight * 0.5f);
-        	Renderer::DrawLine(Canvas, Vector2D(x - CrosshairSize, y), Vector2D(x + CrosshairSize, y), CrosshairThickness, CrosshairColor); //Left - right
-        	Renderer::DrawLine(Canvas, Vector2D(x, y - CrosshairSize), Vector2D(x, y + CrosshairSize), CrosshairThickness, CrosshairColor); //Top - bottom
-        }
- 
-        // Draw FOV Circle
-        if (DrawFOVCircle && Myself->IsCombatReady())
-        {
-            float FOV = std::min(AimAssistState->FOV, AimAssistState->FOV * (AimAssistState->GetFOVScale() * AimAssistState->ZoomScale));
-            float Radius = tanf(DEG2RAD(FOV) / 2) / tanf(DEG2RAD(GameFOV) / 2) * ScreenWidth;
-            Renderer::DrawCircle(Canvas, Vector2D(ScreenWidth / 2, ScreenHeight / 2), Radius, 40, ImColor(FOVColor), FOVThickness);
-        }
-        
-        // Draw Filled FOV Circle
-        if (DrawFilledFOVCircle && Myself->IsCombatReady())
-        {
-            float FOV = std::min(AimAssistState->FOV, AimAssistState->FOV * (AimAssistState->GetFOVScale() * AimAssistState->ZoomScale));
-            float Radius = tanf(DEG2RAD(FOV) / 2) / tanf(DEG2RAD(GameFOV) / 2) * ScreenWidth;
-            Renderer::DrawCircleFilled(Canvas, Vector2D(ScreenWidth /2, ScreenHeight / 2), Radius, 40, ImColor(FilledFOVColor));
-        }
- 
-        // Draw lot of things
-        int PlayersNear = 0;
-        for (int i = 0; i < Players->size(); i++)
-        {
-            Player *p = Players->at(i);
-            
-	    if (!p->IsLocal && p->IsCombatReady() && p->DistanceToLocalPlayer < (Conversion::ToGameUnits(ESPMaxDistance))) {
- 	    	if (!VisibilityCheck) { //Always shows esp
- 	    		PlayersNear++;
-		    	if (DrawTracers) {
-				//Tracers
-				Vector2D chestScreenPosition;
-				if (Config::Sense::TracerBone == 0) {
-				    GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 66)), chestScreenPosition);
-				}
-				else if (Config::Sense::TracerBone == 1) {
-				    GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), chestScreenPosition);
-				}
-				
-				if (DrawTracers && Config::Sense::TracerPos == 0) //top to head
-				{
-				    if (!chestScreenPosition.IsZeroVector())
-				    {
-				        int x = (int)(ScreenWidth * 0.5f);
-				        
-				        if (!ShowTeam) {
-				        	if (p->IsHostile & p->IsVisible) {
-							Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight - ScreenHeight), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
-						}
-				        	if (p->IsHostile & !p->IsVisible) {
-							Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight - ScreenHeight), chestScreenPosition, TracerThickness, ImColor(InvisibleTracerColor));
-						}
-					}
-					
-					if (ShowTeam) {
-				        	if (p->IsHostile & p->IsVisible) {
-							Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight - ScreenHeight), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
-						}
-				        	if (p->IsHostile & !p->IsVisible) {
-							Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight - ScreenHeight), chestScreenPosition, TracerThickness, ImColor(InvisibleTracerColor));
-						}
-						
-						if (p->IsAlly) {
-							Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight - ScreenHeight), chestScreenPosition, TracerThickness, ImColor(TeamColor));
-						}
-					}
-				    }
-				}
-				
-				else if (DrawTracers && Config::Sense::TracerPos == 1) //middle to bottom
-				{
-				    if (!chestScreenPosition.IsZeroVector())
-				    {
-				        int x = (int)(ScreenWidth * 0.5f);
-				        
-				        if (!ShowTeam) {
-				        	if (p->IsHostile & p->IsVisible) {
-				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight / 2), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
-				        	}
-				        	if (p->IsHostile & !p->IsVisible) {
-				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight / 2), chestScreenPosition, TracerThickness, ImColor(InvisibleTracerColor));
-				        	}
-				        }
-				        
-				        if (ShowTeam) {
-				        	if (p->IsHostile & p->IsVisible) {
-				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight / 2), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
-				        	}
-				        	if (p->IsHostile & !p->IsVisible) {
-				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight / 2), chestScreenPosition, TracerThickness, ImColor(InvisibleTracerColor));
-				        	}
-				    		
-				    		if (p->IsAlly) {
-				    			Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight / 2), chestScreenPosition, TracerThickness, ImColor(TeamColor));
-				    		}
-				    	}
-				    }
-				}
-				
-				else if (DrawTracers && Config::Sense::TracerPos == 2) //bottom to bottom
-				{
-				    if (!chestScreenPosition.IsZeroVector())
-				    {
-				        int x = (int)(ScreenWidth * 0.5f);
-				        
-				        if (!ShowTeam) {
-						if (p->IsHostile & p->IsVisible) {
-				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
-				    		}
-						if (p->IsHostile & !p->IsVisible) {
-				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight), chestScreenPosition, TracerThickness, ImColor(InvisibleTracerColor));
-				    		}
-					}
-					
-					if (ShowTeam) {
-						if (p->IsHostile & p->IsVisible) {
-				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
-				    		}
-						if (p->IsHostile & !p->IsVisible) {
-				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight), chestScreenPosition, TracerThickness, ImColor(InvisibleTracerColor));
-				    		}
-				    		
-				    		if (p->IsAlly) {
-				    			Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight), chestScreenPosition, TracerThickness, ImColor(TeamColor));
-			    			}
-			    		}
-			    	    }
-			    	}
-			}
-			    
-			//Show Legend
-			if (ShowLegend) {
-				if (p->IsHostile && !p->IsDummy()) {
-					Vector2D Head;
-					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head).Add(Vector3D(0, 0, 33)), Head);
-					
-					Renderer::DrawText(Canvas, Head.Subtract(Vector2D(0,8)), p->getPlayerModelName().c_str(), ImColor(255, 255, 255), true, true, false);
-				
-				}
-			}
-
-			// Distance
-			if (DrawDistance) {
-				Vector2D distanceScreenPosition;
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head).Add(Vector3D(0, 0, 80)), distanceScreenPosition);
-				
-				if (ShowTeam) {
-					if (!distanceScreenPosition.IsZeroVector()) {
-						if (p->IsAlly) {
-							Renderer::DrawText(Canvas, distanceScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(255, 255, 255), true, true, false);
-						}
-						if (p->IsHostile && p->IsVisible) {
-							Renderer::DrawText(Canvas, distanceScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(VisibleDistanceColor), true, true, false);
-						}
-						if (p->IsHostile && !p->IsVisible) {
-							Renderer::DrawText(Canvas, distanceScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(InvisibleDistanceColor), true, true, false);
-						}
-					}
-				}
-				if (!ShowTeam) {
-					if (!distanceScreenPosition.IsZeroVector()) {
-						if (p->IsHostile && p->IsVisible) {
-							Renderer::DrawText(Canvas, distanceScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(VisibleDistanceColor), true, true, false);
-						}
-						if (p->IsHostile && !p->IsVisible) {
-							Renderer::DrawText(Canvas, distanceScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(InvisibleDistanceColor), true, true, false);
-						}
-					}
-				}
-			}
-			
-			// Draw Names
-			if (DrawNames) {
-				Vector2D nameScreenPosition;
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head).Add(Vector3D(0, 0, 60)), nameScreenPosition);
-				if (p->IsHostile && p->IsVisible && !p->IsDummy()) {
-					Renderer::DrawText(Canvas, nameScreenPosition.Subtract(Vector2D(0, 0)), p->GetPlayerName().c_str(), VisibleNameColor, true, true, false);
-				}
-				if (p->IsHostile && !p->IsVisible && !p->IsDummy()) {
-					Renderer::DrawText(Canvas, nameScreenPosition.Subtract(Vector2D(0, 0)), p->GetPlayerName().c_str(), InvisibleNameColor, true, true, false);
-				}
-				    
-				// Draw Team Names
-				if (ShowTeam && TeamNames && p->IsAlly && !p->IsDummy()) {
-					Renderer::DrawText(Canvas, nameScreenPosition.Add(Vector2D(0, 0)), p->GetPlayerName().c_str(), TeamNameColor, true, true, false);
-				}
-			}
-			
-			// Draw Weapon
-			if (DrawWeapon) {
-				if (p->IsHostile) {
-					Vector2D wepScreenPosition;
-					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), wepScreenPosition);
-					
-					int weaponHeldID;
-					weaponHeldID = p->WeaponIndex;
-					const char* weaponHeldText;
-
-					ImColor weaponHeldColor;
-					weaponHeldColor = ImColor(255, 255, 255);
-					
-					if (DrawWeapon) {
-				    		//Light Weapons
-				    		if (weaponHeldID == 105) { //P2020
-				    			weaponHeldText = "P2020";
-				    			weaponHeldColor = LightWeaponColor;
-				    		}
-				    		if (weaponHeldID == 81) { //RE-45
-				    			weaponHeldText = "RE-45";
-				    			weaponHeldColor = LightWeaponColor;
-				    		}
-				    		if (weaponHeldID == 80) { //Alternator
-				    			weaponHeldText = "Alternator";
-				    			weaponHeldColor = LightWeaponColor;
-				    		}
-				    		if (weaponHeldID == 104) { //R-99
-				    			weaponHeldText = "R-99";
-				    			weaponHeldColor = LightWeaponColor;
-				    		}
-				    		if (weaponHeldID == 0) { //R-301
-				    			weaponHeldText = "R-301";
-				    			weaponHeldColor = LightWeaponColor;
-				    		}
-				    		if (weaponHeldID == 106) { //Spitfire
-				    			weaponHeldText = "Spitfire";
-				    			weaponHeldColor = LightWeaponColor;
-				    		}
-				    		if (weaponHeldID == 89) { //G7
-				    			weaponHeldText = "G7 Scout";
-				    			weaponHeldColor = LightWeaponColor;
-				    		}
-				    		//Heavy Weapons
-				    		if (weaponHeldID == 112) { //CARSMG
-				    			weaponHeldText = "CAR SMG";
-				    			weaponHeldColor = HeavyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 21) { //Rampage
-				    			weaponHeldText = "Rampage";
-				    			weaponHeldColor = HeavyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 111) { //Repeater
-				    			weaponHeldText = "Repeater";
-				    			weaponHeldColor = HeavyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 90) { //Hemlock
-				    			weaponHeldText = "Hemlock";
-				    			weaponHeldColor = HeavyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 88) { //Flatline
-				    			weaponHeldText = "Flatline";
-				    			weaponHeldColor = HeavyWeaponColor;
-				    		}
-				    		//Energy Weapons
-				    		if (weaponHeldID == 113) { //Nemesis
-				    			weaponHeldText = "Nemesis";
-				    			weaponHeldColor = EnergyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 110) { //Volt
-				    			weaponHeldText = "Volt";
-				    			weaponHeldColor = EnergyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 107) { //TripleTake
-				    			weaponHeldText = "Triple Take";
-				    			weaponHeldColor = EnergyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 93) { //LSTAR
-				    			weaponHeldText = "L-STAR";
-				    			weaponHeldColor = EnergyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 84) { //Devotion
-				    			weaponHeldText = "Devotion";
-				    			weaponHeldColor = EnergyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 86) { //Havoc
-				    			weaponHeldText = "Havoc";
-				    			weaponHeldColor = EnergyWeaponColor;
-				    		}
-				    		//Shotguns
-				    		if (weaponHeldID == 96) { //Mozambique
-				    			weaponHeldText = "Mozambique";
-				    			weaponHeldColor = ShotgunWeaponColor;
-				    		}
-				    		if (weaponHeldID == 87) { //EVA8
-				    			weaponHeldText = "EVA-8 Auto";
-				    			weaponHeldColor = ShotgunWeaponColor;
-				    		}
-				    		if (weaponHeldID == 103) { //Peacekeeper
-				    			weaponHeldText = "Peacekeeper";
-				    			weaponHeldColor = ShotgunWeaponColor;
-				    		}
-				    		if (weaponHeldID == 95) { //Mastiff
-				    			weaponHeldText = "Mastiff";
-				    			weaponHeldColor = ShotgunWeaponColor;
-				    		}
-				    		//Snipers
-				    		if (weaponHeldID == 1) { //Sentinel
-				    			weaponHeldText = "Sentinel";
-				    			weaponHeldColor = SniperWeaponColor;
-				    		}
-				    		if (weaponHeldID == 83) { //ChargeRifle
-				    			weaponHeldText = "Charge Rifle";
-				    			weaponHeldColor = SniperWeaponColor;
-				    		}
-				    		if (weaponHeldID == 85) { //Longbow
-				    			weaponHeldText = "Longbow";
-				    			weaponHeldColor = SniperWeaponColor;
-				    		}
-				    		//Legendary Weapons
-				    		if (weaponHeldID == 109) { //Wingman
-				    			weaponHeldText = "Wingman";
-				    			weaponHeldColor = LegendaryWeaponColor;
-				    		}
-				    		if (weaponHeldID == 102) { //Prowler
-				    			weaponHeldText = "Prowler";
-				    			weaponHeldColor = LegendaryWeaponColor;
-				    		}
-				    		if (weaponHeldID == 2) { //Bocek
-				    			weaponHeldText = "Bocek";
-				    			weaponHeldColor = LegendaryWeaponColor;
-				    		}
-				    		if (weaponHeldID == 92) { //Kraber
-				    			weaponHeldText = "Kraber";
-				    			weaponHeldColor = LegendaryWeaponColor;
-				    		}
-				    		if (weaponHeldID == 163) { //Knife
-				    			weaponHeldText = "Throwing Knife";
-				    			weaponHeldColor = LegendaryWeaponColor;
-				    		}
-				    		if (weaponHeldID == 3) { //BusterSword
-				    			weaponHeldText = "Buster Sword";
-				    			weaponHeldColor = LegendaryWeaponColor;
-				    		}
-				    		//Melee & Grenade
-				    		/*if (weaponHeldID == 213) { //Thermite Grenade
-				    			weaponHeldText = "Thermite Grenade";
-				    			weaponHeldColor = ThrowableWeaponColor;
-				    		}*/
-				    		if (p->IsHoldingGrenade) {
-				    			weaponHeldText = "Throwable";
-				    			weaponHeldColor = ThrowableWeaponColor;
-				    		}
-				    		if (weaponHeldID == 114) { //Melee
-				    			weaponHeldText = "Melee";
-				    			weaponHeldColor = MeleeWeaponColor;
-				    		}
-				    	}
-					
-					if (WeaponColorType) { //Changes color to ammo type
-						if (DrawWeapon && DrawStatus) {
-							Renderer::DrawText(Canvas, wepScreenPosition.Add(Vector2D(0, 20)), weaponHeldText, ImColor(weaponHeldColor), true, true, false);
-						}
-						
-						if (DrawWeapon && !DrawStatus) {
-							Renderer::DrawText(Canvas, wepScreenPosition.Add(Vector2D(0, 0)), weaponHeldText, ImColor(weaponHeldColor), true, true, false);
-						}
-					}
-					if (!WeaponColorType) {
-						if (DrawWeapon && DrawStatus) {
-							Renderer::DrawText(Canvas, wepScreenPosition.Add(Vector2D(0, 20)), weaponHeldText, ImColor(WeaponColor), true, true, false);
-						}
-						
-						if (DrawWeapon && !DrawStatus) {
-							Renderer::DrawText(Canvas, wepScreenPosition.Add(Vector2D(0, 0)), weaponHeldText, ImColor(WeaponColor), true, true, false);
-						}
-					}
-				}
-			}
-			
-			/*bool TestWeaponID = false; //For finding weapon IDs (Used for finding melee ID)
-			if (TestWeaponID) {
-				if (p->IsHostile) {
-					Vector2D testWScreenPosition;
-					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), testWScreenPosition);
-					
-					std::stringstream wepID;
-					wepID << p->WeaponIndex;
-					std::string wepInt = wepID.str() + " ";
-					const char* wepText = (char*)wepInt.c_str();
-
-					ImColor weaponWHeldColor;
-					weaponWHeldColor = ImColor(255, 255, 255);
-					
-					Renderer::DrawText(Canvas, testWScreenPosition.Add(Vector2D(0, 0)), wepText, ImColor(weaponWHeldColor), true, true, false);
-				}
-			}*/
-				
-			// DrawBox
-			if (DrawBox && p->DistanceToLocalPlayer < (Conversion::ToGameUnits(ESPMaxDistance))) {
-				Vector2D Head, Foot;
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
-				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
-				    
-				if (!ShowTeam) {
-					if (p->IsHostile && p->IsVisible) {
-				        	Renderer::DrawBox(Canvas, Foot, Head, ImColor(VisibleBoxColor), BoxThickness);
-					}
-					if (p->IsHostile && !p->IsVisible) {
-				        	Renderer::DrawBox(Canvas, Foot, Head, ImColor(InvisibleBoxColor), BoxThickness);
-					}
-				}
-				    
-				if (ShowTeam) {
-					if (p->IsHostile && p->IsVisible) {
-				        	Renderer::DrawBox(Canvas, Foot, Head, ImColor(VisibleBoxColor), BoxThickness);
-					}
-					if (p->IsHostile && !p->IsVisible) {
-				        	Renderer::DrawBox(Canvas, Foot, Head, ImColor(InvisibleBoxColor), BoxThickness);
-					}
-					if (p->IsAlly) {
-						Renderer::DrawBox(Canvas, Foot, Head, ImColor(TeamColor), BoxThickness);
-					}
-				}
-			}
-			
-			// Draw Filled Box
-			if (DrawFilledBox && p->DistanceToLocalPlayer < (Conversion::ToGameUnits(ESPMaxDistance))) {
-				Vector2D Head, Foot;
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
-				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
-				    
-				if (!ShowTeam) {
-					if (p->IsHostile && p->IsVisible) {
-				        	Renderer::DrawFilledBox(Canvas, Foot, Head, ImColor(VisibleFilledBoxColor));
-					}
-					if (p->IsHostile && !p->IsVisible) {
-				        	Renderer::DrawFilledBox(Canvas, Foot, Head, ImColor(InvisibleFilledBoxColor));
-					}
-				}
-				    
-				if (ShowTeam) {
-					if (p->IsHostile && p->IsVisible) {
-				        	Renderer::DrawFilledBox(Canvas, Foot, Head, ImColor(VisibleFilledBoxColor));
-					}
-					if (p->IsHostile && !p->IsVisible) {
-				        	Renderer::DrawFilledBox(Canvas, Foot, Head, ImColor(InvisibleFilledBoxColor));
-					}
-					if (p->IsAlly) {
-						Renderer::DrawFilledBox(Canvas, Foot, Head, ImColor(TeamColor));
-					}
-				}
-			}
-			
-			// Draw Health + Shield
-			if (DrawStatus) {
-				Vector2D StatusPos;
-				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), StatusPos);
-				
-				std::stringstream healthValue, shieldValue, maxHealthValue, maxShieldValue;
-				healthValue << p->Health;
-				shieldValue << p->Shield;
-				maxHealthValue << p->MaxHealth;
-				maxShieldValue << p->MaxShield;
-				std::string healthInt = healthValue.str() + " HP";
-				std::string shieldInt = shieldValue.str() + " AP";
-				const char* healthText = (char*)healthInt.c_str();
-				const char* shieldText = (char*)shieldInt.c_str();
-				std::string combinedHealth = healthValue.str() + " / " + maxHealthValue.str() + " HP";
-				const char* combinedHealthText = combinedHealth.c_str();
-				std::string combinedShield = shieldValue.str() + " / " + maxShieldValue.str() + " AP";
-				const char* combinedShieldText = combinedShield.c_str();
-					
-				ImColor ShieldColor;
-				if (p->MaxShield == 50) { //white
-					ShieldColor = ImColor(247, 247, 247);
-				}
-				else if (p->MaxShield == 75) { //blue
-					ShieldColor = ImColor(39, 178, 255);
-				}
-				else if (p->MaxShield == 100) { //purple
-					ShieldColor = ImColor(206, 59, 255);
-				}
-				else if (p->MaxShield == 125) { //red
-					ShieldColor = ImColor(219, 2, 2);
-				}
-				else {
-					ShieldColor = ImColor(247, 247, 247);
-				}
-				
-				//Render Text
-				if (ShowTeam) {
-					if (!ShowMaxStatusValues) {
-						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), healthText, ImColor(0, 255, 0), true, true, false);
-						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0 + 10)), shieldText, ShieldColor, true, true, false);
-					}
-					if (ShowMaxStatusValues) {
-						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), combinedHealthText, ImColor(0, 255, 0), true, true, false);
-						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0 + 10)), combinedShieldText, ShieldColor, true, true, false);
-					}
-				}
-				if (!ShowTeam) {
-					if (!ShowMaxStatusValues && p->IsHostile) {
-						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), healthText, ImColor(0, 255, 0), true, true, false);
-						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0 + 10)), shieldText, ShieldColor, true, true, false);
-					}
-					if (ShowMaxStatusValues && p->IsHostile) {
-						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), combinedHealthText, ImColor(0, 255, 0), true, true, false);
-						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0 + 10)), combinedShieldText, ShieldColor, true, true, false);
-					}
-				}
-			}
-			
-			//Draw Health Bar
-			if (ShowTeam) {
-				if (HealthBar) {
-					Vector2D Head, Foot;
-					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
-					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
-					
-					int health = p->Health;
-					
-					Renderer::DrawHealthBar(Canvas, Foot, Head, health, BarThickness);
-				}
-			}
-			if (!ShowTeam) {
-				if (HealthBar && p->IsHostile) {
-					Vector2D Head, Foot;
-					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
-					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
-					
-					int health = p->Health;
-					
-					Renderer::DrawHealthBar(Canvas, Foot, Head, health, BarThickness);
-				}
-			}
-			
-			//Draw Shield Bar
-			if (ShowTeam) {
-				if (ShieldBar) {
-					Vector2D Head, Foot;
-					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
-					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
-					
-					int shield = p->Shield;
-					
-					ImColor shieldBarColor;
-					if (p->MaxShield == 50) { //white
-						shieldBarColor = ImColor(247, 247, 247);
-					}
-					else if (p->MaxShield == 75) { //blue
-						shieldBarColor = ImColor(39, 178, 255);
-					}
-					else if (p->MaxShield == 100) { //purple
-						shieldBarColor = ImColor(206, 59, 255);
-					}
-					else if (p->MaxShield == 125) { //red
-						shieldBarColor = ImColor(219, 2, 2);
-					}
-					else {
-						shieldBarColor = ImColor(247, 247, 247);
-					}
-					
-					
-					Renderer::DrawShieldBar(Canvas, Foot, Head, shield, shieldBarColor, BarThickness);
-				}
-			}
-			
-			if (!ShowTeam) {
-				if (ShieldBar && p->IsHostile) {
-					Vector2D Head, Foot;
-					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
-					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
-					
-					int shield = p->Shield;
-					
-					ImColor shieldBarColor;
-					if (p->MaxShield == 50) { //white
-						shieldBarColor = ImColor(247, 247, 247);
-					}
-					else if (p->MaxShield == 75) { //blue
-						shieldBarColor = ImColor(39, 178, 255);
-					}
-					else if (p->MaxShield == 100) { //purple
-						shieldBarColor = ImColor(206, 59, 255);
-					}
-					else if (p->MaxShield == 125) { //red
-						shieldBarColor = ImColor(219, 2, 2);
-					}
-					else {
-						shieldBarColor = ImColor(247, 247, 247);
-					}
-					
-					
-					Renderer::DrawShieldBar(Canvas, Foot, Head, shield, shieldBarColor, BarThickness);
-				}
-			}
-				
-			//Draw Skeleton
-			if (Skeleton) {
-		 
-				Vector2D Head, Neck, UpperChest, LowerChest, Stomach, Leftshoulder, Leftelbow, LeftHand, Rightshoulder, RightelbowBone, RightHand, LeftThighs, Leftknees, Leftleg, RightThighs, Rightknees, Rightleg;
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Neck), Neck);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::UpperChest), UpperChest);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::LowerChest), LowerChest);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Stomach), Stomach);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Leftshoulder), Leftshoulder);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Leftelbow), Leftelbow);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::LeftHand), LeftHand);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Rightshoulder), Rightshoulder);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::RightelbowBone), RightelbowBone);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::RightHand), RightHand);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::LeftThighs), LeftThighs);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Leftknees), Leftknees);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Leftleg), Leftleg);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::RightThighs), RightThighs);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Rightknees), Rightknees);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Rightleg), Rightleg);
-		 
-				if (!ShowTeam) {
-					if (p->IsHostile && p->IsVisible) {
-						Renderer::DrawLine(Canvas, Head, Neck, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, UpperChest, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, UpperChest, LowerChest, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, LowerChest, Stomach, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, Leftshoulder, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftshoulder, Leftelbow, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftelbow, LeftHand, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, Rightshoulder, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Rightshoulder, RightelbowBone, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, RightelbowBone, RightHand, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Stomach, LeftThighs, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, LeftThighs, Leftknees, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftknees, Leftleg, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Stomach, RightThighs, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, RightThighs, Rightknees, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Rightknees, Rightleg, SkeletonThickness, VisibleSkeletonColor);
-				    	}
-					if (p->IsHostile && !p->IsVisible) {
-						Renderer::DrawLine(Canvas, Head, Neck, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, UpperChest, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, UpperChest, LowerChest, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, LowerChest, Stomach, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, Leftshoulder, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftshoulder, Leftelbow, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftelbow, LeftHand, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, Rightshoulder, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Rightshoulder, RightelbowBone, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, RightelbowBone, RightHand, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Stomach, LeftThighs, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, LeftThighs, Leftknees, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftknees, Leftleg, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Stomach, RightThighs, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, RightThighs, Rightknees, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Rightknees, Rightleg, SkeletonThickness, InvisibleSkeletonColor);
-				    	}
-				}
-				    
-		 		if (ShowTeam) {
-					if (p->IsHostile && p->IsVisible) {
-						Renderer::DrawLine(Canvas, Head, Neck, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, UpperChest, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, UpperChest, LowerChest, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, LowerChest, Stomach, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, Leftshoulder, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftshoulder, Leftelbow, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftelbow, LeftHand, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, Rightshoulder, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Rightshoulder, RightelbowBone, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, RightelbowBone, RightHand, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Stomach, LeftThighs, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, LeftThighs, Leftknees, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftknees, Leftleg, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Stomach, RightThighs, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, RightThighs, Rightknees, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Rightknees, Rightleg, SkeletonThickness, VisibleSkeletonColor);
-				    	}
-					if (p->IsHostile && !p->IsVisible) {
-						Renderer::DrawLine(Canvas, Head, Neck, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, UpperChest, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, UpperChest, LowerChest, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, LowerChest, Stomach, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, Leftshoulder, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftshoulder, Leftelbow, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftelbow, LeftHand, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, Rightshoulder, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Rightshoulder, RightelbowBone, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, RightelbowBone, RightHand, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Stomach, LeftThighs, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, LeftThighs, Leftknees, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftknees, Leftleg, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Stomach, RightThighs, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, RightThighs, Rightknees, SkeletonThickness, InvisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Rightknees, Rightleg, SkeletonThickness, InvisibleSkeletonColor);
-				    	}
-			    		
-			    		if (p->IsAlly) {
-						Renderer::DrawLine(Canvas, Head, Neck, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Neck, UpperChest, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, UpperChest, LowerChest, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, LowerChest, Stomach, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Neck, Leftshoulder, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Leftshoulder, Leftelbow, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Leftelbow, LeftHand, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Neck, Rightshoulder, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Rightshoulder, RightelbowBone, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, RightelbowBone, RightHand, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Stomach, LeftThighs, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, LeftThighs, Leftknees, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Leftknees, Leftleg, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Stomach, RightThighs, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, RightThighs, Rightknees, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Rightknees, Rightleg, SkeletonThickness, TeamColor);
-				        }
-				}
-			}
-			
-			// Seer
-			if (DrawSeer && p->IsHostile) {
-				Vector2D headScreenPosition;
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), headScreenPosition);
-				if (!headScreenPosition.IsZeroVector())
-				    Renderer::DrawSeer(Canvas, headScreenPosition.x, headScreenPosition.y - 20, p->Shield, p->MaxShield, p->Health);
-			    }
-			    
-			//Show Near
-			if (ShowNear)
-			{
-			    // Gui DrawText Version
-			    Renderer::DrawText(Canvas, Vector2D(ScreenWidth * 0.5, ScreenHeight * 0.6), ("NEAR : " + std::to_string(PlayersNear)).c_str(), ImVec4(1.0f, 1.0f, 1.0f, 1.0f), true, true, false);
-			    // Gui Version
-			    /*
-			   ImVec2 Center = ImGui::GetMainViewport()->GetCenter();
-			   ImGui::SetNextWindowPos(ImVec2(Center.x, Center.y * 1.2), ImGuiCond_Once, ImVec2(0.50f, 0.5f));
-			   ImGui::SetNextWindowBgAlpha(0.3f);
-			   ImGui::Begin("Near", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar);
-			   ImGui::Text("Near: ");
-			   ImGui::SameLine();
-			   ImGui::TextColored(PlayersNear > 0 ? ImVec4(0.4, 1, 0.343, 1) : ImVec4(1, 1, 1, 1), "%d", PlayersNear);
-			   ImGui::End();
-			   */
-			}
-			PlayersNear = 0;
-			
-	//		// Draw Seer on locked target
-	//		if (AimAssistState->TargetSelected && AimAssistState->CurrentTarget) {
-	//		    Vector2D headScreenPosition;
-	//		    GameCamera->WorldToScreen(AimAssistState->CurrentTarget->GetBonePosition(HitboxType::Head), headScreenPosition);
-	//		    if (headScreenPosition.IsZeroVector())
-	//		        return;
-	//	 
-	//		    Renderer::DrawSeer(Canvas, headScreenPosition.x, headScreenPosition.y - 20, AimAssistState->CurrentTarget->Shield, AimAssistState->CurrentTarget->MaxShield, AimAssistState->CurrentTarget->Health);
-	//		    return;
-	//		}
-		    }
- 	    	if (VisibilityCheck) { //Always shows esp
- 	    		PlayersNear++;
-		    	if (DrawTracers) {
-				//Tracers
-				Vector2D chestScreenPosition;
-				if (Config::Sense::TracerBone == 0) {
-				    GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 66)), chestScreenPosition);
-				}
-				else if (Config::Sense::TracerBone == 1) {
-				    GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), chestScreenPosition);
-				}
-				
-				if (DrawTracers && Config::Sense::TracerPos == 0) //top to head
-				{
-				    if (!chestScreenPosition.IsZeroVector())
-				    {
-				        int x = (int)(ScreenWidth * 0.5f);
-				        
-				        if (!ShowTeam) {
-				        	if (p->IsHostile & p->IsVisible) {
-							Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight - ScreenHeight), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
-						}
-					}
-					
-					if (ShowTeam) {
-				        	if (p->IsHostile & p->IsVisible) {
-							Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight - ScreenHeight), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
-						}
-						
-						if (p->IsAlly & p->IsVisible) {
-							Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight - ScreenHeight), chestScreenPosition, TracerThickness, ImColor(TeamColor));
-						}
-					}
-				    }
-				}
-				
-				else if (DrawTracers && Config::Sense::TracerPos == 1) //middle to bottom
-				{
-				    if (!chestScreenPosition.IsZeroVector())
-				    {
-				        int x = (int)(ScreenWidth * 0.5f);
-				        
-				        if (!ShowTeam) {
-				        	if (p->IsHostile & p->IsVisible) {
-				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight / 2), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
-				        	}
-				        }
-				        
-				        if (ShowTeam) {
-				        	if (p->IsHostile & p->IsVisible) {
-				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight / 2), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
-				        	}
-				    		
-				    		if (p->IsAlly & p->IsVisible) {
-				    			Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight / 2), chestScreenPosition, TracerThickness, ImColor(TeamColor));
-				    		}
-				    	}
-				    }
-				}
-				
-				else if (DrawTracers && Config::Sense::TracerPos == 2) //bottom to bottom
-				{
-				    if (!chestScreenPosition.IsZeroVector())
-				    {
-				        int x = (int)(ScreenWidth * 0.5f);
-				        
-				        if (!ShowTeam) {
-						if (p->IsHostile & p->IsVisible) {
-				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
-				    		}
-					}
-					
-					if (ShowTeam) {
-						if (p->IsHostile & p->IsVisible) {
-				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
-				    		}
-				    		
-				    		if (p->IsAlly & p->IsVisible) {
-				    			Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight), chestScreenPosition, TracerThickness, ImColor(TeamColor));
-			    			}
-			    		}
-			    	    }
-			    	}
-			}
-			    
-			//Show Legend
-			if (ShowLegend) {
-				if (p->IsHostile && p->IsVisible && !p->IsDummy()) {
-					Vector2D Head;
-					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head).Add(Vector3D(0, 0, 33)), Head);
-					
-					Renderer::DrawText(Canvas, Head.Subtract(Vector2D(0,8)), p->getPlayerModelName().c_str(), ImColor(255, 255, 255), true, true, false);
-				
-				}
-			}
-
-			// Distance
-			if (DrawDistance) {
-				Vector2D distanceScreenPosition;
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head).Add(Vector3D(0, 0, 80)), distanceScreenPosition);
-				
-				if (ShowTeam) {
-					if (!distanceScreenPosition.IsZeroVector()) {
-						if (p->IsAlly && p->IsVisible) {
-							Renderer::DrawText(Canvas, distanceScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(255, 255, 255), true, true, false);
-						}
-						if (p->IsHostile && p->IsVisible) {
-							Renderer::DrawText(Canvas, distanceScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(VisibleDistanceColor), true, true, false);
-						}
-					}
-				}
-				if (!ShowTeam) {
-					if (!distanceScreenPosition.IsZeroVector()) {
-						if (p->IsHostile && p->IsVisible) {
-							Renderer::DrawText(Canvas, distanceScreenPosition.Add(Vector2D(0, 0)), std::to_string((int)Conversion::ToMeters(p->DistanceToLocalPlayer)).c_str(), ImColor(VisibleDistanceColor), true, true, false);
-						}
-					}
-				}
-			}
-			
-			// Draw Names
-			if (DrawNames) {
-				Vector2D nameScreenPosition;
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head).Add(Vector3D(0, 0, 60)), nameScreenPosition);
-				if (p->IsHostile && p->IsVisible && !p->IsDummy()) {
-					Renderer::DrawText(Canvas, nameScreenPosition.Subtract(Vector2D(0, 0)), p->GetPlayerName().c_str(), VisibleNameColor, true, true, false);
-				}
-				    
-				// Draw Team Names
-				if (ShowTeam && TeamNames && p->IsAlly && p->IsVisible && !p->IsDummy()) {
-					Renderer::DrawText(Canvas, nameScreenPosition.Add(Vector2D(0, 0)), p->GetPlayerName().c_str(), TeamNameColor, true, true, false);
-				}
-			}
-			
-			// Draw Weapon
-			if (DrawWeapon) {
-				if (p->IsHostile && p->IsVisible) {
-					Vector2D wepScreenPosition;
-					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), wepScreenPosition);
-					
-					int weaponHeldID;
-					weaponHeldID = p->WeaponIndex;
-					const char* weaponHeldText;
-
-					ImColor weaponHeldColor;
-					weaponHeldColor = ImColor(255, 255, 255);
-					
-					if (DrawWeapon) {
-				    		//Light Weapons
-				    		if (weaponHeldID == 105) { //P2020
-				    			weaponHeldText = "P2020";
-				    			weaponHeldColor = LightWeaponColor;
-				    		}
-				    		if (weaponHeldID == 81) { //RE-45
-				    			weaponHeldText = "RE-45";
-				    			weaponHeldColor = LightWeaponColor;
-				    		}
-				    		if (weaponHeldID == 80) { //Alternator
-				    			weaponHeldText = "Alternator";
-				    			weaponHeldColor = LightWeaponColor;
-				    		}
-				    		if (weaponHeldID == 104) { //R-99
-				    			weaponHeldText = "R-99";
-				    			weaponHeldColor = LightWeaponColor;
-				    		}
-				    		if (weaponHeldID == 0) { //R-301
-				    			weaponHeldText = "R-301";
-				    			weaponHeldColor = LightWeaponColor;
-				    		}
-				    		if (weaponHeldID == 106) { //Spitfire
-				    			weaponHeldText = "Spitfire";
-				    			weaponHeldColor = LightWeaponColor;
-				    		}
-				    		if (weaponHeldID == 89) { //G7
-				    			weaponHeldText = "G7 Scout";
-				    			weaponHeldColor = LightWeaponColor;
-				    		}
-				    		//Heavy Weapons
-				    		if (weaponHeldID == 112) { //CARSMG
-				    			weaponHeldText = "CAR SMG";
-				    			weaponHeldColor = HeavyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 21) { //Rampage
-				    			weaponHeldText = "Rampage";
-				    			weaponHeldColor = HeavyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 111) { //Repeater
-				    			weaponHeldText = "Repeater";
-				    			weaponHeldColor = HeavyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 90) { //Hemlock
-				    			weaponHeldText = "Hemlock";
-				    			weaponHeldColor = HeavyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 88) { //Flatline
-				    			weaponHeldText = "Flatline";
-				    			weaponHeldColor = HeavyWeaponColor;
-				    		}
-				    		//Energy Weapons
-				    		if (weaponHeldID == 113) { //Nemesis
-				    			weaponHeldText = "Nemesis";
-				    			weaponHeldColor = EnergyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 110) { //Volt
-				    			weaponHeldText = "Volt";
-				    			weaponHeldColor = EnergyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 107) { //TripleTake
-				    			weaponHeldText = "Triple Take";
-				    			weaponHeldColor = EnergyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 93) { //LSTAR
-				    			weaponHeldText = "L-STAR";
-				    			weaponHeldColor = EnergyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 84) { //Devotion
-				    			weaponHeldText = "Devotion";
-				    			weaponHeldColor = EnergyWeaponColor;
-				    		}
-				    		if (weaponHeldID == 86) { //Havoc
-				    			weaponHeldText = "Havoc";
-				    			weaponHeldColor = EnergyWeaponColor;
-				    		}
-				    		//Shotguns
-				    		if (weaponHeldID == 96) { //Mozambique
-				    			weaponHeldText = "Mozambique";
-				    			weaponHeldColor = ShotgunWeaponColor;
-				    		}
-				    		if (weaponHeldID == 87) { //EVA8
-				    			weaponHeldText = "EVA-8 Auto";
-				    			weaponHeldColor = ShotgunWeaponColor;
-				    		}
-				    		if (weaponHeldID == 103) { //Peacekeeper
-				    			weaponHeldText = "Peacekeeper";
-				    			weaponHeldColor = ShotgunWeaponColor;
-				    		}
-				    		if (weaponHeldID == 95) { //Mastiff
-				    			weaponHeldText = "Mastiff";
-				    			weaponHeldColor = ShotgunWeaponColor;
-				    		}
-				    		//Snipers
-				    		if (weaponHeldID == 1) { //Sentinel
-				    			weaponHeldText = "Sentinel";
-				    			weaponHeldColor = SniperWeaponColor;
-				    		}
-				    		if (weaponHeldID == 83) { //ChargeRifle
-				    			weaponHeldText = "Charge Rifle";
-				    			weaponHeldColor = SniperWeaponColor;
-				    		}
-				    		if (weaponHeldID == 85) { //Longbow
-				    			weaponHeldText = "Longbow";
-				    			weaponHeldColor = SniperWeaponColor;
-				    		}
-				    		//Legendary Weapons
-				    		if (weaponHeldID == 109) { //Wingman
-				    			weaponHeldText = "Wingman";
-				    			weaponHeldColor = LegendaryWeaponColor;
-				    		}
-				    		if (weaponHeldID == 102) { //Prowler
-				    			weaponHeldText = "Prowler";
-				    			weaponHeldColor = LegendaryWeaponColor;
-				    		}
-				    		if (weaponHeldID == 2) { //Bocek
-				    			weaponHeldText = "Bocek";
-				    			weaponHeldColor = LegendaryWeaponColor;
-				    		}
-				    		if (weaponHeldID == 92) { //Kraber
-				    			weaponHeldText = "Kraber";
-				    			weaponHeldColor = LegendaryWeaponColor;
-				    		}
-				    		if (weaponHeldID == 163) { //Knife
-				    			weaponHeldText = "Throwing Knife";
-				    			weaponHeldColor = LegendaryWeaponColor;
-				    		}
-				    		if (weaponHeldID == 3) { //BusterSword
-				    			weaponHeldText = "Buster Sword";
-				    			weaponHeldColor = LegendaryWeaponColor;
-				    		}
-				    		//Melee & Grenade
-				    		/*if (weaponHeldID == 213) { //Thermite Grenade
-				    			weaponHeldText = "Thermite Grenade";
-				    			weaponHeldColor = ThrowableWeaponColor;
-				    		}*/
-				    		if (p->IsHoldingGrenade) {
-				    			weaponHeldText = "Throwable";
-				    			weaponHeldColor = ThrowableWeaponColor;
-				    		}
-				    		if (weaponHeldID == 114) { //Melee
-				    			weaponHeldText = "Melee";
-				    			weaponHeldColor = MeleeWeaponColor;
-				    		}
-				    	}
-					
-					if (WeaponColorType) { //Changes color to ammo type
-						if (DrawWeapon && DrawStatus) {
-							Renderer::DrawText(Canvas, wepScreenPosition.Add(Vector2D(0, 20)), weaponHeldText, ImColor(weaponHeldColor), true, true, false);
-						}
-						
-						if (DrawWeapon && !DrawStatus) {
-							Renderer::DrawText(Canvas, wepScreenPosition.Add(Vector2D(0, 0)), weaponHeldText, ImColor(weaponHeldColor), true, true, false);
-						}
-					}
-					if (!WeaponColorType) {
-						if (DrawWeapon && DrawStatus) {
-							Renderer::DrawText(Canvas, wepScreenPosition.Add(Vector2D(0, 20)), weaponHeldText, ImColor(WeaponColor), true, true, false);
-						}
-						
-						if (DrawWeapon && !DrawStatus) {
-							Renderer::DrawText(Canvas, wepScreenPosition.Add(Vector2D(0, 0)), weaponHeldText, ImColor(WeaponColor), true, true, false);
-						}
-					}
-				}
-			}
-			
-			/*bool TestWeaponID = false; //For finding weapon IDs (Used for finding melee ID)
-			if (TestWeaponID) {
-				if (p->IsHostile) {
-					Vector2D testWScreenPosition;
-					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), testWScreenPosition);
-					
-					std::stringstream wepID;
-					wepID << p->WeaponIndex;
-					std::string wepInt = wepID.str() + " ";
-					const char* wepText = (char*)wepInt.c_str();
-
-					ImColor weaponWHeldColor;
-					weaponWHeldColor = ImColor(255, 255, 255);
-					
-					Renderer::DrawText(Canvas, testWScreenPosition.Add(Vector2D(0, 0)), wepText, ImColor(weaponWHeldColor), true, true, false);
-				}
-			}*/
-				
-			// DrawBox
-			if (DrawBox && p->DistanceToLocalPlayer < (Conversion::ToGameUnits(ESPMaxDistance))) {
-				Vector2D Head, Foot;
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
-				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
-				    
-				if (!ShowTeam) {
-					if (p->IsHostile && p->IsVisible) {
-				        	Renderer::DrawBox(Canvas, Foot, Head, ImColor(VisibleBoxColor), BoxThickness);
-					}
-				}
-				    
-				if (ShowTeam) {
-					if (p->IsHostile && p->IsVisible) {
-				        	Renderer::DrawBox(Canvas, Foot, Head, ImColor(VisibleBoxColor), BoxThickness);
-					}
-					if (p->IsAlly && p->IsVisible) {
-						Renderer::DrawBox(Canvas, Foot, Head, ImColor(TeamColor), BoxThickness);
-					}
-				}
-			}
-			
-			// Draw Filled Box
-			if (DrawFilledBox && p->DistanceToLocalPlayer < (Conversion::ToGameUnits(ESPMaxDistance))) {
-				Vector2D Head, Foot;
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
-				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
-				    
-				if (!ShowTeam) {
-					if (p->IsHostile && p->IsVisible) {
-				        	Renderer::DrawFilledBox(Canvas, Foot, Head, ImColor(VisibleFilledBoxColor));
-					}
-				}
-				    
-				if (ShowTeam) {
-					if (p->IsHostile && p->IsVisible) {
-				        	Renderer::DrawFilledBox(Canvas, Foot, Head, ImColor(VisibleFilledBoxColor));
-					}
-					if (p->IsAlly && p->IsVisible) {
-						Renderer::DrawFilledBox(Canvas, Foot, Head, ImColor(TeamColor));
-					}
-				}
-			}
-			
-			// Draw Health + Shield
-			if (DrawStatus) {
-				Vector2D StatusPos;
-				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), StatusPos);
-				
-				std::stringstream healthValue, shieldValue, maxHealthValue, maxShieldValue;
-				healthValue << p->Health;
-				shieldValue << p->Shield;
-				maxHealthValue << p->MaxHealth;
-				maxShieldValue << p->MaxShield;
-				std::string healthInt = healthValue.str() + " HP";
-				std::string shieldInt = shieldValue.str() + " AP";
-				const char* healthText = (char*)healthInt.c_str();
-				const char* shieldText = (char*)shieldInt.c_str();
-				std::string combinedHealth = healthValue.str() + " / " + maxHealthValue.str() + " HP";
-				const char* combinedHealthText = combinedHealth.c_str();
-				std::string combinedShield = shieldValue.str() + " / " + maxShieldValue.str() + " AP";
-				const char* combinedShieldText = combinedShield.c_str();
-					
-				ImColor ShieldColor;
-				if (p->MaxShield == 50) { //white
-					ShieldColor = ImColor(247, 247, 247);
-				}
-				else if (p->MaxShield == 75) { //blue
-					ShieldColor = ImColor(39, 178, 255);
-				}
-				else if (p->MaxShield == 100) { //purple
-					ShieldColor = ImColor(206, 59, 255);
-				}
-				else if (p->MaxShield == 125) { //red
-					ShieldColor = ImColor(219, 2, 2);
-				}
-				else {
-					ShieldColor = ImColor(247, 247, 247);
-				}
-				
-				//Render Text
-				if (ShowTeam) {
-					if (!ShowMaxStatusValues && p->IsVisible) {
-						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), healthText, ImColor(0, 255, 0), true, true, false);
-						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0 + 10)), shieldText, ShieldColor, true, true, false);
-					}
-					if (ShowMaxStatusValues && p->IsVisible) {
-						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), combinedHealthText, ImColor(0, 255, 0), true, true, false);
-						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0 + 10)), combinedShieldText, ShieldColor, true, true, false);
-					}
-				}
-				if (!ShowTeam) {
-					if (!ShowMaxStatusValues && p->IsHostile && p->IsVisible) {
-						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), healthText, ImColor(0, 255, 0), true, true, false);
-						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0 + 10)), shieldText, ShieldColor, true, true, false);
-					}
-					if (ShowMaxStatusValues && p->IsHostile && p->IsVisible) {
-						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), combinedHealthText, ImColor(0, 255, 0), true, true, false);
-						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0 + 10)), combinedShieldText, ShieldColor, true, true, false);
-					}
-				}
-			}
-			
-			//Draw Health Bar
-			if (ShowTeam) {
-				if (HealthBar && p->IsVisible) {
-					Vector2D Head, Foot;
-					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
-					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
-					
-					int health = p->Health;
-					
-					Renderer::DrawHealthBar(Canvas, Foot, Head, health, BarThickness);
-				}
-			}
-			if (!ShowTeam) {
-				if (HealthBar && p->IsHostile && p->IsVisible) {
-					Vector2D Head, Foot;
-					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
-					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
-					
-					int health = p->Health;
-					
-					Renderer::DrawHealthBar(Canvas, Foot, Head, health, BarThickness);
-				}
-			}
-			
-			//Draw Shield Bar
-			if (ShowTeam) {
-				if (ShieldBar && p->IsVisible) {
-					Vector2D Head, Foot;
-					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
-					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
-					
-					int shield = p->Shield;
-					
-					ImColor shieldBarColor;
-					if (p->MaxShield == 50) { //white
-						shieldBarColor = ImColor(247, 247, 247);
-					}
-					else if (p->MaxShield == 75) { //blue
-						shieldBarColor = ImColor(39, 178, 255);
-					}
-					else if (p->MaxShield == 100) { //purple
-						shieldBarColor = ImColor(206, 59, 255);
-					}
-					else if (p->MaxShield == 125) { //red
-						shieldBarColor = ImColor(219, 2, 2);
-					}
-					else {
-						shieldBarColor = ImColor(247, 247, 247);
-					}
-					
-					
-					Renderer::DrawShieldBar(Canvas, Foot, Head, shield, shieldBarColor, BarThickness);
-				}
-			}
-			
-			if (!ShowTeam) {
-				if (ShieldBar && p->IsHostile && p->IsVisible) {
-					Vector2D Head, Foot;
-					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
-					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
-					
-					int shield = p->Shield;
-					
-					ImColor shieldBarColor;
-					if (p->MaxShield == 50) { //white
-						shieldBarColor = ImColor(247, 247, 247);
-					}
-					else if (p->MaxShield == 75) { //blue
-						shieldBarColor = ImColor(39, 178, 255);
-					}
-					else if (p->MaxShield == 100) { //purple
-						shieldBarColor = ImColor(206, 59, 255);
-					}
-					else if (p->MaxShield == 125) { //red
-						shieldBarColor = ImColor(219, 2, 2);
-					}
-					else {
-						shieldBarColor = ImColor(247, 247, 247);
-					}
-					
-					
-					Renderer::DrawShieldBar(Canvas, Foot, Head, shield, shieldBarColor, BarThickness);
-				}
-			}
-				
-			//Draw Skeleton
-			if (Skeleton) {
-		 
-				Vector2D Head, Neck, UpperChest, LowerChest, Stomach, Leftshoulder, Leftelbow, LeftHand, Rightshoulder, RightelbowBone, RightHand, LeftThighs, Leftknees, Leftleg, RightThighs, Rightknees, Rightleg;
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Neck), Neck);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::UpperChest), UpperChest);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::LowerChest), LowerChest);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Stomach), Stomach);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Leftshoulder), Leftshoulder);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Leftelbow), Leftelbow);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::LeftHand), LeftHand);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Rightshoulder), Rightshoulder);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::RightelbowBone), RightelbowBone);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::RightHand), RightHand);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::LeftThighs), LeftThighs);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Leftknees), Leftknees);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Leftleg), Leftleg);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::RightThighs), RightThighs);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Rightknees), Rightknees);
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Rightleg), Rightleg);
-		 
-				if (!ShowTeam) {
-					if (p->IsHostile && p->IsVisible) {
-						Renderer::DrawLine(Canvas, Head, Neck, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, UpperChest, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, UpperChest, LowerChest, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, LowerChest, Stomach, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, Leftshoulder, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftshoulder, Leftelbow, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftelbow, LeftHand, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, Rightshoulder, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Rightshoulder, RightelbowBone, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, RightelbowBone, RightHand, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Stomach, LeftThighs, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, LeftThighs, Leftknees, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftknees, Leftleg, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Stomach, RightThighs, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, RightThighs, Rightknees, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Rightknees, Rightleg, SkeletonThickness, VisibleSkeletonColor);
-				    	}
-				}
-				    
-		 		if (ShowTeam) {
-					if (p->IsHostile && p->IsVisible) {
-						Renderer::DrawLine(Canvas, Head, Neck, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, UpperChest, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, UpperChest, LowerChest, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, LowerChest, Stomach, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, Leftshoulder, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftshoulder, Leftelbow, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftelbow, LeftHand, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Neck, Rightshoulder, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Rightshoulder, RightelbowBone, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, RightelbowBone, RightHand, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Stomach, LeftThighs, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, LeftThighs, Leftknees, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Leftknees, Leftleg, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Stomach, RightThighs, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, RightThighs, Rightknees, SkeletonThickness, VisibleSkeletonColor);
-						Renderer::DrawLine(Canvas, Rightknees, Rightleg, SkeletonThickness, VisibleSkeletonColor);
-				    	}
-			    		
-			    		if (p->IsAlly && p->IsVisible) {
-						Renderer::DrawLine(Canvas, Head, Neck, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Neck, UpperChest, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, UpperChest, LowerChest, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, LowerChest, Stomach, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Neck, Leftshoulder, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Leftshoulder, Leftelbow, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Leftelbow, LeftHand, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Neck, Rightshoulder, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Rightshoulder, RightelbowBone, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, RightelbowBone, RightHand, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Stomach, LeftThighs, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, LeftThighs, Leftknees, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Leftknees, Leftleg, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Stomach, RightThighs, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, RightThighs, Rightknees, SkeletonThickness, TeamColor);
-						Renderer::DrawLine(Canvas, Rightknees, Rightleg, SkeletonThickness, TeamColor);
-				        }
-				}
-			}
-			
-			// Seer
-			if (DrawSeer && p->IsHostile && p->IsVisible) {
-				Vector2D headScreenPosition;
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), headScreenPosition);
-				if (!headScreenPosition.IsZeroVector())
-				    Renderer::DrawSeer(Canvas, headScreenPosition.x, headScreenPosition.y - 20, p->Shield, p->MaxShield, p->Health);
-			    }
-			    
-			//Show Near
-			if (ShowNear)
-			{
-			    // Gui DrawText Version
-			    Renderer::DrawText(Canvas, Vector2D(ScreenWidth * 0.5, ScreenHeight * 0.6), ("NEAR : " + std::to_string(PlayersNear)).c_str(), ImVec4(1.0f, 1.0f, 1.0f, 1.0f), true, true, false);
-			    // Gui Version
-			    /*
-			   ImVec2 Center = ImGui::GetMainViewport()->GetCenter();
-			   ImGui::SetNextWindowPos(ImVec2(Center.x, Center.y * 1.2), ImGuiCond_Once, ImVec2(0.50f, 0.5f));
-			   ImGui::SetNextWindowBgAlpha(0.3f);
-			   ImGui::Begin("Near", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar);
-			   ImGui::Text("Near: ");
-			   ImGui::SameLine();
-			   ImGui::TextColored(PlayersNear > 0 ? ImVec4(0.4, 1, 0.343, 1) : ImVec4(1, 1, 1, 1), "%d", PlayersNear);
-			   ImGui::End();
-			   */
-			}
-			PlayersNear = 0;
-			
-	//		// Draw Seer on locked target
-	//		if (AimAssistState->TargetSelected && AimAssistState->CurrentTarget) {
-	//		    Vector2D headScreenPosition;
-	//		    GameCamera->WorldToScreen(AimAssistState->CurrentTarget->GetBonePosition(HitboxType::Head), headScreenPosition);
-	//		    if (headScreenPosition.IsZeroVector())
-	//		        return;
-	//	 
-	//		    Renderer::DrawSeer(Canvas, headScreenPosition.x, headScreenPosition.y - 20, AimAssistState->CurrentTarget->Shield, AimAssistState->CurrentTarget->MaxShield, AimAssistState->CurrentTarget->Health);
-	//		    return;
-	//		}
-		    }
-		    
-		}
-	   }
+    
+    void UpdateRCSList() {
+        RCSList.clear();
+        //Light
+        if (P2020)
+            RCSList.insert(RCSId::WEAPON_P2020);
+        if (RE45)
+            RCSList.insert(RCSId::WEAPON_RE45);
+        if (Alternator)
+            RCSList.insert(RCSId::WEAPON_ALTERNATOR);
+        if (R99)
+            RCSList.insert(RCSId::WEAPON_R99);
+        if (R301)
+            RCSList.insert(RCSId::WEAPON_R301);
+        if (Spitfire)
+            RCSList.insert(RCSId::WEAPON_SPITFIRE);
+        if (G7)
+            RCSList.insert(RCSId::WEAPON_G7);
+        //Heavy
+        if (Flatline)
+            RCSList.insert(RCSId::WEAPON_FLATLINE);
+        if (Hemlock)
+            RCSList.insert(RCSId::WEAPON_HEMLOCK);
+        if (Repeater)
+            RCSList.insert(RCSId::WEAPON_REPEATER);
+        if (Rampage)
+            RCSList.insert(RCSId::WEAPON_RAMPAGE);
+        if (CARSMG)
+            RCSList.insert(RCSId::WEAPON_CAR);
+        //Energy
+        if (Havoc)
+            RCSList.insert(RCSId::WEAPON_HAVOC);
+        if (Devotion)
+            RCSList.insert(RCSId::WEAPON_DEVOTION);
+        if (LSTAR)
+            RCSList.insert(RCSId::WEAPON_LSTAR);
+        if (TripleTake)
+            RCSList.insert(RCSId::WEAPON_TRIPLETAKE);
+        if (Volt)
+            RCSList.insert(RCSId::WEAPON_VOLT);
+        if (Nemesis)
+            RCSList.insert(RCSId::WEAPON_NEMESIS);
+        //Shotguns
+        if (Mozambique)
+            RCSList.insert(RCSId::WEAPON_MOZAMBIQUE);
+        if (EVA8)
+            RCSList.insert(RCSId::WEAPON_EVA8);
+        if (Peacekeeper)
+            RCSList.insert(RCSId::WEAPON_PEACEKEEPER);
+        if (Mastiff)
+            RCSList.insert(RCSId::WEAPON_MASTIFF);
+        //Snipers
+        if (Longbow)
+            RCSList.insert(RCSId::WEAPON_LONGBOW);
+        if (ChargeRifle)
+            RCSList.insert(RCSId::WEAPON_CHARGE_RIFLE);
+        if (Sentinel)
+            RCSList.insert(RCSId::WEAPON_SENTINEL);
+	//Legendary
+	if (Wingman)
+            RCSList.insert(RCSId::WEAPON_WINGMAN);
+        if (Prowler)
+            RCSList.insert(RCSId::WEAPON_PROWLER);
+        if (Kraber)
+            RCSList.insert(RCSId::WEAPON_KRABER);
     }
+    
+    void Update() {
+    	if(!Map->IsPlayable) return;
+        //Advanced Settings
+    	if (AdvancedRCS) { //IDs from Utils/Weapons.hpp, may need updating after game update
+    		int weaponHeld = Myself->WeaponIndex;
+    		//Light Weapons
+    		if (weaponHeld == 105) { //P2020
+    			RCS::AdvancedPitchPower = RCS::P2020Pitch;
+    			RCS::AdvancedYawPower = RCS::P2020Yaw;
+    		}
+    		if (weaponHeld == 81) { //RE-45
+    			RCS::AdvancedPitchPower = RCS::RE45Pitch;
+    			RCS::AdvancedYawPower = RCS::RE45Yaw;
+    		}
+    		if (weaponHeld == 80) { //Alternator
+    			RCS::AdvancedPitchPower = RCS::AlternatorPitch;
+    			RCS::AdvancedYawPower = RCS::AlternatorYaw;
+    		}
+    		if (weaponHeld == 104) { //R-99
+    			RCS::AdvancedPitchPower = RCS::R99Pitch;
+    			RCS::AdvancedYawPower = RCS::R99Yaw;
+    		}
+    		if (weaponHeld == 0) { //R-301
+    			RCS::AdvancedPitchPower = RCS::R301Pitch;
+    			RCS::AdvancedYawPower = RCS::R301Yaw;
+    		}
+    		if (weaponHeld == 106) { //Spitfire
+    			RCS::AdvancedPitchPower = RCS::SpitfirePitch;
+    			RCS::AdvancedYawPower = RCS::SpitfireYaw;
+    		}
+    		if (weaponHeld == 89) { //G7
+    			RCS::AdvancedPitchPower = RCS::G7Pitch;
+    			RCS::AdvancedYawPower = RCS::G7Yaw;
+    		}
+    		//Heavy Weapons
+    		if (weaponHeld == 112) { //CARSMG
+    			RCS::AdvancedPitchPower = RCS::CARSMGPitch;
+    			RCS::AdvancedYawPower = RCS::CARSMGYaw;
+    		}
+    		if (weaponHeld == 21) { //Rampage
+    			RCS::AdvancedPitchPower = RCS::RampagePitch;
+    			RCS::AdvancedYawPower = RCS::RampageYaw;
+    		}
+    		if (weaponHeld == 111) { //Repeater
+    			RCS::AdvancedPitchPower = RCS::RepeaterPitch;
+    			RCS::AdvancedYawPower = RCS::RepeaterYaw;
+    		}
+    		if (weaponHeld == 90) { //Hemlock
+    			RCS::AdvancedPitchPower = RCS::HemlockPitch;
+    			RCS::AdvancedYawPower = RCS::HemlockYaw;
+    		}
+    		if (weaponHeld == 88) { //Flatline
+    			RCS::AdvancedPitchPower = RCS::FlatlinePitch;
+    			RCS::AdvancedYawPower = RCS::FlatlineYaw;
+    		}
+    		//Energy Weapons
+    		if (weaponHeld == 113) { //Nemesis
+    			RCS::AdvancedPitchPower = RCS::NemesisPitch;
+    			RCS::AdvancedYawPower = RCS::NemesisYaw;
+    		}
+    		if (weaponHeld == 110) { //Volt
+    			RCS::AdvancedPitchPower = RCS::VoltPitch;
+    			RCS::AdvancedYawPower = RCS::VoltYaw;
+    		}
+    		if (weaponHeld == 107) { //TripleTake
+    			RCS::AdvancedPitchPower = RCS::TripleTakePitch;
+    			RCS::AdvancedYawPower = RCS::TripleTakeYaw;
+    		}
+    		if (weaponHeld == 93) { //LSTAR
+    			RCS::AdvancedPitchPower = RCS::LSTARPitch;
+    			RCS::AdvancedYawPower = RCS::LSTARYaw;
+    		}
+    		if (weaponHeld == 84) { //Devotion
+    			RCS::AdvancedPitchPower = RCS::DevotionPitch;
+    			RCS::AdvancedYawPower = RCS::DevotionYaw;
+    		}
+    		if (weaponHeld == 86) { //Havoc
+    			RCS::AdvancedPitchPower = RCS::HavocPitch;
+    			RCS::AdvancedYawPower = RCS::HavocYaw;
+    		}
+    		//Shotguns
+    		if (weaponHeld == 96) { //Mozambique
+    			RCS::AdvancedPitchPower = RCS::MozambiquePitch;
+    			RCS::AdvancedYawPower = RCS::MozambiqueYaw;
+    		}
+    		if (weaponHeld == 87) { //EVA8
+    			RCS::AdvancedPitchPower = RCS::EVA8Pitch;
+    			RCS::AdvancedYawPower = RCS::EVA8Yaw;
+    		}
+    		if (weaponHeld == 103) { //Peacekeeper
+    			RCS::AdvancedPitchPower = RCS::PeacekeeperPitch;
+    			RCS::AdvancedYawPower = RCS::PeacekeeperYaw;
+    		}
+    		if (weaponHeld == 95) { //Mastiff
+    			RCS::AdvancedPitchPower = RCS::MastiffPitch;
+    			RCS::AdvancedYawPower = RCS::MastiffYaw;
+    		}
+    		//Snipers
+    		if (weaponHeld == 1) { //Sentinel
+    			RCS::AdvancedPitchPower = RCS::SentinelPitch;
+    			RCS::AdvancedYawPower = RCS::SentinelYaw;
+    		}
+    		if (weaponHeld == 83) { //ChargeRifle
+    			RCS::AdvancedPitchPower = RCS::ChargeRiflePitch;
+    			RCS::AdvancedYawPower = RCS::ChargeRifleYaw;
+    		}
+    		if (weaponHeld == 85) { //Longbow
+    			RCS::AdvancedPitchPower = RCS::LongbowPitch;
+    			RCS::AdvancedYawPower = RCS::LongbowYaw;
+    		}
+    		//Legendary Weapons
+    		if (weaponHeld == 109) { //Wingman
+    			RCS::AdvancedPitchPower = RCS::WingmanPitch;
+    			RCS::AdvancedYawPower = RCS::WingmanYaw;
+    		}
+    		if (weaponHeld == 102) { //Prowler
+    			RCS::AdvancedPitchPower = RCS::ProwlerPitch;
+    			RCS::AdvancedYawPower = RCS::ProwlerYaw;
+    		}
+    		if (weaponHeld == 92) { //Kraber
+    			RCS::AdvancedPitchPower = RCS::KraberPitch;
+    			RCS::AdvancedYawPower = RCS::KraberYaw;
+    		}
+    	}
+    	
+    	if (AdvancedRCS) {
+	    	if (OnADS) {
+			if (!RCS::RCSEnabled)return;
+			if (!Myself->IsCombatReady()) return;
+			if (!Myself->IsZooming) return;
+			if (!Myself->IsInAttack) return;
+			if (RCSList.find(Myself->WeaponIndex) == RCSList.end()) return;
+			Vector2D punchAnglesDiff = Myself->PunchAnglesDifferent;
+			if (punchAnglesDiff.IsZeroVector()) return;
+			int pitch = (punchAnglesDiff.x > 0)
+			    ? roundHalfEven(punchAnglesDiff.x * RCS::AdvancedPitchPower)
+			    : 0;
+			int yaw = roundHalfEven(-punchAnglesDiff.y * RCS::AdvancedYawPower);
+			X11Display->MoveMouse(pitch, yaw);
+		}
+		
+	    	if (!OnADS) {
+			if (!RCS::RCSEnabled)return;
+			if (!Myself->IsCombatReady()) return;
+			if (!Myself->IsInAttack) return;
+			if (RCSList.find(Myself->WeaponIndex) == RCSList.end()) return;
+			Vector2D punchAnglesDiff = Myself->PunchAnglesDifferent;
+			if (punchAnglesDiff.IsZeroVector()) return;
+			int pitch = (punchAnglesDiff.x > 0)
+			    ? roundHalfEven(punchAnglesDiff.x * RCS::AdvancedPitchPower)
+			    : 0;
+			int yaw = roundHalfEven(-punchAnglesDiff.y * RCS::AdvancedYawPower);
+			X11Display->MoveMouse(pitch, yaw);
+		}
+	}
+	
+    	if (!AdvancedRCS) {
+	    	if (OnADS) {
+			if (!RCS::RCSEnabled)return;
+			if (!Myself->IsCombatReady()) return;
+			if (!Myself->IsZooming) return;
+			if (!Myself->IsInAttack) return;
+			if (RCSList.find(Myself->WeaponIndex) == RCSList.end()) return;
+			Vector2D punchAnglesDiff = Myself->PunchAnglesDifferent;
+			if (punchAnglesDiff.IsZeroVector()) return;
+			int pitch = (punchAnglesDiff.x > 0)
+			    ? roundHalfEven(punchAnglesDiff.x * RCS::PitchPower)
+			    : 0;
+			int yaw = roundHalfEven(-punchAnglesDiff.y * RCS::YawPower);
+			X11Display->MoveMouse(pitch, yaw);
+		}
+		
+	    	if (!OnADS) {
+			if (!RCS::RCSEnabled)return;
+			if (!Myself->IsCombatReady()) return;
+			if (!Myself->IsInAttack) return;
+			if (RCSList.find(Myself->WeaponIndex) == RCSList.end()) return;
+			Vector2D punchAnglesDiff = Myself->PunchAnglesDifferent;
+			if (punchAnglesDiff.IsZeroVector()) return;
+			int pitch = (punchAnglesDiff.x > 0)
+			    ? roundHalfEven(punchAnglesDiff.x * RCS::PitchPower)
+			    : 0;
+			int yaw = roundHalfEven(-punchAnglesDiff.y * RCS::YawPower);
+			X11Display->MoveMouse(pitch, yaw);
+		}
+	}
+    } //Update()
+
+    int roundHalfEven(float x) {
+        return (x >= 0.0)
+            ? static_cast<int>(std::round(x))
+            : static_cast<int>(std::round(-x)) * -1;
+    }
+
 };
