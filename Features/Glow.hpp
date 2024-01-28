@@ -52,6 +52,12 @@ struct Glow {
     //Colors
     float InvisibleGlowColor[3] = {1, 0, 0};
     float VisibleGlowColor[3] = {0, 1, 0};
+    float LowGlowColor[3] = {1, 1, 0};
+    
+    float RedShieldColor[3] = {1, 0, 0};
+    float PurpleShieldColor[3] = {0.5, 0, 0.5};
+    float BlueShieldColor[3] = {0, 0.5, 1};
+    float GreyShieldColor[3] = {0.540, 0.545, 0.545};
     
     // Variables
     Camera* GameCamera;
@@ -90,7 +96,23 @@ struct Glow {
 			    ImGui::Combo("Shield Mode", &GlowColorShieldMode, GlowShieldModeIndex, IM_ARRAYSIZE(GlowShieldModeIndex));
 			    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 			    	ImGui::SetTooltip("What Color The Glow Will Change To\nCurrent Shield = Player's Current Shield Points\nMax Shield = Player's Max Shield Points.");
+			    ImGui::ColorEdit3("Red Shield##GlowColor", RedShieldColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+		    	    ImGui::SameLine();
+			    ImGui::ColorEdit3("Purple Shield##GlowColor", PurpleShieldColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+		    	    ImGui::SameLine();
+			    ImGui::ColorEdit3("Blue Shield##GlowColor", BlueShieldColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+		    	    ImGui::SameLine();
+			    ImGui::ColorEdit3("Grey Shield##GlowColor", GreyShieldColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+		    	    ImGui::SameLine();
+			    	
 		    }
+		    
+		    if (GlowColorMode == 0 && GlowColorShieldMode == 0) {
+			    ImGui::ColorEdit3("Low HP Color##GlowColor", LowGlowColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+		    	    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+			    	ImGui::SetTooltip("What Color The Glow Will Change To When The Player Has No Shield.");
+			    	ImGui::SameLine();
+	            }
 		    
 		    if (GlowColorMode == 1) {
 		    	ImGui::ColorEdit3("Invisible Color##GlowColor", InvisibleGlowColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
@@ -98,6 +120,7 @@ struct Glow {
 		    }
 		    
 		    ImGui::ColorEdit3("Visible Color##GlowColor", VisibleGlowColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+		    
 		    
 		    ImGui::SliderInt("Border Thickness##Glow", &GlowRadius, 32, 200);
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -360,19 +383,19 @@ struct Glow {
 			    glowColorRGB = {VisibleGlowColor[0], VisibleGlowColor[1], VisibleGlowColor[2]}; // Visible Enemies
 			} else if (health >= 201) {
 			    settingIndex = 66;
-			    glowColorRGB = { 1, 0, 0 }; // red shield
+			    glowColorRGB = { RedShieldColor[0], RedShieldColor[1], RedShieldColor[2] }; // red shield
 			} else if (health >= 176) {
 			    settingIndex = 67;
-			    glowColorRGB = { 0.5, 0, 0.5 }; // purple shield
+			    glowColorRGB = { PurpleShieldColor[0], PurpleShieldColor[1], PurpleShieldColor[2] }; // purple shield
 			} else if (health >= 151) {
 			    settingIndex = 68;
-			    glowColorRGB = { 0, 0.5, 1 }; // blue shield
+			    glowColorRGB = { BlueShieldColor[0], BlueShieldColor[1], BlueShieldColor[2] }; // blue shield
 			} else if (health >= 101) {
 			    settingIndex = 69;
-			    glowColorRGB = { 0, 1, 0.5 }; // gray shield // cyan 
+			    glowColorRGB = { GreyShieldColor[0], GreyShieldColor[1], GreyShieldColor[2] }; // gray shield // cyan 
 			} else {
 			    settingIndex = 70;
-			    glowColorRGB = { 0, 1, 0}; // low health enemies // greeen
+			    glowColorRGB = {LowGlowColor[0], LowGlowColor[1], LowGlowColor[2]}; // low health enemies // greeen
 			}
 		}
 		
@@ -384,19 +407,19 @@ struct Glow {
 			    glowColorRGB = {VisibleGlowColor[0], VisibleGlowColor[1], VisibleGlowColor[2]}; // Visible Enemies
 			} else if (health >= 125) {
 			    settingIndex = 66;
-			    glowColorRGB = { 1, 0, 0 }; // red shield
+			    glowColorRGB = { RedShieldColor[0], RedShieldColor[1], RedShieldColor[2] }; // red shield
 			} else if (health >= 100) {
 			    settingIndex = 67;
-			    glowColorRGB = { 0.5, 0, 0.5 }; // purple shield
+			    glowColorRGB = { PurpleShieldColor[0], PurpleShieldColor[1], PurpleShieldColor[2] }; // purple shield
 			} else if (health >= 75) {
 			    settingIndex = 68;
-			    glowColorRGB = { 0, 0.5, 1 }; // blue shield
+			    glowColorRGB = { BlueShieldColor[0], BlueShieldColor[1], BlueShieldColor[2] }; // blue shield
 			} else if (health >= 50) {
 			    settingIndex = 69;
-			    glowColorRGB = { 0, 1, 0.5 }; // gray shield // cyan 
+			    glowColorRGB = { GreyShieldColor[0], GreyShieldColor[1], GreyShieldColor[2] }; // gray shield // cyan 
 			} else {
 			    settingIndex = 70;
-			    glowColorRGB = { 0, 1, 0}; // low health enemies // greeen
+			    glowColorRGB = {LowGlowColor[0], LowGlowColor[1], LowGlowColor[2]}; // low health enemies // greeen
 			}
 		}
 	}
@@ -410,9 +433,6 @@ struct Glow {
 		} else if (isVisible) {
 			settingIndex = 70;
 			glowColorRGB = {InvisibleGlowColor[0], InvisibleGlowColor[1], InvisibleGlowColor[2]}; // Invisible Enemies
-		} else {
-			settingIndex = 70;
-			glowColorRGB = { 0, 1, 0}; // low health enemies // greeen
 		}
 	}
 	
