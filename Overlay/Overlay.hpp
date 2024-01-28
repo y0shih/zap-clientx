@@ -347,6 +347,7 @@ public:
     		ImGui::Checkbox("Team Check", &TeamGamemode);
             	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
                 	ImGui::SetTooltip("Enable if playing BR, Gun Run or Training\nDisable if playing Control or TDM");
+                Modules::Home::TeamGamemode = TeamGamemode;
     	
     		ImGui::Separator();
 		
