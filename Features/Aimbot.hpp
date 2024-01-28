@@ -35,12 +35,15 @@ struct Aimbot {
     bool OnFire = true;
     bool OnADS = true;
     bool VisCheck = true;
+    bool TeamCheck = true;
     
     bool PredictMovement = true;
     bool PredictBulletDrop = true;
     float FinalDistance = 0;
     float Speed = 20;
     float Smooth = 0.9;
+    float HipfireSmooth = 0.9;
+    float ADSSmooth = 0.99;
     float SmoothDistance = 100;
     int Delay = 10;
     float FOV = 10;
@@ -96,72 +99,104 @@ struct Aimbot {
     bool AdvancedAim = false;
     float AdvancedSpeed = 20;
     float AdvancedSmooth = 0.99;
-    
+    float AdvancedHipfireSmooth = 0.99;
+    float AdvancedADSSmooth = 0.99;
+            
     float P2020Speed = 10;
-    float P2020Smooth = 10;
-    float RE45Speed = 10;
-    float RE45Smooth = 10;
+    float P2020HipfireSmooth = 0.99;
+    float P2020ADSSmooth = 0.99;
+    float RE45Speed = 0.99;
+    float RE45HipfireSmooth = 10;
+    float RE45ADSSmooth = 0.99;
     float AlternatorSpeed = 10;
-    float AlternatorSmooth = 10;
+    float AlternatorHipfireSmooth = 0.99;
+    float AlternatorADSSmooth = 0.99;
     float R99Speed = 10;
-    float R99Smooth = 10;
+    float R99HipfireSmooth = 0.99;
+    float R99ADSSmooth = 0.99;
     float R301Speed = 10;
-    float R301Smooth = 10;
+    float R301HipfireSmooth = 0.99;
+    float R301ADSSmooth = 0.99;
     float SpitfireSpeed = 10;
-    float SpitfireSmooth = 10;
+    float SpitfireHipfireSmooth = 0.99;
+    float SpitfireADSSmooth = 0.99;
     float G7Speed = 10;
-    float G7Smooth = 10;
+    float G7HipfireSmooth = 0.99;
+    float G7ADSSmooth = 0.99;
     //Heavy
     float FlatlineSpeed = 10;
-    float FlatlineSmooth = 10;
+    float FlatlineHipfireSmooth = 0.99;
+    float FlatlineADSSmooth = 0.99;
     float HemlockSpeed = 10;
-    float HemlockSmooth = 10;
+    float HemlockHipfireSmooth = 0.99;
+    float HemlockADSSmooth = 0.99;
     float RepeaterSpeed = 10;
-    float RepeaterSmooth = 10;
+    float RepeaterHipfireSmooth = 0.99;
+    float RepeaterADSSmooth = 0.99;
     float RampageSpeed = 10;
-    float RampageSmooth = 10;
+    float RampageHipfireSmooth = 0.99;
+    float RampageADSSmooth = 0.99;
     float CARSMGSpeed = 10;
-    float CARSMGSmooth = 10;
+    float CARSMGHipfireSmooth = 0.99;
+    float CARSMGADSSmooth = 0.99;
     //Energy
     float HavocSpeed = 10;
-    float HavocSmooth = 10;
+    float HavocHipfireSmooth = 0.99;
+    float HavocADSSmooth = 0.99;
     float DevotionSpeed = 10;
-    float DevotionSmooth = 10;
+    float DevotionHipfireSmooth = 0.99;
+    float DevotionADSSmooth = 0.99;
     float LSTARSpeed = 10;
-    float LSTARSmooth = 10;
+    float LSTARHipfireSmooth = 0.99;
+    float LSTARADSSmooth = 0.99;
     float TripleTakeSpeed = 10;
-    float TripleTakeSmooth = 10;
+    float TripleTakeHipfireSmooth = 0.99;
+    float TripleTakeADSSmooth = 0.99;
     float VoltSpeed = 10;
-    float VoltSmooth = 10;
+    float VoltHipfireSmooth = 0.99;
+    float VoltADSSmooth = 0.99;
     float NemesisSpeed = 10;
-    float NemesisSmooth = 10;
+    float NemesisHipfireSmooth = 0.99;
+    float NemesisADSSmooth = 0.99;
     //Shotguns
     float MozambiqueSpeed = 10;
-    float MozambiqueSmooth = 10;
+    float MozambiqueHipfireSmooth = 0.99;
+    float MozambiqueADSSmooth = 0.99;
     float EVA8Speed = 10;
-    float EVA8Smooth = 10;
+    float EVA8HipfireSmooth = 0.99;
+    float EVA8ADSSmooth = 0.99;
     float PeacekeeperSpeed = 10;
-    float PeacekeeperSmooth = 10;
+    float PeacekeeperHipfireSmooth = 0.99;
+    float PeacekeeperADSSmooth = 0.99;
     float MastiffSpeed = 10;
-    float MastiffSmooth = 10;
+    float MastiffHipfireSmooth = 0.99;
+    float MastiffADSSmooth = 0.99;
     //Snipers
     float LongbowSpeed = 10;
-    float LongbowSmooth = 10;
+    float LongbowHipfireSmooth = 0.99;
+    float LongbowADSSmooth = 0.99;
     float ChargeRifleSpeed = 10;
-    float ChargeRifleSmooth = 10;
+    float ChargeRifleHipfireSmooth = 0.99;
+    float ChargeRifleADSSmooth = 0.99;
     float SentinelSpeed = 10;
-    float SentinelSmooth = 10;
+    float SentinelHipfireSmooth = 0.99;
+    float SentinelADSSmooth = 0.99;
     //Legendary
     float WingmanSpeed = 10;
-    float WingmanSmooth = 10;
+    float WingmanHipfireSmooth = 0.99;
+    float WingmanADSSmooth = 0.99;
     float ProwlerSpeed = 10;
-    float ProwlerSmooth = 10;
+    float ProwlerHipfireSmooth = 0.99;
+    float ProwlerADSSmooth = 0.99;
     float KraberSpeed = 10;
-    float KraberSmooth = 10;
+    float KraberHipfireSmooth = 0.99;
+    float KraberADSSmooth = 0.99;
     float BocekSpeed = 10;
-    float BocekSmooth = 10;
+    float BocekHipfireSmooth = 0.99;
+    float BocekADSSmooth = 0.99;
     float ThrowingKnifeSpeed = 10;
-    float ThrowingKnifeSmooth = 10;
+    float ThrowingKnifeHipfireSmooth = 0.99;
+    float ThrowingKnifeADSSmooth = 0.99;
 
     XDisplay* X11Display;
     LocalPlayer* Myself;
@@ -214,6 +249,9 @@ struct Aimbot {
 	   	    ImGui::Checkbox("Visibility Check", &VisCheck);
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		    	ImGui::SetTooltip("Aims At Only Visible Enemies.");
+	   	    ImGui::Checkbox("Team Check##Aimbot", &TeamCheck);
+		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		    	ImGui::SetTooltip("Disable this if doing 1v1s in the firing range.");
 	   	    
 		    ImGui::Separator();
 		    
@@ -292,9 +330,17 @@ struct Aimbot {
 		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 		        	ImGui::SetTooltip("Speed of the Aim-Assist\nHigher = Faster");
 
-		    	ImGui::SliderFloat("Smoothing", &Smooth, 0, 0.99, "%.3f");
+		    	/*ImGui::SliderFloat("Smoothing", &Smooth, 0, 0.99, "%.3f");
 		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Smoothing for the Aim-Assist\nHigher = Smoother");
+		        	ImGui::SetTooltip("Smoothing for the Aim-Assist\nHigher = Smoother");*/
+		        	
+		    	ImGui::SliderFloat("Hipefire Smoothing", &HipfireSmooth, 0, 0.99, "%.3f");
+		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		        	ImGui::SetTooltip("Smoothing for the Aim-Assist whilst hipfiring.\nHigher = Smoother");
+		        	
+		    	ImGui::SliderFloat("ADS Smoothing", &ADSSmooth, 0, 0.99, "%.3f");
+		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+		        	ImGui::SetTooltip("Smoothing for the Aim-Assist whilst ADS.\nHigher = Smoother");
 		        	
 		    	ImGui::SliderFloat("Distance Smoothing", &SmoothDistance, 1, 10000, "%.0f");
 		        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -334,12 +380,12 @@ struct Aimbot {
 		    //Distance Settings
 		    ImGui::Text("Distance");
 		    if (ImGui::CollapsingHeader("Distance Settings", nullptr)) {
-		    	ImGui::SliderFloat("Hip-fire Distance", &HipfireDistance, 1, 500, "%.0f");
+		    	ImGui::SliderFloat("Hipfire Max Distance", &HipfireDistance, 1, 500, "%.0f");
 		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Minimum distance for Aim-Assist to work");
-		    	ImGui::SliderFloat("Zoom Distance", &ZoomDistance, 1, 500, "%.0f");
+		        	ImGui::SetTooltip("Minimum Hipfire distance for Aim-Assist to work");
+		    	ImGui::SliderFloat("Zoom Max Distance", &ZoomDistance, 1, 500, "%.0f");
 		    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        	ImGui::SetTooltip("Maximum distance for Aim-Assist to work");
+		        	ImGui::SetTooltip("Maximum ADS Distance for Aim-Assist to work");
 		    }
 		    
 		    ImGui::Separator();
@@ -355,18 +401,24 @@ struct Aimbot {
 			    		ImGui::SliderFloat("Speed##AdvancedP2020", &P2020Speed, 1, 100, "%.0f");
 			    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 			    			ImGui::SetTooltip("Speed Of The Aim-Assist For The P2020\nHigher = Faster");
-			    		ImGui::SliderFloat("Smoothing##AdvancedP2020", &P2020Smooth, 0, 0.99, "%.3f");
+			    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedP2020", &P2020HipfireSmooth, 0, 0.99, "%.3f");
 			    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-			    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The P2020\nHigher = Smoother");
+			    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The P2020 Whilst Hipfiring.\nHigher = Smoother");
+			    		ImGui::SliderFloat("ADS Smoothing##AdvancedP2020", &P2020ADSSmooth, 0, 0.99, "%.3f");
+			    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+			    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The P2020 Whilst ADS.\nHigher = Smoother");
 			    	}
 			    	if (RE45) {
 			    			ImGui::Text("RE-45 Auto");
 					    	ImGui::SliderFloat("Speed##AdvancedRE45", &RE45Speed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The RE-45 Auto\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedRE45", &RE45Smooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedRE45", &RE45HipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The RE-45 Auto\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The RE-45 Auto Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedRE45", &RE45ADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The RE-45 Auto Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (Alternator) {
@@ -374,9 +426,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedAlternator", &AlternatorSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Alternator SMG\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedAlternator", &AlternatorSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedAlternator", &AlternatorHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Alternator SMG\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Alternator SMG Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedAlternator", &AlternatorADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Alternator SMG Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (R99) {
@@ -384,9 +439,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedR99", &R99Speed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The R-99 SMG\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedR99", &R99Smooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedR99", &R99HipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R-99 SMG\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R-99 SMG Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedR99", &R99ADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R-99 SMG Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (R301) {
@@ -394,9 +452,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedR301", &R301Speed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The R-301 Carbine\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedR301", &R301Smooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedR301", &R301HipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R-301 Carbine\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R-301 Carbine Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedR301", &R301ADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R-301 Carbine Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (Spitfire) {
@@ -404,9 +465,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedSpitfire", &SpitfireSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The M600 Spitfire\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedSpitfire", &SpitfireSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedSpitfire", &SpitfireHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The M600 Spitfire\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The M600 Spitfire Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedSpitfire", &SpitfireADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The M600 Spitfire Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (G7) {
@@ -414,9 +478,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedG7", &G7Speed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The G7 Scout\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedG7", &G7Smooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedG7", &G7HipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The G7 Scout\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The G7 Scout Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedG7", &G7ADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The G7 Scout Whilst ADS.\nHigher = Smoother");
 			    	}
 		    	}
 			    	
@@ -426,9 +493,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedFlatline", &FlatlineSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The VK-47 Flatline\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedFlatline", &FlatlineSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedFlatline", &FlatlineHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The VK-47 Flatline\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The VK-47 Flatline Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedFlatline", &FlatlineADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The VK-47 Flatline Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (Hemlock) {
@@ -436,9 +506,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedHemlock", &HemlockSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Hemlock Burst AR\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedHemlock", &HemlockSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedHemlock", &HemlockHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Hemlock Burst AR\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Hemlock Burst AR Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedHemlock", &HemlockADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Hemlock Burst AR Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (Repeater) {
@@ -446,9 +519,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedRepeater", &RepeaterSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The 30-30 Repeater\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedRepeater", &RepeaterSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedRepeater", &RepeaterHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The 30-30 Repeater\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The 30-30 Repeater Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedRepeater", &RepeaterADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The 30-30 Repeater Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (Rampage) {
@@ -456,9 +532,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedRampage", &RampageSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Rampage LMG\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedRampage", &RampageSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedRampage", &RampageHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Rampage LMG\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Rampage LMG Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedRampage", &RampageADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Rampage LMG Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (CARSMG) {
@@ -466,9 +545,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedCARSMG", &CARSMGSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The C.A.R SMG\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedCARSMG", &CARSMGSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedCARSMG", &CARSMGHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The C.A.R SMG\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The C.A.R SMG Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedCARSMG", &CARSMGADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The C.A.R SMG Whilst ADS.\nHigher = Smoother");
 			    	}
 		    	}
 			    	
@@ -478,9 +560,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedHavoc", &HavocSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Havoc\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedHavoc", &HavocSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedHavoc", &HavocHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Havoc\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Havoc Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedHavoc", &HavocADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Havoc Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (Devotion) {
@@ -488,9 +573,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedDevotion", &DevotionSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Devotion LMG\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedDevotion", &DevotionSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedDevotion", &DevotionHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Devotion LMG\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Devotion LMG Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedDevotion", &DevotionADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Devotion LMG Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (LSTAR) {
@@ -498,9 +586,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedLSTAR", &LSTARSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The L-Star EMG\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedLSTAR", &LSTARSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedLSTAR", &LSTARHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The L-Star EMG\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The L-Star EMG Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedLSTAR", &LSTARADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The L-Star EMG Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (TripleTake) {
@@ -508,9 +599,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedTripleTake", &TripleTakeSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Triple-Take\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedTripleTake", &TripleTakeSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedTripleTake", &TripleTakeHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Triple-Take\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Triple-Take Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedTripleTake", &TripleTakeADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Triple-Take Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (Volt) {
@@ -518,9 +612,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedVolt", &VoltSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Volt\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedVolt", &VoltSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedVolt", &VoltHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Volt\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Volt Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedVolt", &VoltADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Volt Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (Nemesis) {
@@ -528,9 +625,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedNemesis", &NemesisSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Nemesis Burst AR\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedNemesis", &NemesisSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedNemesis", &NemesisHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Nemesis Burst AR\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Nemesis Burst AR Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedNemesis", &NemesisADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Nemesis Burst AR Whilst ADS.\nHigher = Smoother");
 			    	}
 		    	}
 				
@@ -540,9 +640,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedMozambique", &MozambiqueSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Mozambique\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedMozambique", &MozambiqueSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedMozambique", &MozambiqueHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mozambique\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mozambique Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedMozambique", &MozambiqueADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mozambique Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (EVA8) {
@@ -550,9 +653,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedEVA8", &EVA8Speed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The EVA-8 Auto\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedEVA8", &EVA8Smooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedEVA8", &EVA8HipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The EVA-8 Auto\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The EVA-8 Auto Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedEVA8", &EVA8ADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The EVA-8 Auto Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (Peacekeeper) {
@@ -560,9 +666,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedPeacekeeper", &PeacekeeperSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Peacekeeper\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedPeacekeeper", &PeacekeeperSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedPeacekeeper", &PeacekeeperHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Peacekeeper\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Peacekeeper Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedPeacekeeper", &PeacekeeperADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Peacekeeper Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (Mastiff) {
@@ -570,9 +679,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedMastiff", &MastiffSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Mastiff\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedMastiff", &MastiffSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedMastiff", &MastiffHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mastiff\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mastiff Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedMastiff", &MastiffADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mastiff Whilst ADS.\nHigher = Smoother");
 			    	}
 		    	}
 				
@@ -582,9 +694,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedLongbow", &LongbowSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Longbow DMR\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedLongbow", &LongbowSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedLongbow", &LongbowHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Longbow DMR\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Longbow DMR Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedLongbow", &LongbowADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Longbow DMR Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (ChargeRifle) {
@@ -592,9 +707,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedChargeRifle", &ChargeRifleSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Charge Rifle\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedChargeRifle", &ChargeRifleSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedChargeRifle", &ChargeRifleHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Charge Rifle\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Charge Rifle Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedChargeRifle", &ChargeRifleADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Charge Rifle Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (Sentinel) {
@@ -602,9 +720,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedSentinel", &SentinelSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Sentinel\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedSentinel", &SentinelSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedSentinel", &SentinelHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Sentinel\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Sentinel Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedSentinel", &SentinelADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Sentinel Whilst ADS.\nHigher = Smoother");
 			    	}
 		    	}
 				
@@ -614,9 +735,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedWingman", &WingmanSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Wingman\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedWingman", &WingmanSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedWingman", &WingmanHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Wingman\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Wingman Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedWingman", &WingmanADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Wingman Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (Prowler) {
@@ -624,9 +748,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedProwler", &ProwlerSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Prowler Burst SMG\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedProwler", &ProwlerSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedProwler", &ProwlerHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Prowler Burst SMG\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Prowler Burst SMG Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedProwler", &ProwlerADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Prowler Burst SMG Whilst ADS.\nHigher = Smoother");
 			    	}
 			    	
 			    	if (Bocek) {
@@ -634,9 +761,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedBocek", &BocekSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Bocek Compound Bow\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedBocek", &BocekSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedBocek", &BocekHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Bocek Compound Bow\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Bocek Compound Bow Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedBocek", &BocekADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Bocek Compound Bow Whilst ADS.\nHigher = Smoother");
 			    	}
 			    		
 			    	if (Kraber) {
@@ -644,9 +774,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedKraber", &KraberSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Kraber .50-CAL Sniper\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedKraber", &KraberSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedKraber", &KraberHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Kraber .50-CAL Sniper\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Kraber .50-CAL Sniper Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedKraber", &KraberADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Kraber .50-CAL Sniper Whilst ADS.\nHigher = Smoother");
 			    	}
 			    	
 			    	if (Knife) {
@@ -654,9 +787,12 @@ struct Aimbot {
 					    	ImGui::SliderFloat("Speed##AdvancedKnife", &ThrowingKnifeSpeed, 1, 100, "%.0f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Speed Of The Aim-Assist For The Throwing Knife\nHigher = Faster");
-					    	ImGui::SliderFloat("Smoothing##AdvancedKnife", &ThrowingKnifeSmooth, 0, 0.99, "%.3f");
+					    	ImGui::SliderFloat("Hipfire Smoothing##AdvancedKnife", &ThrowingKnifeHipfireSmooth, 0, 0.99, "%.3f");
 					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Throwing Knife\nHigher = Smoother");
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Throwing Knife Whilst Hipfiring.\nHigher = Smoother");
+					    	ImGui::SliderFloat("ADS Smoothing##AdvancedKnife", &ThrowingKnifeADSSmooth, 0, 0.99, "%.3f");
+					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Throwing Knife Whilst ADS.\nHigher = Smoother");
 			    	}
 		    	}
 		    }
@@ -674,11 +810,16 @@ struct Aimbot {
             
             Config::Aimbot::OnFire = OnFire;
             Config::Aimbot::OnADS = OnADS;
+            Config::Aimbot::VisCheck = VisCheck;
+            Config::Aimbot::TeamCheck = TeamCheck;
             
             Config::Aimbot::PredictMovement = PredictMovement;
             Config::Aimbot::PredictBulletDrop = PredictBulletDrop;
             Config::Aimbot::Speed = Speed;
             Config::Aimbot::Smooth = Smooth;
+            Config::Aimbot::HipfireSmooth = HipfireSmooth;
+            Config::Aimbot::ADSSmooth = ADSSmooth;
+            Config::Aimbot::SmoothDistance = SmoothDistance;
             Config::Aimbot::Delay = Delay;
             Config::Aimbot::FOV = FOV;
             Config::Aimbot::ZoomScale = ZoomScale;
@@ -726,73 +867,108 @@ struct Aimbot {
             
             //----------Advanced Settings----------//
             Config::Aimbot::AdvancedAim = AdvancedAim;
+            Config::Aimbot::AdvancedSpeed = AdvancedSpeed;
+            Config::Aimbot::AdvancedSmooth = AdvancedSmooth;
+            Config::Aimbot::AdvancedHipfireSmooth = AdvancedHipfireSmooth;
+            Config::Aimbot::AdvancedADSSmooth = AdvancedADSSmooth;
+            
             //Advanced Weapons
             //Light
             Config::Aimbot::P2020Speed = P2020Speed;
-            Config::Aimbot::P2020Smooth = P2020Smooth;
+            Config::Aimbot::P2020HipfireSmooth = P2020HipfireSmooth;
+            Config::Aimbot::P2020ADSSmooth = P2020ADSSmooth;
             Config::Aimbot::RE45Speed = RE45Speed;
-            Config::Aimbot::RE45Smooth = RE45Smooth;
+            Config::Aimbot::RE45HipfireSmooth = RE45HipfireSmooth;
+            Config::Aimbot::RE45ADSSmooth = RE45ADSSmooth;
             Config::Aimbot::AlternatorSpeed = AlternatorSpeed;
-            Config::Aimbot::AlternatorSmooth = AlternatorSmooth;
+            Config::Aimbot::AlternatorHipfireSmooth = AlternatorHipfireSmooth;
+            Config::Aimbot::AlternatorADSSmooth = AlternatorADSSmooth;
             Config::Aimbot::R99Speed = R99Speed;
-            Config::Aimbot::R99Smooth = R99Smooth;
+            Config::Aimbot::R99HipfireSmooth = R99HipfireSmooth;
+            Config::Aimbot::R99ADSSmooth = R99ADSSmooth;
             Config::Aimbot::R301Speed = R301Speed;
-            Config::Aimbot::R301Smooth = R301Smooth;
+            Config::Aimbot::R301HipfireSmooth = R301HipfireSmooth;
+            Config::Aimbot::R301ADSSmooth = R301ADSSmooth;
             Config::Aimbot::SpitfireSpeed = SpitfireSpeed;
-            Config::Aimbot::SpitfireSmooth = SpitfireSmooth;
+            Config::Aimbot::SpitfireHipfireSmooth = SpitfireHipfireSmooth;
+            Config::Aimbot::SpitfireADSSmooth = SpitfireADSSmooth;
             Config::Aimbot::G7Speed = G7Speed;
-            Config::Aimbot::G7Smooth = G7Smooth;
+            Config::Aimbot::G7HipfireSmooth = G7HipfireSmooth;
+            Config::Aimbot::G7ADSSmooth = G7ADSSmooth;
             //Heavy
             Config::Aimbot::FlatlineSpeed = FlatlineSpeed;
-            Config::Aimbot::FlatlineSmooth = FlatlineSmooth;
+            Config::Aimbot::FlatlineHipfireSmooth = FlatlineHipfireSmooth;
+            Config::Aimbot::FlatlineADSSmooth = FlatlineADSSmooth;
             Config::Aimbot::HemlockSpeed = HemlockSpeed;
-            Config::Aimbot::HemlockSmooth = HemlockSmooth;
+            Config::Aimbot::HemlockHipfireSmooth = HemlockHipfireSmooth;
+            Config::Aimbot::HemlockADSSmooth = HemlockADSSmooth;
             Config::Aimbot::RepeaterSpeed = RepeaterSpeed;
-            Config::Aimbot::RepeaterSmooth = RepeaterSmooth;
+            Config::Aimbot::RepeaterHipfireSmooth = RepeaterHipfireSmooth;
+            Config::Aimbot::RepeaterADSSmooth = RepeaterADSSmooth;
             Config::Aimbot::RampageSpeed = RampageSpeed;
-            Config::Aimbot::RampageSmooth = RampageSmooth;
+            Config::Aimbot::RampageHipfireSmooth = RampageHipfireSmooth;
+            Config::Aimbot::RampageADSSmooth = RampageADSSmooth;
             Config::Aimbot::CARSMGSpeed = CARSMGSpeed;
-            Config::Aimbot::CARSMGSmooth = CARSMGSmooth;
+            Config::Aimbot::CARSMGHipfireSmooth = CARSMGHipfireSmooth;
+            Config::Aimbot::CARSMGADSSmooth = CARSMGADSSmooth;
             //Energy
             Config::Aimbot::HavocSpeed = HavocSpeed;
-            Config::Aimbot::HavocSmooth = HavocSmooth;
+            Config::Aimbot::HavocHipfireSmooth = HavocHipfireSmooth;
+            Config::Aimbot::HavocADSSmooth = HavocADSSmooth;
             Config::Aimbot::DevotionSpeed = DevotionSpeed;
-            Config::Aimbot::DevotionSmooth = DevotionSmooth;
+            Config::Aimbot::DevotionHipfireSmooth = DevotionHipfireSmooth;
+            Config::Aimbot::DevotionADSSmooth = DevotionADSSmooth;
             Config::Aimbot::LSTARSpeed = LSTARSpeed;
-            Config::Aimbot::LSTARSmooth = LSTARSmooth;
+            Config::Aimbot::LSTARHipfireSmooth = LSTARHipfireSmooth;
+            Config::Aimbot::LSTARADSSmooth = LSTARADSSmooth;
             Config::Aimbot::TripleTakeSpeed = TripleTakeSpeed;
-            Config::Aimbot::TripleTakeSmooth = TripleTakeSmooth;
+            Config::Aimbot::TripleTakeHipfireSmooth = TripleTakeHipfireSmooth;
+            Config::Aimbot::TripleTakeADSSmooth = TripleTakeADSSmooth;
             Config::Aimbot::VoltSpeed = VoltSpeed;
-            Config::Aimbot::VoltSmooth = VoltSmooth;
+            Config::Aimbot::VoltHipfireSmooth = VoltHipfireSmooth;
+            Config::Aimbot::VoltADSSmooth = VoltADSSmooth;
             Config::Aimbot::NemesisSpeed = NemesisSpeed;
-            Config::Aimbot::NemesisSmooth = NemesisSmooth;
+            Config::Aimbot::NemesisHipfireSmooth = NemesisHipfireSmooth;
+            Config::Aimbot::NemesisADSSmooth = NemesisADSSmooth;
             //Shotguns
             Config::Aimbot::MozambiqueSpeed = MozambiqueSpeed;
-            Config::Aimbot::MozambiqueSmooth = MozambiqueSmooth;
+            Config::Aimbot::MozambiqueHipfireSmooth = MozambiqueHipfireSmooth;
+            Config::Aimbot::MozambiqueADSSmooth = MozambiqueADSSmooth;
             Config::Aimbot::EVA8Speed = EVA8Speed;
-            Config::Aimbot::EVA8Smooth = EVA8Smooth;
+            Config::Aimbot::EVA8HipfireSmooth = EVA8HipfireSmooth;
+            Config::Aimbot::EVA8ADSSmooth = EVA8ADSSmooth;
             Config::Aimbot::PeacekeeperSpeed = PeacekeeperSpeed;
-            Config::Aimbot::PeacekeeperSmooth = PeacekeeperSmooth;
+            Config::Aimbot::PeacekeeperHipfireSmooth = PeacekeeperHipfireSmooth;
+            Config::Aimbot::PeacekeeperADSSmooth = PeacekeeperADSSmooth;
             Config::Aimbot::MastiffSpeed = MastiffSpeed;
-            Config::Aimbot::MastiffSmooth = MastiffSmooth;
+            Config::Aimbot::MastiffHipfireSmooth = MastiffHipfireSmooth;
+            Config::Aimbot::MastiffADSSmooth = MastiffADSSmooth;
             //Snipers
             Config::Aimbot::LongbowSpeed = LongbowSpeed;
-            Config::Aimbot::LongbowSmooth = LongbowSmooth;
+            Config::Aimbot::LongbowHipfireSmooth = LongbowHipfireSmooth;
+            Config::Aimbot::LongbowADSSmooth = LongbowADSSmooth;
             Config::Aimbot::ChargeRifleSpeed = ChargeRifleSpeed;
-            Config::Aimbot::ChargeRifleSmooth = ChargeRifleSmooth;
+            Config::Aimbot::ChargeRifleHipfireSmooth = ChargeRifleHipfireSmooth;
+            Config::Aimbot::ChargeRifleADSSmooth = ChargeRifleADSSmooth;
             Config::Aimbot::SentinelSpeed = SentinelSpeed;
-            Config::Aimbot::SentinelSmooth = SentinelSmooth;
+            Config::Aimbot::SentinelHipfireSmooth = SentinelHipfireSmooth;
+            Config::Aimbot::SentinelADSSmooth = SentinelADSSmooth;
             //Legendary
             Config::Aimbot::WingmanSpeed = WingmanSpeed;
-            Config::Aimbot::WingmanSmooth = WingmanSmooth;
+            Config::Aimbot::WingmanHipfireSmooth = WingmanHipfireSmooth;
+            Config::Aimbot::WingmanADSSmooth = WingmanADSSmooth;
             Config::Aimbot::ProwlerSpeed = ProwlerSpeed;
-            Config::Aimbot::ProwlerSmooth = ProwlerSmooth;
-            Config::Aimbot::KraberSpeed = BocekSpeed;
-            Config::Aimbot::KraberSmooth = BocekSmooth;
+            Config::Aimbot::ProwlerHipfireSmooth = ProwlerHipfireSmooth;
+            Config::Aimbot::ProwlerADSSmooth = ProwlerADSSmooth;
+            Config::Aimbot::BocekSpeed = BocekSpeed;
+            Config::Aimbot::BocekHipfireSmooth = BocekHipfireSmooth;
+            Config::Aimbot::BocekADSSmooth = BocekADSSmooth;
             Config::Aimbot::KraberSpeed = KraberSpeed;
-            Config::Aimbot::KraberSmooth = KraberSmooth;
-            Config::Aimbot::KraberSpeed = ThrowingKnifeSpeed;
-            Config::Aimbot::KraberSmooth = ThrowingKnifeSmooth;
+            Config::Aimbot::KraberHipfireSmooth = KraberHipfireSmooth;
+            Config::Aimbot::KraberADSSmooth = KraberADSSmooth;
+            Config::Aimbot::ThrowingKnifeSpeed = ThrowingKnifeSpeed;
+            Config::Aimbot::ThrowingKnifeHipfireSmooth = ThrowingKnifeHipfireSmooth;
+            Config::Aimbot::ThrowingKnifeADSSmooth = ThrowingKnifeADSSmooth;
             
             return true;
         } catch (...) {
@@ -878,120 +1054,157 @@ struct Aimbot {
     		//Light Weapons
     		if (weaponHeld == 105) { //P2020
     			Aimbot::AdvancedSpeed = Aimbot::P2020Speed;
-    			Aimbot::AdvancedSmooth = Aimbot::P2020Smooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::P2020HipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::P2020ADSSmooth;
     		}
     		if (weaponHeld == 81) { //RE-45
     			Aimbot::AdvancedSpeed = Aimbot::RE45Speed;
-    			Aimbot::AdvancedSmooth = Aimbot::RE45Smooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::RE45HipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::RE45ADSSmooth;
     		}
     		if (weaponHeld == 80) { //Alternator
     			Aimbot::AdvancedSpeed = Aimbot::AlternatorSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::AlternatorSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::AlternatorHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::AlternatorADSSmooth;
     		}
     		if (weaponHeld == 104) { //R-99
     			Aimbot::AdvancedSpeed = Aimbot::R99Speed;
-    			Aimbot::AdvancedSmooth = Aimbot::R99Smooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::R99HipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::R99ADSSmooth;
     		}
     		if (weaponHeld == 0) { //R-301
     			Aimbot::AdvancedSpeed = Aimbot::R301Speed;
-    			Aimbot::AdvancedSmooth = Aimbot::R301Smooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::R301HipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::R301ADSSmooth;
     		}
     		if (weaponHeld == 106) { //Spitfire
     			Aimbot::AdvancedSpeed = Aimbot::SpitfireSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::SpitfireSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::SpitfireHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::SpitfireADSSmooth;
     		}
     		if (weaponHeld == 89) { //G7
     			Aimbot::AdvancedSpeed = Aimbot::G7Speed;
-    			Aimbot::AdvancedSmooth = Aimbot::G7Smooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::G7HipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::G7ADSSmooth;
     		}
     		//Heavy Weapons
     		if (weaponHeld == 112) { //CARSMG
     			Aimbot::AdvancedSpeed = Aimbot::CARSMGSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::CARSMGSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::CARSMGADSSmooth;
     		}
     		if (weaponHeld == 21) { //Rampage
     			Aimbot::AdvancedSpeed = Aimbot::RampageSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::RampageSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::RampageHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::RampageADSSmooth;
     		}
     		if (weaponHeld == 111) { //Repeater
     			Aimbot::AdvancedSpeed = Aimbot::RepeaterSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::RepeaterSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::RepeaterHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::RepeaterADSSmooth;
     		}
     		if (weaponHeld == 90) { //Hemlock
     			Aimbot::AdvancedSpeed = Aimbot::HemlockSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::HemlockSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::HemlockHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::HemlockADSSmooth;
     		}
     		if (weaponHeld == 88) { //Flatline
     			Aimbot::AdvancedSpeed = Aimbot::FlatlineSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::FlatlineSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::FlatlineHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::FlatlineADSSmooth;
     		}
     		//Energy Weapons
     		if (weaponHeld == 113) { //Nemesis
     			Aimbot::AdvancedSpeed = Aimbot::NemesisSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::NemesisSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::NemesisHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::NemesisADSSmooth;
     		}
     		if (weaponHeld == 110) { //Volt
     			Aimbot::AdvancedSpeed = Aimbot::VoltSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::VoltSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::VoltHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::VoltADSSmooth;
     		}
     		if (weaponHeld == 107) { //TripleTake
     			Aimbot::AdvancedSpeed = Aimbot::TripleTakeSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::TripleTakeSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::TripleTakeHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::TripleTakeADSSmooth;
     		}
     		if (weaponHeld == 93) { //LSTAR
     			Aimbot::AdvancedSpeed = Aimbot::LSTARSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::LSTARSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::LSTARHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::LSTARADSSmooth;
     		}
     		if (weaponHeld == 84) { //Devotion
     			Aimbot::AdvancedSpeed = Aimbot::DevotionSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::DevotionSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::DevotionHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::DevotionADSSmooth;
     		}
     		if (weaponHeld == 86) { //Havoc
     			Aimbot::AdvancedSpeed = Aimbot::HavocSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::HavocSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::HavocHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::HavocADSSmooth;
     		}
     		//Shotguns
     		if (weaponHeld == 96) { //Mozambique
     			Aimbot::AdvancedSpeed = Aimbot::MozambiqueSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::MozambiqueSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::MozambiqueHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::MozambiqueADSSmooth;
     		}
     		if (weaponHeld == 87) { //EVA8
     			Aimbot::AdvancedSpeed = Aimbot::EVA8Speed;
-    			Aimbot::AdvancedSmooth = Aimbot::EVA8Smooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::EVA8HipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::EVA8ADSSmooth;
     		}
     		if (weaponHeld == 103) { //Peacekeeper
     			Aimbot::AdvancedSpeed = Aimbot::PeacekeeperSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::PeacekeeperSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::PeacekeeperHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::PeacekeeperADSSmooth;
     		}
     		if (weaponHeld == 95) { //Mastiff
     			Aimbot::AdvancedSpeed = Aimbot::MastiffSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::MastiffSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::MastiffHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::MastiffADSSmooth;
     		}
     		//Snipers
     		if (weaponHeld == 1) { //Sentinel
     			Aimbot::AdvancedSpeed = Aimbot::SentinelSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::SentinelSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::SentinelHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::SentinelADSSmooth;
     		}
     		if (weaponHeld == 83) { //ChargeRifle
     			Aimbot::AdvancedSpeed = Aimbot::ChargeRifleSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::ChargeRifleSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::ChargeRifleHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::ChargeRifleADSSmooth;
     		}
     		if (weaponHeld == 85) { //Longbow
     			Aimbot::AdvancedSpeed = Aimbot::LongbowSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::LongbowSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::LongbowHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::LongbowADSSmooth;
     		}
     		//Legendary Weapons
     		if (weaponHeld == 109) { //Wingman
     			Aimbot::AdvancedSpeed = Aimbot::WingmanSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::WingmanSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::WingmanHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::WingmanADSSmooth;
     		}
     		if (weaponHeld == 102) { //Prowler
     			Aimbot::AdvancedSpeed = Aimbot::ProwlerSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::ProwlerSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::ProwlerHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::ProwlerADSSmooth;
+    		}
+    		if (weaponHeld == 2) { //Bocek
+    			Aimbot::AdvancedSpeed = Aimbot::BocekSpeed;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::BocekHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::BocekADSSmooth;
     		}
     		if (weaponHeld == 92) { //Kraber
     			Aimbot::AdvancedSpeed = Aimbot::KraberSpeed;
-    			Aimbot::AdvancedSmooth = Aimbot::KraberSmooth;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::KraberHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::KraberADSSmooth;
+    		}
+    		if (weaponHeld == 163) { //ThrowingKnife
+    			Aimbot::AdvancedSpeed = Aimbot::ThrowingKnifeSpeed;
+    			Aimbot::AdvancedHipfireSmooth = Aimbot::ThrowingKnifeHipfireSmooth;
+    			Aimbot::AdvancedADSSmooth = Aimbot::ThrowingKnifeADSSmooth;
     		}
     	}
 
@@ -1162,15 +1375,31 @@ struct Aimbot {
         Delta.NormalizeAngles();
         
         if (AdvancedAim) {
-        float ExtraSmooth = SmoothDistance / Target->DistanceToLocalPlayer;
-        float SmoothValue = powf(this->AdvancedSmooth + ExtraSmooth, 0.4f);
-        SmoothValue = std::min(0.99f, SmoothValue);
+        	if (Myself->IsZooming) {
+			float ExtraSmooth = SmoothDistance / Target->DistanceToLocalPlayer;
+			float SmoothValue = powf(this->AdvancedADSSmooth + ExtraSmooth, 0.4f);
+			SmoothValue = std::min(0.99f, SmoothValue);
+		}
+        	if (!Myself->IsZooming) {
+			float ExtraSmooth = SmoothDistance / Target->DistanceToLocalPlayer;
+			float SmoothValue = powf(this->AdvancedHipfireSmooth + ExtraSmooth, 0.4f);
+			SmoothValue = std::min(0.99f, SmoothValue);
+		}
         }
         
         if (!AdvancedAim) {
-        float ExtraSmooth = SmoothDistance / Target->DistanceToLocalPlayer;
-        float SmoothValue = powf(this->Smooth + ExtraSmooth, 0.4f);
-        SmoothValue = std::min(0.99f, SmoothValue);
+		if (Myself->IsZooming) {
+			Smooth = ADSSmooth;
+			float ExtraSmooth = SmoothDistance / Target->DistanceToLocalPlayer;
+			float SmoothValue = powf(this->Smooth + ExtraSmooth, 0.4f);
+			SmoothValue = std::min(0.99f, SmoothValue);
+		}
+		if (!Myself->IsZooming) {
+			Smooth = HipfireSmooth;
+			float ExtraSmooth = SmoothDistance / Target->DistanceToLocalPlayer;
+			float SmoothValue = powf(this->Smooth + ExtraSmooth, 0.4f);
+			SmoothValue = std::min(0.99f, SmoothValue);
+		}
         }
 
         QAngle ToChange = QAngle();
@@ -1219,29 +1448,51 @@ struct Aimbot {
     }
 
     bool IsValidTarget(Player* target) {
-    	if (VisCheck) {
-		if (target == nullptr ||
-		    !target->IsValid() || 
-		    !target->IsCombatReady() || 
-		    !target->IsVisible || 
-		    !target->IsHostile || 
-		    target->Distance2DToLocalPlayer < Conversion::ToGameUnits(MinDistance) || 
-		    target->Distance2DToLocalPlayer > Conversion::ToGameUnits(FinalDistance))
-		    return false;
-		return true;
-	}
-    	if (!VisCheck) {
-		if (target == nullptr ||
-		    !target->IsValid() || 
-		    !target->IsCombatReady() || 
-		    !target->IsHostile || 
-		    target->Distance2DToLocalPlayer < Conversion::ToGameUnits(MinDistance) || 
-		    target->Distance2DToLocalPlayer > Conversion::ToGameUnits(FinalDistance))
-		    return false;
-		return true;
-	}
-    } //Ignore The Warnings
-
+    	if (TeamCheck) {
+	    	if (VisCheck) {
+			if (target == nullptr ||
+			    !target->IsValid() || 
+			    !target->IsCombatReady() || 
+			    !target->IsVisible || 
+			    !target->IsHostile || 
+			    target->Distance2DToLocalPlayer < Conversion::ToGameUnits(MinDistance) || 
+			    target->Distance2DToLocalPlayer > Conversion::ToGameUnits(FinalDistance))
+			    return false;
+			return true;
+		}
+	    	if (!VisCheck) {
+			if (target == nullptr ||
+			    !target->IsValid() || 
+			    !target->IsCombatReady() || 
+			    !target->IsHostile || 
+			    target->Distance2DToLocalPlayer < Conversion::ToGameUnits(MinDistance) || 
+			    target->Distance2DToLocalPlayer > Conversion::ToGameUnits(FinalDistance))
+			    return false;
+			return true;
+		}
+	    } //Ignore The Warnings
+    	if (!TeamCheck) {
+	    	if (VisCheck) {
+			if (target == nullptr ||
+			    !target->IsValid() || 
+			    !target->IsCombatReady() || 
+			    !target->IsVisible || 
+			    target->Distance2DToLocalPlayer < Conversion::ToGameUnits(MinDistance) || 
+			    target->Distance2DToLocalPlayer > Conversion::ToGameUnits(FinalDistance))
+			    return false;
+			return true;
+		}
+	    	if (!VisCheck) {
+			if (target == nullptr ||
+			    !target->IsValid() || 
+			    !target->IsCombatReady() || 
+			    target->Distance2DToLocalPlayer < Conversion::ToGameUnits(MinDistance) || 
+			    target->Distance2DToLocalPlayer > Conversion::ToGameUnits(FinalDistance))
+			    return false;
+			return true;
+		}
+	    } //Ignore The Warnings
+    } //Ignore The Warnings!!!
     float CalculatePitchIncrement(QAngle AimbotDesiredAngles) {
         float wayA = AimbotDesiredAngles.x - Myself->ViewAngles.x;
         float wayB = 180 - abs(wayA);
