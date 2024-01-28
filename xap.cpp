@@ -56,8 +56,6 @@ Overlay* Home = new Overlay;
 
 // Booleans and Variables
 bool IsMenuOpened = true;
-int AsciiArt = Config::Home::AsciiArt;
-int AsciiArtSpeed = Config::Home::AsciiArtSpeed;
 
 // Thread
 std::atomic_bool StopThread(false);
@@ -116,10 +114,15 @@ void LoadConfig() {
     Modules::Aimbot::Hitbox = static_cast<HitboxType>(Config::Aimbot::HitBox);
     AimAssist->OnFire = Config::Aimbot::OnFire;
     AimAssist->OnADS = Config::Aimbot::OnADS;
+    AimAssist->TeamCheck = Config::Aimbot::TeamCheck;
+    AimAssist->VisCheck = Config::Aimbot::VisCheck;
     AimAssist->PredictMovement = Config::Aimbot::PredictMovement;
     AimAssist->PredictBulletDrop = Config::Aimbot::PredictBulletDrop;
     AimAssist->Speed = Config::Aimbot::Speed;
     AimAssist->Smooth = Config::Aimbot::Smooth;
+    AimAssist->HipfireSmooth = Config::Aimbot::HipfireSmooth;
+    AimAssist->ADSSmooth = Config::Aimbot::ADSSmooth;
+    AimAssist->SmoothDistance = Config::Aimbot::SmoothDistance;
     AimAssist->Delay = Config::Aimbot::Delay;
     AimAssist->FOV = Config::Aimbot::FOV;
     AimAssist->ZoomScale = Config::Aimbot::ZoomScale;
@@ -160,67 +163,102 @@ void LoadConfig() {
     
     //---------------Advanced---------------//
     AimAssist->AdvancedAim = Config::Aimbot::AdvancedAim;
+    AimAssist->AdvancedSpeed = Config::Aimbot::AdvancedSpeed;
+    AimAssist->AdvancedSmooth = Config::Aimbot::AdvancedSmooth;
+    AimAssist->AdvancedHipfireSmooth = Config::Aimbot::AdvancedHipfireSmooth;
+    AimAssist->AdvancedADSSmooth = Config::Aimbot::AdvancedADSSmooth;
+    
     //Weapons
     AimAssist->P2020Speed = Config::Aimbot::P2020Speed;
-    AimAssist->P2020Smooth = Config::Aimbot::P2020Smooth;
+    AimAssist->P2020HipfireSmooth = Config::Aimbot::P2020HipfireSmooth;
+    AimAssist->P2020ADSSmooth = Config::Aimbot::P2020ADSSmooth;
     AimAssist->RE45Speed = Config::Aimbot::RE45Speed;
-    AimAssist->RE45Smooth = Config::Aimbot::RE45Smooth;
+    AimAssist->RE45HipfireSmooth = Config::Aimbot::RE45HipfireSmooth;
+    AimAssist->RE45ADSSmooth = Config::Aimbot::RE45ADSSmooth;
     AimAssist->AlternatorSpeed = Config::Aimbot::AlternatorSpeed;
-    AimAssist->AlternatorSmooth = Config::Aimbot::AlternatorSmooth;
+    AimAssist->AlternatorHipfireSmooth = Config::Aimbot::AlternatorHipfireSmooth;
+    AimAssist->AlternatorADSSmooth = Config::Aimbot::AlternatorADSSmooth;
     AimAssist->R99Speed = Config::Aimbot::R99Speed;
-    AimAssist->R99Smooth = Config::Aimbot::R99Smooth;
+    AimAssist->R99HipfireSmooth = Config::Aimbot::R99HipfireSmooth;
+    AimAssist->R99ADSSmooth = Config::Aimbot::R99ADSSmooth;
     AimAssist->R301Speed = Config::Aimbot::R301Speed;
-    AimAssist->R301Smooth = Config::Aimbot::R301Smooth;
+    AimAssist->R301HipfireSmooth = Config::Aimbot::R301HipfireSmooth;
+    AimAssist->R301ADSSmooth = Config::Aimbot::R301ADSSmooth;
     AimAssist->SpitfireSpeed = Config::Aimbot::SpitfireSpeed;
-    AimAssist->SpitfireSmooth = Config::Aimbot::SpitfireSmooth;
+    AimAssist->SpitfireHipfireSmooth = Config::Aimbot::SpitfireHipfireSmooth;
+    AimAssist->SpitfireADSSmooth = Config::Aimbot::SpitfireADSSmooth;
     AimAssist->G7Speed = Config::Aimbot::G7Speed;
-    AimAssist->G7Smooth = Config::Aimbot::G7Smooth;
+    AimAssist->G7HipfireSmooth = Config::Aimbot::G7HipfireSmooth;
+    AimAssist->G7ADSSmooth = Config::Aimbot::G7ADSSmooth;
     AimAssist->FlatlineSpeed = Config::Aimbot::FlatlineSpeed;
-    AimAssist->FlatlineSmooth = Config::Aimbot::FlatlineSmooth;
+    AimAssist->FlatlineHipfireSmooth = Config::Aimbot::FlatlineHipfireSmooth;
+    AimAssist->FlatlineADSSmooth = Config::Aimbot::FlatlineADSSmooth;
     AimAssist->HemlockSpeed = Config::Aimbot::HemlockSpeed;
-    AimAssist->HemlockSmooth = Config::Aimbot::HemlockSmooth;
+    AimAssist->HemlockHipfireSmooth = Config::Aimbot::HemlockHipfireSmooth;
+    AimAssist->HemlockADSSmooth = Config::Aimbot::HemlockADSSmooth;
     AimAssist->RepeaterSpeed = Config::Aimbot::RepeaterSpeed;
-    AimAssist->RepeaterSmooth = Config::Aimbot::RepeaterSmooth;
+    AimAssist->RepeaterHipfireSmooth = Config::Aimbot::RepeaterHipfireSmooth;
+    AimAssist->RepeaterADSSmooth = Config::Aimbot::RepeaterADSSmooth;
     AimAssist->RampageSpeed = Config::Aimbot::RampageSpeed;
-    AimAssist->RampageSmooth = Config::Aimbot::RampageSmooth;
+    AimAssist->RampageHipfireSmooth = Config::Aimbot::RampageHipfireSmooth;
+    AimAssist->RampageADSSmooth = Config::Aimbot::RampageADSSmooth;
     AimAssist->CARSMGSpeed = Config::Aimbot::CARSMGSpeed;
-    AimAssist->CARSMGSmooth = Config::Aimbot::CARSMGSmooth;
+    AimAssist->CARSMGHipfireSmooth = Config::Aimbot::CARSMGHipfireSmooth;
+    AimAssist->CARSMGADSSmooth = Config::Aimbot::CARSMGADSSmooth;
     AimAssist->HavocSpeed = Config::Aimbot::HavocSpeed;
-    AimAssist->HavocSmooth = Config::Aimbot::HavocSmooth;
+    AimAssist->HavocHipfireSmooth = Config::Aimbot::HavocHipfireSmooth;
+    AimAssist->HavocADSSmooth = Config::Aimbot::HavocADSSmooth;
     AimAssist->DevotionSpeed = Config::Aimbot::DevotionSpeed;
-    AimAssist->DevotionSmooth = Config::Aimbot::DevotionSmooth;
+    AimAssist->DevotionHipfireSmooth = Config::Aimbot::DevotionHipfireSmooth;
+    AimAssist->DevotionADSSmooth = Config::Aimbot::DevotionADSSmooth;
     AimAssist->LSTARSpeed = Config::Aimbot::LSTARSpeed;
-    AimAssist->LSTARSmooth = Config::Aimbot::LSTARSmooth;
+    AimAssist->LSTARHipfireSmooth = Config::Aimbot::LSTARHipfireSmooth;
+    AimAssist->LSTARADSSmooth = Config::Aimbot::LSTARADSSmooth;
     AimAssist->TripleTakeSpeed = Config::Aimbot::TripleTakeSpeed;
-    AimAssist->TripleTakeSmooth = Config::Aimbot::TripleTakeSmooth;
+    AimAssist->TripleTakeHipfireSmooth = Config::Aimbot::TripleTakeHipfireSmooth;
+    AimAssist->TripleTakeADSSmooth = Config::Aimbot::TripleTakeADSSmooth;
     AimAssist->VoltSpeed = Config::Aimbot::VoltSpeed;
-    AimAssist->VoltSmooth = Config::Aimbot::VoltSmooth;
+    AimAssist->VoltHipfireSmooth = Config::Aimbot::VoltHipfireSmooth;
+    AimAssist->VoltADSSmooth = Config::Aimbot::VoltADSSmooth;
     AimAssist->NemesisSpeed = Config::Aimbot::NemesisSpeed;
-    AimAssist->NemesisSmooth = Config::Aimbot::NemesisSmooth;
+    AimAssist->NemesisHipfireSmooth = Config::Aimbot::NemesisHipfireSmooth;
+    AimAssist->NemesisADSSmooth = Config::Aimbot::NemesisADSSmooth;
     AimAssist->MozambiqueSpeed = Config::Aimbot::MozambiqueSpeed;
-    AimAssist->MozambiqueSmooth = Config::Aimbot::MozambiqueSmooth;
+    AimAssist->MozambiqueHipfireSmooth = Config::Aimbot::MozambiqueHipfireSmooth;
+    AimAssist->MozambiqueADSSmooth = Config::Aimbot::MozambiqueADSSmooth;
     AimAssist->EVA8Speed = Config::Aimbot::EVA8Speed;
-    AimAssist->EVA8Smooth = Config::Aimbot::EVA8Smooth;
+    AimAssist->EVA8HipfireSmooth = Config::Aimbot::EVA8HipfireSmooth;
+    AimAssist->EVA8ADSSmooth = Config::Aimbot::EVA8ADSSmooth;
     AimAssist->PeacekeeperSpeed = Config::Aimbot::PeacekeeperSpeed;
-    AimAssist->PeacekeeperSmooth = Config::Aimbot::PeacekeeperSmooth;
+    AimAssist->PeacekeeperHipfireSmooth = Config::Aimbot::PeacekeeperHipfireSmooth;
+    AimAssist->PeacekeeperADSSmooth = Config::Aimbot::PeacekeeperADSSmooth;
     AimAssist->MastiffSpeed = Config::Aimbot::MastiffSpeed;
-    AimAssist->MastiffSmooth = Config::Aimbot::MastiffSmooth;
+    AimAssist->MastiffHipfireSmooth = Config::Aimbot::MastiffHipfireSmooth;
+    AimAssist->MastiffADSSmooth = Config::Aimbot::MastiffADSSmooth;
     AimAssist->LongbowSpeed = Config::Aimbot::LongbowSpeed;
-    AimAssist->LongbowSmooth = Config::Aimbot::LongbowSmooth;
+    AimAssist->LongbowHipfireSmooth = Config::Aimbot::LongbowHipfireSmooth;
+    AimAssist->LongbowADSSmooth = Config::Aimbot::LongbowADSSmooth;
     AimAssist->ChargeRifleSpeed = Config::Aimbot::ChargeRifleSpeed;
-    AimAssist->ChargeRifleSmooth = Config::Aimbot::ChargeRifleSmooth;
+    AimAssist->ChargeRifleHipfireSmooth = Config::Aimbot::ChargeRifleHipfireSmooth;
+    AimAssist->ChargeRifleADSSmooth = Config::Aimbot::ChargeRifleADSSmooth;
     AimAssist->SentinelSpeed = Config::Aimbot::SentinelSpeed;
-    AimAssist->SentinelSmooth = Config::Aimbot::SentinelSmooth;
+    AimAssist->SentinelHipfireSmooth = Config::Aimbot::SentinelHipfireSmooth;
+    AimAssist->SentinelADSSmooth = Config::Aimbot::SentinelADSSmooth;
     AimAssist->WingmanSpeed = Config::Aimbot::WingmanSpeed;
-    AimAssist->WingmanSmooth = Config::Aimbot::WingmanSmooth;
+    AimAssist->WingmanHipfireSmooth = Config::Aimbot::WingmanHipfireSmooth;
+    AimAssist->WingmanADSSmooth = Config::Aimbot::WingmanADSSmooth;
     AimAssist->ProwlerSpeed = Config::Aimbot::ProwlerSpeed;
-    AimAssist->ProwlerSmooth = Config::Aimbot::ProwlerSmooth;
+    AimAssist->ProwlerHipfireSmooth = Config::Aimbot::ProwlerHipfireSmooth;
+    AimAssist->ProwlerADSSmooth = Config::Aimbot::ProwlerADSSmooth;
     AimAssist->BocekSpeed = Config::Aimbot::BocekSpeed;
-    AimAssist->BocekSmooth = Config::Aimbot::BocekSmooth;
+    AimAssist->BocekHipfireSmooth = Config::Aimbot::BocekHipfireSmooth;
+    AimAssist->BocekADSSmooth = Config::Aimbot::BocekADSSmooth;
     AimAssist->KraberSpeed = Config::Aimbot::KraberSpeed;
-    AimAssist->KraberSmooth = Config::Aimbot::KraberSmooth;
+    AimAssist->KraberHipfireSmooth = Config::Aimbot::KraberHipfireSmooth;
+    AimAssist->KraberADSSmooth = Config::Aimbot::KraberADSSmooth;
     AimAssist->ThrowingKnifeSpeed = Config::Aimbot::ThrowingKnifeSpeed;
-    AimAssist->ThrowingKnifeSmooth = Config::Aimbot::ThrowingKnifeSmooth;
+    AimAssist->ThrowingKnifeHipfireSmooth = Config::Aimbot::ThrowingKnifeHipfireSmooth;
+    AimAssist->ThrowingKnifeADSSmooth = Config::Aimbot::ThrowingKnifeADSSmooth;
     
     //RCS //
     Recoil->RCSEnabled = Config::RCS::RCSEnabled;
@@ -371,6 +409,7 @@ void LoadConfig() {
     // Triggerbot //
     Trigger->TriggerbotEnabled = Config::Triggerbot::Enabled;
     Trigger->OnADS = Config::Triggerbot::OnADS;
+    Trigger->HipfireShotguns = Config::Triggerbot::HipfireShotguns;
     Trigger->TriggerbotRange = Config::Triggerbot::Range;
     // Weapons //
     Trigger->P2020 = Config::Triggerbot::P2020;
@@ -439,12 +478,15 @@ void LoadConfig() {
     MiscTab->SkinKRABER = Config::Misc::SkinKRABER;
     
     // Home //
-    AsciiArt = Config::Home::AsciiArt; //change the starting ascii art. 0 = cat 1, 1 = shotgun, 2 = glock, 3 = racoon, 4 = cat 2, 5 = zap-client
-    AsciiArtSpeed = Config::Home::AsciiArtSpeed; //Speed (in milliseconds) of the ascii art
     Home->MenuX = Config::Home::MenuX;
     Home->MenuY = Config::Home::MenuY;
     Home->TeamGamemode = Config::Home::TeamGamemode;
     Home->ErrorLogging = Config::Home::ErrorLogging;
+}
+
+void LoadASCIIConfig() {
+    Home->AsciiArt = Config::Home::AsciiArt;
+    Home->AsciiArtSpeed = Config::Home::AsciiArtSpeed;
 }
 
 void LoadOverlaySave() {
@@ -969,6 +1011,62 @@ void LoadOverlaySave() {
 	Home->NavHighlight           = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
 	Home->NavWindowingHighlight  = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
     }
+    
+    if (Config::Home::Color == 7) {
+	Home->Text = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+	Home->TextDisabled = ImVec4(0.4980392158031464f, 0.4980392158031464f, 0.4980392158031464f, 1.0f);
+	Home->WindowBg = ImVec4(0.05490196123719215f, 0.03529411926865578f, 0.1843137294054031f, 1.0f);
+	Home->ChildBg = ImVec4(0.105882354080677f, 0.09411764889955521f, 0.3254902064800262f, 1.0f);
+	Home->PopupBg = ImVec4(0.05490196123719215f, 0.03529411926865578f, 0.1843137294054031f, 1.0f);
+	Home->Border = ImVec4(0.2745098173618317f, 0.3568627536296844f, 0.9058823585510254f, 1.0f);
+	Home->BorderShadow = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+	Home->FrameBg = ImVec4(0.105882354080677f, 0.09411764889955521f, 0.3254902064800262f, 1.0f);
+	Home->FrameBgHovered = ImVec4(0.1333333402872086f, 0.1764705926179886f, 0.5058823823928833f, 1.0f);
+	Home->FrameBgActive = ImVec4(0.2745098173618317f, 0.3568627536296844f, 0.9058823585510254f, 1.0f);
+	Home->TitleBg = ImVec4(0.1333333402872086f, 0.1764705926179886f, 0.5058823823928833f, 1.0f);
+	Home->TitleBgActive = ImVec4(0.2745098173618317f, 0.3568627536296844f, 0.9058823585510254f, 1.0f);
+	Home->TitleBgCollapsed = ImVec4(0.105882354080677f, 0.09411764889955521f, 0.3254902064800262f, 1.0f);
+	Home->MenuBarBg = ImVec4(0.105882354080677f, 0.09411764889955521f, 0.3254902064800262f, 1.0f);
+	Home->ScrollbarBg = ImVec4(0.01960784383118153f, 0.01960784383118153f, 0.01960784383118153f, 0.5299999713897705f);
+	Home->ScrollbarGrab = ImVec4(0.2745098173618317f, 0.3568627536296844f, 0.9058823585510254f, 1.0f);
+	Home->ScrollbarGrabHovered = ImVec4(0.1647058874368668f, 0.7529411911964417f, 0.9490196108818054f, 1.0f);
+	Home->ScrollbarGrabActive = ImVec4(0.1647058874368668f, 0.7529411911964417f, 0.9490196108818054f, 1.0f);
+	Home->CheckMark = ImVec4(0.1647058874368668f, 0.7529411911964417f, 0.9490196108818054f, 1.0f);
+	Home->SliderGrab = ImVec4(0.2745098173618317f, 0.3568627536296844f, 0.9058823585510254f, 1.0f);
+	Home->SliderGrabActive = ImVec4(0.1647058874368668f, 0.7529411911964417f, 0.9490196108818054f, 1.0f);
+	Home->Button = ImVec4(0.2745098173618317f, 0.3568627536296844f, 0.9058823585510254f, 1.0f);
+	Home->ButtonHovered = ImVec4(0.1333333402872086f, 0.1764705926179886f, 0.5058823823928833f, 1.0f);
+	Home->ButtonActive = ImVec4(0.105882354080677f, 0.09411764889955521f, 0.3254902064800262f, 1.0f);
+	Home->Header = ImVec4(0.105882354080677f, 0.09411764889955521f, 0.3254902064800262f, 1.0f);
+	Home->HeaderHovered = ImVec4(0.1333333402872086f, 0.1764705926179886f, 0.5058823823928833f, 1.0f);
+	Home->HeaderActive = ImVec4(0.2745098173618317f, 0.3568627536296844f, 0.9058823585510254f, 1.0f);
+	Home->Separator = ImVec4(0.4274509847164154f, 0.4274509847164154f, 0.4980392158031464f, 0.5f);
+	Home->SeparatorHovered = ImVec4(0.09803921729326248f, 0.4000000059604645f, 0.7490196228027344f, 0.7799999713897705f);
+	Home->SeparatorActive = ImVec4(0.09803921729326248f, 0.4000000059604645f, 0.7490196228027344f, 1.0f);
+	Home->ResizeGrip = ImVec4(0.2313725501298904f, 0.3568627536296844f, 0.9960784316062927f, 1.0f);
+	Home->ResizeGripHovered = ImVec4(0.1584483087062836f, 0.2800911366939545f, 0.8025751113891602f, 1.0f);
+	Home->ResizeGripActive = ImVec4(0.09891508519649506f, 0.2253202944993973f, 0.7682403326034546f, 1.0f);
+	Home->Tab = ImVec4(0.105882354080677f, 0.09411764889955521f, 0.3254902064800262f, 1.0f);
+	Home->TabHovered = ImVec4(0.1333333402872086f, 0.1764705926179886f, 0.5058823823928833f, 1.0f);
+	Home->TabActive = ImVec4(0.2745098173618317f, 0.3568627536296844f, 0.9058823585510254f, 1.0f);
+	Home->TabUnfocused = ImVec4(0.105882354080677f, 0.09411764889955521f, 0.3254902064800262f, 1.0f);
+	Home->TabUnfocusedActive = ImVec4(0.2745098173618317f, 0.3568627536296844f, 0.9058823585510254f, 1.0f);
+	Home->PlotLines = ImVec4(0.1584483087062836f, 0.2800911366939545f, 0.8025751113891602f, 1.0f);
+	Home->PlotLinesHovered = ImVec4(0.2313725501298904f, 0.3568627536296844f, 0.9960784316062927f, 1.0f);
+	Home->PlotHistogram = ImVec4(0.1584483087062836f, 0.2800911366939545f, 0.8025751113891602f, 1.0f);
+	Home->PlotHistogramHovered = ImVec4(0.2313725501298904f, 0.3568627536296844f, 0.9960784316062927f, 1.0f);
+	Home->TableHeaderBg = ImVec4(0.2313725501298904f, 0.3568627536296844f, 0.9960784316062927f, 1.0f);
+	Home->TableBorderStrong = ImVec4(0.105882354080677f, 0.09411764889955521f, 0.3254902064800262f, 1.0f);
+	Home->TableBorderLight = ImVec4(0.105882354080677f, 0.09411764889955521f, 0.3254902064800262f, 1.0f);
+	Home->TableRowBg = ImVec4(0.1333333402872086f, 0.1764705926179886f, 0.5058823823928833f, 1.0f);
+	Home->TableRowBgAlt = ImVec4(0.105882354080677f, 0.09411764889955521f, 0.3254902064800262f, 1.0f);
+	Home->TextSelectedBg = ImVec4(0.2313725501298904f, 0.3568627536296844f, 0.9960784316062927f, 1.0f);
+	Home->DragDropTarget = ImVec4(0.2313725501298904f, 0.3568627536296844f, 0.9960784316062927f, 1.0f);
+	Home->NavHighlight = ImVec4(0.2588235437870026f, 0.5882353186607361f, 0.9764705896377563f, 1.0f);
+	Home->NavWindowingHighlight = ImVec4(1.0f, 1.0f, 1.0f, 0.699999988079071f);
+	Home->NavWindowingDimBg = ImVec4(0.800000011920929f, 0.800000011920929f, 0.800000011920929f, 0.2000000029802322f);
+	Home->ModalWindowDimBg = ImVec4(0.800000011920929f, 0.800000011920929f, 0.800000011920929f, 0.3499999940395355f);
+    }
 
 }
 
@@ -1135,176 +1233,179 @@ int main(int argc, char *argv[]) {
     std::system("clear"); //Ignore These Warnings
     std::cout << " " << std::endl; //Spacing
 
-    if (AsciiArt == 0) {
+    LoadASCIIConfig();
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    if (Home->AsciiArt == 0) {
 	    std::cout << "       _                        " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "       \`*-.                    " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "        )  _`-.                 " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "       .  : `. .                " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "       : _   '  \               " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "       ; *` _.   `*-._          " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "       `-.-'          `-.       " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "         ;       `       `.     " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "         :.       .        \    " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "         . \  .   :   .-'   .   " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "         '  `+.;  ;  '      :   " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "         :  '  |    ;       ;-. " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "         ; '   : :`-:     _.`* ;" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "     .*' /  .*' ; .*`- +'  `*' " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "      `*-*   `*-*  `*-*'" << std::endl;
     }
     
-    if (AsciiArt == 1) {
+    if (Home->AsciiArt == 1) {
 	    std::cout << " ,______________________________________       " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "|_________________,----------._ [____]  ""-,__  __....-----=====" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "               (_(||||||||||||)___________/   ""                |" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "                  `----------'        [ )) -,                   |" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "                                       ""    `,  _,--....___    |" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "                                               `/           """"" << std::endl;
     }
     
-    if (AsciiArt == 2) {
+    if (Home->AsciiArt == 2) {
 	    std::cout << " +--^----------,--------,-----,--------^-," << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << " | |||||||||   `--------'     |          O" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << " `+---------------------------^----------|" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "   `\_,---------,---------,--------------'" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "     / XXXXXX /'|       /'" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "    / XXXXXX /  `\    /'" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "   / XXXXXX /`-------'" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "  / XXXXXX /" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << " / XXXXXX /" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "(________(       " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << " `------'          " << std::endl;
     }
     
-    if (AsciiArt == 3) {
+    if (Home->AsciiArt == 3) {
     	    std::cout << "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⠀⠀⢀⣀⣀⣀⡤⠖⠊⠉⠁⠀⠀⠀⠉⠒⢦⡀⠀⠀⠀⠀⠀⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⢀⠀⠀⠀⢀⡔⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣆⠀⠀⠀⠀⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⢧⣻⣆⠴⠯⣄⣤⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⡄⠀⠀⠀⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⢠⠉⢁⡆⠈⠉⠸⠾⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣷⡄⠀⠀⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠸⣀⠾⢁⡀⠀⠀⠀⠈⢆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠿⠻⡄⠀⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⡿⠇⠺⠿⠿⡟⣲⠴⠊⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣃⡶⠿⢿⡀⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⣦⣦⢀⣀⣤⡞⠁⠀⠀⠀⠀⠀⡠⢄⠀⠀⠀⠀⠀⡴⠻⣏⣶⠞⠛⠷⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠈⠉⠁⣧⠀⠙⡆⠀⠀⠀⠀⠀⠀⢸⠳⣄⡀⠀⠀⢣⠀⣻⣷⠖⠛⢷⡇" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⡟⠀⢀⡇⠀⠀⢀⢲⠛⢉⣥⠒⠁⠀⣀⡤⠋⣠⣿⡿⠿⢶⣸⠃" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⣀⠤⡴⠁⣠⠎⡇⠀⣆⡼⠛⠀⠛⠷⢶⠴⠛⠁⠀⣴⠿⠿⢷⣦⣀⡟⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠛⠿⠵⠷⣋⡴⠁⢠⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣄⣀⠀⢸⡟⠀⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⠰⣷⣄⡤⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⡿⠟⠋⠀⠀⠀" << std::endl;
     }
     
-    if (AsciiArt == 4) {
+    if (Home->AsciiArt == 4) {
     	    std::cout << "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣄⠀⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡴⢻⠟⠙⣷⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⠀⠀⠀⣰⠿⢿⡲⢦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡴⠋⣰⠋⠀⠀⢸⡇" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⠙⠢⣈⠛⢦⣄⠀⣀⣤⣤⡤⠤⠤⢴⣏⣀⡼⠁⠀⠀⠀⠀⡇" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⠀⠀⠀⢿⠀⠀⠀⠀⠘⢲⡤⠞⠋⠁⠀⢸⡇⠀⠀⠀⠀⠈⠉⠲⣄⡀⠀⢀⡇" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⠀⠀⠀⠸⣇⠀⠀⢀⡴⠋⠀⠀⠀⠀⠀⢸⠹⡀⠀⠀⠀⠀⣀⠀⠀⠙⣄⣸⠃" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⠀⠀⠀⠀⢻⡀⢠⠏⠀⣀⡠⠤⣄⡀⠀⡏⠀⠳⣄⣴⣾⣍⡉⠉⠓⣄⠈⣧⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⡏⢀⡞⠁⢠⣾⡷⠿⣿⡀⠀⠀⣿⣯⣩⣿⣿⣦⠀⢸⡄⢹⡇" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡁⢸⡄⠀⢿⢿⣿⡾⡿⢻⠀⠀⣏⠻⣏⣛⣡⠏⢀⡞⠀⠀⡇" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣇⠀⠳⣄⡈⠓⠶⣛⣡⠞⠠⡷⠈⠓⠚⠛⠒⠚⠙⠒⠦⢼⠇" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣤⡤⢞⡋⠉⠉⢡⡀⢀⣠⠟⠦⣄⡼⠃⠀⠀⢨⣍⣩⡟⠁" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠿⣞⢉⡥⠀⠀⠀⠈⠉⠀⠀⠀⠀⠀⠀⠀⠀⢲⣴⡏⠙⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⡿⢛⣴⣃⡀⠀⠀⠀⠀⠀⠀⠀⣀⣀⠤⠖⢹⠁⠉⠁⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡾⠋⠀⠋⢀⡏⠉⠉⠑⠒⠒⠉⠉⠉⠁⠀⠀⠀⢸⠀⠀⠀⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⠀⠀⠀⢠⡾⠉⠀⠀⠀⢀⡞⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⠀⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⠀⠀⢰⠏⠀⠀⠀⠀⢠⠞⠀⡀⠀⠀⠀⠀⠤⢤⡤⠤⠀⠀⠀⠀⣸⠀⠀⠀⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠀⠀⣀⣤⡟⠀⠀⣀⡤⠞⠁⠀⠸⡇⠀⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⠀⡿⠀⠀⠀⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⢀⣴⠞⠋⢠⡟⠒⠋⠁⠀⠀⠀⠀⠀⢷⠀⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⢰⡇⠀⠀⠀⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⢠⡾⠁⠀⢠⡼⣇⠀⠀⠀⠀⣀⡤⠤⢤⣘⣇⣀⠤⠤⢤⣸⣄⡤⠤⠤⣀⡿⠀⠀⠀⠀⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⢸⡇⠀⠀⠻⠤⠼⠧⠤⠤⠼⢧⣠⡀⡄⠈⡟⠀⣤⢠⡄⢸⡁⣠⠀⣆⡈⣳⠀⠀⠀⠀⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠻⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⣹⡗⠛⠒⠛⠒⠛⠛⠓⠛⠓⠛⠚⠛⠛⠋⠀⠀⠀⠀⠀" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "⠀⠀⠉⠛⠒⠶⠶⠶⠶⠶⠶⠾⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" << std::endl;
     }
     
-    if (AsciiArt == 5) {
+    if (Home->AsciiArt == 5) {
 	    std::cout << "                                                   ████   ███                       █████   " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "                                                  ░░███  ░░░                       ░░███    " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << " █████████  ██████   ████████              ██████  ░███  ████   ██████  ████████   ███████  " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "░█░░░░███  ░░░░░███ ░░███░░███ ██████████ ███░░███ ░███ ░░███  ███░░███░░███░░███ ░░░███░   " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "░   ███░    ███████  ░███ ░███░░░░░░░░░░ ░███ ░░░  ░███  ░███ ░███████  ░███ ░███   ░███    " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "  ███░   █ ███░░███  ░███ ░███           ░███  ███ ░███  ░███ ░███░░░   ░███ ░███   ░███ ███" << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << " █████████░░████████ ░███████            ░░██████  █████ █████░░██████  ████ █████  ░░█████ " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "░░░░░░░░░  ░░░░░░░░  ░███░░░              ░░░░░░  ░░░░░ ░░░░░  ░░░░░░  ░░░░ ░░░░░    ░░░░░  " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "                     ░███                                                                   " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "                     █████                                                                  " << std::endl;
-	    std::this_thread::sleep_for(std::chrono::milliseconds(AsciiArtSpeed));
+	    std::this_thread::sleep_for(std::chrono::milliseconds(Home->AsciiArtSpeed));
 	    std::cout << "                    ░░░░░                                                                   " << std::endl;
     }
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    std::cout << "zap client - ver 0.2" << std::endl;
+    std::cout << "zap client - ver 0.2.5" << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(1));
     std::cout << "For Game Version v3.0.55.37" << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(1));
