@@ -350,7 +350,7 @@ struct Sense {
 		    ImGui::Text("Misc");
 		    ImGui::Checkbox("Show Spectators", &ShowSpectators);
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        ImGui::SetTooltip("Show spectators");
+		        ImGui::SetTooltip("Show spectators\n[!] Cheat/Game will crash after going back to lobby, waiting for fix.");
 		        
 		    ImGui::Separator();
 		        
@@ -1241,10 +1241,9 @@ struct Sense {
 	//		    return;
 	//		}
 		    }
-		    
- 	    	if (VisibilityCheck) { //ONLY shows esp on visible people
+ 	    	if (VisibilityCheck) { //Always shows esp
+ 	    		PlayersNear++;
 		    	if (DrawTracers) {
-				PlayersNear++;
 				//Tracers
 				Vector2D chestScreenPosition;
 				if (Config::Sense::TracerBone == 0) {
@@ -1261,18 +1260,18 @@ struct Sense {
 				        int x = (int)(ScreenWidth * 0.5f);
 				        
 				        if (!ShowTeam) {
-				        	if (p->IsHostile && p->IsVisible) {
-							Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight - ScreenHeight), chestScreenPosition, 1.5f, ImColor(VisibleTracerColor));
+				        	if (p->IsHostile & p->IsVisible) {
+							Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight - ScreenHeight), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
 						}
 					}
 					
 					if (ShowTeam) {
-				        	if (p->IsHostile && p->IsVisible) {
-							Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight - ScreenHeight), chestScreenPosition, 1.5f, ImColor(VisibleTracerColor));
+				        	if (p->IsHostile & p->IsVisible) {
+							Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight - ScreenHeight), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
 						}
 						
-						if (p->IsAlly && p->IsVisible) {
-							Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight - ScreenHeight), chestScreenPosition, 1.5f, ImColor(TeamColor));
+						if (p->IsAlly & p->IsVisible) {
+							Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight - ScreenHeight), chestScreenPosition, TracerThickness, ImColor(TeamColor));
 						}
 					}
 				    }
@@ -1285,18 +1284,18 @@ struct Sense {
 				        int x = (int)(ScreenWidth * 0.5f);
 				        
 				        if (!ShowTeam) {
-				        	if (p->IsHostile && p->IsVisible) {
-				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight / 2), chestScreenPosition, 1.5f, ImColor(VisibleTracerColor));
+				        	if (p->IsHostile & p->IsVisible) {
+				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight / 2), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
 				        	}
 				        }
 				        
 				        if (ShowTeam) {
-				        	if (p->IsHostile && p->IsVisible) {
-				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight / 2), chestScreenPosition, 1.5f, ImColor(VisibleTracerColor));
+				        	if (p->IsHostile & p->IsVisible) {
+				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight / 2), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
 				        	}
 				    		
-				    		if (p->IsAlly && p->IsVisible) {
-				    			Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight / 2), chestScreenPosition, 1.5f, ImColor(TeamColor));
+				    		if (p->IsAlly & p->IsVisible) {
+				    			Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight / 2), chestScreenPosition, TracerThickness, ImColor(TeamColor));
 				    		}
 				    	}
 				    }
@@ -1309,29 +1308,40 @@ struct Sense {
 				        int x = (int)(ScreenWidth * 0.5f);
 				        
 				        if (!ShowTeam) {
-						if (p->IsHostile && p->IsVisible) {
-				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight), chestScreenPosition, 1.5f, ImColor(VisibleTracerColor));
+						if (p->IsHostile & p->IsVisible) {
+				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
 				    		}
 					}
 					
 					if (ShowTeam) {
-						if (p->IsHostile && p->IsVisible) {
-				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight), chestScreenPosition, 1.5f, ImColor(VisibleTracerColor));
+						if (p->IsHostile & p->IsVisible) {
+				        		Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight), chestScreenPosition, TracerThickness, ImColor(VisibleTracerColor));
 				    		}
 				    		
-				    		if (p->IsAlly && p->IsVisible) {
-				    			Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight), chestScreenPosition, 1.5f, ImColor(TeamColor));
+				    		if (p->IsAlly & p->IsVisible) {
+				    			Renderer::DrawLine(Canvas, Vector2D(x, ScreenHeight), chestScreenPosition, TracerThickness, ImColor(TeamColor));
 			    			}
 			    		}
 			    	    }
 			    	}
-			    }
+			}
+			    
+			//Show Legend
+			if (ShowLegend) {
+				if (p->IsHostile && p->IsVisible && !p->IsDummy()) {
+					Vector2D Head;
+					GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head).Add(Vector3D(0, 0, 33)), Head);
+					
+					Renderer::DrawText(Canvas, Head.Subtract(Vector2D(0,8)), p->getPlayerModelName().c_str(), ImColor(255, 255, 255), true, true, false);
+				
+				}
+			}
 
 			// Distance
 			if (DrawDistance) {
 				Vector2D distanceScreenPosition;
-				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head).Add(Vector3D(0, 0, 36)), distanceScreenPosition);
-
+				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head).Add(Vector3D(0, 0, 80)), distanceScreenPosition);
+				
 				if (ShowTeam) {
 					if (!distanceScreenPosition.IsZeroVector()) {
 						if (p->IsAlly && p->IsVisible) {
@@ -1350,6 +1360,218 @@ struct Sense {
 					}
 				}
 			}
+			
+			// Draw Names
+			if (DrawNames) {
+				Vector2D nameScreenPosition;
+				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head).Add(Vector3D(0, 0, 60)), nameScreenPosition);
+				if (p->IsHostile && p->IsVisible && !p->IsDummy()) {
+					Renderer::DrawText(Canvas, nameScreenPosition.Subtract(Vector2D(0, 0)), p->GetPlayerName().c_str(), VisibleNameColor, true, true, false);
+				}
+				    
+				// Draw Team Names
+				if (ShowTeam && TeamNames && p->IsAlly && p->IsVisible && !p->IsDummy()) {
+					Renderer::DrawText(Canvas, nameScreenPosition.Add(Vector2D(0, 0)), p->GetPlayerName().c_str(), TeamNameColor, true, true, false);
+				}
+			}
+			
+			// Draw Weapon
+			if (DrawWeapon) {
+				if (p->IsHostile && p->IsVisible) {
+					Vector2D wepScreenPosition;
+					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), wepScreenPosition);
+					
+					int weaponHeldID;
+					weaponHeldID = p->WeaponIndex;
+					const char* weaponHeldText;
+
+					ImColor weaponHeldColor;
+					weaponHeldColor = ImColor(255, 255, 255);
+					
+					if (DrawWeapon) {
+				    		//Light Weapons
+				    		if (weaponHeldID == 105) { //P2020
+				    			weaponHeldText = "P2020";
+				    			weaponHeldColor = LightWeaponColor;
+				    		}
+				    		if (weaponHeldID == 81) { //RE-45
+				    			weaponHeldText = "RE-45";
+				    			weaponHeldColor = LightWeaponColor;
+				    		}
+				    		if (weaponHeldID == 80) { //Alternator
+				    			weaponHeldText = "Alternator";
+				    			weaponHeldColor = LightWeaponColor;
+				    		}
+				    		if (weaponHeldID == 104) { //R-99
+				    			weaponHeldText = "R-99";
+				    			weaponHeldColor = LightWeaponColor;
+				    		}
+				    		if (weaponHeldID == 0) { //R-301
+				    			weaponHeldText = "R-301";
+				    			weaponHeldColor = LightWeaponColor;
+				    		}
+				    		if (weaponHeldID == 106) { //Spitfire
+				    			weaponHeldText = "Spitfire";
+				    			weaponHeldColor = LightWeaponColor;
+				    		}
+				    		if (weaponHeldID == 89) { //G7
+				    			weaponHeldText = "G7 Scout";
+				    			weaponHeldColor = LightWeaponColor;
+				    		}
+				    		//Heavy Weapons
+				    		if (weaponHeldID == 112) { //CARSMG
+				    			weaponHeldText = "CAR SMG";
+				    			weaponHeldColor = HeavyWeaponColor;
+				    		}
+				    		if (weaponHeldID == 21) { //Rampage
+				    			weaponHeldText = "Rampage";
+				    			weaponHeldColor = HeavyWeaponColor;
+				    		}
+				    		if (weaponHeldID == 111) { //Repeater
+				    			weaponHeldText = "Repeater";
+				    			weaponHeldColor = HeavyWeaponColor;
+				    		}
+				    		if (weaponHeldID == 90) { //Hemlock
+				    			weaponHeldText = "Hemlock";
+				    			weaponHeldColor = HeavyWeaponColor;
+				    		}
+				    		if (weaponHeldID == 88) { //Flatline
+				    			weaponHeldText = "Flatline";
+				    			weaponHeldColor = HeavyWeaponColor;
+				    		}
+				    		//Energy Weapons
+				    		if (weaponHeldID == 113) { //Nemesis
+				    			weaponHeldText = "Nemesis";
+				    			weaponHeldColor = EnergyWeaponColor;
+				    		}
+				    		if (weaponHeldID == 110) { //Volt
+				    			weaponHeldText = "Volt";
+				    			weaponHeldColor = EnergyWeaponColor;
+				    		}
+				    		if (weaponHeldID == 107) { //TripleTake
+				    			weaponHeldText = "Triple Take";
+				    			weaponHeldColor = EnergyWeaponColor;
+				    		}
+				    		if (weaponHeldID == 93) { //LSTAR
+				    			weaponHeldText = "L-STAR";
+				    			weaponHeldColor = EnergyWeaponColor;
+				    		}
+				    		if (weaponHeldID == 84) { //Devotion
+				    			weaponHeldText = "Devotion";
+				    			weaponHeldColor = EnergyWeaponColor;
+				    		}
+				    		if (weaponHeldID == 86) { //Havoc
+				    			weaponHeldText = "Havoc";
+				    			weaponHeldColor = EnergyWeaponColor;
+				    		}
+				    		//Shotguns
+				    		if (weaponHeldID == 96) { //Mozambique
+				    			weaponHeldText = "Mozambique";
+				    			weaponHeldColor = ShotgunWeaponColor;
+				    		}
+				    		if (weaponHeldID == 87) { //EVA8
+				    			weaponHeldText = "EVA-8 Auto";
+				    			weaponHeldColor = ShotgunWeaponColor;
+				    		}
+				    		if (weaponHeldID == 103) { //Peacekeeper
+				    			weaponHeldText = "Peacekeeper";
+				    			weaponHeldColor = ShotgunWeaponColor;
+				    		}
+				    		if (weaponHeldID == 95) { //Mastiff
+				    			weaponHeldText = "Mastiff";
+				    			weaponHeldColor = ShotgunWeaponColor;
+				    		}
+				    		//Snipers
+				    		if (weaponHeldID == 1) { //Sentinel
+				    			weaponHeldText = "Sentinel";
+				    			weaponHeldColor = SniperWeaponColor;
+				    		}
+				    		if (weaponHeldID == 83) { //ChargeRifle
+				    			weaponHeldText = "Charge Rifle";
+				    			weaponHeldColor = SniperWeaponColor;
+				    		}
+				    		if (weaponHeldID == 85) { //Longbow
+				    			weaponHeldText = "Longbow";
+				    			weaponHeldColor = SniperWeaponColor;
+				    		}
+				    		//Legendary Weapons
+				    		if (weaponHeldID == 109) { //Wingman
+				    			weaponHeldText = "Wingman";
+				    			weaponHeldColor = LegendaryWeaponColor;
+				    		}
+				    		if (weaponHeldID == 102) { //Prowler
+				    			weaponHeldText = "Prowler";
+				    			weaponHeldColor = LegendaryWeaponColor;
+				    		}
+				    		if (weaponHeldID == 2) { //Bocek
+				    			weaponHeldText = "Bocek";
+				    			weaponHeldColor = LegendaryWeaponColor;
+				    		}
+				    		if (weaponHeldID == 92) { //Kraber
+				    			weaponHeldText = "Kraber";
+				    			weaponHeldColor = LegendaryWeaponColor;
+				    		}
+				    		if (weaponHeldID == 163) { //Knife
+				    			weaponHeldText = "Throwing Knife";
+				    			weaponHeldColor = LegendaryWeaponColor;
+				    		}
+				    		if (weaponHeldID == 3) { //BusterSword
+				    			weaponHeldText = "Buster Sword";
+				    			weaponHeldColor = LegendaryWeaponColor;
+				    		}
+				    		//Melee & Grenade
+				    		/*if (weaponHeldID == 213) { //Thermite Grenade
+				    			weaponHeldText = "Thermite Grenade";
+				    			weaponHeldColor = ThrowableWeaponColor;
+				    		}*/
+				    		if (p->IsHoldingGrenade) {
+				    			weaponHeldText = "Throwable";
+				    			weaponHeldColor = ThrowableWeaponColor;
+				    		}
+				    		if (weaponHeldID == 114) { //Melee
+				    			weaponHeldText = "Melee";
+				    			weaponHeldColor = MeleeWeaponColor;
+				    		}
+				    	}
+					
+					if (WeaponColorType) { //Changes color to ammo type
+						if (DrawWeapon && DrawStatus) {
+							Renderer::DrawText(Canvas, wepScreenPosition.Add(Vector2D(0, 20)), weaponHeldText, ImColor(weaponHeldColor), true, true, false);
+						}
+						
+						if (DrawWeapon && !DrawStatus) {
+							Renderer::DrawText(Canvas, wepScreenPosition.Add(Vector2D(0, 0)), weaponHeldText, ImColor(weaponHeldColor), true, true, false);
+						}
+					}
+					if (!WeaponColorType) {
+						if (DrawWeapon && DrawStatus) {
+							Renderer::DrawText(Canvas, wepScreenPosition.Add(Vector2D(0, 20)), weaponHeldText, ImColor(WeaponColor), true, true, false);
+						}
+						
+						if (DrawWeapon && !DrawStatus) {
+							Renderer::DrawText(Canvas, wepScreenPosition.Add(Vector2D(0, 0)), weaponHeldText, ImColor(WeaponColor), true, true, false);
+						}
+					}
+				}
+			}
+			
+			/*bool TestWeaponID = false; //For finding weapon IDs (Used for finding melee ID)
+			if (TestWeaponID) {
+				if (p->IsHostile) {
+					Vector2D testWScreenPosition;
+					GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), testWScreenPosition);
+					
+					std::stringstream wepID;
+					wepID << p->WeaponIndex;
+					std::string wepInt = wepID.str() + " ";
+					const char* wepText = (char*)wepInt.c_str();
+
+					ImColor weaponWHeldColor;
+					weaponWHeldColor = ImColor(255, 255, 255);
+					
+					Renderer::DrawText(Canvas, testWScreenPosition.Add(Vector2D(0, 0)), wepText, ImColor(weaponWHeldColor), true, true, false);
+				}
+			}*/
 				
 			// DrawBox
 			if (DrawBox && p->DistanceToLocalPlayer < (Conversion::ToGameUnits(ESPMaxDistance))) {
@@ -1367,87 +1589,90 @@ struct Sense {
 					if (p->IsHostile && p->IsVisible) {
 				        	Renderer::DrawBox(Canvas, Foot, Head, ImColor(VisibleBoxColor), BoxThickness);
 					}
-					
 					if (p->IsAlly && p->IsVisible) {
 						Renderer::DrawBox(Canvas, Foot, Head, ImColor(TeamColor), BoxThickness);
 					}
 				}
 			}
-				
-			// Draw Names
-			if (DrawNames && p->IsHostile && p->IsVisible && !p->IsDummy()) {
-				Vector2D originScreenPosition;
-				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 112)), originScreenPosition);
-				Renderer::DrawText(Canvas, originScreenPosition.Add(Vector2D(0, 0)), p->GetPlayerName().c_str(), VisibleNameColor, true, true, false);
-			}
 			
-			if (DrawNames && p->IsVisible && p->IsDummy()) {
-				Vector2D originScreenPosition;
-				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 112)), originScreenPosition);
-				Renderer::DrawText(Canvas, originScreenPosition.Add(Vector2D(0, 0)), "Dummie", VisibleNameColor, true, true, false);
-			}
-			    
-			// Draw Team Names
-			if (ShowTeam && TeamNames && p->IsAlly && p->IsVisible && !p->IsDummy()) {
-				Vector2D originScreenPosition;
-				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 110)), originScreenPosition);
-				Renderer::DrawText(Canvas, originScreenPosition.Add(Vector2D(0, 0)), p->GetPlayerName().c_str(), TeamNameColor, true, true, false);
+			// Draw Filled Box
+			if (DrawFilledBox && p->DistanceToLocalPlayer < (Conversion::ToGameUnits(ESPMaxDistance))) {
+				Vector2D Head, Foot;
+				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), Head);
+				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), Foot);
+				    
+				if (!ShowTeam) {
+					if (p->IsHostile && p->IsVisible) {
+				        	Renderer::DrawFilledBox(Canvas, Foot, Head, ImColor(VisibleFilledBoxColor));
+					}
+				}
+				    
+				if (ShowTeam) {
+					if (p->IsHostile && p->IsVisible) {
+				        	Renderer::DrawFilledBox(Canvas, Foot, Head, ImColor(VisibleFilledBoxColor));
+					}
+					if (p->IsAlly && p->IsVisible) {
+						Renderer::DrawFilledBox(Canvas, Foot, Head, ImColor(TeamColor));
+					}
+				}
 			}
 			
 			// Draw Health + Shield
-			Vector2D StatusPos;
-			GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), StatusPos);
-			
-			std::stringstream healthValue, shieldValue, maxHealthValue, maxShieldValue;
-			healthValue << p->Health;
-			shieldValue << p->Shield;
-			maxHealthValue << p->MaxHealth;
-			maxShieldValue << p->MaxShield;
-			std::string healthInt = healthValue.str() + " HP";
-			std::string shieldInt = shieldValue.str() + " AP";
-			const char* healthText = (char*)healthInt.c_str();
-			const char* shieldText = (char*)shieldInt.c_str();
-			std::string combinedHealth = healthValue.str() + " / " + maxHealthValue.str() + " HP";
-			const char* combinedHealthText = combinedHealth.c_str();
-			std::string combinedShield = shieldValue.str() + " / " + maxShieldValue.str() + " AP";
-			const char* combinedShieldText = combinedShield.c_str();
+			if (DrawStatus) {
+				Vector2D StatusPos;
+				GameCamera->WorldToScreen(p->LocalOrigin.Add(Vector3D(0, 0, 0)), StatusPos);
 				
-			ImColor ShieldColor;
-			if (p->MaxShield == 50) { //white
-				ShieldColor = ImColor(247, 247, 247);
-			}
-			else if (p->MaxShield == 75) { //blue
-				ShieldColor = ImColor(39, 178, 255);
-			}
-			else if (p->MaxShield == 100) { //purple
-				ShieldColor = ImColor(206, 59, 255);
-			}
-			else if (p->MaxShield == 125) { //red
-				ShieldColor = ImColor(219, 2, 2);
-			}
-			else {
-				ShieldColor = ImColor(247, 247, 247);
-			}
-			
-			//Render Text
-			if (ShowTeam) {
-				if (DrawStatus && !ShowMaxStatusValues && p->IsVisible) {
-					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), healthText, ImColor(0, 255, 0), true, true, false);
-					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), shieldText, ShieldColor, true, true, false);
+				std::stringstream healthValue, shieldValue, maxHealthValue, maxShieldValue;
+				healthValue << p->Health;
+				shieldValue << p->Shield;
+				maxHealthValue << p->MaxHealth;
+				maxShieldValue << p->MaxShield;
+				std::string healthInt = healthValue.str() + " HP";
+				std::string shieldInt = shieldValue.str() + " AP";
+				const char* healthText = (char*)healthInt.c_str();
+				const char* shieldText = (char*)shieldInt.c_str();
+				std::string combinedHealth = healthValue.str() + " / " + maxHealthValue.str() + " HP";
+				const char* combinedHealthText = combinedHealth.c_str();
+				std::string combinedShield = shieldValue.str() + " / " + maxShieldValue.str() + " AP";
+				const char* combinedShieldText = combinedShield.c_str();
+					
+				ImColor ShieldColor;
+				if (p->MaxShield == 50) { //white
+					ShieldColor = ImColor(247, 247, 247);
 				}
-				if (DrawStatus && ShowMaxStatusValues && p->IsVisible) {
-					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), combinedHealthText, ImColor(0, 255, 0), true, true, false);
-					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), combinedShieldText, ShieldColor, true, true, false);
+				else if (p->MaxShield == 75) { //blue
+					ShieldColor = ImColor(39, 178, 255);
 				}
-			}
-			if (!ShowTeam) {
-				if (DrawStatus && !ShowMaxStatusValues && p->IsHostile && p->IsVisible) {
-					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), healthText, ImColor(0, 255, 0), true, true, false);
-					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), shieldText, ShieldColor, true, true, false);
+				else if (p->MaxShield == 100) { //purple
+					ShieldColor = ImColor(206, 59, 255);
 				}
-				if (DrawStatus && ShowMaxStatusValues && p->IsHostile && p->IsVisible) {
-					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), combinedHealthText, ImColor(0, 255, 0), true, true, false);
-					Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 10)), combinedShieldText, ShieldColor, true, true, false);
+				else if (p->MaxShield == 125) { //red
+					ShieldColor = ImColor(219, 2, 2);
+				}
+				else {
+					ShieldColor = ImColor(247, 247, 247);
+				}
+				
+				//Render Text
+				if (ShowTeam) {
+					if (!ShowMaxStatusValues && p->IsVisible) {
+						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), healthText, ImColor(0, 255, 0), true, true, false);
+						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0 + 10)), shieldText, ShieldColor, true, true, false);
+					}
+					if (ShowMaxStatusValues && p->IsVisible) {
+						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), combinedHealthText, ImColor(0, 255, 0), true, true, false);
+						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0 + 10)), combinedShieldText, ShieldColor, true, true, false);
+					}
+				}
+				if (!ShowTeam) {
+					if (!ShowMaxStatusValues && p->IsHostile && p->IsVisible) {
+						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), healthText, ImColor(0, 255, 0), true, true, false);
+						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0 + 10)), shieldText, ShieldColor, true, true, false);
+					}
+					if (ShowMaxStatusValues && p->IsHostile && p->IsVisible) {
+						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0)), combinedHealthText, ImColor(0, 255, 0), true, true, false);
+						Renderer::DrawText(Canvas, StatusPos.Add(Vector2D(0, 0 + 10)), combinedShieldText, ShieldColor, true, true, false);
+					}
 				}
 			}
 			
@@ -1460,7 +1685,7 @@ struct Sense {
 					
 					int health = p->Health;
 					
-					Renderer::DrawHealthBar(Canvas, Foot, Head, health, 2);
+					Renderer::DrawHealthBar(Canvas, Foot, Head, health, BarThickness);
 				}
 			}
 			if (!ShowTeam) {
@@ -1471,7 +1696,7 @@ struct Sense {
 					
 					int health = p->Health;
 					
-					Renderer::DrawHealthBar(Canvas, Foot, Head, health, 2);
+					Renderer::DrawHealthBar(Canvas, Foot, Head, health, BarThickness);
 				}
 			}
 			
@@ -1621,7 +1846,7 @@ struct Sense {
 			}
 			
 			// Seer
-			if (DrawSeer && p->IsVisible) {
+			if (DrawSeer && p->IsHostile && p->IsVisible) {
 				Vector2D headScreenPosition;
 				GameCamera->WorldToScreen(p->GetBonePosition(HitboxType::Head), headScreenPosition);
 				if (!headScreenPosition.IsZeroVector())
@@ -1629,13 +1854,36 @@ struct Sense {
 			    }
 			    
 			//Show Near
-			if (ShowNear && p->IsVisible)
+			if (ShowNear)
 			{
 			    // Gui DrawText Version
 			    Renderer::DrawText(Canvas, Vector2D(ScreenWidth * 0.5, ScreenHeight * 0.6), ("NEAR : " + std::to_string(PlayersNear)).c_str(), ImVec4(1.0f, 1.0f, 1.0f, 1.0f), true, true, false);
+			    // Gui Version
+			    /*
+			   ImVec2 Center = ImGui::GetMainViewport()->GetCenter();
+			   ImGui::SetNextWindowPos(ImVec2(Center.x, Center.y * 1.2), ImGuiCond_Once, ImVec2(0.50f, 0.5f));
+			   ImGui::SetNextWindowBgAlpha(0.3f);
+			   ImGui::Begin("Near", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar);
+			   ImGui::Text("Near: ");
+			   ImGui::SameLine();
+			   ImGui::TextColored(PlayersNear > 0 ? ImVec4(0.4, 1, 0.343, 1) : ImVec4(1, 1, 1, 1), "%d", PlayersNear);
+			   ImGui::End();
+			   */
 			}
 			PlayersNear = 0;
+			
+	//		// Draw Seer on locked target
+	//		if (AimAssistState->TargetSelected && AimAssistState->CurrentTarget) {
+	//		    Vector2D headScreenPosition;
+	//		    GameCamera->WorldToScreen(AimAssistState->CurrentTarget->GetBonePosition(HitboxType::Head), headScreenPosition);
+	//		    if (headScreenPosition.IsZeroVector())
+	//		        return;
+	//	 
+	//		    Renderer::DrawSeer(Canvas, headScreenPosition.x, headScreenPosition.y - 20, AimAssistState->CurrentTarget->Shield, AimAssistState->CurrentTarget->MaxShield, AimAssistState->CurrentTarget->Health);
+	//		    return;
+	//		}
 		    }
+		    
 		}
 	   }
     }
