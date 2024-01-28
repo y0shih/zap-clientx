@@ -52,7 +52,7 @@ struct Glow {
     //Colors
     float InvisibleGlowColor[3] = {1, 0, 0};
     float VisibleGlowColor[3] = {0, 1, 0};
-    float LowGlowColor[3] = {0.990, 0.660, 0.0891};
+    float LowGlowColor[3] = {1, 1, 0};
     
     float RedShieldColor[3] = {1, 0, 0};
     float PurpleShieldColor[3] = {0.5, 0, 0.5};
