@@ -36,8 +36,8 @@
 
 struct Misc {
     bool TeamGamemode = true;
-    bool Superglide = false;
     bool SkinChanger = false;
+    bool AutoGrapple = false;
     
     //Weapon IDs
     //Light
@@ -96,7 +96,7 @@ struct Misc {
     void RenderUI() {
         if (ImGui::BeginTabItem("Misc", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
             ImGui::Text("Movement");
-            ImGui::TextColored(ImVec4(0.00f, 1.00f, 0.00f, 1), "Soon!");
+            ImGui::Checkbox("Super Grapple", &AutoGrapple);
             ImGui::Separator();
             
             ImGui::Checkbox("Skin Changer", &SkinChanger);
@@ -158,8 +158,7 @@ struct Misc {
 
     bool Save() {
         try {
-            //Config::Misc::TeamGamemode = TeamGamemode;
-            //Config::Misc::Superglide = Superglide;
+            Config::Misc::AutoGrapple = AutoGrapple;
             Config::Misc::SkinChanger = SkinChanger;
 	    //Weapon IDs
 	    //Light
@@ -260,5 +259,26 @@ struct Misc {
 		    Memory::Write<int>(wep_entity + OFF_SKIN, skinID);
 		}
     	    }
+    	
+    	if (AutoGrapple) {
+		/*Memory::Write<int>(Myself->BasePointer + OFF_IN_JUMP + 0x8, 4);
+ 
+		auto Gn = Memory::Read<int>(Myself->BasePointer + OFF_GRAPPLE + OFF_GRAPPLE_ATTACHED);
+		if (Gn == 1) {
+			Memory::Write<int>(Myself->BasePointer + OFF_IN_JUMP + 0x8, 5);
+		}*/
+		bool isGrppleActived = Memory::Read<bool>(Myself->BasePointer + OFF_GRAPPLE_ACTIVE);
+		if (isGrppleActived) {
+			int n = Memory::Read<int>(Myself->BasePointer + OFF_GRAPPLE + OFF_GRAPPLE_ATTACHED);
+ 
+			std::cout << n << std::endl;
+ 
+			if (n == 1) {
+				Memory::Write<int>(Myself->BasePointer + OFF_IN_JUMP + 0x08, 5);
+				std::this_thread::sleep_for(std::chrono::milliseconds(5));
+				Memory::Write<int>(Myself->BasePointer + OFF_IN_JUMP + 0x08, 4);
+			}
+		}
     	}
+    }
 };
