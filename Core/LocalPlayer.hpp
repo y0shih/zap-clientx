@@ -3,6 +3,8 @@
 #include "../Utils/Memory.hpp"
 #include "../Math/Vector2D.hpp"
 #include "../Math/Vector3D.hpp"
+#include "../Math/FloatVector2D.hpp"
+#include "../Math/FloatVector3D.hpp"
 
 struct LocalPlayer {
     long BasePointer;
@@ -27,11 +29,19 @@ struct LocalPlayer {
     float WeaponProjectileScale;
     bool IsHoldingGrenade;
     long WeaponEntity;
+    bool weaponDiscarded;
 
     float ZoomFOV;
     float TargetZoomFOV;
 
     float ViewYaw;
+    
+    FloatVector3D localOrigin;
+    FloatVector3D cameraPosition;
+    FloatVector2D viewAngles;
+    FloatVector2D punchAngles;
+    FloatVector2D punchAnglesPrev;
+    FloatVector2D punchAnglesDiff;
 
     void ResetPointer() {
         BasePointer = 0;
@@ -48,6 +58,7 @@ struct LocalPlayer {
         InJump = Memory::Read<bool>(OFF_REGION + OFF_IN_JUMP) > 0;
 
         Team = Memory::Read<int>(BasePointer + OFF_TEAM_NUMBER);
+        localOrigin = Memory::Read<FloatVector3D>(BasePointer + OFF_LOCAL_ORIGIN);
         LocalOrigin = Memory::Read<Vector3D>(BasePointer + OFF_LOCAL_ORIGIN);
         CameraPosition = Memory::Read<Vector3D>(BasePointer + OFF_CAMERAORIGIN);
         ViewAngles = Memory::Read<Vector2D>(BasePointer + OFF_VIEW_ANGLES);
@@ -55,8 +66,13 @@ struct LocalPlayer {
         PunchAnglesDifferent = PunchAnglesPrevious.Subtract(PunchAngles);
         PunchAnglesPrevious = PunchAngles;
 
-
         ViewYaw = Memory::Read<float>(BasePointer + OFF_YAW);
+        
+        cameraPosition = Memory::Read<FloatVector3D>(BasePointer + OFF_CAMERAORIGIN);
+        viewAngles = Memory::Read<FloatVector2D>(BasePointer + OFF_VIEW_ANGLES);
+        punchAngles = Memory::Read<FloatVector2D>(BasePointer + OFF_PUNCH_ANGLES);
+        punchAnglesDiff = punchAnglesPrev.subtract(punchAngles);
+        punchAnglesPrev = punchAngles;
 
         if (!IsDead && !IsKnocked) {
             long WeaponHandle = Memory::Read<long>(BasePointer + OFF_WEAPON_HANDLE);
@@ -70,6 +86,7 @@ struct LocalPlayer {
             TargetZoomFOV = Memory::Read<float>(WeaponEntity + OFF_TARGETZOOMFOV);
             
             WeaponIndex = Memory::Read<int>(WeaponEntity + OFF_WEAPON_INDEX);
+            weaponDiscarded = Memory::Read<int>(WeaponEntity + OFF_WEAPON_DISCARDED) == 1;
             WeaponProjectileSpeed = Memory::Read<float>(WeaponEntity + OFF_PROJECTILESPEED);
             WeaponProjectileScale = Memory::Read<float>(WeaponEntity + OFF_PROJECTILESCALE);
         }
