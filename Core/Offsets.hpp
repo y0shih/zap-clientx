@@ -1,28 +1,33 @@
 #pragma once
 //https://www.unknowncheats.me/forum/apex-legends/319804-apex-legends-reversal-structs-offsets.html
  
+//GameVersion = v3.0.56.43
+ 
 // Core    
 constexpr long OFF_REGION = 0x140000000;                      //[Static]->Region
-constexpr long OFF_LEVEL = 0x16d6ac0;                         //[Miscellaneous]->LevelName
-constexpr long OFF_LOCAL_PLAYER = 0x2161538;                  //[Miscellaneous]->LocalPlayer
-constexpr long OFF_ENTITY_LIST = 0x1db2e38;                   //[Miscellaneous]->cl_entitylist
-constexpr long OFF_NAME_LIST = 0xc5e9fd0;                     //[Miscellaneous]->NameList
+constexpr long OFF_LEVEL = 0x16d7de0;                         //[Miscellaneous]->LevelName
+constexpr long OFF_LOCAL_PLAYER = 0x2162818;                  //[Miscellaneous]->LocalPlayer
+constexpr long OFF_ENTITY_LIST = 0x1db4118;                   //[Miscellaneous]->cl_entitylist
+constexpr long OFF_NAME_LIST = 0xc5eb2d0;                     //[Miscellaneous]->NameList
 constexpr long OFF_NAME_INDEX = 0x38;                         //nameIndex
  
 // HUD
-constexpr long OFF_VIEWRENDER = 0x73cc3e0;                    //[Miscellaneous]->ViewRenderer
+constexpr long OFF_VIEWRENDER = 0x73cd6e0;                    //[Miscellaneous]->ViewRenderer
 constexpr long OFF_VIEWMATRIX = 0x11a350;                     //[Miscellaneous]->ViewMatrix
  
 // Buttons
-constexpr long OFF_INATTACK = 0x073cd6a0;                     //[Buttons]->in_attack
-constexpr long OFF_IN_JUMP = 0x073cd7a0;                      //[Buttons]->in_jump
-constexpr long OFF_IN_DUCK = 0x073cd8a0;                      //[Buttons]->in_duck
-constexpr long OFFSET_IN_FORWARD = 0x073cd5f0;                //[Buttons]->in_forward
+constexpr long OFF_INATTACK = 0x073ce9a0;                     //[Buttons]->in_attack
+constexpr long OFF_IN_JUMP = 0x073ceaa0;                      //[Buttons]->in_jump
+constexpr long OFF_IN_DUCK = 0x073ceba0;                      //[Buttons]->in_duck
+constexpr long OFFSET_IN_FORWARD = 0x073ce8f0;                //[Buttons]->in_forward
 constexpr long OFFSET_TRAVERSAL_START_TIME = 0x2ac0;          //[RecvTable.DT_LocalPlayerExclusive]->m_traversalStartTime
 constexpr long OFFSET_TRAVERSAL_PROGRESS = 0x2abc;            //[RecvTable.DT_LocalPlayerExclusive]->m_traversalProgress
 constexpr long OFFSET_WALL_RUN_START_TIME = 0x3524;           //[RecvTable.DT_LocalPlayerExclusive]->m_wallRunStartTime
 constexpr long OFFSET_WALL_RUN_CLEAR_TIME = 0x3528;           //[RecvTable.DT_LocalPlayerExclusive]->m_wallRunClearTime
- 
+constexpr long OFF_GRAPPLE_ACTIVE = 0x2c98;		      //
+constexpr long OFF_GRAPPLE = 0x2c08;		              //
+constexpr long OFF_GRAPPLE_ATTACHED = 0x0048;		      //
+
 // Player
 constexpr long OFF_HEALTH = 0x02fc;                           //[RecvTable.DT_Player]->m_iHealth
 constexpr long OFF_MAXHEALTH = 0x0438;                        //[RecvTable.DT_Player]->m_iMaxHealth
@@ -60,8 +65,8 @@ constexpr long OFF_WEAPON_DISCARDED = 0x1559;                 //[RecvTable.DT_We
  
 //glow
 constexpr long OFF_HIGHLIGHT_TYPE_SIZE = 0x34;
-constexpr long OFF_GLOW_ENABLE = 0x26c;                       //[DT_HighlightSettings].?
-constexpr long OFF_GLOW_THROUGH_WALL = 0x28c;                 //[DT_HighlightSettings].?
+constexpr long OFF_GLOW_ENABLE = 0x28c;                       //[DT_HighlightSettings].?
+constexpr long OFF_GLOW_THROUGH_WALL = 0x26c;                 //[DT_HighlightSettings].?
 constexpr long OFF_GLOW_FIX = 0x268;
 constexpr long OFF_GLOW_HIGHLIGHT_ID = 0x28C;                 //[DT_HighlightSettings].m_highlightServerActiveStates
-constexpr long OFF_GLOW_HIGHLIGHTS = 0xB93DFD0;
+constexpr long OFF_GLOW_HIGHLIGHTS = 0xB93F2D0;
