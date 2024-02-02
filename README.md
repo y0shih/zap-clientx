@@ -1,5 +1,5 @@
 # xap-client  [LINUX]
-**Updated to Game Version v3.0.55.37 (27.01.24)**
+**Updated to Game Version v3.0.56.43 (01.02.24)**
 
 By **Gerosity**
 
@@ -8,6 +8,41 @@ All credits to original owners
 Instructions & Menu Previews are down below
 
 # Current Changelog:
+    02.01.24
+    Main Things:
+       - Updated Offsets
+       - Aimbot Modes (NEW)
+       - Colors Now Save
+       - Saving issues fixed (mostly)
+    Aimbot:
+       - Aimbot Modes (NEW)
+           - Cubic Bezier (xap-client) or Grinder (Credits: https://www.unknowncheats.me/forum/apex-legends/605888-grinder-simple-linux-sense-aimbot-triggerbot.html / https://github.com/arturzxc/grinder)
+           - You may find Grinder to be more smooth, test around with them in the firing range
+       - xap-client and Grinder have different options:
+         Cubic Bezier (xap-client):
+         - Prediction Toggles
+         - Hitbox Selection
+         - Closest To Crosshair
+         Grinder:
+         - Extra Smoothing By Distance
+         - Deadzone
+         - Advanced FOV
+         - Advanced Min & Max Distance
+         (Will add advanced FOV & Distance to Cubic Bezier (xap-client) mode in the future)
+    Glow:
+       - Color Saving
+    ESP:
+       - Color Saving
+    Misc:
+       - Super Grapple (Not sure how it works or even IF it works, but decided to add it anyway)
+
+    Notes:
+       - Grinder aimbot mode does not have a "simple" settings section; it only has advanced since I tried to do both and it didnt work?
+       - Grinder's Team Check has not been tested (Same with xap-client, but it should work)
+       - Weapon ESP sometimes wont work if the player is holding an heirloom (I dont have the IDs for them so I couldnt add them to it)
+
+------------------------------------------------------------------------------------------------------------
+
     28.01.24
     Main Things:
        - You no longer need to save config after enabling/disabling "Team Gamemode"
@@ -70,7 +105,7 @@ Instructions & Menu Previews are down below
     Misc:
        - Removed Superglide due to breaking, may add back in the future
 
-# Previews
+# Previews (28.01.24 Update)
 
 ![Terminal and Home Tab](https://i.imgur.com/xfb1zPx.png)
 ![Aimbot Tab](https://i.imgur.com/eZEnUd3.png)
