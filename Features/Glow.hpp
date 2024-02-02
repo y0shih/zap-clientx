@@ -162,8 +162,27 @@ struct Glow {
             Config::Glow::OutlineFunction = OutlineFunction; //Leave
             Config::Glow::BodyStyle = BodyStyle;
             Config::Glow::OutlineStyle = OutlineStyle;
-            Config::Glow::InvisibleGlowColor[3] = InvisibleGlowColor[3];
-            Config::Glow::VisibleGlowColor[3] = VisibleGlowColor[3];
+            Config::Glow::InvisibleGlowColorR = InvisibleGlowColor[0];
+            Config::Glow::InvisibleGlowColorG = InvisibleGlowColor[1];
+            Config::Glow::InvisibleGlowColorB = InvisibleGlowColor[2];
+            Config::Glow::VisibleGlowColorR = VisibleGlowColor[0];
+            Config::Glow::VisibleGlowColorG = VisibleGlowColor[1];
+            Config::Glow::VisibleGlowColorB = VisibleGlowColor[2];
+            Config::Glow::LowGlowColorR = LowGlowColor[0];
+            Config::Glow::LowGlowColorG = LowGlowColor[1];
+            Config::Glow::LowGlowColorB = LowGlowColor[2];
+            Config::Glow::RedShieldColorR = RedShieldColor[0];
+            Config::Glow::RedShieldColorG = RedShieldColor[1];
+            Config::Glow::RedShieldColorB = RedShieldColor[2];
+            Config::Glow::PurpleShieldColorR = PurpleShieldColor[0];
+            Config::Glow::PurpleShieldColorG = PurpleShieldColor[1];
+            Config::Glow::PurpleShieldColorB = PurpleShieldColor[2];
+            Config::Glow::BlueShieldColorR = BlueShieldColor[0];
+            Config::Glow::BlueShieldColorG = BlueShieldColor[1];
+            Config::Glow::BlueShieldColorB = BlueShieldColor[2];
+            Config::Glow::GreyShieldColorR = GreyShieldColor[0];
+            Config::Glow::GreyShieldColorG = GreyShieldColor[1];
+            Config::Glow::GreyShieldColorB = GreyShieldColor[2];
             return true;
         } catch (...) {
             return false;
