@@ -1253,7 +1253,7 @@ public:
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
             glfwSwapBuffers(OverlayWindow);
-
+            
             ProcessingTime = static_cast<int>(CurrentEpochMilliseconds() - StartTime);
             SleepTime = 6; // 16.67 > 60hz | 6.97 > 144hz
             TimeLeftToSleep = std::max(0, SleepTime - ProcessingTime);
