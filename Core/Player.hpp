@@ -7,6 +7,8 @@
 #include "../Utils/HitboxType.hpp"
 #include "../Math/Vector2D.hpp"
 #include "../Math/Vector3D.hpp"
+#include "../Math/FloatVector2D.hpp"
+#include "../Math/FloatVector3D.hpp"
 #include "../Math/Matrix.hpp"
 #include "../Overlay/Overlay.hpp"
 #include "GlowMode.hpp"
@@ -63,6 +65,19 @@ struct Player {
     float ViewYaw;
 
     bool IsLockedOn;
+    
+    //For AimMode 2
+    int ducking;
+    bool aimbotLocked;
+    FloatVector3D localOrigin_prev;
+    FloatVector3D localOrigin;
+    FloatVector3D absoluteVelocity;
+    FloatVector3D localOrigin_predicted;
+    FloatVector2D aimbotDesiredAngles;
+    FloatVector2D aimbotDesiredAnglesIncrement;
+    FloatVector2D aimbotDesiredAnglesSmoothed;
+    float aimbotScore;
+    FloatVector2D aimbotDesiredAnglesSmoothedNoRecoil;
 
     Player(int PlayerIndex, LocalPlayer* Me) {
         this->Index = PlayerIndex;
@@ -117,6 +132,11 @@ struct Player {
                 IsHostile = !IsAlly;
                 DistanceToLocalPlayer = Myself->LocalOrigin.Distance(LocalOrigin);
                 Distance2DToLocalPlayer = Myself->LocalOrigin.To2D().Distance(LocalOrigin.To2D());
+		    if (IsVisible) {
+		        aimbotDesiredAngles = calcDesiredAngles();
+		        aimbotDesiredAnglesIncrement = calcDesiredAnglesIncrement();
+		        aimbotScore = calcAimbotScore();
+		    }
         }
         else if (Myself->IsValid() && !Modules::Home::TeamGamemode) {
                 IsLocal = Myself->BasePointer == BasePointer;
@@ -127,7 +147,18 @@ struct Player {
               
                 IsAlly = friendly;
                 IsHostile = !IsAlly;
+		    if (IsVisible) {
+		        aimbotDesiredAngles = calcDesiredAngles();
+		        aimbotDesiredAnglesIncrement = calcDesiredAnglesIncrement();
+		        aimbotScore = calcAimbotScore();
+		    }
         }
+        
+        localOrigin = Memory::Read<FloatVector3D>(BasePointer + OFF_LOCAL_ORIGIN);
+        absoluteVelocity = Memory::Read<FloatVector3D>(BasePointer + OFF_ABSVELOCITY);
+        FloatVector3D localOrigin_diff = localOrigin.subtract(localOrigin_prev).normalize().multiply(20);
+        localOrigin_predicted = localOrigin.add(localOrigin_diff);
+        localOrigin_prev = FloatVector3D(localOrigin.x, localOrigin.y, localOrigin.z);
         
         DistanceToLocalPlayer = Myself->LocalOrigin.Distance(LocalOrigin);
         Distance2DToLocalPlayer = Myself->LocalOrigin.To2D().Distance(LocalOrigin.To2D());
@@ -248,5 +279,61 @@ struct Player {
 
         BonePosition += LocalOrigin;
         return BonePosition;
+    }
+    
+    //For AimMode 2
+    float calcDesiredPitch() {
+        if (IsLocal) return 0;
+        const FloatVector3D shift = FloatVector3D(100000, 100000, 100000);
+        const FloatVector3D originA = Myself->localOrigin.add(shift);
+        const float extraZ = (ducking != -1) ? 10 : 0;
+        const FloatVector3D originB = localOrigin_predicted.add(shift).subtract(FloatVector3D(0, 0, extraZ));
+        const float deltaZ = originB.z - originA.z;
+        const float pitchInRadians = std::atan2(-deltaZ, Distance2DToLocalPlayer);
+        const float degrees = pitchInRadians * (180.0f / M_PI);
+        return degrees;
+    }
+
+    float calcDesiredYaw() {
+        if (IsLocal) return 0;
+        const FloatVector2D shift = FloatVector2D(100000, 100000);
+        const FloatVector2D originA = Myself->localOrigin.to2D().add(shift);
+        const FloatVector2D originB = localOrigin_predicted.to2D().add(shift);
+        const FloatVector2D diff = originB.subtract(originA);
+        const double yawInRadians = std::atan2(diff.y, diff.x);
+        const float degrees = yawInRadians * (180.0f / M_PI);
+        return degrees;
+    }
+
+    FloatVector2D calcDesiredAngles() {
+        return FloatVector2D(calcDesiredPitch(), calcDesiredYaw());
+    }
+
+    FloatVector2D calcDesiredAnglesIncrement() {
+        return FloatVector2D(calcPitchIncrement(), calcYawIncrement());
+    }
+    
+    float calcPitchIncrement() {
+        float wayA = aimbotDesiredAngles.x - Myself->viewAngles.x;
+        float wayB = 180 - abs(wayA);
+        if (wayA > 0 && wayB > 0)
+            wayB *= -1;
+        if (fabs(wayA) < fabs(wayB))
+            return wayA;
+        return wayB;
+    }
+
+    float calcYawIncrement() {
+        float wayA = aimbotDesiredAngles.y - Myself->viewAngles.y;
+        float wayB = 360 - abs(wayA);
+        if (wayA > 0 && wayB > 0)
+            wayB *= -1;
+        if (fabs(wayA) < fabs(wayB))
+            return wayA;
+        return wayB;
+    }
+
+    float calcAimbotScore() {
+        return (1000 - (fabs(aimbotDesiredAnglesIncrement.x) + fabs(aimbotDesiredAnglesIncrement.y)));
     }
 };
