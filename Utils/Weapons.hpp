@@ -137,7 +137,6 @@ namespace RCSId {
 };
 
 namespace SkinChangerID {
-    int WEAPON_HANDS = 0;
     //Light
     int WEAPON_P2020 = 105;
     int WEAPON_RE45 = 81;
@@ -178,4 +177,6 @@ namespace SkinChangerID {
     int WEAPON_PROWLER = 102;
     int WEAPON_BOCEK = 2;
     int WEAPON_KRABER = 92;
+    
+    int WEAPON_HANDS = 114;
 };
