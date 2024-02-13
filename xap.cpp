@@ -19,14 +19,18 @@
 
 #include "Features/Aimbot.hpp"
 #include "Features/Sense.hpp"
+#include "Features/Radar.hpp"
 #include "Features/Triggerbot.hpp"
 #include "Features/Misc.hpp"
 #include "Features/RCS.hpp"
 #include "Features/Glow.hpp"
+#include "Features/Test.hpp"
+#include "Features/Color.hpp"
 
 #include "Overlay/Overlay.hpp"
 
 #include "Utils/Config.hpp"
+#include "Utils/Modules.hpp"
 #include "Utils/Memory.hpp"
 #include "Utils/XDisplay.hpp"
 
@@ -47,6 +51,7 @@ std::vector<Player*>* Players = new std::vector<Player*>;
 
 // Features
 Sense* ESP = new Sense(Map, Players, GameCamera, Myself);
+Radar* MapRadar = new Radar(X11Display, Players, GameCamera, Map, Myself);
 Glow* GlowESP = new Glow(Map, Players, GameCamera, Myself);
 Aimbot* AimAssist = new Aimbot(X11Display, Map, Myself, Players);
 RCS* Recoil = new RCS(X11Display, Map, Myself);
@@ -65,9 +70,11 @@ void HandleKeyEvent(Display* display, XEvent* Event) {
     if (Event->type == KeyPress) {
         if (IsMenuOpened) {
             IsMenuOpened = false;
+            Modules::Home::IsMenuOpened = false;
             OverlayWindow.CaptureInput(false);
         } else {
             IsMenuOpened = true;
+            Modules::Home::IsMenuOpened = true;
             OverlayWindow.CaptureInput(true);
         }
     }
@@ -113,8 +120,6 @@ void LoadConfig() {
     AimAssist->AimbotMode = Config::Aimbot::AimbotMode;
     AimAssist->ClosestHitbox = Config::Aimbot::ClosestHitbox;
     Modules::Aimbot::Hitbox = static_cast<HitboxType>(Config::Aimbot::HitBox);
-    AimAssist->OnFire = Config::Aimbot::OnFire;
-    AimAssist->OnADS = Config::Aimbot::OnADS;
     AimAssist->TeamCheck = Config::Aimbot::TeamCheck;
     AimAssist->VisCheck = Config::Aimbot::VisCheck;
     AimAssist->PredictMovement = Config::Aimbot::PredictMovement;
@@ -164,8 +169,6 @@ void LoadConfig() {
     
     //---------------Advanced---------------//
     AimAssist->AdvancedAim = Config::Aimbot::AdvancedAim;
-    AimAssist->AdvancedFire = Config::Aimbot::AdvancedFire;
-    AimAssist->AdvancedADS = Config::Aimbot::AdvancedADS;
     //Aimbot Mode 0 - xap-client
     AimAssist->AdvancedClosestHitbox = Config::Aimbot::AdvancedClosestHitbox;
     AimAssist->AdvancedHitbox = Config::Aimbot::AdvancedHitbox;
@@ -189,211 +192,180 @@ void LoadConfig() {
     AimAssist->P2020Speed = Config::Aimbot::P2020Speed;
     AimAssist->P2020HipfireSmooth = Config::Aimbot::P2020HipfireSmooth;
     AimAssist->P2020ADSSmooth = Config::Aimbot::P2020ADSSmooth;
-    AimAssist->P2020Fire = Config::Aimbot::P2020Fire;
-    AimAssist->P2020ADS = Config::Aimbot::P2020ADS;
+
     AimAssist->RE45ClosestHitbox = Config::Aimbot::RE45ClosestHitbox;
     AimAssist->RE45Hitbox = Config::Aimbot::RE45Hitbox;
     AimAssist->RE45Speed = Config::Aimbot::RE45Speed;
     AimAssist->RE45HipfireSmooth = Config::Aimbot::RE45HipfireSmooth;
     AimAssist->RE45ADSSmooth = Config::Aimbot::RE45ADSSmooth;
-    AimAssist->RE45Fire = Config::Aimbot::RE45Fire;
-    AimAssist->RE45ADS = Config::Aimbot::RE45ADS;
+
     AimAssist->AlternatorClosestHitbox = Config::Aimbot::AlternatorClosestHitbox;
     AimAssist->AlternatorHitbox = Config::Aimbot::AlternatorHitbox; 
     AimAssist->AlternatorSpeed = Config::Aimbot::AlternatorSpeed;
     AimAssist->AlternatorHipfireSmooth = Config::Aimbot::AlternatorHipfireSmooth;
     AimAssist->AlternatorADSSmooth = Config::Aimbot::AlternatorADSSmooth;
-    AimAssist->AlternatorFire = Config::Aimbot::AlternatorFire;
-    AimAssist->AlternatorADS = Config::Aimbot::AlternatorADS;
+
     AimAssist->R99ClosestHitbox = Config::Aimbot::R99ClosestHitbox;
     AimAssist->R99Hitbox = Config::Aimbot::R99Hitbox;
     AimAssist->R99Speed = Config::Aimbot::R99Speed;
     AimAssist->R99HipfireSmooth = Config::Aimbot::R99HipfireSmooth;
     AimAssist->R99ADSSmooth = Config::Aimbot::R99ADSSmooth;
-    AimAssist->R99Fire = Config::Aimbot::R99Fire;
-    AimAssist->R99ADS = Config::Aimbot::R99ADS;
+
     AimAssist->R301ClosestHitbox = Config::Aimbot::R301ClosestHitbox;
     AimAssist->R301Hitbox = Config::Aimbot::R301Hitbox;
     AimAssist->R301Speed = Config::Aimbot::R301Speed;
     AimAssist->R301HipfireSmooth = Config::Aimbot::R301HipfireSmooth;
     AimAssist->R301ADSSmooth = Config::Aimbot::R301ADSSmooth;
-    AimAssist->R301Fire = Config::Aimbot::R301Fire;
-    AimAssist->R301ADS = Config::Aimbot::R301ADS;
+
     AimAssist->SpitfireClosestHitbox = Config::Aimbot::SpitfireClosestHitbox;
     AimAssist->SpitfireHitbox = Config::Aimbot::SpitfireHitbox;
     AimAssist->SpitfireSpeed = Config::Aimbot::SpitfireSpeed;
     AimAssist->SpitfireHipfireSmooth = Config::Aimbot::SpitfireHipfireSmooth;
     AimAssist->SpitfireADSSmooth = Config::Aimbot::SpitfireADSSmooth;
-    AimAssist->SpitfireFire = Config::Aimbot::SpitfireFire;
-    AimAssist->SpitfireADS = Config::Aimbot::SpitfireADS;
+
     AimAssist->G7ClosestHitbox = Config::Aimbot::G7ClosestHitbox;
     AimAssist->G7Hitbox = Config::Aimbot::G7Hitbox;
     AimAssist->G7Speed = Config::Aimbot::G7Speed;
     AimAssist->G7HipfireSmooth = Config::Aimbot::G7HipfireSmooth;
     AimAssist->G7ADSSmooth = Config::Aimbot::G7ADSSmooth;
-    AimAssist->G7Fire = Config::Aimbot::G7Fire;
-    AimAssist->G7ADS = Config::Aimbot::G7ADS;
+
     AimAssist->FlatlineClosestHitbox = Config::Aimbot::FlatlineClosestHitbox;
     AimAssist->FlatlineHitbox = Config::Aimbot::FlatlineHitbox;
     AimAssist->FlatlineSpeed = Config::Aimbot::FlatlineSpeed;
     AimAssist->FlatlineHipfireSmooth = Config::Aimbot::FlatlineHipfireSmooth;
     AimAssist->FlatlineADSSmooth = Config::Aimbot::FlatlineADSSmooth;
-    AimAssist->FlatlineFire = Config::Aimbot::FlatlineFire;
-    AimAssist->FlatlineADS = Config::Aimbot::FlatlineADS;
+
     AimAssist->HemlockClosestHitbox = Config::Aimbot::HemlockClosestHitbox;
     AimAssist->HemlockHitbox = Config::Aimbot::HemlockHitbox;
     AimAssist->HemlockSpeed = Config::Aimbot::HemlockSpeed;
     AimAssist->HemlockHipfireSmooth = Config::Aimbot::HemlockHipfireSmooth;
     AimAssist->HemlockADSSmooth = Config::Aimbot::HemlockADSSmooth;
-    AimAssist->HemlockFire = Config::Aimbot::HemlockFire;
-    AimAssist->HemlockADS = Config::Aimbot::HemlockADS;
+
     AimAssist->RepeaterClosestHitbox = Config::Aimbot::RepeaterClosestHitbox;
     AimAssist->RepeaterHitbox = Config::Aimbot::RepeaterHitbox;
     AimAssist->RepeaterSpeed = Config::Aimbot::RepeaterSpeed;
     AimAssist->RepeaterHipfireSmooth = Config::Aimbot::RepeaterHipfireSmooth;
     AimAssist->RepeaterADSSmooth = Config::Aimbot::RepeaterADSSmooth;
-    AimAssist->RepeaterFire = Config::Aimbot::RepeaterFire;
-    AimAssist->RepeaterADS = Config::Aimbot::RepeaterADS;
+
     AimAssist->RampageClosestHitbox = Config::Aimbot::RampageClosestHitbox;
     AimAssist->RampageHitbox = Config::Aimbot::RampageHitbox;
     AimAssist->RampageSpeed = Config::Aimbot::RampageSpeed;
     AimAssist->RampageHipfireSmooth = Config::Aimbot::RampageHipfireSmooth;
     AimAssist->RampageADSSmooth = Config::Aimbot::RampageADSSmooth;
-    AimAssist->RampageFire = Config::Aimbot::RampageFire;
-    AimAssist->RampageADS = Config::Aimbot::RampageADS;
+
     AimAssist->CARSMGClosestHitbox = Config::Aimbot::CARSMGClosestHitbox;
     AimAssist->CARSMGHitbox = Config::Aimbot::CARSMGHitbox;
     AimAssist->CARSMGSpeed = Config::Aimbot::CARSMGSpeed;
     AimAssist->CARSMGHipfireSmooth = Config::Aimbot::CARSMGHipfireSmooth;
     AimAssist->CARSMGADSSmooth = Config::Aimbot::CARSMGADSSmooth;
-    AimAssist->CARSMGFire = Config::Aimbot::CARSMGFire;
-    AimAssist->CARSMGADS = Config::Aimbot::CARSMGADS;
+
     AimAssist->HavocClosestHitbox = Config::Aimbot::HavocClosestHitbox;
     AimAssist->HavocHitbox = Config::Aimbot::HavocHitbox;
     AimAssist->HavocSpeed = Config::Aimbot::HavocSpeed;
     AimAssist->HavocHipfireSmooth = Config::Aimbot::HavocHipfireSmooth;
     AimAssist->HavocADSSmooth = Config::Aimbot::HavocADSSmooth;
-    AimAssist->HavocFire = Config::Aimbot::HavocFire;
-    AimAssist->HavocADS = Config::Aimbot::HavocADS;
+
     AimAssist->DevotionClosestHitbox = Config::Aimbot::DevotionClosestHitbox;
     AimAssist->DevotionHitbox = Config::Aimbot::DevotionHitbox;
     AimAssist->DevotionSpeed = Config::Aimbot::DevotionSpeed;
     AimAssist->DevotionHipfireSmooth = Config::Aimbot::DevotionHipfireSmooth;
     AimAssist->DevotionADSSmooth = Config::Aimbot::DevotionADSSmooth;
-    AimAssist->DevotionFire = Config::Aimbot::DevotionFire;
-    AimAssist->DevotionADS = Config::Aimbot::DevotionADS;
+
     AimAssist->LSTARClosestHitbox = Config::Aimbot::LSTARClosestHitbox;
     AimAssist->LSTARHitbox = Config::Aimbot::LSTARHitbox;
     AimAssist->LSTARSpeed = Config::Aimbot::LSTARSpeed;
     AimAssist->LSTARHipfireSmooth = Config::Aimbot::LSTARHipfireSmooth;
     AimAssist->LSTARADSSmooth = Config::Aimbot::LSTARADSSmooth;
-    AimAssist->LSTARFire = Config::Aimbot::LSTARFire;
-    AimAssist->LSTARADS = Config::Aimbot::LSTARADS;
+
     AimAssist->TripleTakeClosestHitbox = Config::Aimbot::TripleTakeClosestHitbox;
     AimAssist->TripleTakeHitbox = Config::Aimbot::TripleTakeHitbox;
     AimAssist->TripleTakeSpeed = Config::Aimbot::TripleTakeSpeed;
     AimAssist->TripleTakeHipfireSmooth = Config::Aimbot::TripleTakeHipfireSmooth;
     AimAssist->TripleTakeADSSmooth = Config::Aimbot::TripleTakeADSSmooth;
-    AimAssist->TripleTakeFire = Config::Aimbot::TripleTakeFire;
-    AimAssist->TripleTakeADS = Config::Aimbot::TripleTakeADS;
+
     AimAssist->VoltClosestHitbox = Config::Aimbot::VoltClosestHitbox;
     AimAssist->VoltHitbox = Config::Aimbot::VoltHitbox;
     AimAssist->VoltSpeed = Config::Aimbot::VoltSpeed;
     AimAssist->VoltHipfireSmooth = Config::Aimbot::VoltHipfireSmooth;
     AimAssist->VoltADSSmooth = Config::Aimbot::VoltADSSmooth;
-    AimAssist->VoltFire = Config::Aimbot::VoltFire;
-    AimAssist->VoltADS = Config::Aimbot::VoltADS;
+
     AimAssist->NemesisClosestHitbox = Config::Aimbot::NemesisClosestHitbox;
     AimAssist->NemesisHitbox = Config::Aimbot::NemesisHitbox;
     AimAssist->NemesisSpeed = Config::Aimbot::NemesisSpeed;
     AimAssist->NemesisHipfireSmooth = Config::Aimbot::NemesisHipfireSmooth;
     AimAssist->NemesisADSSmooth = Config::Aimbot::NemesisADSSmooth;
-    AimAssist->NemesisFire = Config::Aimbot::NemesisFire;
-    AimAssist->NemesisADS = Config::Aimbot::NemesisADS;
+
     AimAssist->MozambiqueClosestHitbox = Config::Aimbot::MozambiqueClosestHitbox;
     AimAssist->MozambiqueHitbox = Config::Aimbot::MozambiqueHitbox;
     AimAssist->MozambiqueSpeed = Config::Aimbot::MozambiqueSpeed;
     AimAssist->MozambiqueHipfireSmooth = Config::Aimbot::MozambiqueHipfireSmooth;
     AimAssist->MozambiqueADSSmooth = Config::Aimbot::MozambiqueADSSmooth;
-    AimAssist->MozambiqueFire = Config::Aimbot::MozambiqueFire;
-    AimAssist->MozambiqueADS = Config::Aimbot::MozambiqueADS;
+
     AimAssist->EVA8ClosestHitbox = Config::Aimbot::EVA8ClosestHitbox;
     AimAssist->EVA8Hitbox = Config::Aimbot::EVA8Hitbox;
     AimAssist->EVA8Speed = Config::Aimbot::EVA8Speed;
     AimAssist->EVA8HipfireSmooth = Config::Aimbot::EVA8HipfireSmooth;
     AimAssist->EVA8ADSSmooth = Config::Aimbot::EVA8ADSSmooth;
-    AimAssist->EVA8Fire = Config::Aimbot::EVA8Fire;
-    AimAssist->EVA8ADS = Config::Aimbot::EVA8ADS;
+
     AimAssist->PeacekeeperClosestHitbox = Config::Aimbot::PeacekeeperClosestHitbox;
     AimAssist->PeacekeeperHitbox = Config::Aimbot::PeacekeeperHitbox;
     AimAssist->PeacekeeperSpeed = Config::Aimbot::PeacekeeperSpeed;
     AimAssist->PeacekeeperHipfireSmooth = Config::Aimbot::PeacekeeperHipfireSmooth;
     AimAssist->PeacekeeperADSSmooth = Config::Aimbot::PeacekeeperADSSmooth;
-    AimAssist->PeacekeeperFire = Config::Aimbot::PeacekeeperFire;
-    AimAssist->PeacekeeperADS = Config::Aimbot::PeacekeeperADS;
+
     AimAssist->MastiffClosestHitbox = Config::Aimbot::MastiffClosestHitbox;
     AimAssist->MastiffHitbox = Config::Aimbot::MastiffHitbox;
     AimAssist->MastiffSpeed = Config::Aimbot::MastiffSpeed;
     AimAssist->MastiffHipfireSmooth = Config::Aimbot::MastiffHipfireSmooth;
     AimAssist->MastiffADSSmooth = Config::Aimbot::MastiffADSSmooth;
-    AimAssist->MastiffFire = Config::Aimbot::MastiffFire;
-    AimAssist->MastiffADS = Config::Aimbot::MastiffADS;
+
     AimAssist->LongbowClosestHitbox = Config::Aimbot::LongbowClosestHitbox;
     AimAssist->LongbowHitbox = Config::Aimbot::LongbowHitbox;
     AimAssist->LongbowSpeed = Config::Aimbot::LongbowSpeed;
     AimAssist->LongbowHipfireSmooth = Config::Aimbot::LongbowHipfireSmooth;
     AimAssist->LongbowADSSmooth = Config::Aimbot::LongbowADSSmooth;
-    AimAssist->LongbowFire = Config::Aimbot::LongbowFire;
-    AimAssist->LongbowADS = Config::Aimbot::LongbowADS;
+ 
     AimAssist->ChargeRifleClosestHitbox = Config::Aimbot::ChargeRifleClosestHitbox;
     AimAssist->ChargeRifleHitbox = Config::Aimbot::ChargeRifleHitbox;
     AimAssist->ChargeRifleSpeed = Config::Aimbot::ChargeRifleSpeed;
     AimAssist->ChargeRifleHipfireSmooth = Config::Aimbot::ChargeRifleHipfireSmooth;
     AimAssist->ChargeRifleADSSmooth = Config::Aimbot::ChargeRifleADSSmooth;
-    AimAssist->ChargeRifleFire = Config::Aimbot::ChargeRifleFire;
-    AimAssist->ChargeRifleADS = Config::Aimbot::ChargeRifleADS;
+
     AimAssist->SentinelClosestHitbox = Config::Aimbot::SentinelClosestHitbox;
     AimAssist->SentinelHitbox = Config::Aimbot::SentinelHitbox;
     AimAssist->SentinelSpeed = Config::Aimbot::SentinelSpeed;
     AimAssist->SentinelHipfireSmooth = Config::Aimbot::SentinelHipfireSmooth;
     AimAssist->SentinelADSSmooth = Config::Aimbot::SentinelADSSmooth;
-    AimAssist->SentinelFire = Config::Aimbot::SentinelFire;
-    AimAssist->SentinelADS = Config::Aimbot::SentinelADS;
+
     AimAssist->WingmanClosestHitbox = Config::Aimbot::WingmanClosestHitbox;
     AimAssist->WingmanHitbox = Config::Aimbot::WingmanHitbox;
     AimAssist->WingmanSpeed = Config::Aimbot::WingmanSpeed;
     AimAssist->WingmanHipfireSmooth = Config::Aimbot::WingmanHipfireSmooth;
     AimAssist->WingmanADSSmooth = Config::Aimbot::WingmanADSSmooth;
-    AimAssist->WingmanFire = Config::Aimbot::WingmanFire;
-    AimAssist->WingmanADS = Config::Aimbot::WingmanADS;
+
     AimAssist->ProwlerClosestHitbox = Config::Aimbot::ProwlerClosestHitbox;
     AimAssist->ProwlerHitbox = Config::Aimbot::ProwlerHitbox;
     AimAssist->ProwlerSpeed = Config::Aimbot::ProwlerSpeed;
     AimAssist->ProwlerHipfireSmooth = Config::Aimbot::ProwlerHipfireSmooth;
     AimAssist->ProwlerADSSmooth = Config::Aimbot::ProwlerADSSmooth;
-    AimAssist->ProwlerFire = Config::Aimbot::ProwlerFire;
-    AimAssist->ProwlerADS = Config::Aimbot::ProwlerADS;
+
     AimAssist->BocekClosestHitbox = Config::Aimbot::BocekClosestHitbox;
     AimAssist->BocekHitbox = Config::Aimbot::BocekHitbox;
     AimAssist->BocekSpeed = Config::Aimbot::BocekSpeed;
     AimAssist->BocekHipfireSmooth = Config::Aimbot::BocekHipfireSmooth;
     AimAssist->BocekADSSmooth = Config::Aimbot::BocekADSSmooth;
-    AimAssist->BocekFire = Config::Aimbot::BocekFire;
-    AimAssist->BocekADS = Config::Aimbot::BocekADS;
+
     AimAssist->KraberClosestHitbox = Config::Aimbot::KraberClosestHitbox;
     AimAssist->KraberHitbox = Config::Aimbot::KraberHitbox;
     AimAssist->KraberSpeed = Config::Aimbot::KraberSpeed;
     AimAssist->KraberHipfireSmooth = Config::Aimbot::KraberHipfireSmooth;
     AimAssist->KraberADSSmooth = Config::Aimbot::KraberADSSmooth;
-    AimAssist->KraberFire = Config::Aimbot::KraberFire;
-    AimAssist->KraberADS = Config::Aimbot::KraberADS;
+
     AimAssist->ThrowingKnifeClosestHitbox = Config::Aimbot::ThrowingKnifeClosestHitbox;
     AimAssist->ThrowingKnifeHitbox = Config::Aimbot::ThrowingKnifeHitbox;
     AimAssist->ThrowingKnifeSpeed = Config::Aimbot::ThrowingKnifeSpeed;
     AimAssist->ThrowingKnifeHipfireSmooth = Config::Aimbot::ThrowingKnifeHipfireSmooth;
     AimAssist->ThrowingKnifeADSSmooth = Config::Aimbot::ThrowingKnifeADSSmooth;
-    AimAssist->ThrowingKnifeFire = Config::Aimbot::ThrowingKnifeFire;
-    AimAssist->ThrowingKnifeADS = Config::Aimbot::ThrowingKnifeADS;
     
     //Aimbot Mode 1 - Grinder
     AimAssist->P2020HipfireSmooth1 = Config::Aimbot::P2020HipfireSmooth1;
@@ -738,150 +710,170 @@ void LoadConfig() {
     
     // ESP //
     ESP->VisibilityCheck = Config::Sense::VisibilityCheck;
-    ESP->DrawSeer = Config::Sense::DrawSeer;
-    ESP->DrawStatus = Config::Sense::DrawStatus;
-    ESP->ShowMaxStatusValues = Config::Sense::ShowMaxStatusValues;
+    ESP->DrawBoxes = Config::Sense::DrawBoxes;
+    ESP->BoxType = Config::Sense::BoxType;
+    ESP->BoxStyle = Config::Sense::BoxStyle;
+    ESP->BoxThickness = Config::Sense::BoxThickness;
+    ESP->Skeleton = Config::Sense::Skeleton;
+    ESP->SkeletonThickness = Config::Sense::SkeletonThickness;
     ESP->HealthBar = Config::Sense::HealthBar;
     ESP->ShieldBar = Config::Sense::ShieldBar;
+    ESP->BarMode = Config::Sense::BarMode;
+    ESP->BarStyle = Config::Sense::BarStyle;
+    Modules::Sense::BarColorMode = Config::Sense::BarColorMode;
+    Modules::Sense::BarBackground = Config::Sense::BarBackground;
     ESP->BarThickness = Config::Sense::BarThickness;
+    ESP->BarThickness2 = Config::Sense::BarThickness2;
+    ESP->BarHeight = Config::Sense::BarHeight;
+    ESP->BarWidth = Config::Sense::BarWidth;
     ESP->ESPMaxDistance = Config::Sense::ESPMaxDistance;
-    ESP->ShowSpectators = Config::Sense::ShowSpectators;
-    ESP->DrawFOVCircle = Config::Sense::DrawFOVCircle;
-    ESP->DrawFilledFOVCircle = Config::Sense::DrawFilledFOVCircle;
-    ESP->FOVThickness = Config::Sense::FOVThickness;
-    ESP->GameFOV = Config::Sense::GameFOV;
-    ESP->DrawDistance = Config::Sense::DrawDistance;
-    ESP->DrawBox = Config::Sense::DrawBox;
-    ESP->DrawFilledBox = Config::Sense::DrawFilledBox;
-    ESP->BoxThickness = Config::Sense::BoxThickness;
-    ESP->DrawNames = Config::Sense::DrawNames;
+    ESP->ShowNear = Config::Sense::ShowNear;
+    ESP->DrawSeer = Config::Sense::DrawSeer;
+    ESP->DrawStatus = Config::Sense::DrawStatus;
     ESP->DrawWeapon = Config::Sense::DrawWeapon;
     ESP->WeaponColorType = Config::Sense::WeaponColorType;
     ESP->ShowLegend = Config::Sense::ShowLegend;
+    ESP->ShowMaxStatusValues = Config::Sense::ShowMaxStatusValues;
     ESP->DrawDistance = Config::Sense::DrawDistance;
-    ESP->ShowNear = Config::Sense::ShowNear;
-    ESP->Skeleton = Config::Sense::Skeleton;
-    ESP->SkeletonThickness = Config::Sense::SkeletonThickness;
+    ESP->DrawFOVCircle = Config::Sense::DrawFOVCircle;
+    ESP->DrawFilledFOVCircle = Config::Sense::DrawFilledFOVCircle;
+    ESP->FOVThickness = Config::Sense::FOVThickness;
+    ESP->DrawNames = Config::Sense::DrawNames;
     ESP->TracerPosition = Config::Sense::TracerPos;
     ESP->TracerBone = Config::Sense::TracerBone;
     ESP->DrawTracers = Config::Sense::DrawTracers;
     ESP->TracerThickness = Config::Sense::TracerThickness;
-    ESP->ShowTeam = Config::Sense::ShowTeam;
+    ESP->ShowSpectators = Config::Sense::ShowSpectators;
     ESP->DrawCrosshair = Config::Sense::DrawCrosshair;
-    ESP->CrosshairThickness = Config::Sense::CrosshairThickness;
     ESP->CrosshairSize = Config::Sense::CrosshairSize;
+    ESP->CrosshairThickness = Config::Sense::CrosshairThickness;
+    ESP->GameFOV = Config::Sense::GameFOV;
+    ESP->ShowTeam = Config::Sense::ShowTeam;
     ESP->TeamNames = Config::Sense::TeamNames;
+
+    //Radar
+    MapRadar->MiniMap = Config::Radar::MiniMap;
+    MapRadar->MiniMapRange = Config::Radar::MiniMapRange;
+    MapRadar->MiniMapScaleX = Config::Radar::MiniMapScaleX;
+    MapRadar->MiniMapScaleY = Config::Radar::MiniMapScaleY;
+    MapRadar->MiniMapDotSize = Config::Radar::MiniMapDotSize;
+    MapRadar->MiniMapGuides = Config::Radar::MiniMapGuides;
+    MapRadar->BigMap = Config::Radar::BigMap;
     
-    //ESP Colors
-    ESP->InvisibleBoxColor[0] = Config::Sense::InvisibleBoxColorR;
-    ESP->InvisibleBoxColor[1] = Config::Sense::InvisibleBoxColorG;
-    ESP->InvisibleBoxColor[2] = Config::Sense::InvisibleBoxColorB;
-    ESP->InvisibleBoxColor[3] = Config::Sense::InvisibleBoxColorA;
-    ESP->VisibleBoxColor[0] = Config::Sense::VisibleBoxColorR;
-    ESP->VisibleBoxColor[1] = Config::Sense::VisibleBoxColorG;
-    ESP->VisibleBoxColor[2] = Config::Sense::VisibleBoxColorB;
-    ESP->VisibleBoxColor[3] = Config::Sense::VisibleBoxColorA;
-    ESP->InvisibleFilledBoxColor[0] = Config::Sense::InvisibleFilledBoxColorR;
-    ESP->InvisibleFilledBoxColor[1] = Config::Sense::InvisibleFilledBoxColorG;
-    ESP->InvisibleFilledBoxColor[2] = Config::Sense::InvisibleFilledBoxColorB;
-    ESP->InvisibleFilledBoxColor[3] = Config::Sense::InvisibleFilledBoxColorA;
-    ESP->VisibleFilledBoxColor[0] = Config::Sense::VisibleFilledBoxColorR;
-    ESP->VisibleFilledBoxColor[1] = Config::Sense::VisibleFilledBoxColorG;
-    ESP->VisibleFilledBoxColor[2] = Config::Sense::VisibleFilledBoxColorB;
-    ESP->VisibleFilledBoxColor[3] = Config::Sense::VisibleFilledBoxColorA;
-    ESP->InvisibleTracerColor[0] = Config::Sense::InvisibleTracerColorR;
-    ESP->InvisibleTracerColor[1] = Config::Sense::InvisibleTracerColorG;
-    ESP->InvisibleTracerColor[2] = Config::Sense::InvisibleTracerColorB;
-    ESP->InvisibleTracerColor[3] = Config::Sense::InvisibleTracerColorA;
-    ESP->VisibleTracerColor[0] = Config::Sense::VisibleTracerColorR;
-    ESP->VisibleTracerColor[1] = Config::Sense::VisibleTracerColorG;
-    ESP->VisibleTracerColor[2] = Config::Sense::VisibleTracerColorB;
-    ESP->VisibleTracerColor[3] = Config::Sense::VisibleTracerColorA;
-    ESP->InvisibleSkeletonColor[0] = Config::Sense::InvisibleSkeletonColorR;
-    ESP->InvisibleSkeletonColor[1] = Config::Sense::InvisibleSkeletonColorG;
-    ESP->InvisibleSkeletonColor[2] = Config::Sense::InvisibleSkeletonColorB;
-    ESP->InvisibleSkeletonColor[3] = Config::Sense::InvisibleSkeletonColorA;
-    ESP->VisibleSkeletonColor[0] = Config::Sense::VisibleSkeletonColorR;
-    ESP->VisibleSkeletonColor[1] = Config::Sense::VisibleSkeletonColorG;
-    ESP->VisibleSkeletonColor[2] = Config::Sense::VisibleSkeletonColorB;
-    ESP->VisibleSkeletonColor[3] = Config::Sense::VisibleSkeletonColorA;
-    ESP->InvisibleNameColor[0] = Config::Sense::InvisibleNameColorR;
-    ESP->InvisibleNameColor[1] = Config::Sense::InvisibleNameColorG;
-    ESP->InvisibleNameColor[2] = Config::Sense::InvisibleNameColorB;
-    ESP->InvisibleNameColor[3] = Config::Sense::InvisibleNameColorA;
-    ESP->VisibleNameColor[0] = Config::Sense::VisibleNameColorR;
-    ESP->VisibleNameColor[1] = Config::Sense::VisibleNameColorG;
-    ESP->VisibleNameColor[2] = Config::Sense::VisibleNameColorB;
-    ESP->VisibleNameColor[3] = Config::Sense::VisibleNameColorA;
-    ESP->InvisibleDistanceColor[0] = Config::Sense::InvisibleDistanceColorR;
-    ESP->InvisibleDistanceColor[1] = Config::Sense::InvisibleDistanceColorG;
-    ESP->InvisibleDistanceColor[2] = Config::Sense::InvisibleDistanceColorB;
-    ESP->InvisibleDistanceColor[3] = Config::Sense::InvisibleDistanceColorA;
-    ESP->VisibleDistanceColor[0] = Config::Sense::VisibleDistanceColorR;
-    ESP->VisibleDistanceColor[1] = Config::Sense::VisibleDistanceColorG;
-    ESP->VisibleDistanceColor[2] = Config::Sense::VisibleDistanceColorB;
-    ESP->VisibleDistanceColor[3] = Config::Sense::VisibleDistanceColorA;
-    ESP->FOVColor[0] = Config::Sense::FOVColorR;
-    ESP->FOVColor[1] = Config::Sense::FOVColorG;
-    ESP->FOVColor[2] = Config::Sense::FOVColorB;
-    ESP->FOVColor[3] = Config::Sense::FOVColorA;
-    ESP->FilledFOVColor[0] = Config::Sense::FilledFOVColorR;
-    ESP->FilledFOVColor[1] = Config::Sense::FilledFOVColorG;
-    ESP->FilledFOVColor[2] = Config::Sense::FilledFOVColorB;
-    ESP->FilledFOVColor[3] = Config::Sense::FilledFOVColorA;
-    ESP->WeaponColor[0] = Config::Sense::WeaponColorR;
-    ESP->WeaponColor[1] = Config::Sense::WeaponColorG;
-    ESP->WeaponColor[2] = Config::Sense::WeaponColorB;
-    ESP->WeaponColor[3] = Config::Sense::WeaponColorA;
-    ESP->NearColor[0] = Config::Sense::NearColorR;
-    ESP->NearColor[1] = Config::Sense::NearColorG;
-    ESP->NearColor[2] = Config::Sense::NearColorB;
-    ESP->NearColor[3] = Config::Sense::NearColorA;
-    ESP->TeamColor[0] = Config::Sense::TeamColorR;
-    ESP->TeamColor[1] = Config::Sense::TeamColorG;
-    ESP->TeamColor[2] = Config::Sense::TeamColorB;
-    ESP->TeamColor[3] = Config::Sense::TeamColorA;
-    ESP->TeamNameColor[0] = Config::Sense::TeamNameColorR;
-    ESP->TeamNameColor[1] = Config::Sense::TeamNameColorG;
-    ESP->TeamNameColor[2] = Config::Sense::TeamNameColorB;
-    ESP->TeamNameColor[3] = Config::Sense::TeamNameColorA;
-    ESP->CrosshairColor[0] = Config::Sense::CrosshairColorR;
-    ESP->CrosshairColor[1] = Config::Sense::CrosshairColorG;
-    ESP->CrosshairColor[2] = Config::Sense::CrosshairColorB;
-    ESP->CrosshairColor[3] = Config::Sense::CrosshairColorA;
+    //Colors
+    Modules::Colors::InvisibleBoxColor[0] = Config::Colors::InvisibleBoxColorR;
+    Modules::Colors::InvisibleBoxColor[1] = Config::Colors::InvisibleBoxColorG;
+    Modules::Colors::InvisibleBoxColor[2] = Config::Colors::InvisibleBoxColorB;
+    Modules::Colors::InvisibleBoxColor[3] = Config::Colors::InvisibleBoxColorA;
+    Modules::Colors::VisibleBoxColor[0] = Config::Colors::VisibleBoxColorR;
+    Modules::Colors::VisibleBoxColor[1] = Config::Colors::VisibleBoxColorG;
+    Modules::Colors::VisibleBoxColor[2] = Config::Colors::VisibleBoxColorB;
+    Modules::Colors::VisibleBoxColor[3] = Config::Colors::VisibleBoxColorA;
+    Modules::Colors::InvisibleFilledBoxColor[0] = Config::Colors::InvisibleFilledBoxColorR;
+    Modules::Colors::InvisibleFilledBoxColor[1] = Config::Colors::InvisibleFilledBoxColorG;
+    Modules::Colors::InvisibleFilledBoxColor[2] = Config::Colors::InvisibleFilledBoxColorB;
+    Modules::Colors::InvisibleFilledBoxColor[3] = Config::Colors::InvisibleFilledBoxColorA;
+    Modules::Colors::VisibleFilledBoxColor[0] = Config::Colors::VisibleFilledBoxColorR;
+    Modules::Colors::VisibleFilledBoxColor[1] = Config::Colors::VisibleFilledBoxColorG;
+    Modules::Colors::VisibleFilledBoxColor[2] = Config::Colors::VisibleFilledBoxColorB;
+    Modules::Colors::VisibleFilledBoxColor[3] = Config::Colors::VisibleFilledBoxColorA;
+    Modules::Colors::InvisibleTracerColor[0] = Config::Colors::InvisibleTracerColorR;
+    Modules::Colors::InvisibleTracerColor[1] = Config::Colors::InvisibleTracerColorG;
+    Modules::Colors::InvisibleTracerColor[2] = Config::Colors::InvisibleTracerColorB;
+    Modules::Colors::InvisibleTracerColor[3] = Config::Colors::InvisibleTracerColorA;
+    Modules::Colors::VisibleTracerColor[0] = Config::Colors::VisibleTracerColorR;
+    Modules::Colors::VisibleTracerColor[1] = Config::Colors::VisibleTracerColorG;
+    Modules::Colors::VisibleTracerColor[2] = Config::Colors::VisibleTracerColorB;
+    Modules::Colors::VisibleTracerColor[3] = Config::Colors::VisibleTracerColorA;
+    Modules::Colors::InvisibleSkeletonColor[0] = Config::Colors::InvisibleSkeletonColorR;
+    Modules::Colors::InvisibleSkeletonColor[1] = Config::Colors::InvisibleSkeletonColorG;
+    Modules::Colors::InvisibleSkeletonColor[2] = Config::Colors::InvisibleSkeletonColorB;
+    Modules::Colors::InvisibleSkeletonColor[3] = Config::Colors::InvisibleSkeletonColorA;
+    Modules::Colors::VisibleSkeletonColor[0] = Config::Colors::VisibleSkeletonColorR;
+    Modules::Colors::VisibleSkeletonColor[1] = Config::Colors::VisibleSkeletonColorG;
+    Modules::Colors::VisibleSkeletonColor[2] = Config::Colors::VisibleSkeletonColorB;
+    Modules::Colors::VisibleSkeletonColor[3] = Config::Colors::VisibleSkeletonColorA;
+    Modules::Colors::InvisibleNameColor[0] = Config::Colors::InvisibleNameColorR;
+    Modules::Colors::InvisibleNameColor[1] = Config::Colors::InvisibleNameColorG;
+    Modules::Colors::InvisibleNameColor[2] = Config::Colors::InvisibleNameColorB;
+    Modules::Colors::InvisibleNameColor[3] = Config::Colors::InvisibleNameColorA;
+    Modules::Colors::VisibleNameColor[0] = Config::Colors::VisibleNameColorR;
+    Modules::Colors::VisibleNameColor[1] = Config::Colors::VisibleNameColorG;
+    Modules::Colors::VisibleNameColor[2] = Config::Colors::VisibleNameColorB;
+    Modules::Colors::VisibleNameColor[3] = Config::Colors::VisibleNameColorA;
+    Modules::Colors::InvisibleDistanceColor[0] = Config::Colors::InvisibleDistanceColorR;
+    Modules::Colors::InvisibleDistanceColor[1] = Config::Colors::InvisibleDistanceColorG;
+    Modules::Colors::InvisibleDistanceColor[2] = Config::Colors::InvisibleDistanceColorB;
+    Modules::Colors::InvisibleDistanceColor[3] = Config::Colors::InvisibleDistanceColorA;
+    Modules::Colors::VisibleDistanceColor[0] = Config::Colors::VisibleDistanceColorR;
+    Modules::Colors::VisibleDistanceColor[1] = Config::Colors::VisibleDistanceColorG;
+    Modules::Colors::VisibleDistanceColor[2] = Config::Colors::VisibleDistanceColorB;
+    Modules::Colors::VisibleDistanceColor[3] = Config::Colors::VisibleDistanceColorA;
+    Modules::Colors::FOVColor[0] = Config::Colors::FOVColorR;
+    Modules::Colors::FOVColor[1] = Config::Colors::FOVColorG;
+    Modules::Colors::FOVColor[2] = Config::Colors::FOVColorB;
+    Modules::Colors::FOVColor[3] = Config::Colors::FOVColorA;
+    Modules::Colors::FilledFOVColor[0] = Config::Colors::FilledFOVColorR;
+    Modules::Colors::FilledFOVColor[1] = Config::Colors::FilledFOVColorG;
+    Modules::Colors::FilledFOVColor[2] = Config::Colors::FilledFOVColorB;
+    Modules::Colors::FilledFOVColor[3] = Config::Colors::FilledFOVColorA;
+    Modules::Colors::VisibleWeaponColor[0] = Config::Colors::VisibleWeaponColorR;
+    Modules::Colors::VisibleWeaponColor[1] = Config::Colors::VisibleWeaponColorG;
+    Modules::Colors::VisibleWeaponColor[2] = Config::Colors::VisibleWeaponColorB;
+    Modules::Colors::VisibleWeaponColor[3] = Config::Colors::VisibleWeaponColorA;
+    Modules::Colors::InvisibleWeaponColor[0] = Config::Colors::InvisibleWeaponColorR;
+    Modules::Colors::InvisibleWeaponColor[1] = Config::Colors::InvisibleWeaponColorG;
+    Modules::Colors::InvisibleWeaponColor[2] = Config::Colors::InvisibleWeaponColorB;
+    Modules::Colors::InvisibleWeaponColor[3] = Config::Colors::InvisibleWeaponColorA;
+    Modules::Colors::NearColor[0] = Config::Colors::NearColorR;
+    Modules::Colors::NearColor[1] = Config::Colors::NearColorG;
+    Modules::Colors::NearColor[2] = Config::Colors::NearColorB;
+    Modules::Colors::NearColor[3] = Config::Colors::NearColorA;
+    Modules::Colors::TeamColor[0] = Config::Colors::TeamColorR;
+    Modules::Colors::TeamColor[1] = Config::Colors::TeamColorG;
+    Modules::Colors::TeamColor[2] = Config::Colors::TeamColorB;
+    Modules::Colors::TeamColor[3] = Config::Colors::TeamColorA;
+    Modules::Colors::TeamNameColor[0] = Config::Colors::TeamNameColorR;
+    Modules::Colors::TeamNameColor[1] = Config::Colors::TeamNameColorG;
+    Modules::Colors::TeamNameColor[2] = Config::Colors::TeamNameColorB;
+    Modules::Colors::TeamNameColor[3] = Config::Colors::TeamNameColorA;
+    Modules::Colors::CrosshairColor[0] = Config::Colors::CrosshairColorR;
+    Modules::Colors::CrosshairColor[1] = Config::Colors::CrosshairColorG;
+    Modules::Colors::CrosshairColor[2] = Config::Colors::CrosshairColorB;
+    Modules::Colors::CrosshairColor[3] = Config::Colors::CrosshairColorA;
     //WeaponESP Colors
-    ESP->LightWeaponColor[0] = Config::Sense::LightWeaponColorR;
-    ESP->LightWeaponColor[1] = Config::Sense::LightWeaponColorG;
-    ESP->LightWeaponColor[2] = Config::Sense::LightWeaponColorB;
-    ESP->LightWeaponColor[3] = Config::Sense::LightWeaponColorA;
-    ESP->HeavyWeaponColor[0] = Config::Sense::HeavyWeaponColorR;
-    ESP->HeavyWeaponColor[1] = Config::Sense::HeavyWeaponColorG;
-    ESP->HeavyWeaponColor[2] = Config::Sense::HeavyWeaponColorB;
-    ESP->HeavyWeaponColor[3] = Config::Sense::HeavyWeaponColorA;
-    ESP->EnergyWeaponColor[0] = Config::Sense::EnergyWeaponColorR;
-    ESP->EnergyWeaponColor[1] = Config::Sense::EnergyWeaponColorG;
-    ESP->EnergyWeaponColor[2] = Config::Sense::EnergyWeaponColorB;
-    ESP->EnergyWeaponColor[3] = Config::Sense::EnergyWeaponColorA;
-    ESP->ShotgunWeaponColor[0] = Config::Sense::ShotgunWeaponColorR;
-    ESP->ShotgunWeaponColor[1] = Config::Sense::ShotgunWeaponColorG;
-    ESP->ShotgunWeaponColor[2] = Config::Sense::ShotgunWeaponColorB;
-    ESP->ShotgunWeaponColor[3] = Config::Sense::ShotgunWeaponColorA;
-    ESP->SniperWeaponColor[0] = Config::Sense::SniperWeaponColorR;
-    ESP->SniperWeaponColor[1] = Config::Sense::SniperWeaponColorG;
-    ESP->SniperWeaponColor[2] = Config::Sense::SniperWeaponColorB;
-    ESP->SniperWeaponColor[3] = Config::Sense::SniperWeaponColorA;
-    ESP->LegendaryWeaponColor[0] = Config::Sense::LegendaryWeaponColorR;
-    ESP->LegendaryWeaponColor[1] = Config::Sense::LegendaryWeaponColorG;
-    ESP->LegendaryWeaponColor[2] = Config::Sense::LegendaryWeaponColorB;
-    ESP->LegendaryWeaponColor[3] = Config::Sense::LegendaryWeaponColorA;
-    ESP->MeleeWeaponColor[0] = Config::Sense::MeleeWeaponColorR;
-    ESP->MeleeWeaponColor[1] = Config::Sense::MeleeWeaponColorG;
-    ESP->MeleeWeaponColor[2] = Config::Sense::MeleeWeaponColorB;
-    ESP->MeleeWeaponColor[3] = Config::Sense::MeleeWeaponColorA;
-    ESP->ThrowableWeaponColor[0] = Config::Sense::ThrowableWeaponColorR;
-    ESP->ThrowableWeaponColor[1] = Config::Sense::ThrowableWeaponColorG;
-    ESP->ThrowableWeaponColor[2] = Config::Sense::ThrowableWeaponColorB;
-    ESP->ThrowableWeaponColor[3] = Config::Sense::ThrowableWeaponColorA;
+    Modules::Colors::LightWeaponColor[0] = Config::Colors::LightWeaponColorR;
+    Modules::Colors::LightWeaponColor[1] = Config::Colors::LightWeaponColorG;
+    Modules::Colors::LightWeaponColor[2] = Config::Colors::LightWeaponColorB;
+    Modules::Colors::LightWeaponColor[3] = Config::Colors::LightWeaponColorA;
+    Modules::Colors::HeavyWeaponColor[0] = Config::Colors::HeavyWeaponColorR;
+    Modules::Colors::HeavyWeaponColor[1] = Config::Colors::HeavyWeaponColorG;
+    Modules::Colors::HeavyWeaponColor[2] = Config::Colors::HeavyWeaponColorB;
+    Modules::Colors::HeavyWeaponColor[3] = Config::Colors::HeavyWeaponColorA;
+    Modules::Colors::EnergyWeaponColor[0] = Config::Colors::EnergyWeaponColorR;
+    Modules::Colors::EnergyWeaponColor[1] = Config::Colors::EnergyWeaponColorG;
+    Modules::Colors::EnergyWeaponColor[2] = Config::Colors::EnergyWeaponColorB;
+    Modules::Colors::EnergyWeaponColor[3] = Config::Colors::EnergyWeaponColorA;
+    Modules::Colors::ShotgunWeaponColor[0] = Config::Colors::ShotgunWeaponColorR;
+    Modules::Colors::ShotgunWeaponColor[1] = Config::Colors::ShotgunWeaponColorG;
+    Modules::Colors::ShotgunWeaponColor[2] = Config::Colors::ShotgunWeaponColorB;
+    Modules::Colors::ShotgunWeaponColor[3] = Config::Colors::ShotgunWeaponColorA;
+    Modules::Colors::SniperWeaponColor[0] = Config::Colors::SniperWeaponColorR;
+    Modules::Colors::SniperWeaponColor[1] = Config::Colors::SniperWeaponColorG;
+    Modules::Colors::SniperWeaponColor[2] = Config::Colors::SniperWeaponColorB;
+    Modules::Colors::SniperWeaponColor[3] = Config::Colors::SniperWeaponColorA;
+    Modules::Colors::LegendaryWeaponColor[0] = Config::Colors::LegendaryWeaponColorR;
+    Modules::Colors::LegendaryWeaponColor[1] = Config::Colors::LegendaryWeaponColorG;
+    Modules::Colors::LegendaryWeaponColor[2] = Config::Colors::LegendaryWeaponColorB;
+    Modules::Colors::LegendaryWeaponColor[3] = Config::Colors::LegendaryWeaponColorA;
+    Modules::Colors::MeleeWeaponColor[0] = Config::Colors::MeleeWeaponColorR;
+    Modules::Colors::MeleeWeaponColor[1] = Config::Colors::MeleeWeaponColorG;
+    Modules::Colors::MeleeWeaponColor[2] = Config::Colors::MeleeWeaponColorB;
+    Modules::Colors::MeleeWeaponColor[3] = Config::Colors::MeleeWeaponColorA;
+    Modules::Colors::ThrowableWeaponColor[0] = Config::Colors::ThrowableWeaponColorR;
+    Modules::Colors::ThrowableWeaponColor[1] = Config::Colors::ThrowableWeaponColorG;
+    Modules::Colors::ThrowableWeaponColor[2] = Config::Colors::ThrowableWeaponColorB;
+    Modules::Colors::ThrowableWeaponColor[3] = Config::Colors::ThrowableWeaponColorA;
 
     // Triggerbot //
     Trigger->TriggerbotEnabled = Config::Triggerbot::Enabled;
@@ -955,10 +947,9 @@ void LoadConfig() {
     MiscTab->SkinKRABER = Config::Misc::SkinKRABER;
     
     // Home //
-    Home->MenuX = Config::Home::MenuX;
-    Home->MenuY = Config::Home::MenuY;
+    //Modules::Home::MenuX = Config::Home::MenuX;
+    //Home->MenuY = Config::Home::MenuY;
     Home->TeamGamemode = Config::Home::TeamGamemode;
-    Home->ErrorLogging = Config::Home::ErrorLogging;
 }
 
 void LoadASCIIConfig() {
@@ -989,7 +980,7 @@ void LoadOverlaySave() {
 	Home->TouchExtraPadding       = ImVec2(0,0);     
 	Home->IndentSpacing           = 21.0f;          
 	Home->ColumnsMinSpacing       = 6.0f;            
-	Home->ScrollbarSize           = 14.0f;          
+	Home->ScrollbarSize           = 12.0f;          
 	Home->ScrollbarRounding       = 9.0f;         
 	Home->GrabMinSize             = 10.0f;      
 	Home->GrabRounding            = 0.0f;          
@@ -1043,7 +1034,7 @@ void LoadOverlaySave() {
 	Home->TouchExtraPadding               = ImVec2(0.00f, 0.00f);
 	Home->WindowTitleAlign                = ImVec2(0.5f, 0.5f);
 	Home->IndentSpacing                      = 25;
-	Home->ScrollbarSize                      = 15;
+	Home->ScrollbarSize                      = 12;
 	Home->GrabMinSize                        = 10;
 	Home->WindowBorderSize                   = 1;
 	Home->ChildBorderSize                    = 1;
@@ -1102,7 +1093,7 @@ void LoadOverlaySave() {
 	Home->TouchExtraPadding               = ImVec2(0.00f, 0.00f);
 	Home->WindowTitleAlign                = ImVec2(0.5f, 0.5f);
 	Home->IndentSpacing                      = 25;
-	Home->ScrollbarSize                      = 15;
+	Home->ScrollbarSize                      = 12;
 	Home->GrabMinSize                        = 10;
 	Home->WindowBorderSize                   = 1;
 	Home->ChildBorderSize                    = 1;
@@ -1139,7 +1130,7 @@ void LoadOverlaySave() {
 	Home->CellPadding = ImVec2(12.10000038146973f, 9.199999809265137f);
 	Home->IndentSpacing = 0.0f;
 	Home->ColumnsMinSpacing = 4.900000095367432f;
-	Home->ScrollbarSize = 11.60000038146973f;
+	Home->ScrollbarSize = 12;
 	Home->ScrollbarRounding = 15.89999961853027f;
 	Home->GrabMinSize = 3.700000047683716f;
 	Home->GrabRounding = 20.0f;
@@ -1166,7 +1157,7 @@ void LoadOverlaySave() {
 	Home->TitleBgActive          = ImVec4(0.32f, 0.32f, 0.63f, 0.87f);
 	Home->TitleBgCollapsed       = ImVec4(0.40f, 0.40f, 0.80f, 0.20f);
 	Home->MenuBarBg              = ImVec4(0.40f, 0.40f, 0.55f, 0.80f);
-	Home->ScrollbarBg            = ImVec4(0.20f, 0.25f, 0.30f, 0.60f);
+	Home->ScrollbarBg            = ImVec4(0.20f, 0.25f, 0.30f, 0.00f);
 	Home->ScrollbarGrab          = ImVec4(0.40f, 0.40f, 0.80f, 0.30f);
 	Home->ScrollbarGrabHovered   = ImVec4(0.40f, 0.40f, 0.80f, 0.40f);
 	Home->ScrollbarGrabActive    = ImVec4(0.41f, 0.39f, 0.80f, 0.60f);
@@ -1217,7 +1208,7 @@ void LoadOverlaySave() {
 	Home->TitleBgActive 	= ImVec4(0.04f, 0.05f, 0.07f, 1.0f);
 	Home->TitleBgCollapsed 	= ImVec4(0.07f, 0.08f, 0.10f, 1.0f);
 	Home->MenuBarBg 		= ImVec4(0.09f, 0.10f, 0.12f, 1.0f);
-	Home->ScrollbarBg 		= ImVec4(0.04f, 0.05f, 0.07f, 1.0f);
+	Home->ScrollbarBg 		= ImVec4(0.04f, 0.05f, 0.07f, 0.00f);
 	Home->ScrollbarGrab 	= ImVec4(0.11f, 0.13f, 0.14f, 1.0f);
 	Home->ScrollbarGrabHovered = ImVec4(0.15f, 0.16f, 0.19f, 1.0f);
 	Home->ScrollbarGrabActive 	= ImVec4(0.11f, 0.13f, 0.14f, 1.0f);
@@ -1272,7 +1263,7 @@ void LoadOverlaySave() {
 	Home->TitleBgActive          = ImVec4(0.06f, 0.06f, 0.06f, 1.00f);
 	Home->TitleBgCollapsed       = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
 	Home->MenuBarBg              = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
-	Home->ScrollbarBg            = ImVec4(0.05f, 0.05f, 0.05f, 0.54f);
+	Home->ScrollbarBg            = ImVec4(0.05f, 0.05f, 0.05f, 0.00f);
 	Home->ScrollbarGrab          = ImVec4(0.34f, 0.34f, 0.34f, 0.54f);
 	Home->ScrollbarGrabHovered   = ImVec4(0.40f, 0.40f, 0.40f, 0.54f);
 	Home->ScrollbarGrabActive    = ImVec4(0.56f, 0.56f, 0.56f, 0.54f);
@@ -1329,7 +1320,7 @@ void LoadOverlaySave() {
 	Home->TitleBgCollapsed = ImVec4(0.00f, 0.00f, 0.00f, 0.54f);
 	Home->TitleBgActive = ImVec4(0.00f, 1.00f, 1.00f, 0.27f);
 	Home->MenuBarBg = ImVec4(0.00f, 0.00f, 0.00f, 0.20f);
-	Home->ScrollbarBg = ImVec4(0.22f, 0.29f, 0.30f, 0.71f);
+	Home->ScrollbarBg = ImVec4(0.22f, 0.29f, 0.30f, 0.00f);
 	Home->ScrollbarGrab = ImVec4(0.00f, 1.00f, 1.00f, 0.44f);
 	Home->ScrollbarGrabHovered = ImVec4(0.00f, 1.00f, 1.00f, 0.74f);
 	Home->ScrollbarGrabActive = ImVec4(0.00f, 1.00f, 1.00f, 1.00f);
@@ -1365,9 +1356,9 @@ void LoadOverlaySave() {
 	Home->TitleBgActive          = ImVec4(0.61f, 0.00f, 1.00f, 1.00f);
 	Home->TitleBgCollapsed       = ImVec4(0.25f, 0.00f, 0.54f, 0.81f);
 	Home->MenuBarBg              = ImVec4(0.61f, 0.00f, 1.00f, 1.00f);
-	Home->ScrollbarBg            = ImVec4(0.00f, 0.88f, 1.00f, 1.00f);
+	Home->ScrollbarBg            = ImVec4(0.00f, 0.88f, 1.00f, 0.00f);
 	Home->ScrollbarGrab          = ImVec4(0.61f, 0.00f, 1.00f, 1.00f);
-	Home->ScrollbarGrabHovered   = ImVec4(0.01f, 0.00f, 1.00f, 1.00f);
+	Home->ScrollbarGrabHovered   = ImVec4(0.00f, 0.82f, 1.00f, 1.00f);
 	Home->ScrollbarGrabActive    = ImVec4(0.95f, 0.19f, 0.67f, 1.00f);
 	Home->CheckMark              = ImVec4(0.95f, 0.19f, 0.92f, 1.00f);
 	Home->SliderGrab             = ImVec4(0.00f, 1.00f, 0.95f, 1.00f);
@@ -1404,7 +1395,7 @@ void LoadOverlaySave() {
 	Home->TitleBgActive = ImVec4(0.047f, 0.05f, 0.07f, 1.0f);
 	Home->TitleBgCollapsed = ImVec4(0.07f, 0.08f, 0.10f, 1.0f);
 	Home->MenuBarBg = ImVec4(0.09f, 0.10f, 0.12f, 1.0f);
-	Home->ScrollbarBg = ImVec4(0.04f, 0.05f, 0.07f, 1.0f);
+	Home->ScrollbarBg = ImVec4(0.04f, 0.05f, 0.07f, 0.00f);
 	Home->ScrollbarGrab = ImVec4(0.11f, 0.13f, 0.14f, 1.0f);
 	Home->ScrollbarGrabHovered = ImVec4(0.15f, 0.16f, 0.19f, 1.0f);
 	Home->ScrollbarGrabActive = ImVec4(0.11f, 0.13f, 0.14f, 1.0f);
@@ -1460,7 +1451,7 @@ void LoadOverlaySave() {
 	Home->TitleBgActive          = ImVec4(0.27f, 0.27f, 0.28f, 1.00f);
 	Home->TitleBgCollapsed       = ImVec4(0.27f, 0.27f, 0.28f, 1.00f);
 	Home->MenuBarBg              = ImVec4(0.27f, 0.27f, 0.28f, 1.00f);
-	Home->ScrollbarBg            = ImVec4(0.27f, 0.27f, 0.28f, 1.00f);
+	Home->ScrollbarBg            = ImVec4(0.27f, 0.27f, 0.28f, 0.00f);
 	Home->ScrollbarGrab          = ImVec4(0.13f, 0.13f, 0.13f, 1.00f);
 	Home->ScrollbarGrabHovered   = ImVec4(0.36f, 0.38f, 0.39f, 1.00f);
 	Home->ScrollbarGrabActive    = ImVec4(0.36f, 0.38f, 0.39f, 1.00f);
@@ -1504,7 +1495,7 @@ void LoadOverlaySave() {
 	Home->TitleBgActive = ImVec4(0.2745098173618317f, 0.3568627536296844f, 0.9058823585510254f, 1.0f);
 	Home->TitleBgCollapsed = ImVec4(0.105882354080677f, 0.09411764889955521f, 0.3254902064800262f, 1.0f);
 	Home->MenuBarBg = ImVec4(0.105882354080677f, 0.09411764889955521f, 0.3254902064800262f, 1.0f);
-	Home->ScrollbarBg = ImVec4(0.01960784383118153f, 0.01960784383118153f, 0.01960784383118153f, 0.5299999713897705f);
+	Home->ScrollbarBg = ImVec4(0.01960784383118153f, 0.01960784383118153f, 0.01960784383118153f, 0.00f);
 	Home->ScrollbarGrab = ImVec4(0.2745098173618317f, 0.3568627536296844f, 0.9058823585510254f, 1.0f);
 	Home->ScrollbarGrabHovered = ImVec4(0.1647058874368668f, 0.7529411911964417f, 0.9490196108818054f, 1.0f);
 	Home->ScrollbarGrabActive = ImVec4(0.1647058874368668f, 0.7529411911964417f, 0.9490196108818054f, 1.0f);
@@ -1576,19 +1567,21 @@ void RenderUI() {
 	);
 	Canvas = ImGui::GetWindowDrawList();
     //if (Map->IsPlayable)
+    	MapRadar->RenderDrawings(Canvas, Myself, OverlayWindow);
+    	ESP->RenderWatermark(Canvas, Myself, OverlayWindow);
         ESP->RenderDrawings(Canvas, AimAssist, Myself, OverlayWindow);
 	ImGui::End();
 
     if (!IsMenuOpened) return;
 
     // Menu
-    ImGui::SetNextWindowSizeConstraints(ImVec2(Home->MenuX, Home->MenuY), ImVec2(Home->MenuX, Home->MenuY));
-    ImGui::SetNextWindowSize(ImVec2(Home->MenuX, Home->MenuY), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSizeConstraints(ImVec2(Modules::Home::MenuX, Modules::Home::MenuY), ImVec2(Modules::Home::MenuX, Modules::Home::MenuY));
+    ImGui::SetNextWindowSize(ImVec2(Modules::Home::MenuX, Modules::Home::MenuY), ImGuiCond_FirstUseEver);
     ImGui::Begin("zap-client", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
     
-    ProcessingTimeColor = OverlayWindow.ProcessingTime > 20 ? ProcessingTimeColor = ImVec4(1, 0.343, 0.475, 1) : ProcessingTimeColor = ImVec4(0.4, 1, 0.343, 1);
+    /*ProcessingTimeColor = OverlayWindow.ProcessingTime > 20 ? ProcessingTimeColor = ImVec4(1, 0.343, 0.475, 1) : ProcessingTimeColor = ImVec4(0.4, 1, 0.343, 1);
     ImGui::TextColored(ProcessingTimeColor, "Processing Time: %02dms ", OverlayWindow.ProcessingTime);
-    ImGui::SameLine();
+    ImGui::SameLine();*/
 
     /*if (OverlayWindow.AlignedButton("Save Config")) {
         SaveConfig();
@@ -1600,27 +1593,41 @@ void RenderUI() {
         std::cout << "config loaded" << std::endl;
     }*/   
 
-    if (ImGui::BeginTabBar("Menus"), ImGuiTabBarFlags_NoCloseWithMiddleMouseButton) {
+    if (ImGui::BeginTabBar("Menus"), ImGuiTabBarFlags_NoCloseWithMiddleMouseButton | ImGuiTabBarFlags_NoTabListScrollingButtons) {
         // Draw Settings //
-        Home->SetUIStyle();
+        Home->SetUIStyle(); //Home Tab
         AimAssist->RenderUI();
         Recoil->RenderUI();
         Trigger->RenderUI();
         GlowESP->RenderUI();
         ESP->RenderUI();
+        MapRadar->RenderUI();
         MiscTab->RenderUI();
         
     	if (ImGui::BeginTabItem("Config", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
-    		ImGui::Text("Config Options");
-    		if (ImGui::Button("Save Config")) {
-    			SaveConfig();
-        		std::cout << "Config Saved!" << std::endl;
-    		}
-    		ImGui::SameLine();
-    		if (ImGui::Button("Load Config")) {
-    			LoadConfig();
-        		std::cout << "Config Loaded!" << std::endl;
-        	}
+    		ImVec2 TabSize;
+		    TabSize = ImGui::GetWindowSize();
+		    //Config
+		    ImGui::Text("Config Saving");
+		    if (ImGui::BeginChild("Config Saving Tab", ImVec2(TabSize.x - TabSize.x , (TabSize.y - TabSize.y) + 270), true)) {
+                ImGui::Text("Config Saving");
+                if (ImGui::Button("Save Config")) {
+                    SaveConfig();
+                    std::cout << "Config Saved!" << std::endl;
+                }
+                ImGui::EndChild();
+            }
+
+    		ImGui::Text("Config Loading");
+		    if (ImGui::BeginChild("Config Loading Tab", ImVec2(TabSize.x - TabSize.x , (TabSize.y - TabSize.y) + 285), true)) {
+                ImGui::Text("Config Loading");
+                if (ImGui::Button("Load Config")) {
+                    LoadConfig();
+                    std::cout << "Config Loaded!" << std::endl;
+                }
+                ImGui::EndChild();
+            }
+            
         	ImGui::EndTabItem();
         }
     
@@ -1882,11 +1889,11 @@ int main(int argc, char *argv[]) {
     }
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    std::cout << "zap client - ver 0.2.6" << std::endl;
+    std::cout << "zap client - ver 0.3.0" << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(1));
     std::cout << "By Gerosity" << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    std::cout << "For Game Version v3.0.56.43" << std::endl;
+    std::cout << "For Game Version v3.0.57.21" << std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
     // Initialize Overlay Window //
