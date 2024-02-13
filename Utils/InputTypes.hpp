@@ -68,10 +68,11 @@ enum class InputKeyType : int {
     MOUSE_Right = 57,
     MOUSE_Middle = 58,
     MOUSE_X1 = 59,
-    MOUSE_X2 = 60
+    MOUSE_X2 = 60,
+    INPUT_NONE = 0 //Same as unknown
 };
 
-const char* InputKeyTypeNames[] = { "UNKNOWN", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "CAPS_LOCK", "LEFT_SHIFT", "LEFT_CTRL", "LEFT_ALT", "INSERT", "DELETE", "SPACE", "Mouse_Left", "Mouse_Right", "Mouse_Middle", "Mouse_X1", "Mouse_X2" };
+const char* InputKeyTypeNames[] = { "UNKNOWN", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "CAPS_LOCK", "LEFT_SHIFT", "LEFT_CTRL", "LEFT_ALT", "INSERT", "DELETE", "SPACE", "Mouse_Left", "Mouse_Right", "Mouse_Middle", "Mouse_X1", "Mouse_X2", "None" };
     
 
 InputKeyType mapMouseButtonType(ushort code) {
@@ -89,6 +90,8 @@ InputKeyType mapMouseButtonType(ushort code) {
             return InputKeyType::MOUSE_X2;
         default:
             return InputKeyType::INPUT_UNKNOWN;
+        none:
+            return InputKeyType::INPUT_NONE;
     }
 
     return InputKeyType::INPUT_UNKNOWN;
@@ -150,5 +153,6 @@ InputKeyType mapKeyboardKeyType(int keyCode) {
         case KEY_LEFTALT: return InputKeyType::KEYBOARD_LEFT_ALT;
         case KEY_SPACE: return InputKeyType::KEYBOARD_SPACE;
         default: return InputKeyType::INPUT_UNKNOWN;
+        none: return InputKeyType::INPUT_NONE;
     }
 }
