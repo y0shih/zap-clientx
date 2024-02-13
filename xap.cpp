@@ -25,7 +25,6 @@
 #include "Features/RCS.hpp"
 #include "Features/Glow.hpp"
 #include "Features/Test.hpp"
-#include "Features/Color.hpp"
 
 #include "Overlay/Overlay.hpp"
 
