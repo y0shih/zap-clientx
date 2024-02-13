@@ -13,6 +13,7 @@
 #include "../Utils/XDisplay.hpp"
 #include "../Utils/Conversion.hpp"
 #include "../Utils/Config.hpp"
+#include "../Utils/Modules.hpp"
 #include "../Utils/HitboxType.hpp"
 #include "../Utils/InputManager.hpp"
 #include "../Utils/InputTypes.hpp"
@@ -159,412 +160,412 @@ struct RCS {
     }
 
     void RenderUI() {
-    	if (Config::Home::Layout == 0 or Config::Home::Layout == 1) { //Removed the choice of having two menus. OR is for people still using old configs.
 		if (ImGui::BeginTabItem("RCS", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
-		    ImGui::Text("RCS - Recoil Control");
-		    ImGui::Checkbox("Enabled", &RCSEnabled);
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        ImGui::SetTooltip("Toggle the RCS (Recoil Control)\nReduce the intensity of weapon's recoil.");
-		    
-		    if (RCSEnabled) {
-			    ImGui::Separator();    
+			ImVec2 TabSize;
+			TabSize = ImGui::GetWindowSize();
+			//RCS
+			ImGui::Text("RCS - Recoil Control");
+			if (ImGui::BeginChild("RCS Tab", ImVec2(TabSize.x - TabSize.x , (TabSize.y - TabSize.y) + 270), true)) {
+				ImGui::Text("RCS Tab");
+				ImGui::Checkbox("Enabled", &RCSEnabled);
+				if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+					ImGui::SetTooltip("Toggle the RCS (Recoil Control)\nReduce the intensity of weapon's recoil.");
 				
-		   	    ImGui::Text("RCS Conditions");
-		   	    if (ImGui::CollapsingHeader("Conditions", nullptr)) {
-		   	    ImGui::Checkbox("On ADS?", &OnADS);
-		   	    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-				ImGui::SetTooltip("Toggle when the RCS will take control\nEnabled = Only when aiming.\nDisabled = Always.");
-			    }    
-				
-			    ImGui::Separator();
-			       
-			    ImGui::Text("Intensity Settings");
-			    if (ImGui::CollapsingHeader("Settings", nullptr)) {
-			    	ImGui::SliderFloat("Pitch", &PitchPower, 1, 50, "%.1f");
-			    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-					ImGui::SetTooltip("Pitch Power");
-			    	ImGui::SliderFloat("Yaw", &YawPower, 1, 50, "%.1f");
-			    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-					ImGui::SetTooltip("Yaw Power");
-			    }
-			     
-			    ImGui::Separator();
-			    
-			    //Select Weapons
-			    ImGui::Text("Toggle Weapons");
-			    if (ImGui::CollapsingHeader("Light Weapons", nullptr)) {
-				    ImGui::Checkbox("P2020", &P2020);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("RE-45 Auto", &RE45);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("Alternator SMG", &Alternator);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("R-99 SMG", &R99);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("R-301 Carbine", &R301);
+				if (RCSEnabled) {
+					ImGui::Separator();    
+					
+					ImGui::Text("RCS Conditions");
+					if (ImGui::CollapsingHeader("Conditions", nullptr)) {
+					ImGui::Checkbox("On ADS?", &OnADS);
+					if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+					ImGui::SetTooltip("Toggle when the RCS will take control\nEnabled = Only when aiming.\nDisabled = Always.");
+					}    
+					
+					ImGui::Separator();
+					
+					ImGui::Text("Intensity Settings");
+					if (ImGui::CollapsingHeader("Settings", nullptr)) {
+						ImGui::SliderFloat("Pitch", &PitchPower, 1, 50, "%.1f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("Pitch Power");
+						ImGui::SliderFloat("Yaw", &YawPower, 1, 50, "%.1f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("Yaw Power");
+					}
+					
+					ImGui::Separator();
+					
+					//Select Weapons
+					ImGui::Text("Toggle Weapons");
+					if (ImGui::CollapsingHeader("Light Weapons", nullptr)) {
+						ImGui::Checkbox("P2020", &P2020);
+						ImGui::SameLine();
+						ImGui::Checkbox("RE-45 Auto", &RE45);
+						ImGui::SameLine();
+						ImGui::Checkbox("Alternator SMG", &Alternator);
+						ImGui::SameLine();
+						ImGui::Checkbox("R-99 SMG", &R99);
+						ImGui::SameLine();
+						ImGui::Checkbox("R-301 Carbine", &R301);
 
-				    ImGui::Checkbox("M600 Spitfire", &Spitfire);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("G7 Scout", &G7);
-			    }
-			    
-			    if (ImGui::CollapsingHeader("Heavy Weapons", nullptr)) {
-				    ImGui::Checkbox("VK-47 Flatline", &Flatline);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("Hemlock Burst AR", &Hemlock);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("30-30 Repeater", &Repeater);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("Rampage LMG", &Rampage);
-				    
-				    ImGui::Checkbox("C.A.R SMG", &CARSMG);
-			    }
-			    
-			    if (ImGui::CollapsingHeader("Energy Weapons", nullptr)) {
-				    ImGui::Checkbox("Havoc Rifle", &Havoc);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("Devotion LMG", &Devotion);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("L-Star EMG", &LSTAR);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("Triple-Take", &TripleTake);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("Volt", &Volt);
+						ImGui::Checkbox("M600 Spitfire", &Spitfire);
+						ImGui::SameLine();
+						ImGui::Checkbox("G7 Scout", &G7);
+					}
+					
+					if (ImGui::CollapsingHeader("Heavy Weapons", nullptr)) {
+						ImGui::Checkbox("VK-47 Flatline", &Flatline);
+						ImGui::SameLine();
+						ImGui::Checkbox("Hemlock Burst AR", &Hemlock);
+						ImGui::SameLine();
+						ImGui::Checkbox("30-30 Repeater", &Repeater);
+						ImGui::SameLine();
+						ImGui::Checkbox("Rampage LMG", &Rampage);
+						
+						ImGui::Checkbox("C.A.R SMG", &CARSMG);
+					}
+					
+					if (ImGui::CollapsingHeader("Energy Weapons", nullptr)) {
+						ImGui::Checkbox("Havoc Rifle", &Havoc);
+						ImGui::SameLine();
+						ImGui::Checkbox("Devotion LMG", &Devotion);
+						ImGui::SameLine();
+						ImGui::Checkbox("L-Star EMG", &LSTAR);
+						ImGui::SameLine();
+						ImGui::Checkbox("Triple-Take", &TripleTake);
+						ImGui::SameLine();
+						ImGui::Checkbox("Volt", &Volt);
 
-				    ImGui::Checkbox("Nemesis Burst AR", &Nemesis);
-			    }
+						ImGui::Checkbox("Nemesis Burst AR", &Nemesis);
+					}
 
-			    if (ImGui::CollapsingHeader("Shotguns", nullptr)) {
-				    ImGui::Checkbox("Mozambique", &Mozambique);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("EVA-8 Auto", &EVA8);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("Peacekeeper", &Peacekeeper);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("Mastiff", &Mastiff);
-			    }
+					if (ImGui::CollapsingHeader("Shotguns", nullptr)) {
+						ImGui::Checkbox("Mozambique", &Mozambique);
+						ImGui::SameLine();
+						ImGui::Checkbox("EVA-8 Auto", &EVA8);
+						ImGui::SameLine();
+						ImGui::Checkbox("Peacekeeper", &Peacekeeper);
+						ImGui::SameLine();
+						ImGui::Checkbox("Mastiff", &Mastiff);
+					}
 
-			    if (ImGui::CollapsingHeader("Snipers", nullptr)) {
-				    ImGui::Checkbox("Longbow DMR", &Longbow);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("Charge Rifle", &ChargeRifle);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("Sentinel", &Sentinel);
-			    }
-			    
-			    if (ImGui::CollapsingHeader("Legendary Weapons", nullptr)) {
-				    ImGui::Checkbox("Wingman", &Wingman);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("Prowler Burst SMG", &Prowler);
-				    ImGui::SameLine();
-				    ImGui::Checkbox("Kraber .50-CAL Sniper", &Kraber);
-			    }
-
-			    ImGui::Separator();
-			    
-			    ImGui::Text("Advanced RCS Settings");
-			    ImGui::Checkbox("Enabled Advanced RCS", &AdvancedRCS);
-			    if (AdvancedRCS) {
-			    	ImGui::Separator();
-			    	ImGui::Text("Weapon Intensity Settings");
-			    	if (ImGui::CollapsingHeader("Light", nullptr)) {
-			    		if (P2020) {
-			    			ImGui::Text("P2020");
-					    	ImGui::SliderFloat("Pitch##AdvancedP2020", &P2020Pitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the P2020.");
-					    	ImGui::SliderFloat("Yaw##AdvancedP2020", &P2020Yaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the P2020.");
-			    		}
-			    		
-			    		if (RE45) {
-			    			ImGui::Text("RE-45 Auto");
-					    	ImGui::SliderFloat("Pitch##AdvancedRE45", &RE45Pitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the RE-45 Auto.");
-					    	ImGui::SliderFloat("Yaw##AdvancedRE45", &RE45Yaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the RE-45 Auto.");
-			    		}
-			    		
-			    		if (Alternator) {
-			    			ImGui::Text("Alternator SMG");
-					    	ImGui::SliderFloat("Pitch##AdvancedAlternator", &AlternatorPitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the Alternator SMG.");
-					    	ImGui::SliderFloat("Yaw##AdvancedAlternator", &AlternatorYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the Alternator SMG.");
-			    		}
-			    		
-			    		if (R99) {
-			    			ImGui::Text("R-99 SMG");
-					    	ImGui::SliderFloat("Pitch##AdvancedR99", &R99Pitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the R-99.");
-					    	ImGui::SliderFloat("Yaw##AdvancedR99", &R99Yaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the R-99.");
-			    		}
-			    		
-			    		if (R301) {
-			    			ImGui::Text("R-301 Carbine");
-					    	ImGui::SliderFloat("Pitch##AdvancedR301", &R301Pitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the R-301 Carbine.");
-					    	ImGui::SliderFloat("Yaw##AdvancedR301", &R301Yaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the R-301 Carbine.");
-			    		}
-			    		
-			    		if (Spitfire) {
-			    			ImGui::Text("M600 Spitfire");
-					    	ImGui::SliderFloat("Pitch##AdvancedSpitfire", &SpitfirePitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the M600 Spitfire.");
-					    	ImGui::SliderFloat("Yaw##AdvancedSpitfire", &SpitfireYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the M600 Spitfire.");
-			    		}
-			    		
-			    		if (G7) {
-			    			ImGui::Text("G7 Scout");
-					    	ImGui::SliderFloat("Pitch##AdvancedG7", &G7Pitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the G7 Scout.");
-					    	ImGui::SliderFloat("Yaw##AdvancedG7", &G7Yaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the G7 Scout.");
-			    		}
-			    	}
-			    	
-			    	if (ImGui::CollapsingHeader("Heavy", nullptr)) {
-			    		if (Flatline) {
-			    			ImGui::Text("VK-47 Flatline");
-					    	ImGui::SliderFloat("Pitch##AdvancedFlatline", &FlatlinePitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the VK-47 Flatline.");
-					    	ImGui::SliderFloat("Yaw##AdvancedFlatline", &FlatlineYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the VK-47 Flatline.");
-			    		}
-			    		
-			    		if (Hemlock) {
-			    			ImGui::Text("Hemlock Burst AR");
-					    	ImGui::SliderFloat("Pitch##AdvancedHemlock", &HemlockPitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the Hemlock Burst AR.");
-					    	ImGui::SliderFloat("Yaw##AdvancedHemlock", &HemlockYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the Hemlock Burst AR.");
-			    		}
-			    		
-			    		if (Repeater) {
-			    			ImGui::Text("30-30 Repeater");
-					    	ImGui::SliderFloat("Pitch##AdvancedRepeater", &RepeaterPitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the 30-30 Repeater.");
-					    	ImGui::SliderFloat("Yaw##AdvancedRepeater", &RepeaterYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the 30-30 Repeater.");
-			    		}
-			    		
-			    		if (Rampage) {
-			    			ImGui::Text("Rampage LMG");
-					    	ImGui::SliderFloat("Pitch##AdvancedRampage", &RampagePitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the Rampage LMG.");
-					    	ImGui::SliderFloat("Yaw##AdvancedRampage", &RampageYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the Rampage LMG.");
-			    		}
-			    		
-			    		if (CARSMG) {
-			    			ImGui::Text("C.A.R SMG");
-					    	ImGui::SliderFloat("Pitch##AdvancedCARSMG", &CARSMGPitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the C.A.R SMG.");
-					    	ImGui::SliderFloat("Yaw##AdvancedCARSMG", &CARSMGYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the C.A.R SMG.");
-			    		}
-			    	}
-			    	
-				if (ImGui::CollapsingHeader("Energy", nullptr)) {
-			    		if (Havoc) {
-			    			ImGui::Text("Havoc");
-					    	ImGui::SliderFloat("Pitch##AdvancedHavoc", &HavocPitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the Havoc Rifle.");
-					    	ImGui::SliderFloat("Yaw##AdvancedHavoc", &HavocYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the Havoc Rifle.");
-			    		}
-			    		
-			    		if (Devotion) {
-			    			ImGui::Text("Devotion LMG");
-					    	ImGui::SliderFloat("Pitch##AdvancedDevotion", &DevotionPitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the Devotion LMG.");
-					    	ImGui::SliderFloat("Yaw##AdvancedDevotion", &DevotionYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the Devotion LMG.");
-			    		}
-			    		
-			    		if (LSTAR) {
-			    			ImGui::Text("L-Star EMG");
-					    	ImGui::SliderFloat("Pitch##AdvancedLSTAR", &LSTARPitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the L-Star EMG.");
-					    	ImGui::SliderFloat("Yaw##AdvancedLSTAR", &LSTARYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the L-Star EMG.");
-			    		}
-			    		
-			    		if (TripleTake) {
-			    			ImGui::Text("Triple-Take");
-					    	ImGui::SliderFloat("Pitch##AdvancedTripleTake", &TripleTakePitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the Triple-Take.");
-					    	ImGui::SliderFloat("Yaw##AdvancedTripleTake", &TripleTakeYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the Triple-Take.");
-			    		}
-			    		
-			    		if (Volt) {
-			    			ImGui::Text("Volt");
-					    	ImGui::SliderFloat("Pitch##AdvancedVolt", &VoltPitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the Volt.");
-					    	ImGui::SliderFloat("Yaw##AdvancedVolt", &VoltYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the Volt.");
-			    		}
-			    		
-			    		if (Nemesis) {
-			    			ImGui::Text("Nemesis Burst AR");
-					    	ImGui::SliderFloat("Pitch##AdvancedNemesis", &NemesisPitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the Nemesis Burst AR.");
-					    	ImGui::SliderFloat("Yaw##AdvancedNemesis", &NemesisYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the Nemesis Burst AR.");
-			    		}
+					if (ImGui::CollapsingHeader("Snipers", nullptr)) {
+						ImGui::Checkbox("Longbow DMR", &Longbow);
+						ImGui::SameLine();
+						ImGui::Checkbox("Charge Rifle", &ChargeRifle);
+						ImGui::SameLine();
+						ImGui::Checkbox("Sentinel", &Sentinel);
+					}
+					
+					if (ImGui::CollapsingHeader("Legendary Weapons", nullptr)) {
+						ImGui::Checkbox("Wingman", &Wingman);
+						ImGui::SameLine();
+						ImGui::Checkbox("Prowler Burst SMG", &Prowler);
+						ImGui::SameLine();
+						ImGui::Checkbox("Kraber .50-CAL Sniper", &Kraber);
+					}
 				}
-				
-				if (ImGui::CollapsingHeader("Shotguns", nullptr)) {
-			    		if (Mozambique) {
-			    			ImGui::Text("Mozambique");
-					    	ImGui::SliderFloat("Pitch##AdvancedMozambique", &MozambiquePitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the Mozambique.");
-					    	ImGui::SliderFloat("Yaw##AdvancedMozambique", &MozambiqueYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the Mozambique.");
-			    		}
-			    		
-			    		if (EVA8) {
-			    			ImGui::Text("EVA-8 Auto");
-					    	ImGui::SliderFloat("Pitch##AdvancedEVA8", &EVA8Pitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the EVA-8 Auto.");
-					    	ImGui::SliderFloat("Yaw##AdvancedEVA8", &EVA8Yaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the EVA-8 Auto.");
-			    		}
-			    		
-			    		if (Peacekeeper) {
-			    			ImGui::Text("Peacekeeper");
-					    	ImGui::SliderFloat("Pitch##AdvancedPeacekeeper", &PeacekeeperPitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the Peacekeeper.");
-					    	ImGui::SliderFloat("Yaw##AdvancedPeacekeeper", &PeacekeeperYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the Peacekeeper.");
-			    		}
-			    		
-			    		if (Mastiff) {
-			    			ImGui::Text("Mastiff");
-					    	ImGui::SliderFloat("Pitch##AdvancedMastiff", &MastiffPitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the Mastiff.");
-					    	ImGui::SliderFloat("Yaw##AdvancedMastiff", &MastiffYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the Mastiff.");
-			    		}
+				ImGui::EndChild();
+			}
+			
+			ImGui::Text("Advanced RCS");
+			if (ImGui::BeginChild("RCS Advanced", ImVec2(TabSize.x - TabSize.x , (TabSize.y - TabSize.y) + 285), true)) {
+				ImGui::Text("Advanced RCS Tab");
+				ImGui::Checkbox("Enabled Advanced RCS", &AdvancedRCS);
+					if (AdvancedRCS) {
+						ImGui::Separator();
+						ImGui::Text("Weapon Intensity Settings");
+						if (ImGui::CollapsingHeader("Light", nullptr)) {
+							if (P2020) {
+								ImGui::Text("P2020");
+								ImGui::SliderFloat("Pitch##AdvancedP2020", &P2020Pitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the P2020.");
+								ImGui::SliderFloat("Yaw##AdvancedP2020", &P2020Yaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the P2020.");
+							}
+							
+							if (RE45) {
+								ImGui::Text("RE-45 Auto");
+								ImGui::SliderFloat("Pitch##AdvancedRE45", &RE45Pitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the RE-45 Auto.");
+								ImGui::SliderFloat("Yaw##AdvancedRE45", &RE45Yaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the RE-45 Auto.");
+							}
+							
+							if (Alternator) {
+								ImGui::Text("Alternator SMG");
+								ImGui::SliderFloat("Pitch##AdvancedAlternator", &AlternatorPitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the Alternator SMG.");
+								ImGui::SliderFloat("Yaw##AdvancedAlternator", &AlternatorYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the Alternator SMG.");
+							}
+							
+							if (R99) {
+								ImGui::Text("R-99 SMG");
+								ImGui::SliderFloat("Pitch##AdvancedR99", &R99Pitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the R-99.");
+								ImGui::SliderFloat("Yaw##AdvancedR99", &R99Yaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the R-99.");
+							}
+							
+							if (R301) {
+								ImGui::Text("R-301 Carbine");
+								ImGui::SliderFloat("Pitch##AdvancedR301", &R301Pitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the R-301 Carbine.");
+								ImGui::SliderFloat("Yaw##AdvancedR301", &R301Yaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the R-301 Carbine.");
+							}
+							
+							if (Spitfire) {
+								ImGui::Text("M600 Spitfire");
+								ImGui::SliderFloat("Pitch##AdvancedSpitfire", &SpitfirePitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the M600 Spitfire.");
+								ImGui::SliderFloat("Yaw##AdvancedSpitfire", &SpitfireYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the M600 Spitfire.");
+							}
+							
+							if (G7) {
+								ImGui::Text("G7 Scout");
+								ImGui::SliderFloat("Pitch##AdvancedG7", &G7Pitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the G7 Scout.");
+								ImGui::SliderFloat("Yaw##AdvancedG7", &G7Yaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the G7 Scout.");
+							}
+						}
+						
+						if (ImGui::CollapsingHeader("Heavy", nullptr)) {
+							if (Flatline) {
+								ImGui::Text("VK-47 Flatline");
+								ImGui::SliderFloat("Pitch##AdvancedFlatline", &FlatlinePitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the VK-47 Flatline.");
+								ImGui::SliderFloat("Yaw##AdvancedFlatline", &FlatlineYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the VK-47 Flatline.");
+							}
+
+							
+							
+							if (Hemlock) {
+								ImGui::Text("Hemlock Burst AR");
+								ImGui::SliderFloat("Pitch##AdvancedHemlock", &HemlockPitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the Hemlock Burst AR.");
+								ImGui::SliderFloat("Yaw##AdvancedHemlock", &HemlockYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the Hemlock Burst AR.");
+							}
+							
+							if (Repeater) {
+								ImGui::Text("30-30 Repeater");
+								ImGui::SliderFloat("Pitch##AdvancedRepeater", &RepeaterPitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the 30-30 Repeater.");
+								ImGui::SliderFloat("Yaw##AdvancedRepeater", &RepeaterYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the 30-30 Repeater.");
+							}
+							
+							if (Rampage) {
+								ImGui::Text("Rampage LMG");
+								ImGui::SliderFloat("Pitch##AdvancedRampage", &RampagePitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the Rampage LMG.");
+								ImGui::SliderFloat("Yaw##AdvancedRampage", &RampageYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the Rampage LMG.");
+							}
+							
+							if (CARSMG) {
+								ImGui::Text("C.A.R SMG");
+								ImGui::SliderFloat("Pitch##AdvancedCARSMG", &CARSMGPitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the C.A.R SMG.");
+								ImGui::SliderFloat("Yaw##AdvancedCARSMG", &CARSMGYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the C.A.R SMG.");
+							}
+						}
+						
+					if (ImGui::CollapsingHeader("Energy", nullptr)) {
+							if (Havoc) {
+								ImGui::Text("Havoc");
+								ImGui::SliderFloat("Pitch##AdvancedHavoc", &HavocPitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the Havoc Rifle.");
+								ImGui::SliderFloat("Yaw##AdvancedHavoc", &HavocYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the Havoc Rifle.");
+							}
+							
+							if (Devotion) {
+								ImGui::Text("Devotion LMG");
+								ImGui::SliderFloat("Pitch##AdvancedDevotion", &DevotionPitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the Devotion LMG.");
+								ImGui::SliderFloat("Yaw##AdvancedDevotion", &DevotionYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the Devotion LMG.");
+							}
+							
+							if (LSTAR) {
+								ImGui::Text("L-Star EMG");
+								ImGui::SliderFloat("Pitch##AdvancedLSTAR", &LSTARPitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the L-Star EMG.");
+								ImGui::SliderFloat("Yaw##AdvancedLSTAR", &LSTARYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the L-Star EMG.");
+							}
+							
+							if (TripleTake) {
+								ImGui::Text("Triple-Take");
+								ImGui::SliderFloat("Pitch##AdvancedTripleTake", &TripleTakePitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the Triple-Take.");
+								ImGui::SliderFloat("Yaw##AdvancedTripleTake", &TripleTakeYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the Triple-Take.");
+							}
+							
+							if (Volt) {
+								ImGui::Text("Volt");
+								ImGui::SliderFloat("Pitch##AdvancedVolt", &VoltPitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the Volt.");
+								ImGui::SliderFloat("Yaw##AdvancedVolt", &VoltYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the Volt.");
+							}
+							
+							if (Nemesis) {
+								ImGui::Text("Nemesis Burst AR");
+								ImGui::SliderFloat("Pitch##AdvancedNemesis", &NemesisPitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the Nemesis Burst AR.");
+								ImGui::SliderFloat("Yaw##AdvancedNemesis", &NemesisYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the Nemesis Burst AR.");
+							}
+					}
+					
+					if (ImGui::CollapsingHeader("Shotguns", nullptr)) {
+							if (Mozambique) {
+								ImGui::Text("Mozambique");
+								ImGui::SliderFloat("Pitch##AdvancedMozambique", &MozambiquePitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the Mozambique.");
+								ImGui::SliderFloat("Yaw##AdvancedMozambique", &MozambiqueYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the Mozambique.");
+							}
+							
+							if (Peacekeeper) {
+								ImGui::Text("Peacekeeper");
+								ImGui::SliderFloat("Pitch##AdvancedPeacekeeper", &PeacekeeperPitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the Peacekeeper.");
+								ImGui::SliderFloat("Yaw##AdvancedPeacekeeper", &PeacekeeperYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the Peacekeeper.");
+							}
+							
+							if (Mastiff) {
+								ImGui::Text("Mastiff");
+								ImGui::SliderFloat("Pitch##AdvancedMastiff", &MastiffPitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the Mastiff.");
+								ImGui::SliderFloat("Yaw##AdvancedMastiff", &MastiffYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the Mastiff.");
+							}
+					}
+					
+					if (ImGui::CollapsingHeader("Snipers", nullptr)) {
+							if (Longbow) {
+								ImGui::Text("Longbow DMR");
+								ImGui::SliderFloat("Pitch##AdvancedLongbow", &LongbowPitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the Longbow DMR.");
+								ImGui::SliderFloat("Yaw##AdvancedLongbow", &LongbowYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the Longbow DMR.");
+							}
+							
+							if (ChargeRifle) {
+								ImGui::Text("Charge Rifle");
+								ImGui::SliderFloat("Pitch##AdvancedChargeRifle", &ChargeRiflePitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the Charge Rifle.");
+								ImGui::SliderFloat("Yaw##AdvancedChargeRifle", &ChargeRifleYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the Charge Rifle.");
+							}
+							
+							if (Sentinel) {
+								ImGui::Text("Sentinel");
+								ImGui::SliderFloat("Pitch##AdvancedSentinel", &SentinelPitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the Sentinel.");
+								ImGui::SliderFloat("Yaw##AdvancedSentinel", &SentinelYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the Sentinel.");
+							}
+					}
+					
+					if (ImGui::CollapsingHeader("Legendary", nullptr)) {
+							if (Wingman) {
+								ImGui::Text("Wingman");
+								ImGui::SliderFloat("Pitch##AdvancedWingman", &WingmanPitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the Wingman.");
+								ImGui::SliderFloat("Yaw##AdvancedWingman", &WingmanYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the Wingman.");
+							}
+
+							if (EVA8) {
+								ImGui::Text("EVA-8 Auto");
+								ImGui::SliderFloat("Pitch##AdvancedEVA8", &EVA8Pitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the EVA-8 Auto.");
+								ImGui::SliderFloat("Yaw##AdvancedEVA8", &EVA8Yaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the EVA-8 Auto.");
+							}
+							
+							if (Kraber) {
+								ImGui::Text("Kraber .50-CAL Sniper");
+								ImGui::SliderFloat("Pitch##AdvancedKraber", &KraberPitch, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Pitch Power for the Kraber .50-CAL Sniper.");
+								ImGui::SliderFloat("Yaw##AdvancedKraber", &KraberYaw, 1, 50, "%.1f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Yaw Power for the Kraber .50-CAL Sniper.");
+							}
+					}
 				}
-				
-				if (ImGui::CollapsingHeader("Snipers", nullptr)) {
-			    		if (Longbow) {
-			    			ImGui::Text("Longbow DMR");
-					    	ImGui::SliderFloat("Pitch##AdvancedLongbow", &LongbowPitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the Longbow DMR.");
-					    	ImGui::SliderFloat("Yaw##AdvancedLongbow", &LongbowYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the Longbow DMR.");
-			    		}
-			    		
-			    		if (ChargeRifle) {
-			    			ImGui::Text("Charge Rifle");
-					    	ImGui::SliderFloat("Pitch##AdvancedChargeRifle", &ChargeRiflePitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the Charge Rifle.");
-					    	ImGui::SliderFloat("Yaw##AdvancedChargeRifle", &ChargeRifleYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the Charge Rifle.");
-			    		}
-			    		
-			    		if (Sentinel) {
-			    			ImGui::Text("Sentinel");
-					    	ImGui::SliderFloat("Pitch##AdvancedSentinel", &SentinelPitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the Sentinel.");
-					    	ImGui::SliderFloat("Yaw##AdvancedSentinel", &SentinelYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the Sentinel.");
-			    		}
-				}
-				
-				if (ImGui::CollapsingHeader("Legendary", nullptr)) {
-			    		if (Wingman) {
-			    			ImGui::Text("Wingman");
-					    	ImGui::SliderFloat("Pitch##AdvancedWingman", &WingmanPitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the Wingman.");
-					    	ImGui::SliderFloat("Yaw##AdvancedWingman", &WingmanYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the Wingman.");
-			    		}
-			    		
-			    		if (Prowler) {
-			    			ImGui::Text("Prowler Burst SMG");
-					    	ImGui::SliderFloat("Pitch##AdvancedProwler", &ProwlerPitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the Prowler Burst SMG.");
-					    	ImGui::SliderFloat("Yaw##AdvancedProwler", &ProwlerYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the Prowler Burst SMG.");
-			    		}
-			    		
-			    		if (Kraber) {
-			    			ImGui::Text("Kraber .50-CAL Sniper");
-					    	ImGui::SliderFloat("Pitch##AdvancedKraber", &KraberPitch, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Pitch Power for the Kraber .50-CAL Sniper.");
-					    	ImGui::SliderFloat("Yaw##AdvancedKraber", &KraberYaw, 1, 50, "%.1f");
-					    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Yaw Power for the Kraber .50-CAL Sniper.");
-			    		}
-				}
-			    }
-		    }
+			ImGui::EndChild();
+			}
+
 		    ImGui::EndTabItem();
 		    UpdateRCSList();
 	    	}
-    	}
-    }
+		} //End of render UI
 
     bool Save() {
         try {
@@ -752,7 +753,7 @@ struct RCS {
     	if (AdvancedRCS) { //IDs from Utils/Weapons.hpp, may need updating after game update
     		int weaponHeld = Myself->WeaponIndex;
     		//Light Weapons
-    		if (weaponHeld == 105) { //P2020
+    		if (weaponHeld == 106) { //P2020
     			RCS::AdvancedPitchPower = RCS::P2020Pitch;
     			RCS::AdvancedYawPower = RCS::P2020Yaw;
     		}
@@ -764,7 +765,7 @@ struct RCS {
     			RCS::AdvancedPitchPower = RCS::AlternatorPitch;
     			RCS::AdvancedYawPower = RCS::AlternatorYaw;
     		}
-    		if (weaponHeld == 104) { //R-99
+    		if (weaponHeld == 105) { //R-99
     			RCS::AdvancedPitchPower = RCS::R99Pitch;
     			RCS::AdvancedYawPower = RCS::R99Yaw;
     		}
@@ -772,16 +773,16 @@ struct RCS {
     			RCS::AdvancedPitchPower = RCS::R301Pitch;
     			RCS::AdvancedYawPower = RCS::R301Yaw;
     		}
-    		if (weaponHeld == 106) { //Spitfire
+    		if (weaponHeld == 107) { //Spitfire
     			RCS::AdvancedPitchPower = RCS::SpitfirePitch;
     			RCS::AdvancedYawPower = RCS::SpitfireYaw;
     		}
-    		if (weaponHeld == 89) { //G7
+    		if (weaponHeld == 90) { //G7
     			RCS::AdvancedPitchPower = RCS::G7Pitch;
     			RCS::AdvancedYawPower = RCS::G7Yaw;
     		}
     		//Heavy Weapons
-    		if (weaponHeld == 112) { //CARSMG
+    		if (weaponHeld == 113) { //CARSMG
     			RCS::AdvancedPitchPower = RCS::CARSMGPitch;
     			RCS::AdvancedYawPower = RCS::CARSMGYaw;
     		}
@@ -789,32 +790,32 @@ struct RCS {
     			RCS::AdvancedPitchPower = RCS::RampagePitch;
     			RCS::AdvancedYawPower = RCS::RampageYaw;
     		}
-    		if (weaponHeld == 111) { //Repeater
+    		if (weaponHeld == 112) { //Repeater
     			RCS::AdvancedPitchPower = RCS::RepeaterPitch;
     			RCS::AdvancedYawPower = RCS::RepeaterYaw;
     		}
-    		if (weaponHeld == 90) { //Hemlock
+    		if (weaponHeld == 91) { //Hemlock
     			RCS::AdvancedPitchPower = RCS::HemlockPitch;
     			RCS::AdvancedYawPower = RCS::HemlockYaw;
     		}
-    		if (weaponHeld == 88) { //Flatline
+    		if (weaponHeld == 89) { //Flatline
     			RCS::AdvancedPitchPower = RCS::FlatlinePitch;
     			RCS::AdvancedYawPower = RCS::FlatlineYaw;
     		}
     		//Energy Weapons
-    		if (weaponHeld == 113) { //Nemesis
+    		if (weaponHeld == 114) { //Nemesis
     			RCS::AdvancedPitchPower = RCS::NemesisPitch;
     			RCS::AdvancedYawPower = RCS::NemesisYaw;
     		}
-    		if (weaponHeld == 110) { //Volt
+    		if (weaponHeld == 111) { //Volt
     			RCS::AdvancedPitchPower = RCS::VoltPitch;
     			RCS::AdvancedYawPower = RCS::VoltYaw;
     		}
-    		if (weaponHeld == 107) { //TripleTake
+    		if (weaponHeld == 108) { //TripleTake
     			RCS::AdvancedPitchPower = RCS::TripleTakePitch;
     			RCS::AdvancedYawPower = RCS::TripleTakeYaw;
     		}
-    		if (weaponHeld == 93) { //LSTAR
+    		if (weaponHeld == 94) { //LSTAR
     			RCS::AdvancedPitchPower = RCS::LSTARPitch;
     			RCS::AdvancedYawPower = RCS::LSTARYaw;
     		}
@@ -827,19 +828,19 @@ struct RCS {
     			RCS::AdvancedYawPower = RCS::HavocYaw;
     		}
     		//Shotguns
-    		if (weaponHeld == 96) { //Mozambique
+    		if (weaponHeld == 97) { //Mozambique
     			RCS::AdvancedPitchPower = RCS::MozambiquePitch;
     			RCS::AdvancedYawPower = RCS::MozambiqueYaw;
     		}
-    		if (weaponHeld == 87) { //EVA8
+    		if (weaponHeld == 88) { //EVA8
     			RCS::AdvancedPitchPower = RCS::EVA8Pitch;
     			RCS::AdvancedYawPower = RCS::EVA8Yaw;
     		}
-    		if (weaponHeld == 103) { //Peacekeeper
+    		if (weaponHeld == 104) { //Peacekeeper
     			RCS::AdvancedPitchPower = RCS::PeacekeeperPitch;
     			RCS::AdvancedYawPower = RCS::PeacekeeperYaw;
     		}
-    		if (weaponHeld == 95) { //Mastiff
+    		if (weaponHeld == 96) { //Mastiff
     			RCS::AdvancedPitchPower = RCS::MastiffPitch;
     			RCS::AdvancedYawPower = RCS::MastiffYaw;
     		}
@@ -865,7 +866,7 @@ struct RCS {
     			RCS::AdvancedPitchPower = RCS::ProwlerPitch;
     			RCS::AdvancedYawPower = RCS::ProwlerYaw;
     		}
-    		if (weaponHeld == 92) { //Kraber
+    		if (weaponHeld == 93) { //Kraber
     			RCS::AdvancedPitchPower = RCS::KraberPitch;
     			RCS::AdvancedYawPower = RCS::KraberYaw;
     		}
