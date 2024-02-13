@@ -26,6 +26,18 @@ constexpr char ConfigFile[] = "config.ini";
     Config::section::key = reader.GetInteger(#section, #key, Config::section::key);
 
 namespace Config {
+    namespace Home {
+    	int Layout = 1;
+    	bool TeamGamemode = true;
+        int AsciiArt = 5; //change the starting ascii art. 0 = cat 1, 1 = shotgun, 2 = glock, 3 = racoon, 4 = cat 2,
+        int AsciiArtSpeed = 100; //Speed (in milliseconds) of the ascii art
+    	int Style = 5;
+    	int Color = 5;
+        int MenuX = 754;
+        int MenuY = 605;
+        bool ErrorLogging = false;
+    };
+
     namespace Aimbot {
         bool Enabled = true;
         //int AimBind = 56;
@@ -34,8 +46,6 @@ namespace Config {
         int HitBox = 2;
         int AimbotMode = 0;
         
-        bool OnFire = true;
-        bool OnADS = true;
         bool VisCheck = true;
         bool TeamCheck = true;
              
@@ -93,8 +103,6 @@ namespace Config {
 	
     //---------------Advanced---------------//
     bool AdvancedAim = false;
-    bool AdvancedFire = true;
-    bool AdvancedADS = false;
     //Aimbot Mode 0 - xap-client
     bool AdvancedClosestHitbox = true;
     float AdvancedHitbox = 2;
@@ -143,67 +151,6 @@ namespace Config {
     int KraberHitBox = 2;
     int ThrowingKnifeHitBox = 2;
     
-    //Advanced OnFire & OnADS - Aimbot Mode 0 & 1 - xap-client & grinder
-    bool P2020Fire = true;
-    bool P2020ADS = false;
-    bool RE45Fire = true;
-    bool RE45ADS = false;
-    bool AlternatorFire = true;
-    bool AlternatorADS = false;
-    bool R99Fire = true;
-    bool R99ADS = false;
-    bool R301Fire = true;
-    bool R301ADS = false;
-    bool SpitfireFire = true;
-    bool SpitfireADS = false;
-    bool G7Fire = true;
-    bool G7ADS = false;
-    bool FlatlineFire = true;
-    bool FlatlineADS = false;
-    bool HemlockFire = true;
-    bool HemlockADS = false;
-    bool RepeaterFire = true;
-    bool RepeaterADS = false;
-    bool RampageFire = true;
-    bool RampageADS = false;
-    bool CARSMGFire = true;
-    bool CARSMGADS = false;
-    bool HavocFire = true;
-    bool HavocADS = false;
-    bool DevotionFire = true;
-    bool DevotionADS = false;
-    bool LSTARFire = true;
-    bool LSTARADS = false;
-    bool TripleTakeFire = true;
-    bool TripleTakeADS = false;
-    bool VoltFire = true;
-    bool VoltADS = false;
-    bool NemesisFire = true;
-    bool NemesisADS = false;
-    bool MozambiqueFire = true;
-    bool MozambiqueADS = false;
-    bool EVA8Fire = true;
-    bool EVA8ADS = false;
-    bool PeacekeeperFire = true;
-    bool PeacekeeperADS = false;
-    bool MastiffFire = true;
-    bool MastiffADS = false;
-    bool LongbowFire = true;
-    bool LongbowADS = false;
-    bool ChargeRifleFire = true;
-    bool ChargeRifleADS = false;
-    bool SentinelFire = true;
-    bool SentinelADS = false;
-    bool WingmanFire = true;
-    bool WingmanADS = false;
-    bool ProwlerFire = true;
-    bool ProwlerADS = false;
-    bool KraberFire = true;
-    bool KraberADS = false;
-    bool BocekFire = true;
-    bool BocekADS = false;
-    bool ThrowingKnifeFire = true;
-    bool ThrowingKnifeADS = false;
     //Advanced Speed, Smooth + Hitbox - Aimbot Mode 0 - xap-client
     bool P2020ClosestHitbox = true;
     float P2020Hitbox = 2;
@@ -692,201 +639,6 @@ namespace Config {
 	float KraberYaw = 10;
     };
     
-    namespace Glow {
-        // Glow
-        bool GlowEnabled = false; //OLD GLOW
-        bool NewGlow = true;
-        float GlowMaxDistance = 200;
-        int GlowColorMode = 0;
-        int GlowColorShieldMode = 0;
-        int GlowRadius = 64;
-        int InsideFunction = 2; //Leave
-        int OutlineFunction = 125; //Leave
-        int BodyStyle = 13;
-        int OutlineStyle = 1;
-        bool ItemGlow = true;
-        //Colors
-        float InvisibleGlowColorR = 0.999;
-        float InvisibleGlowColorG = 0;
-        float InvisibleGlowColorB = 0;
-        float VisibleGlowColorR = 0;
-        float VisibleGlowColorG = 0.999;
-        float VisibleGlowColorB = 0;
-        float LowGlowColorR = 0.99;
-        float LowGlowColorG = 0.99;
-        float LowGlowColorB = 0;
-        float RedShieldColorR = 0.99;
-        float RedShieldColorG = 0;
-        float RedShieldColorB = 0;
-        float PurpleShieldColorR = 0.5;
-        float PurpleShieldColorG = 0;
-        float PurpleShieldColorB = 0.5;
-        float BlueShieldColorR = 0;
-        float BlueShieldColorG = 0.5;
-        float BlueShieldColorB = 0.999;
-        float GreyShieldColorR = 0.540;
-        float GreyShieldColorG = 0.545;
-        float GreyShieldColorB = 0.545;
-    };
-
-    namespace Sense {
-    //Drawings
-    bool VisibilityCheck = false;
-    bool DrawBox = true;
-    bool DrawFilledBox = false;
-    float BoxThickness = 1.0;
-    bool Skeleton = true;
-    float SkeletonThickness = 1.0;
-    float ESPMaxDistance = 200;
-    bool ShowNear = false;
-    bool DrawSeer = false;
-    bool DrawStatus = true;
-    bool HealthBar = true;
-    bool ShieldBar = true;
-    bool DrawWeapon = false;
-    bool ShowLegend = false;
-    bool WeaponColorType = false;
-    float BarThickness = 2.0;
-    bool ShowMaxStatusValues = true;
-    bool DrawDistance = false;
-    bool DrawFOVCircle = true;
-    bool DrawFilledFOVCircle = false;
-    float FOVThickness = 1.0;
-    bool DrawNames = false;
-    int TracerPos = 0;
-    int TracerBone = 0;
-    bool DrawTracers = false;
-    float TracerThickness = 2.0;
-    bool ShowSpectators = true;
-    bool DrawCrosshair = true;
-    float CrosshairSize = 7.0;
-    float CrosshairThickness = 1.0;
-    
-    //Settings
-    float GameFOV = 120;
-    bool ShowTeam = false;
-    bool TeamNames = false;
-    
-    //Player Info Positions (0-2 = Top, 3-4 = bottom)
-    int LegendPosition = 2;
-    int NamePosition = 3;
-    int DistancePosition = 4;
-    int StatusPosition = 0;
-    int WeaponPosition = 1;
-        
-    //Colors
-    float InvisibleBoxColorR = 0.99;
-    float InvisibleBoxColorG = 0;
-    float InvisibleBoxColorB = 0;
-    float InvisibleBoxColorA = 0.99;
-    float VisibleBoxColorR = 0;
-    float VisibleBoxColorG = 0.99;
-    float VisibleBoxColorB = 0;
-    float VisibleBoxColorA = 0.99;
-    float InvisibleFilledBoxColorR = 0;
-    float InvisibleFilledBoxColorG = 0;
-    float InvisibleFilledBoxColorB = 0;
-    float InvisibleFilledBoxColorA = 0.11;
-    float VisibleFilledBoxColorR = 0;
-    float VisibleFilledBoxColorG = 0;
-    float VisibleFilledBoxColorB = 0;
-    float VisibleFilledBoxColorA = 0.11;
-    float InvisibleTracerColorR = 0.99;
-    float InvisibleTracerColorG = 0;
-    float InvisibleTracerColorB = 0;
-    float InvisibleTracerColorA = 0.99;
-    float VisibleTracerColorR = 0;
-    float VisibleTracerColorG = 0.99;
-    float VisibleTracerColorB = 0;
-    float VisibleTracerColorA = 0.99;
-    float InvisibleSkeletonColorR = 0.99;
-    float InvisibleSkeletonColorG = 0.99;
-    float InvisibleSkeletonColorB = 0.99;
-    float InvisibleSkeletonColorA = 0.99;
-    float VisibleSkeletonColorR = 0.99;
-    float VisibleSkeletonColorG = 0.99;
-    float VisibleSkeletonColorB = 0.99;
-    float VisibleSkeletonColorA = 0.99;
-    float InvisibleNameColorR = 0.99;
-    float InvisibleNameColorG = 0.99;
-    float InvisibleNameColorB = 0.99;
-    float InvisibleNameColorA = 0.99;
-    float VisibleNameColorR = 0.99;
-    float VisibleNameColorG = 0.99;
-    float VisibleNameColorB = 0.99;
-    float VisibleNameColorA = 0.99;
-    float InvisibleDistanceColorR = 0.99;
-    float InvisibleDistanceColorG = 0.99;
-    float InvisibleDistanceColorB = 0.99;
-    float InvisibleDistanceColorA = 0.99;
-    float VisibleDistanceColorR = 0.99;
-    float VisibleDistanceColorG = 0.99;
-    float VisibleDistanceColorB = 0.99;
-    float VisibleDistanceColorA = 0.99;
-    float FOVColorR = 0.99;
-    float FOVColorG = 0.99;
-    float FOVColorB = 0.99;
-    float FOVColorA = 0.99;
-    float FilledFOVColorR = 0;
-    float FilledFOVColorG = 0;
-    float FilledFOVColorB = 0;
-    float FilledFOVColorA = 0.11;
-    float WeaponColorR = 0.99;
-    float WeaponColorG = 0.99;
-    float WeaponColorB = 0.99;
-    float WeaponColorA = 0.99;
-    float NearColorR = 0.99;
-    float NearColorG = 0.99;
-    float NearColorB = 0.99;
-    float NearColorA = 0.99;
-    float TeamColorR = 0;
-    float TeamColorG = 0.99;
-    float TeamColorB = 0.99;
-    float TeamColorA = 0.99;
-    float TeamNameColorR = 0.99;
-    float TeamNameColorG = 0.99;
-    float TeamNameColorB = 0.99;
-    float TeamNameColorA = 0.99;
-    float CrosshairColorR = 0.99;
-    float CrosshairColorG = 0.99;
-    float CrosshairColorB = 0.99;
-    float CrosshairColorA = 0.99;
-    //WeaponESP Colors
-    float LightWeaponColorR = 0.990;
-    float LightWeaponColorG = 0.768;
-    float LightWeaponColorB = 0.039;
-    float LightWeaponColorA = 0.99;
-    float HeavyWeaponColorR = 0.00990;
-    float HeavyWeaponColorG = 0.990;
-    float HeavyWeaponColorB = 0.761;
-    float HeavyWeaponColorA = 0.99;
-    float EnergyWeaponColorR = 0;
-    float EnergyWeaponColorG = 0.99;
-    float EnergyWeaponColorB = 0;
-    float EnergyWeaponColorA = 0.99;
-    float ShotgunWeaponColorR = 0.99;
-    float ShotgunWeaponColorG = 0;
-    float ShotgunWeaponColorB = 0;
-    float ShotgunWeaponColorA = 0.99;
-    float SniperWeaponColorR = 0.00990;
-    float SniperWeaponColorG = 0.337;
-    float SniperWeaponColorB = 0.990;
-    float SniperWeaponColorA = 0.99;
-    float LegendaryWeaponColorR = 0.99;
-    float LegendaryWeaponColorG = 0.530;
-    float LegendaryWeaponColorB = 0.945;
-    float LegendaryWeaponColorA = 0.99;
-    float MeleeWeaponColorR = 0.99;
-    float MeleeWeaponColorG = 0.99;
-    float MeleeWeaponColorB = 0.99;
-    float MeleeWeaponColorA = 0.99;
-    float ThrowableWeaponColorR = 0.990;
-    float ThrowableWeaponColorG = 0.974;
-    float ThrowableWeaponColorB = 0.0495;
-    float ThrowableWeaponColorA = 0.99;
-    
-    };
-
     namespace Triggerbot {
         bool Enabled = true;
         bool OnADS = true;
@@ -930,6 +682,122 @@ namespace Config {
 	bool Bocek = false;
 	bool Kraber = false;
 	bool Knife = false;
+    };
+    
+    namespace Glow {
+        // Glow
+        bool GlowEnabled = false; //OLD GLOW
+        bool NewGlow = true;
+        float GlowMaxDistance = 200;
+        int GlowColorMode = 0;
+        int GlowColorShieldMode = 0;
+        int GlowRadius = 64;
+        int InsideFunction = 2; //Leave
+        int OutlineFunction = 125; //Leave
+        int BodyStyle = 13;
+        int OutlineStyle = 1;
+        bool ItemGlow = true;
+        //Colors
+        float InvisibleGlowColorR = 0.999;
+        float InvisibleGlowColorG = 0;
+        float InvisibleGlowColorB = 0;
+        float VisibleGlowColorR = 0;
+        float VisibleGlowColorG = 0.999;
+        float VisibleGlowColorB = 0;
+        float LowGlowColorR = 0.99;
+        float LowGlowColorG = 0.99;
+        float LowGlowColorB = 0;
+        float RedShieldColorR = 0.99;
+        float RedShieldColorG = 0;
+        float RedShieldColorB = 0;
+        float PurpleShieldColorR = 0.5;
+        float PurpleShieldColorG = 0;
+        float PurpleShieldColorB = 0.5;
+        float BlueShieldColorR = 0;
+        float BlueShieldColorG = 0.5;
+        float BlueShieldColorB = 0.999;
+        float GreyShieldColorR = 0.540;
+        float GreyShieldColorG = 0.545;
+        float GreyShieldColorB = 0.545;
+    };
+    
+    namespace Sense {
+    //Drawings
+    bool VisibilityCheck = false;
+	bool DrawBoxes = true;
+	int BoxType = 0;
+	int BoxStyle = 0;
+    float BoxThickness = 1.0;
+
+    bool Skeleton = true;
+    float SkeletonThickness = 1.0;
+
+    bool HealthBar = true;
+    bool ShieldBar = true;
+
+	int BarMode = 2;
+    int BarStyle = 0;
+    int BarColorMode = 0;
+    bool BarBackground = false;
+    float BarThickness = 1.0f;
+	float BarThickness2 = 0.05f;
+    float BarHeight = 5.0f;
+    float BarWidth = 60.0f;
+	
+    float ESPMaxDistance = 200;
+    bool ShowNear = true;
+    bool DrawSeer = true;
+    bool DrawStatus = true;
+    bool DrawWeapon = false;
+    int WeaponColorType = 1;
+    bool ShowLegend = false;
+    bool ShowMaxStatusValues = true;
+    
+    bool DrawDistance = true;
+    bool DrawFOVCircle = true;
+    bool DrawFilledFOVCircle = false;
+    float FOVThickness = 1.0;
+    bool DrawNames = true;
+    int TracerPos = 0;
+    int TracerBone = 0;
+    bool DrawTracers = true;
+    float TracerThickness = 2.0;
+    bool ShowSpectators = true;
+    bool DrawCrosshair = true;
+    float CrosshairSize = 7.0;
+    float CrosshairThickness = 1.0;
+    
+    //Settings
+    float GameFOV = 120;
+    bool ShowTeam = false;
+    bool TeamNames = false;
+    
+    //Player Info Positions (0-2 = Top, 3-4 = bottom)
+    int LegendPosition = 2;
+    int NamePosition = 3;
+    int DistancePosition = 4;
+    int StatusPosition = 0;
+    int WeaponPosition = 1;
+    };
+
+	namespace Radar {
+		bool MiniMap = false;
+		float MiniMapRange = 100;
+		int MiniMapScaleX = 218;
+		int MiniMapScaleY = 218;
+		int MiniMapDotSize = 5;
+		int MiniMapBlackBGSize = 0;
+		bool MiniMapGuides = false;
+		
+		bool BigMap = false;
+	};
+
+    namespace Watermark {
+        bool Watermark = true;
+	    int WatermarkPosition = 0;
+	    bool Name = true;
+	    bool ProcessingSpeed = true;
+	    bool Spectators = true;
     };
     
     namespace Misc {
@@ -978,111 +846,131 @@ namespace Config {
 	    int SkinKRABER = 1;
     };
     
-    namespace Home {
-    	int Layout = 1;
-    	bool TeamGamemode = true;
-        int AsciiArt = 5; //change the starting ascii art. 0 = cat 1, 1 = shotgun, 2 = glock, 3 = racoon, 4 = cat 2,
-        int AsciiArtSpeed = 100; //Speed (in milliseconds) of the ascii art
-    	int Style = 5;
-    	int Color = 5;
-        int MenuX = 754;
-        int MenuY = 605;
-        bool ErrorLogging = false;
-    };
-};
-
-namespace Modules {
-    namespace Aimbot {
-        bool Enabled = true;
-        HitboxType Hitbox = HitboxType::UpperChest;
-        //InputKeyType AimBind = InputKeyType::MOUSE_Left;
-	//InputKeyType ExtraBind = InputKeyType::MOUSE_Right;
-        
-        bool OnFire = true;
-        bool OnADS = true;
-        
-        bool PredictMovement = true;
-        bool PredictBulletDrop = true;
-        float Speed = 20;
-        float Smooth = 0.9;
-        float FOV = 10;
-        float ZoomScale = 3.0;
-        float MinDistance = 1;
-        float HipfireDistance = 200;
-        float ZoomDistance = 200;
-        
-        //AdvancedHitbox
-        HitboxType P2020Hitbox = HitboxType::UpperChest;
-        HitboxType RE45Hitbox = HitboxType::UpperChest;
-        HitboxType AlternatorHitbox = HitboxType::UpperChest;
-        HitboxType R99Hitbox = HitboxType::UpperChest;
-        HitboxType R301Hitbox = HitboxType::UpperChest;
-        HitboxType SpitfireHitbox = HitboxType::UpperChest;
-        HitboxType G7Hitbox = HitboxType::UpperChest;
-        HitboxType FlatlineHitbox = HitboxType::UpperChest;
-        HitboxType HemlockHitbox = HitboxType::UpperChest;
-        HitboxType RepeaterHitbox = HitboxType::UpperChest;
-        HitboxType RampageHitbox = HitboxType::UpperChest;
-        HitboxType CARSMGHitbox = HitboxType::UpperChest;
-        HitboxType HavocHitbox = HitboxType::UpperChest;
-        HitboxType DevotionHitbox = HitboxType::UpperChest;
-        HitboxType LSTARHitbox = HitboxType::UpperChest;
-        HitboxType TripleTakeHitbox = HitboxType::UpperChest;
-        HitboxType VoltHitbox = HitboxType::UpperChest;
-        HitboxType NemesisHitbox = HitboxType::UpperChest;
-        HitboxType MozambiqueHitbox = HitboxType::UpperChest;
-        HitboxType EVA8Hitbox = HitboxType::UpperChest;
-        HitboxType PeacekeeperHitbox = HitboxType::UpperChest;
-        HitboxType MastiffHitbox = HitboxType::UpperChest;
-        HitboxType LongbowHitbox = HitboxType::UpperChest;
-        HitboxType ChargeRifleHitbox = HitboxType::UpperChest;
-        HitboxType SentinelHitbox = HitboxType::UpperChest;
-        HitboxType WingmanHitbox = HitboxType::UpperChest;
-        HitboxType ProwlerHitbox = HitboxType::UpperChest;
-        HitboxType BocekHitbox = HitboxType::UpperChest;
-        HitboxType KraberHitbox = HitboxType::UpperChest;
-        HitboxType ThrowingKnifeHitbox = HitboxType::UpperChest;
-    };
-
-    namespace Sense {
-        //Drawings
-        bool DrawBox = true;
-        float BoxThickness = 2;
-
-        bool DrawTracers = true;
-        int TracerPos = 0;
-        int TracerBone = 0;
-        
-        bool Skeleton = true;
-        float SkeletonThickness = 1.5f;
-        
-        bool DrawSeer = false;
-        bool ShowNear = true;
-        bool DrawNames = true; 
-        
-        float ESPMaxDistance = 200;
-        
-        //Misc
-        bool ShowSpectators = true;
-        
-        //FOV
-        bool DrawFOVCircle = true;
-        float GameFOV = 120;
-        
-        //Settings
-        bool AimedAtOnly = false;
-        bool ShowTeam = false;
-        bool TeamNames = false;
-    };
-
-    namespace Triggerbot {
-        bool Enabled = true;
-        bool OnADS = false;
-        float Range = 200;
-    };
-    
-    namespace Home {
-    	bool TeamGamemode = true;
+    namespace Colors {
+    	int ColorMode = 0; //0 = Simple, 1 = Advanced
+	//Simple
+	float InvisibleColorR = 0.99;
+	float InvisibleColorG = 0;
+	float InvisibleColorB = 0;
+	float InvisibleColorA = 0.99;
+	float VisibleColorR = 0;
+	float VisibleColorG = 0.99;
+	float VisibleColorB = 0;
+	float VisibleColorA = 0.99;
+	//Advanced
+	float InvisibleBoxColorR = 0.99;
+	float InvisibleBoxColorG = 0;
+	float InvisibleBoxColorB = 0;
+	float InvisibleBoxColorA = 0.99;
+	float VisibleBoxColorR = 0;
+	float VisibleBoxColorG = 0.99;
+	float VisibleBoxColorB = 0;
+	float VisibleBoxColorA = 0.99;
+	float InvisibleFilledBoxColorR = 0;
+	float InvisibleFilledBoxColorG = 0;
+	float InvisibleFilledBoxColorB = 0;
+	float InvisibleFilledBoxColorA = 0.11;
+	float VisibleFilledBoxColorR = 0;
+	float VisibleFilledBoxColorG = 0;
+	float VisibleFilledBoxColorB = 0;
+	float VisibleFilledBoxColorA = 0.11;
+	float InvisibleTracerColorR = 0.99;
+	float InvisibleTracerColorG = 0;
+	float InvisibleTracerColorB = 0;
+	float InvisibleTracerColorA = 0.99;
+	float VisibleTracerColorR = 0;
+	float VisibleTracerColorG = 0.99;
+	float VisibleTracerColorB = 0;
+	float VisibleTracerColorA = 0.99;
+	float InvisibleSkeletonColorR = 0.99;
+	float InvisibleSkeletonColorG = 0.99;
+	float InvisibleSkeletonColorB = 0.99;
+	float InvisibleSkeletonColorA = 0.99;
+	float VisibleSkeletonColorR = 0.99;
+	float VisibleSkeletonColorG = 0.99;
+	float VisibleSkeletonColorB = 0.99;
+	float VisibleSkeletonColorA = 0.99;
+	float InvisibleNameColorR = 0.99;
+	float InvisibleNameColorG = 0.99;
+	float InvisibleNameColorB = 0.99;
+	float InvisibleNameColorA = 0.99;
+	float VisibleNameColorR = 0.99;
+	float VisibleNameColorG = 0.99;
+	float VisibleNameColorB = 0.99;
+	float VisibleNameColorA = 0.99;
+	float InvisibleDistanceColorR = 0.99;
+	float InvisibleDistanceColorG = 0.99;
+	float InvisibleDistanceColorB = 0.99;
+	float InvisibleDistanceColorA = 0.99;
+	float VisibleDistanceColorR = 0.99;
+	float VisibleDistanceColorG = 0.99;
+	float VisibleDistanceColorB = 0.99;
+	float VisibleDistanceColorA = 0.99;
+	float FOVColorR = 0.99;
+	float FOVColorG = 0.99;
+	float FOVColorB = 0.99;
+	float FOVColorA = 0.99;
+	float FilledFOVColorR = 0;
+	float FilledFOVColorG = 0;
+	float FilledFOVColorB = 0;
+	float FilledFOVColorA = 0.11;
+	float VisibleWeaponColorR = 0.99;
+	float VisibleWeaponColorG = 0.99;
+	float VisibleWeaponColorB = 0.99;
+	float VisibleWeaponColorA = 0.99;
+	float InvisibleWeaponColorR = 0.99;
+	float InvisibleWeaponColorG = 0.99;
+	float InvisibleWeaponColorB = 0.99;
+	float InvisibleWeaponColorA = 0.99;
+	float NearColorR = 0.99;
+	float NearColorG = 0.99;
+	float NearColorB = 0.99;
+	float NearColorA = 0.99;
+	float TeamColorR = 0;
+	float TeamColorG = 0.99;
+	float TeamColorB = 0.99;
+	float TeamColorA = 0.99;
+	float TeamNameColorR = 0.99;
+	float TeamNameColorG = 0.99;
+	float TeamNameColorB = 0.99;
+	float TeamNameColorA = 0.99;
+	float CrosshairColorR = 0.99;
+	float CrosshairColorG = 0.99;
+	float CrosshairColorB = 0.99;
+	float CrosshairColorA = 0.99;
+	//WeaponESP Colors
+	float LightWeaponColorR = 0.990;
+	float LightWeaponColorG = 0.768;
+	float LightWeaponColorB = 0.039;
+	float LightWeaponColorA = 0.99;
+	float HeavyWeaponColorR = 0.00990;
+	float HeavyWeaponColorG = 0.990;
+	float HeavyWeaponColorB = 0.761;
+	float HeavyWeaponColorA = 0.99;
+	float EnergyWeaponColorR = 0;
+	float EnergyWeaponColorG = 0.99;
+	float EnergyWeaponColorB = 0;
+	float EnergyWeaponColorA = 0.99;
+	float ShotgunWeaponColorR = 0.99;
+	float ShotgunWeaponColorG = 0;
+	float ShotgunWeaponColorB = 0;
+	float ShotgunWeaponColorA = 0.99;
+	float SniperWeaponColorR = 0.00990;
+	float SniperWeaponColorG = 0.337;
+	float SniperWeaponColorB = 0.990;
+	float SniperWeaponColorA = 0.99;
+	float LegendaryWeaponColorR = 0.99;
+	float LegendaryWeaponColorG = 0.530;
+	float LegendaryWeaponColorB = 0.945;
+	float LegendaryWeaponColorA = 0.99;
+	float MeleeWeaponColorR = 0.99;
+	float MeleeWeaponColorG = 0.99;
+	float MeleeWeaponColorB = 0.99;
+	float MeleeWeaponColorA = 0.99;
+	float ThrowableWeaponColorR = 0.990;
+	float ThrowableWeaponColorG = 0.974;
+	float ThrowableWeaponColorB = 0.0495;
+	float ThrowableWeaponColorA = 0.99;
     };
 };
 
@@ -1094,8 +982,6 @@ void UpdateConfig() {
         WritePair(Aimbot, AimbotMode);
         WritePair(Aimbot, ClosestHitbox);
         WritePair(Aimbot, HitBox);
-        WritePair(Aimbot, OnFire);
-        WritePair(Aimbot, OnADS);
         WritePair(Aimbot, VisCheck);
         WritePair(Aimbot, TeamCheck);
         WritePair(Aimbot, PredictMovement);
@@ -1151,8 +1037,6 @@ void UpdateConfig() {
 	
 	//---------------Advanced---------------//
 	WritePair(Aimbot, AdvancedAim);
-	WritePair(Aimbot, AdvancedFire);
-	WritePair(Aimbot, AdvancedADS);
 	//AimbotMode 0 - Cubic Bezier (xap-client)
 	WritePair(Aimbot, AdvancedClosestHitbox);
 	WritePair(Aimbot, AdvancedHitbox);
@@ -1175,216 +1059,186 @@ void UpdateConfig() {
 	WritePair(Aimbot, P2020Speed);
 	WritePair(Aimbot, P2020HipfireSmooth);
 	WritePair(Aimbot, P2020ADSSmooth);
-	WritePair(Aimbot, P2020Fire);
-	WritePair(Aimbot, P2020ADS);
+
 	WritePair(Aimbot, RE45ClosestHitbox);
 	WritePair(Aimbot, RE45Hitbox);
 	WritePair(Aimbot, RE45Speed);
 	WritePair(Aimbot, RE45HipfireSmooth);
 	WritePair(Aimbot, RE45ADSSmooth);
-	WritePair(Aimbot, RE45Fire);
-	WritePair(Aimbot, RE45ADS);
+
 	WritePair(Aimbot, AlternatorClosestHitbox);
 	WritePair(Aimbot, AlternatorHitbox);
 	WritePair(Aimbot, AlternatorSpeed);
 	WritePair(Aimbot, AlternatorHipfireSmooth);
 	WritePair(Aimbot, AlternatorADSSmooth);
-	WritePair(Aimbot, AlternatorFire);
-	WritePair(Aimbot, AlternatorADS);
+
 	WritePair(Aimbot, R99ClosestHitbox);
 	WritePair(Aimbot, R99Hitbox);
 	WritePair(Aimbot, R99Speed);
 	WritePair(Aimbot, R99HipfireSmooth);
 	WritePair(Aimbot, R99ADSSmooth);
-	WritePair(Aimbot, R99Fire);
-	WritePair(Aimbot, R99ADS);
+
 	WritePair(Aimbot, R301ClosestHitbox);
 	WritePair(Aimbot, R301Hitbox);
 	WritePair(Aimbot, R301Speed);
 	WritePair(Aimbot, R301HipfireSmooth);
 	WritePair(Aimbot, R301ADSSmooth);
-	WritePair(Aimbot, R301Fire);
-	WritePair(Aimbot, R301ADS);
+
 	WritePair(Aimbot, SpitfireClosestHitbox);
 	WritePair(Aimbot, SpitfireHitbox);
 	WritePair(Aimbot, SpitfireSpeed);
 	WritePair(Aimbot, SpitfireHipfireSmooth);
 	WritePair(Aimbot, SpitfireADSSmooth);
-	WritePair(Aimbot, SpitfireFire);
-	WritePair(Aimbot, SpitfireADS);
+
 	WritePair(Aimbot, G7ClosestHitbox);
 	WritePair(Aimbot, G7Hitbox);
 	WritePair(Aimbot, G7Speed); 
 	WritePair(Aimbot, G7HipfireSmooth);
 	WritePair(Aimbot, G7ADSSmooth);
-	WritePair(Aimbot, G7Fire);
-	WritePair(Aimbot, G7ADS);
+
 	//Heavy
 	WritePair(Aimbot, FlatlineClosestHitbox);
 	WritePair(Aimbot, FlatlineHitbox);
 	WritePair(Aimbot, FlatlineSpeed);
 	WritePair(Aimbot, FlatlineHipfireSmooth);
 	WritePair(Aimbot, FlatlineADSSmooth);
-	WritePair(Aimbot, FlatlineFire);
-	WritePair(Aimbot, FlatlineADS);
+
 	WritePair(Aimbot, HemlockClosestHitbox);
 	WritePair(Aimbot, HemlockHitbox);
 	WritePair(Aimbot, HemlockSpeed);
 	WritePair(Aimbot, HemlockHipfireSmooth);
 	WritePair(Aimbot, HemlockADSSmooth);
-	WritePair(Aimbot, HemlockFire);
-	WritePair(Aimbot, HemlockADS);
+
 	WritePair(Aimbot, RepeaterClosestHitbox);
 	WritePair(Aimbot, RepeaterHitbox);
 	WritePair(Aimbot, RepeaterSpeed);
 	WritePair(Aimbot, RepeaterHipfireSmooth);
 	WritePair(Aimbot, RepeaterADSSmooth);
-	WritePair(Aimbot, RepeaterFire);
-	WritePair(Aimbot, RepeaterADS);
+
 	WritePair(Aimbot, RampageClosestHitbox);
 	WritePair(Aimbot, RampageHitbox);
 	WritePair(Aimbot, RampageSpeed);
 	WritePair(Aimbot, RampageHipfireSmooth);
 	WritePair(Aimbot, RampageADSSmooth);
-	WritePair(Aimbot, RampageFire);
-	WritePair(Aimbot, RampageADS);
+
 	WritePair(Aimbot, CARSMGClosestHitbox);
 	WritePair(Aimbot, CARSMGHitbox);
 	WritePair(Aimbot, CARSMGSpeed);
 	WritePair(Aimbot, CARSMGHipfireSmooth);
 	WritePair(Aimbot, CARSMGADSSmooth);
-	WritePair(Aimbot, CARSMGFire);
-	WritePair(Aimbot, CARSMGADS);
+
 	//Energy
 	WritePair(Aimbot, HavocClosestHitbox);
 	WritePair(Aimbot, HavocHitbox);
 	WritePair(Aimbot, HavocSpeed);
 	WritePair(Aimbot, HavocHipfireSmooth);
 	WritePair(Aimbot, HavocADSSmooth);
-	WritePair(Aimbot, HavocFire);
-	WritePair(Aimbot, HavocADS);
+
 	WritePair(Aimbot, DevotionClosestHitbox);
 	WritePair(Aimbot, DevotionHitbox);
 	WritePair(Aimbot, DevotionSpeed);
 	WritePair(Aimbot, DevotionHipfireSmooth);
 	WritePair(Aimbot, DevotionADSSmooth);
-	WritePair(Aimbot, DevotionFire);
-	WritePair(Aimbot, DevotionADS);
+
 	WritePair(Aimbot, LSTARClosestHitbox);
 	WritePair(Aimbot, LSTARHitbox);
 	WritePair(Aimbot, LSTARSpeed);
 	WritePair(Aimbot, LSTARHipfireSmooth);
 	WritePair(Aimbot, LSTARADSSmooth);
-	WritePair(Aimbot, LSTARFire);
-	WritePair(Aimbot, LSTARADS);
+
 	WritePair(Aimbot, TripleTakeClosestHitbox);
 	WritePair(Aimbot, TripleTakeHitbox);
 	WritePair(Aimbot, TripleTakeSpeed);
 	WritePair(Aimbot, TripleTakeHipfireSmooth);
 	WritePair(Aimbot, TripleTakeADSSmooth);
-	WritePair(Aimbot, TripleTakeFire);
-	WritePair(Aimbot, TripleTakeADS);
+
 	WritePair(Aimbot, VoltClosestHitbox);
 	WritePair(Aimbot, VoltHitbox);
 	WritePair(Aimbot, VoltSpeed);
 	WritePair(Aimbot, VoltHipfireSmooth);
 	WritePair(Aimbot, VoltADSSmooth);
-	WritePair(Aimbot, VoltFire);
-	WritePair(Aimbot, VoltADS);
+
 	WritePair(Aimbot, NemesisClosestHitbox);
 	WritePair(Aimbot, NemesisHitbox);
 	WritePair(Aimbot, NemesisSpeed);
 	WritePair(Aimbot, NemesisHipfireSmooth);
 	WritePair(Aimbot, NemesisADSSmooth);
-	WritePair(Aimbot, NemesisFire);
-	WritePair(Aimbot, NemesisADS);
+
 	//Shotgun
 	WritePair(Aimbot, MozambiqueClosestHitbox);
 	WritePair(Aimbot, MozambiqueHitbox);
 	WritePair(Aimbot, MozambiqueSpeed);
 	WritePair(Aimbot, MozambiqueHipfireSmooth);
 	WritePair(Aimbot, MozambiqueADSSmooth);
-	WritePair(Aimbot, MozambiqueFire);
-	WritePair(Aimbot, MozambiqueADS);
+
 	WritePair(Aimbot, EVA8ClosestHitbox);
 	WritePair(Aimbot, EVA8Hitbox);
 	WritePair(Aimbot, EVA8Speed);
 	WritePair(Aimbot, EVA8HipfireSmooth);
 	WritePair(Aimbot, EVA8ADSSmooth);
-	WritePair(Aimbot, EVA8Fire);
-	WritePair(Aimbot, EVA8ADS);
+
 	WritePair(Aimbot, PeacekeeperClosestHitbox);
 	WritePair(Aimbot, PeacekeeperHitbox);
 	WritePair(Aimbot, PeacekeeperSpeed);
 	WritePair(Aimbot, PeacekeeperHipfireSmooth);
 	WritePair(Aimbot, PeacekeeperADSSmooth);
-	WritePair(Aimbot, PeacekeeperFire);
-	WritePair(Aimbot, PeacekeeperADS);
+
 	WritePair(Aimbot, MastiffClosestHitbox);
 	WritePair(Aimbot, MastiffHitbox);
 	WritePair(Aimbot, MastiffSpeed);
 	WritePair(Aimbot, MastiffHipfireSmooth);
 	WritePair(Aimbot, MastiffADSSmooth);
-	WritePair(Aimbot, MastiffFire);
-	WritePair(Aimbot, MastiffADS);
+
 	//Snipers
 	WritePair(Aimbot, LongbowClosestHitbox);
 	WritePair(Aimbot, LongbowHitbox);
 	WritePair(Aimbot, LongbowSpeed);
 	WritePair(Aimbot, LongbowHipfireSmooth);
 	WritePair(Aimbot, LongbowADSSmooth);
-	WritePair(Aimbot, LongbowFire);
-	WritePair(Aimbot, LongbowADS);
+
 	WritePair(Aimbot, ChargeRifleClosestHitbox);
 	WritePair(Aimbot, ChargeRifleHitbox);
 	WritePair(Aimbot, ChargeRifleSpeed);
 	WritePair(Aimbot, ChargeRifleHipfireSmooth);
 	WritePair(Aimbot, ChargeRifleADSSmooth);
-	WritePair(Aimbot, ChargeRifleFire);
-	WritePair(Aimbot, ChargeRifleADS);
+
 	WritePair(Aimbot, SentinelClosestHitbox);
 	WritePair(Aimbot, SentinelHitbox);
 	WritePair(Aimbot, SentinelSpeed);    
 	WritePair(Aimbot, SentinelHipfireSmooth);
 	WritePair(Aimbot, SentinelADSSmooth);
-	WritePair(Aimbot, SentinelFire);
-	WritePair(Aimbot, SentinelADS);
+
 	//Legendary
 	WritePair(Aimbot, WingmanClosestHitbox);
 	WritePair(Aimbot, WingmanHitbox);
 	WritePair(Aimbot, WingmanSpeed);
 	WritePair(Aimbot, WingmanHipfireSmooth);
 	WritePair(Aimbot, WingmanADSSmooth);
-	WritePair(Aimbot, WingmanFire);
-	WritePair(Aimbot, WingmanADS);
+
 	WritePair(Aimbot, ProwlerClosestHitbox);
 	WritePair(Aimbot, ProwlerHitbox);
 	WritePair(Aimbot, ProwlerSpeed);
 	WritePair(Aimbot, ProwlerHipfireSmooth);
 	WritePair(Aimbot, ProwlerADSSmooth);
-	WritePair(Aimbot, ProwlerFire);
-	WritePair(Aimbot, ProwlerADS);
+
 	WritePair(Aimbot, BocekClosestHitbox);
 	WritePair(Aimbot, BocekHitbox);
 	WritePair(Aimbot, BocekSpeed);
 	WritePair(Aimbot, BocekHipfireSmooth);
 	WritePair(Aimbot, BocekADSSmooth);
-	WritePair(Aimbot, BocekFire);
-	WritePair(Aimbot, BocekADS);
+
 	WritePair(Aimbot, KraberClosestHitbox);
 	WritePair(Aimbot, KraberHitbox);
 	WritePair(Aimbot, KraberSpeed);
 	WritePair(Aimbot, KraberHipfireSmooth);
 	WritePair(Aimbot, KraberADSSmooth);
-	WritePair(Aimbot, KraberFire);
-	WritePair(Aimbot, KraberADS);
+
 	WritePair(Aimbot, ThrowingKnifeClosestHitbox);
 	WritePair(Aimbot, ThrowingKnifeHitbox);
 	WritePair(Aimbot, ThrowingKnifeSpeed);
 	WritePair(Aimbot, ThrowingKnifeHipfireSmooth);
 	WritePair(Aimbot, ThrowingKnifeADSSmooth);
-	WritePair(Aimbot, ThrowingKnifeFire);
-	WritePair(Aimbot, ThrowingKnifeADS);
+
 	
 	//Aimbot Mode 1 - Weapons
 	//Light
@@ -1749,143 +1603,162 @@ void UpdateConfig() {
         WritePair(Glow, GreyShieldColorB);
         
         WriteSection(Sense);
-        WritePair(Sense, DrawSeer);
-        WritePair(Sense, DrawDistance);
-        WritePair(Sense, DrawStatus);
-        WritePair(Sense, ShowMaxStatusValues);
-        WritePair(Sense, HealthBar);
-        WritePair(Sense, ShieldBar);
-        WritePair(Sense, DrawWeapon);
-        WritePair(Sense, WeaponColorType);
-        WritePair(Sense, ShowLegend);
-        WritePair(Sense, BarThickness);
-        WritePair(Sense, ShowSpectators);
-        WritePair(Sense, DrawFOVCircle);
-        WritePair(Sense, GameFOV);
-        WritePair(Sense, DrawBox);
-        WritePair(Sense, DrawFilledBox);
-        WritePair(Sense, BoxThickness);
-        WritePair(Sense, Skeleton);
-        WritePair(Sense, SkeletonThickness);
-        WritePair(Sense, ESPMaxDistance);
-        WritePair(Sense, ShowNear);
-        WritePair(Sense, DrawNames);
-        WritePair(Sense, TracerPos);
-        WritePair(Sense, TracerBone);
-        WritePair(Sense, DrawTracers);
-        WritePair(Sense, ShowTeam);
-        WritePair(Sense, TeamNames);
+        WritePair(Sense, VisibilityCheck);
+		WritePair(Sense, DrawBoxes);
+		WritePair(Sense, BoxType);
+		WritePair(Sense, BoxStyle);
+		WritePair(Sense, BoxThickness);
+		WritePair(Sense, Skeleton);
+		WritePair(Sense, SkeletonThickness);
+		WritePair(Sense, HealthBar);
+		WritePair(Sense, ShieldBar);
+		WritePair(Sense, BarMode);
+		WritePair(Sense, BarStyle);
+		WritePair(Sense, BarColorMode);
+		WritePair(Sense, BarBackground);
+		WritePair(Sense, BarThickness);
+		WritePair(Sense, BarThickness2);
+		WritePair(Sense, BarHeight);
+		WritePair(Sense, BarWidth);
+		WritePair(Sense, ESPMaxDistance);
+		WritePair(Sense, ShowNear);
+		WritePair(Sense, DrawSeer);
+		WritePair(Sense, DrawStatus);
+		WritePair(Sense, DrawWeapon);
+		WritePair(Sense, WeaponColorType);
+		WritePair(Sense, ShowLegend);
+		WritePair(Sense, ShowMaxStatusValues);
+		WritePair(Sense, DrawDistance);
+		WritePair(Sense, DrawFOVCircle);
+		WritePair(Sense, DrawFilledFOVCircle);
+		WritePair(Sense, FOVThickness);
+		WritePair(Sense, DrawNames);
+		WritePair(Sense, TracerPos);
+		WritePair(Sense, TracerBone);
+		WritePair(Sense, DrawTracers);
+		WritePair(Sense, TracerThickness);
+		WritePair(Sense, ShowSpectators);
+		WritePair(Sense, DrawCrosshair);
+		WritePair(Sense, CrosshairSize);
+		WritePair(Sense, CrosshairThickness);
+
+		WriteSectionEnd();
         
         //Colors
-        WritePair(Sense, InvisibleBoxColorR);
-        WritePair(Sense, InvisibleBoxColorG);
-        WritePair(Sense, InvisibleBoxColorB);
-        WritePair(Sense, InvisibleBoxColorA);
-        WritePair(Sense, VisibleBoxColorR);
-        WritePair(Sense, VisibleBoxColorG);
-        WritePair(Sense, VisibleBoxColorB);
-        WritePair(Sense, VisibleBoxColorA);
-        WritePair(Sense, InvisibleFilledBoxColorR);
-        WritePair(Sense, InvisibleFilledBoxColorG);
-        WritePair(Sense, InvisibleFilledBoxColorB);
-        WritePair(Sense, InvisibleFilledBoxColorA);
-        WritePair(Sense, VisibleFilledBoxColorR);
-        WritePair(Sense, VisibleFilledBoxColorG);
-        WritePair(Sense, VisibleFilledBoxColorB);
-        WritePair(Sense, VisibleFilledBoxColorA);
-        WritePair(Sense, InvisibleTracerColorR);
-        WritePair(Sense, InvisibleTracerColorG);
-        WritePair(Sense, InvisibleTracerColorB);
-        WritePair(Sense, InvisibleTracerColorA);
-        WritePair(Sense, VisibleTracerColorR);
-        WritePair(Sense, VisibleTracerColorG);
-        WritePair(Sense, VisibleTracerColorB);
-        WritePair(Sense, VisibleTracerColorA);
-        WritePair(Sense, InvisibleSkeletonColorR);
-        WritePair(Sense, InvisibleSkeletonColorG);
-        WritePair(Sense, InvisibleSkeletonColorB);
-        WritePair(Sense, InvisibleSkeletonColorA);
-        WritePair(Sense, VisibleSkeletonColorR);
-        WritePair(Sense, VisibleSkeletonColorG);
-        WritePair(Sense, VisibleSkeletonColorB);
-        WritePair(Sense, VisibleSkeletonColorA);
-        WritePair(Sense, InvisibleNameColorR);
-        WritePair(Sense, InvisibleNameColorG);
-        WritePair(Sense, InvisibleNameColorB);
-        WritePair(Sense, InvisibleNameColorA);
-        WritePair(Sense, VisibleNameColorR);
-        WritePair(Sense, VisibleNameColorG);
-        WritePair(Sense, VisibleNameColorB);
-        WritePair(Sense, VisibleNameColorA);
-        WritePair(Sense, InvisibleDistanceColorR);
-        WritePair(Sense, InvisibleDistanceColorG);
-        WritePair(Sense, InvisibleDistanceColorB);
-        WritePair(Sense, InvisibleDistanceColorA);
-        WritePair(Sense, VisibleDistanceColorR);
-        WritePair(Sense, VisibleDistanceColorG);
-        WritePair(Sense, VisibleDistanceColorB);
-        WritePair(Sense, VisibleDistanceColorA);
-        WritePair(Sense, FOVColorR);
-        WritePair(Sense, FOVColorG);
-        WritePair(Sense, FOVColorB);
-        WritePair(Sense, FOVColorA);
-        WritePair(Sense, FilledFOVColorR);
-        WritePair(Sense, FilledFOVColorG);
-        WritePair(Sense, FilledFOVColorB);
-        WritePair(Sense, FilledFOVColorA);
-        WritePair(Sense, WeaponColorR);
-        WritePair(Sense, WeaponColorG);
-        WritePair(Sense, WeaponColorB);
-        WritePair(Sense, WeaponColorA);
-        WritePair(Sense, NearColorR);
-        WritePair(Sense, NearColorG);
-        WritePair(Sense, NearColorB);
-        WritePair(Sense, NearColorA);
-        WritePair(Sense, TeamColorR);
-        WritePair(Sense, TeamColorG);
-        WritePair(Sense, TeamColorB);
-        WritePair(Sense, TeamColorA);
-        WritePair(Sense, TeamNameColorR);
-        WritePair(Sense, TeamNameColorG);
-        WritePair(Sense, TeamNameColorB);
-        WritePair(Sense, TeamNameColorA);
-        WritePair(Sense, CrosshairColorR);
-        WritePair(Sense, CrosshairColorG);
-        WritePair(Sense, CrosshairColorB);
-        WritePair(Sense, CrosshairColorA);
+		WriteSection(Colors);
+        WritePair(Colors, InvisibleBoxColorR);
+        WritePair(Colors, InvisibleBoxColorG);
+        WritePair(Colors, InvisibleBoxColorB);
+        WritePair(Colors, InvisibleBoxColorA);
+        WritePair(Colors, VisibleBoxColorR);
+        WritePair(Colors, VisibleBoxColorG);
+        WritePair(Colors, VisibleBoxColorB);
+        WritePair(Colors, VisibleBoxColorA);
+        WritePair(Colors, InvisibleFilledBoxColorR);
+        WritePair(Colors, InvisibleFilledBoxColorG);
+        WritePair(Colors, InvisibleFilledBoxColorB);
+        WritePair(Colors, InvisibleFilledBoxColorA);
+        WritePair(Colors, VisibleFilledBoxColorR);
+        WritePair(Colors, VisibleFilledBoxColorG);
+        WritePair(Colors, VisibleFilledBoxColorB);
+        WritePair(Colors, VisibleFilledBoxColorA);
+        WritePair(Colors, InvisibleTracerColorR);
+        WritePair(Colors, InvisibleTracerColorG);
+        WritePair(Colors, InvisibleTracerColorB);
+        WritePair(Colors, InvisibleTracerColorA);
+        WritePair(Colors, VisibleTracerColorR);
+        WritePair(Colors, VisibleTracerColorG);
+        WritePair(Colors, VisibleTracerColorB);
+        WritePair(Colors, VisibleTracerColorA);
+        WritePair(Colors, InvisibleSkeletonColorR);
+        WritePair(Colors, InvisibleSkeletonColorG);
+        WritePair(Colors, InvisibleSkeletonColorB);
+        WritePair(Colors, InvisibleSkeletonColorA);
+        WritePair(Colors, VisibleSkeletonColorR);
+        WritePair(Colors, VisibleSkeletonColorG);
+        WritePair(Colors, VisibleSkeletonColorB);
+        WritePair(Colors, VisibleSkeletonColorA);
+        WritePair(Colors, InvisibleNameColorR);
+        WritePair(Colors, InvisibleNameColorG);
+        WritePair(Colors, InvisibleNameColorB);
+        WritePair(Colors, InvisibleNameColorA);
+        WritePair(Colors, VisibleNameColorR);
+        WritePair(Colors, VisibleNameColorG);
+        WritePair(Colors, VisibleNameColorB);
+        WritePair(Colors, VisibleNameColorA);
+        WritePair(Colors, InvisibleDistanceColorR);
+        WritePair(Colors, InvisibleDistanceColorG);
+        WritePair(Colors, InvisibleDistanceColorB);
+        WritePair(Colors, InvisibleDistanceColorA);
+        WritePair(Colors, VisibleDistanceColorR);
+        WritePair(Colors, VisibleDistanceColorG);
+        WritePair(Colors, VisibleDistanceColorB);
+        WritePair(Colors, VisibleDistanceColorA);
+        WritePair(Colors, FOVColorR);
+        WritePair(Colors, FOVColorG);
+        WritePair(Colors, FOVColorB);
+        WritePair(Colors, FOVColorA);
+        WritePair(Colors, FilledFOVColorR);
+        WritePair(Colors, FilledFOVColorG);
+        WritePair(Colors, FilledFOVColorB);
+        WritePair(Colors, FilledFOVColorA);
+        WritePair(Colors, VisibleWeaponColorR);
+        WritePair(Colors, VisibleWeaponColorG);
+        WritePair(Colors, VisibleWeaponColorB);
+        WritePair(Colors, VisibleWeaponColorA);
+        WritePair(Colors, InvisibleWeaponColorR);
+        WritePair(Colors, InvisibleWeaponColorG);
+        WritePair(Colors, InvisibleWeaponColorB);
+        WritePair(Colors, InvisibleWeaponColorA);
+        WritePair(Colors, NearColorR);
+        WritePair(Colors, NearColorG);
+        WritePair(Colors, NearColorB);
+        WritePair(Colors, NearColorA);
+        WritePair(Colors, TeamColorR);
+        WritePair(Colors, TeamColorG);
+        WritePair(Colors, TeamColorB);
+        WritePair(Colors, TeamColorA);
+        WritePair(Colors, TeamNameColorR);
+        WritePair(Colors, TeamNameColorG);
+        WritePair(Colors, TeamNameColorB);
+        WritePair(Colors, TeamNameColorA);
+        WritePair(Colors, CrosshairColorR);
+        WritePair(Colors, CrosshairColorG);
+        WritePair(Colors, CrosshairColorB);
+        WritePair(Colors, CrosshairColorA);
         
-        WritePair(Sense, LightWeaponColorR);
-        WritePair(Sense, LightWeaponColorG);
-        WritePair(Sense, LightWeaponColorB);
-        WritePair(Sense, LightWeaponColorA);
-        WritePair(Sense, HeavyWeaponColorR);
-        WritePair(Sense, HeavyWeaponColorG);
-        WritePair(Sense, HeavyWeaponColorB);
-        WritePair(Sense, HeavyWeaponColorA);
-        WritePair(Sense, EnergyWeaponColorR);
-        WritePair(Sense, EnergyWeaponColorG);
-        WritePair(Sense, EnergyWeaponColorB);
-        WritePair(Sense, EnergyWeaponColorA);
-        WritePair(Sense, ShotgunWeaponColorR);
-        WritePair(Sense, ShotgunWeaponColorG);
-        WritePair(Sense, ShotgunWeaponColorB);
-        WritePair(Sense, ShotgunWeaponColorA);
-        WritePair(Sense, SniperWeaponColorR);
-        WritePair(Sense, SniperWeaponColorG);
-        WritePair(Sense, SniperWeaponColorB);
-        WritePair(Sense, SniperWeaponColorA);
-        WritePair(Sense, LegendaryWeaponColorR);
-        WritePair(Sense, LegendaryWeaponColorG);
-        WritePair(Sense, LegendaryWeaponColorB);
-        WritePair(Sense, LegendaryWeaponColorA);
-        WritePair(Sense, MeleeWeaponColorR);
-        WritePair(Sense, MeleeWeaponColorG);
-        WritePair(Sense, MeleeWeaponColorB);
-        WritePair(Sense, MeleeWeaponColorA);
-        WritePair(Sense, ThrowableWeaponColorR);
-        WritePair(Sense, ThrowableWeaponColorG);
-        WritePair(Sense, ThrowableWeaponColorB);
-        WritePair(Sense, ThrowableWeaponColorA);
+        WritePair(Colors, LightWeaponColorR);
+        WritePair(Colors, LightWeaponColorG);
+        WritePair(Colors, LightWeaponColorB);
+        WritePair(Colors, LightWeaponColorA);
+        WritePair(Colors, HeavyWeaponColorR);
+        WritePair(Colors, HeavyWeaponColorG);
+        WritePair(Colors, HeavyWeaponColorB);
+        WritePair(Colors, HeavyWeaponColorA);
+        WritePair(Colors, EnergyWeaponColorR);
+        WritePair(Colors, EnergyWeaponColorG);
+        WritePair(Colors, EnergyWeaponColorB);
+        WritePair(Colors, EnergyWeaponColorA);
+        WritePair(Colors, ShotgunWeaponColorR);
+        WritePair(Colors, ShotgunWeaponColorG);
+        WritePair(Colors, ShotgunWeaponColorB);
+        WritePair(Colors, ShotgunWeaponColorA);
+        WritePair(Colors, SniperWeaponColorR);
+        WritePair(Colors, SniperWeaponColorG);
+        WritePair(Colors, SniperWeaponColorB);
+        WritePair(Colors, SniperWeaponColorA);
+        WritePair(Colors, LegendaryWeaponColorR);
+        WritePair(Colors, LegendaryWeaponColorG);
+        WritePair(Colors, LegendaryWeaponColorB);
+        WritePair(Colors, LegendaryWeaponColorA);
+        WritePair(Colors, MeleeWeaponColorR);
+        WritePair(Colors, MeleeWeaponColorG);
+        WritePair(Colors, MeleeWeaponColorB);
+        WritePair(Colors, MeleeWeaponColorA);
+        WritePair(Colors, ThrowableWeaponColorR);
+        WritePair(Colors, ThrowableWeaponColorG);
+        WritePair(Colors, ThrowableWeaponColorB);
+        WritePair(Colors, ThrowableWeaponColorA);
         
         WriteSectionEnd();
 
@@ -1932,10 +1805,20 @@ void UpdateConfig() {
 	WritePair(Triggerbot, Kraber);
 	WritePair(Triggerbot, Knife);
         WriteSectionEnd();
-        
-        WriteSection(Misc);
-        WritePair(Misc, SkinChanger);
-        WritePair(Misc, AutoGrapple);
+    
+	WriteSection(Radar);
+	WritePair(Radar, MiniMap);
+	WritePair(Radar, MiniMapRange);
+	WritePair(Radar, MiniMapScaleX);
+	WritePair(Radar, MiniMapScaleY);
+	WritePair(Radar, MiniMapDotSize);
+	WritePair(Radar, MiniMapGuides);
+	WritePair(Radar, BigMap);
+	WriteSectionEnd();
+
+    WriteSection(Misc);
+    WritePair(Misc, SkinChanger);
+    WritePair(Misc, AutoGrapple);
         //Weapons
 	//Light
 	WritePair(Misc, SkinP2020);
@@ -1999,8 +1882,7 @@ bool ReadConfig(const std::string &configFile) {
     ReadInt(Aimbot, AimbotMode);
     ReadBool(Aimbot, ClosestHitbox);
     ReadInt(Aimbot, HitBox);
-    ReadBool(Aimbot, OnFire);
-    ReadBool(Aimbot, OnADS);
+
     ReadBool(Aimbot, VisCheck);
     ReadBool(Aimbot, TeamCheck);
     ReadBool(Aimbot, PredictMovement);
@@ -2056,8 +1938,7 @@ bool ReadConfig(const std::string &configFile) {
 	
 	//---------------Advanced---------------//
 	ReadBool(Aimbot, AdvancedAim);
-	ReadBool(Aimbot, AdvancedFire);
-	ReadBool(Aimbot, AdvancedADS);
+
 	//Aimbot Mode 0 - xap-client
 	ReadFloat(Aimbot, AdvancedSpeed);
 	ReadFloat(Aimbot, AdvancedSmooth);
@@ -2079,216 +1960,186 @@ bool ReadConfig(const std::string &configFile) {
 	ReadFloat(Aimbot, P2020Speed);
 	ReadFloat(Aimbot, P2020HipfireSmooth);
 	ReadFloat(Aimbot, P2020ADSSmooth);
-	ReadBool(Aimbot, P2020Fire);
-	ReadBool(Aimbot, P2020ADS);
+
 	ReadBool(Aimbot, RE45ClosestHitbox);
 	ReadInt(Aimbot, RE45Hitbox);
 	ReadFloat(Aimbot, RE45Speed);
 	ReadFloat(Aimbot, RE45HipfireSmooth);
 	ReadFloat(Aimbot, RE45ADSSmooth);
-	ReadBool(Aimbot, RE45Fire);
-	ReadBool(Aimbot, RE45ADS);
+
 	ReadBool(Aimbot, AlternatorClosestHitbox);
 	ReadInt(Aimbot, AlternatorHitbox);
 	ReadFloat(Aimbot, AlternatorSpeed);
 	ReadFloat(Aimbot, AlternatorHipfireSmooth);
 	ReadFloat(Aimbot, AlternatorADSSmooth);
-	ReadBool(Aimbot, AlternatorFire);
-	ReadBool(Aimbot, AlternatorADS);
+
 	ReadBool(Aimbot, R99ClosestHitbox);
 	ReadInt(Aimbot, R99Hitbox);
 	ReadFloat(Aimbot, R99Speed);
 	ReadFloat(Aimbot, R99HipfireSmooth);
 	ReadFloat(Aimbot, R99ADSSmooth);
-	ReadBool(Aimbot, R99Fire);
-	ReadBool(Aimbot, R99ADS);
+
 	ReadBool(Aimbot, R301ClosestHitbox);
 	ReadInt(Aimbot, R301Hitbox);
 	ReadFloat(Aimbot, R301Speed);
 	ReadFloat(Aimbot, R301HipfireSmooth);
 	ReadFloat(Aimbot, R301ADSSmooth);
-	ReadBool(Aimbot, R301Fire);
-	ReadBool(Aimbot, R301ADS);
+
 	ReadBool(Aimbot, SpitfireClosestHitbox);
 	ReadInt(Aimbot, SpitfireHitbox);
 	ReadFloat(Aimbot, SpitfireSpeed);
 	ReadFloat(Aimbot, SpitfireHipfireSmooth);
 	ReadFloat(Aimbot, SpitfireADSSmooth);
-	ReadBool(Aimbot, SpitfireFire);
-	ReadBool(Aimbot, SpitfireADS);
+
 	ReadBool(Aimbot, G7ClosestHitbox);
 	ReadInt(Aimbot, G7Hitbox);
 	ReadFloat(Aimbot, G7Speed); 
 	ReadFloat(Aimbot, G7HipfireSmooth);
 	ReadFloat(Aimbot, G7ADSSmooth);
-	ReadBool(Aimbot, G7Fire);
-	ReadBool(Aimbot, G7ADS);
+
 	//Heavy
 	ReadBool(Aimbot, FlatlineClosestHitbox);
 	ReadInt(Aimbot, FlatlineHitbox);
 	ReadFloat(Aimbot, FlatlineSpeed);
 	ReadFloat(Aimbot, FlatlineHipfireSmooth);
 	ReadFloat(Aimbot, FlatlineADSSmooth);
-	ReadBool(Aimbot, FlatlineFire);
-	ReadBool(Aimbot, FlatlineADS);
+
 	ReadBool(Aimbot, HemlockClosestHitbox);
 	ReadInt(Aimbot, HemlockHitbox);
 	ReadFloat(Aimbot, HemlockSpeed);
 	ReadFloat(Aimbot, HemlockHipfireSmooth);
 	ReadFloat(Aimbot, HemlockADSSmooth);
-	ReadBool(Aimbot, HemlockFire);
-	ReadBool(Aimbot, HemlockADS);
+
 	ReadBool(Aimbot, RepeaterClosestHitbox);
 	ReadInt(Aimbot, RepeaterHitbox);
 	ReadFloat(Aimbot, RepeaterSpeed);
 	ReadFloat(Aimbot, RepeaterHipfireSmooth);
 	ReadFloat(Aimbot, RepeaterADSSmooth);
-	ReadBool(Aimbot, RepeaterFire);
-	ReadBool(Aimbot, RepeaterADS);
+
 	ReadBool(Aimbot, RampageClosestHitbox);
 	ReadInt(Aimbot, RampageHitbox);
 	ReadFloat(Aimbot, RampageSpeed);
 	ReadFloat(Aimbot, RampageHipfireSmooth);
 	ReadFloat(Aimbot, RampageADSSmooth);
-	ReadBool(Aimbot, RampageFire);
-	ReadBool(Aimbot, RampageADS);
+
 	ReadBool(Aimbot, CARSMGClosestHitbox);
 	ReadInt(Aimbot, CARSMGHitbox);
 	ReadFloat(Aimbot, CARSMGSpeed);
 	ReadFloat(Aimbot, CARSMGHipfireSmooth);
 	ReadFloat(Aimbot, CARSMGADSSmooth);
-	ReadBool(Aimbot, CARSMGFire);
-	ReadBool(Aimbot, CARSMGADS);
+
 	//Energy
 	ReadBool(Aimbot, HavocClosestHitbox);
 	ReadInt(Aimbot, HavocHitbox);
 	ReadFloat(Aimbot, HavocSpeed);
 	ReadFloat(Aimbot, HavocHipfireSmooth);
 	ReadFloat(Aimbot, HavocADSSmooth);
-	ReadBool(Aimbot, HavocFire);
-	ReadBool(Aimbot, HavocADS);
+
 	ReadBool(Aimbot, DevotionClosestHitbox);
 	ReadInt(Aimbot, DevotionHitbox);
 	ReadFloat(Aimbot, DevotionSpeed);
 	ReadFloat(Aimbot, DevotionHipfireSmooth);
 	ReadFloat(Aimbot, DevotionADSSmooth);
-	ReadBool(Aimbot, DevotionFire);
-	ReadBool(Aimbot, DevotionADS);
+
 	ReadBool(Aimbot, LSTARClosestHitbox);
 	ReadInt(Aimbot, LSTARHitbox);
 	ReadFloat(Aimbot, LSTARSpeed);
 	ReadFloat(Aimbot, LSTARHipfireSmooth);
 	ReadFloat(Aimbot, LSTARADSSmooth);
-	ReadBool(Aimbot, LSTARFire);
-	ReadBool(Aimbot, LSTARADS);
+
 	ReadBool(Aimbot, TripleTakeClosestHitbox);
 	ReadInt(Aimbot, TripleTakeHitbox);
 	ReadFloat(Aimbot, TripleTakeSpeed);
 	ReadFloat(Aimbot, TripleTakeHipfireSmooth);
 	ReadFloat(Aimbot, TripleTakeADSSmooth);
-	ReadBool(Aimbot, TripleTakeFire);
-	ReadBool(Aimbot, TripleTakeADS);
+
 	ReadBool(Aimbot, VoltClosestHitbox);
 	ReadInt(Aimbot, VoltHitbox);
 	ReadFloat(Aimbot, VoltSpeed);
 	ReadFloat(Aimbot, VoltHipfireSmooth);
 	ReadFloat(Aimbot, VoltADSSmooth);
-	ReadBool(Aimbot, VoltFire);
-	ReadBool(Aimbot, VoltADS);
+
 	ReadBool(Aimbot, NemesisClosestHitbox);
 	ReadInt(Aimbot, NemesisHitbox);
 	ReadFloat(Aimbot, NemesisSpeed);
 	ReadFloat(Aimbot, NemesisHipfireSmooth);
 	ReadFloat(Aimbot, NemesisADSSmooth);
-	ReadBool(Aimbot, NemesisFire);
-	ReadBool(Aimbot, NemesisADS);
+
 	//Shotgun
 	ReadBool(Aimbot, MozambiqueClosestHitbox);
 	ReadInt(Aimbot, MozambiqueHitbox);
 	ReadFloat(Aimbot, MozambiqueSpeed);
 	ReadFloat(Aimbot, MozambiqueHipfireSmooth);
 	ReadFloat(Aimbot, MozambiqueADSSmooth);
-	ReadBool(Aimbot, MozambiqueFire);
-	ReadBool(Aimbot, MozambiqueADS);
+
 	ReadBool(Aimbot, EVA8ClosestHitbox);
 	ReadInt(Aimbot, EVA8Hitbox);
 	ReadFloat(Aimbot, EVA8Speed);
 	ReadFloat(Aimbot, EVA8HipfireSmooth);
 	ReadFloat(Aimbot, EVA8ADSSmooth);
-	ReadBool(Aimbot, EVA8Fire);
-	ReadBool(Aimbot, EVA8ADS);
+
 	ReadBool(Aimbot, PeacekeeperClosestHitbox);
 	ReadInt(Aimbot, PeacekeeperHitbox);
 	ReadFloat(Aimbot, PeacekeeperSpeed);
 	ReadFloat(Aimbot, PeacekeeperHipfireSmooth);
 	ReadFloat(Aimbot, PeacekeeperADSSmooth);
-	ReadBool(Aimbot, PeacekeeperFire);
-	ReadBool(Aimbot, PeacekeeperADS);
+
 	ReadBool(Aimbot, MastiffClosestHitbox);
 	ReadInt(Aimbot, MastiffHitbox);
 	ReadFloat(Aimbot, MastiffSpeed);
 	ReadFloat(Aimbot, MastiffHipfireSmooth);
 	ReadFloat(Aimbot, MastiffADSSmooth);
-	ReadBool(Aimbot, MastiffFire);
-	ReadBool(Aimbot, MastiffADS);
+
 	//Snipers
 	ReadBool(Aimbot, LongbowClosestHitbox);
 	ReadInt(Aimbot, LongbowHitbox);
 	ReadFloat(Aimbot, LongbowSpeed);
 	ReadFloat(Aimbot, LongbowHipfireSmooth);
 	ReadFloat(Aimbot, LongbowADSSmooth);
-	ReadBool(Aimbot, LongbowFire);
-	ReadBool(Aimbot, LongbowADS);
+
 	ReadBool(Aimbot, ChargeRifleClosestHitbox);
 	ReadInt(Aimbot, ChargeRifleHitbox);
 	ReadFloat(Aimbot, ChargeRifleSpeed);
 	ReadFloat(Aimbot, ChargeRifleHipfireSmooth);
 	ReadFloat(Aimbot, ChargeRifleADSSmooth);
-	ReadBool(Aimbot, ChargeRifleFire);
-	ReadBool(Aimbot, ChargeRifleADS);
+
 	ReadBool(Aimbot, SentinelClosestHitbox);
 	ReadInt(Aimbot, SentinelHitbox);
 	ReadFloat(Aimbot, SentinelSpeed);    
 	ReadFloat(Aimbot, SentinelHipfireSmooth);
 	ReadFloat(Aimbot, SentinelADSSmooth);
-	ReadBool(Aimbot, SentinelFire);
-	ReadBool(Aimbot, SentinelADS);
+
 	//Legendary
 	ReadBool(Aimbot, WingmanClosestHitbox);
 	ReadInt(Aimbot, WingmanHitbox);
 	ReadFloat(Aimbot, WingmanSpeed);
 	ReadFloat(Aimbot, WingmanHipfireSmooth);
 	ReadFloat(Aimbot, WingmanADSSmooth);
-	ReadBool(Aimbot, WingmanFire);
-	ReadBool(Aimbot, WingmanADS);
+
 	ReadBool(Aimbot, ProwlerClosestHitbox);
 	ReadInt(Aimbot, ProwlerHitbox);
 	ReadFloat(Aimbot, ProwlerSpeed);
 	ReadFloat(Aimbot, ProwlerHipfireSmooth);
 	ReadFloat(Aimbot, ProwlerADSSmooth);
-	ReadBool(Aimbot, ProwlerFire);
-	ReadBool(Aimbot, ProwlerADS);
+
 	ReadBool(Aimbot, BocekClosestHitbox);
 	ReadInt(Aimbot, BocekHitbox);
 	ReadFloat(Aimbot, BocekSpeed);
 	ReadFloat(Aimbot, BocekHipfireSmooth);
 	ReadFloat(Aimbot, BocekADSSmooth);
-	ReadBool(Aimbot, BocekFire);
-	ReadBool(Aimbot, BocekADS);
+
 	ReadBool(Aimbot, KraberClosestHitbox);
 	ReadInt(Aimbot, KraberHitbox);
 	ReadFloat(Aimbot, KraberSpeed);
 	ReadFloat(Aimbot, KraberHipfireSmooth);
 	ReadFloat(Aimbot, KraberADSSmooth);
-	ReadBool(Aimbot, KraberFire);
-	ReadBool(Aimbot, KraberADS);
+
 	ReadBool(Aimbot, ThrowingKnifeClosestHitbox);
 	ReadInt(Aimbot, ThrowingKnifeHitbox);
 	ReadFloat(Aimbot, ThrowingKnifeSpeed);
 	ReadFloat(Aimbot, ThrowingKnifeHipfireSmooth);
 	ReadFloat(Aimbot, ThrowingKnifeADSSmooth);
-	ReadBool(Aimbot, ThrowingKnifeFire);
-	ReadBool(Aimbot, ThrowingKnifeADS);
+
 	
 	//Aimbot Mode 1 - Grinder
 	ReadFloat(Aimbot, P2020HipfireSmooth1);
@@ -2620,144 +2471,159 @@ bool ReadConfig(const std::string &configFile) {
     ReadFloat(Glow, GreyShieldColorG);
     ReadFloat(Glow, GreyShieldColorB);
 
-    ReadBool(Sense, DrawSeer);
-    ReadBool(Sense, DrawStatus);
-    ReadBool(Sense, ShowMaxStatusValues);
-    ReadBool(Sense, HealthBar);
-    ReadBool(Sense, ShieldBar);
-    ReadFloat(Sense, BarThickness);
-    ReadBool(Sense, ShowSpectators);
-    ReadBool(Sense, DrawFOVCircle);
-    ReadFloat(Sense, GameFOV);
-    ReadBool(Sense, DrawBox);
-    ReadBool(Sense, DrawFilledBox);
-    ReadFloat(Sense, BoxThickness);
-    ReadBool(Sense, Skeleton);
-    ReadFloat(Sense, SkeletonThickness);
-    ReadFloat(Sense, ESPMaxDistance);
-    ReadBool(Sense, ShowNear);
-    ReadBool(Sense, DrawNames);
-    ReadBool(Sense, DrawWeapon);
-    ReadBool(Sense, ShowLegend);
-    ReadBool(Sense, WeaponColorType);
-    ReadBool(Sense, DrawDistance);
-    ReadInt(Sense, TracerPos);
-    ReadInt(Sense, TracerBone);
-    ReadBool(Sense, DrawTracers);
-    ReadBool(Sense, ShowTeam);
-    ReadBool(Sense, TeamNames);
-        
-        //Colors
-        ReadFloat(Sense, InvisibleBoxColorR);
-        ReadFloat(Sense, InvisibleBoxColorG);
-        ReadFloat(Sense, InvisibleBoxColorB);
-        ReadFloat(Sense, InvisibleBoxColorA);
-        ReadFloat(Sense, VisibleBoxColorR);
-        ReadFloat(Sense, VisibleBoxColorG);
-        ReadFloat(Sense, VisibleBoxColorB);
-        ReadFloat(Sense, VisibleBoxColorA);
-        ReadFloat(Sense, InvisibleFilledBoxColorR);
-        ReadFloat(Sense, InvisibleFilledBoxColorG);
-        ReadFloat(Sense, InvisibleFilledBoxColorB);
-        ReadFloat(Sense, InvisibleFilledBoxColorA);
-        ReadFloat(Sense, VisibleFilledBoxColorR);
-        ReadFloat(Sense, VisibleFilledBoxColorG);
-        ReadFloat(Sense, VisibleFilledBoxColorB);
-        ReadFloat(Sense, VisibleFilledBoxColorA);
-        ReadFloat(Sense, InvisibleTracerColorR);
-        ReadFloat(Sense, InvisibleTracerColorG);
-        ReadFloat(Sense, InvisibleTracerColorB);
-        ReadFloat(Sense, InvisibleTracerColorA);
-        ReadFloat(Sense, VisibleTracerColorR);
-        ReadFloat(Sense, VisibleTracerColorG);
-        ReadFloat(Sense, VisibleTracerColorB);
-        ReadFloat(Sense, VisibleTracerColorA);
-        ReadFloat(Sense, InvisibleSkeletonColorR);
-        ReadFloat(Sense, InvisibleSkeletonColorG);
-        ReadFloat(Sense, InvisibleSkeletonColorB);
-        ReadFloat(Sense, InvisibleSkeletonColorA);
-        ReadFloat(Sense, VisibleSkeletonColorR);
-        ReadFloat(Sense, VisibleSkeletonColorG);
-        ReadFloat(Sense, VisibleSkeletonColorB);
-        ReadFloat(Sense, VisibleSkeletonColorA);
-        ReadFloat(Sense, InvisibleNameColorR);
-        ReadFloat(Sense, InvisibleNameColorG);
-        ReadFloat(Sense, InvisibleNameColorB);
-        ReadFloat(Sense, InvisibleNameColorA);
-        ReadFloat(Sense, VisibleNameColorR);
-        ReadFloat(Sense, VisibleNameColorG);
-        ReadFloat(Sense, VisibleNameColorB);
-        ReadFloat(Sense, VisibleNameColorA);
-        ReadFloat(Sense, InvisibleDistanceColorR);
-        ReadFloat(Sense, InvisibleDistanceColorG);
-        ReadFloat(Sense, InvisibleDistanceColorB);
-        ReadFloat(Sense, InvisibleDistanceColorA);
-        ReadFloat(Sense, VisibleDistanceColorR);
-        ReadFloat(Sense, VisibleDistanceColorG);
-        ReadFloat(Sense, VisibleDistanceColorB);
-        ReadFloat(Sense, VisibleDistanceColorA);
-        ReadFloat(Sense, FOVColorR);
-        ReadFloat(Sense, FOVColorG);
-        ReadFloat(Sense, FOVColorB);
-        ReadFloat(Sense, FOVColorA);
-        ReadFloat(Sense, FilledFOVColorR);
-        ReadFloat(Sense, FilledFOVColorG);
-        ReadFloat(Sense, FilledFOVColorB);
-        ReadFloat(Sense, FilledFOVColorA);
-        ReadFloat(Sense, WeaponColorR);
-        ReadFloat(Sense, WeaponColorG);
-        ReadFloat(Sense, WeaponColorB);
-        ReadFloat(Sense, WeaponColorA);
-        ReadFloat(Sense, NearColorR);
-        ReadFloat(Sense, NearColorG);
-        ReadFloat(Sense, NearColorB);
-        ReadFloat(Sense, NearColorA);
-        ReadFloat(Sense, TeamColorR);
-        ReadFloat(Sense, TeamColorG);
-        ReadFloat(Sense, TeamColorB);
-        ReadFloat(Sense, TeamColorA);
-        ReadFloat(Sense, TeamNameColorR);
-        ReadFloat(Sense, TeamNameColorG);
-        ReadFloat(Sense, TeamNameColorB);
-        ReadFloat(Sense, TeamNameColorA);
-        ReadFloat(Sense, CrosshairColorR);
-        ReadFloat(Sense, CrosshairColorG);
-        ReadFloat(Sense, CrosshairColorB);
-        ReadFloat(Sense, CrosshairColorA);
-        
-        ReadFloat(Sense, LightWeaponColorR);
-        ReadFloat(Sense, LightWeaponColorG);
-        ReadFloat(Sense, LightWeaponColorB);
-        ReadFloat(Sense, LightWeaponColorA);
-        ReadFloat(Sense, HeavyWeaponColorR);
-        ReadFloat(Sense, HeavyWeaponColorG);
-        ReadFloat(Sense, HeavyWeaponColorB);
-        ReadFloat(Sense, HeavyWeaponColorA);
-        ReadFloat(Sense, EnergyWeaponColorR);
-        ReadFloat(Sense, EnergyWeaponColorG);
-        ReadFloat(Sense, EnergyWeaponColorB);
-        ReadFloat(Sense, EnergyWeaponColorA);
-        ReadFloat(Sense, ShotgunWeaponColorR);
-        ReadFloat(Sense, ShotgunWeaponColorG);
-        ReadFloat(Sense, ShotgunWeaponColorB);
-        ReadFloat(Sense, ShotgunWeaponColorA);
-        ReadFloat(Sense, SniperWeaponColorR);
-        ReadFloat(Sense, SniperWeaponColorG);
-        ReadFloat(Sense, SniperWeaponColorB);
-        ReadFloat(Sense, SniperWeaponColorA);
-        ReadFloat(Sense, LegendaryWeaponColorR);
-        ReadFloat(Sense, LegendaryWeaponColorG);
-        ReadFloat(Sense, LegendaryWeaponColorB);
-        ReadFloat(Sense, LegendaryWeaponColorA);
-        ReadFloat(Sense, MeleeWeaponColorR);
-        ReadFloat(Sense, MeleeWeaponColorG);
-        ReadFloat(Sense, MeleeWeaponColorB);
-        ReadFloat(Sense, MeleeWeaponColorA);
-        ReadFloat(Sense, ThrowableWeaponColorR);
-        ReadFloat(Sense, ThrowableWeaponColorG);
-        ReadFloat(Sense, ThrowableWeaponColorB);
-        ReadFloat(Sense, ThrowableWeaponColorA);
+	ReadBool(Sense, VisibilityCheck);
+	ReadBool(Sense, DrawBoxes);
+	ReadInt(Sense, BoxType);
+	ReadInt(Sense, BoxStyle);
+	ReadFloat(Sense, BoxThickness);
+	ReadBool(Sense, Skeleton);
+	ReadFloat(Sense, SkeletonThickness);
+	ReadBool(Sense, HealthBar);
+	ReadBool(Sense, ShieldBar);
+	ReadInt(Sense, BarMode);
+	ReadInt(Sense, BarStyle);
+	ReadInt(Sense, BarColorMode);
+	ReadBool(Sense, BarBackground);
+	ReadFloat(Sense, BarThickness);
+	ReadFloat(Sense, BarThickness2);
+	ReadFloat(Sense, BarHeight);
+	ReadFloat(Sense, BarWidth);
+	ReadInt(Sense, ESPMaxDistance);
+	ReadBool(Sense, ShowNear);
+	ReadBool(Sense, DrawSeer);
+	ReadBool(Sense, DrawStatus);
+	ReadBool(Sense, DrawWeapon);
+	ReadInt(Sense, WeaponColorType);
+	ReadBool(Sense, ShowLegend);
+	ReadBool(Sense, ShowMaxStatusValues);
+	ReadBool(Sense, DrawDistance);
+	ReadBool(Sense, DrawFOVCircle);
+	ReadBool(Sense, DrawFilledFOVCircle);
+	ReadFloat(Sense, FOVThickness);
+	ReadBool(Sense, DrawNames);
+	ReadInt(Sense, TracerPos);
+	ReadInt(Sense, TracerBone);
+	ReadBool(Sense, DrawTracers);
+	ReadFloat(Sense, TracerThickness);
+	ReadBool(Sense, ShowSpectators);
+	ReadBool(Sense, DrawCrosshair);
+	ReadFloat(Sense, CrosshairSize);
+	ReadFloat(Sense, CrosshairThickness);
     
+    //Colors
+        ReadFloat(Colors, InvisibleBoxColorR);
+        ReadFloat(Colors, InvisibleBoxColorG);
+        ReadFloat(Colors, InvisibleBoxColorB);
+        ReadFloat(Colors, InvisibleBoxColorA);
+        ReadFloat(Colors, VisibleBoxColorR);
+        ReadFloat(Colors, VisibleBoxColorG);
+        ReadFloat(Colors, VisibleBoxColorB);
+        ReadFloat(Colors, VisibleBoxColorA);
+        ReadFloat(Colors, InvisibleFilledBoxColorR);
+        ReadFloat(Colors, InvisibleFilledBoxColorG);
+        ReadFloat(Colors, InvisibleFilledBoxColorB);
+        ReadFloat(Colors, InvisibleFilledBoxColorA);
+        ReadFloat(Colors, VisibleFilledBoxColorR);
+        ReadFloat(Colors, VisibleFilledBoxColorG);
+        ReadFloat(Colors, VisibleFilledBoxColorB);
+        ReadFloat(Colors, VisibleFilledBoxColorA);
+        ReadFloat(Colors, InvisibleTracerColorR);
+        ReadFloat(Colors, InvisibleTracerColorG);
+        ReadFloat(Colors, InvisibleTracerColorB);
+        ReadFloat(Colors, InvisibleTracerColorA);
+        ReadFloat(Colors, VisibleTracerColorR);
+        ReadFloat(Colors, VisibleTracerColorG);
+        ReadFloat(Colors, VisibleTracerColorB);
+        ReadFloat(Colors, VisibleTracerColorA);
+        ReadFloat(Colors, InvisibleSkeletonColorR);
+        ReadFloat(Colors, InvisibleSkeletonColorG);
+        ReadFloat(Colors, InvisibleSkeletonColorB);
+        ReadFloat(Colors, InvisibleSkeletonColorA);
+        ReadFloat(Colors, VisibleSkeletonColorR);
+        ReadFloat(Colors, VisibleSkeletonColorG);
+        ReadFloat(Colors, VisibleSkeletonColorB);
+        ReadFloat(Colors, VisibleSkeletonColorA);
+        ReadFloat(Colors, InvisibleNameColorR);
+        ReadFloat(Colors, InvisibleNameColorG);
+        ReadFloat(Colors, InvisibleNameColorB);
+        ReadFloat(Colors, InvisibleNameColorA);
+        ReadFloat(Colors, VisibleNameColorR);
+        ReadFloat(Colors, VisibleNameColorG);
+        ReadFloat(Colors, VisibleNameColorB);
+        ReadFloat(Colors, VisibleNameColorA);
+        ReadFloat(Colors, InvisibleDistanceColorR);
+        ReadFloat(Colors, InvisibleDistanceColorG);
+        ReadFloat(Colors, InvisibleDistanceColorB);
+        ReadFloat(Colors, InvisibleDistanceColorA);
+        ReadFloat(Colors, VisibleDistanceColorR);
+        ReadFloat(Colors, VisibleDistanceColorG);
+        ReadFloat(Colors, VisibleDistanceColorB);
+        ReadFloat(Colors, VisibleDistanceColorA);
+        ReadFloat(Colors, FOVColorR);
+        ReadFloat(Colors, FOVColorG);
+        ReadFloat(Colors, FOVColorB);
+        ReadFloat(Colors, FOVColorA);
+        ReadFloat(Colors, FilledFOVColorR);
+        ReadFloat(Colors, FilledFOVColorG);
+        ReadFloat(Colors, FilledFOVColorB);
+        ReadFloat(Colors, FilledFOVColorA);
+        ReadFloat(Colors, VisibleWeaponColorR);
+        ReadFloat(Colors, VisibleWeaponColorG);
+        ReadFloat(Colors, VisibleWeaponColorB);
+        ReadFloat(Colors, VisibleWeaponColorA);
+        ReadFloat(Colors, InvisibleWeaponColorR);
+        ReadFloat(Colors, InvisibleWeaponColorG);
+        ReadFloat(Colors, InvisibleWeaponColorB);
+        ReadFloat(Colors, InvisibleWeaponColorA);
+        ReadFloat(Colors, NearColorR);
+        ReadFloat(Colors, NearColorG);
+        ReadFloat(Colors, NearColorB);
+        ReadFloat(Colors, NearColorA);
+        ReadFloat(Colors, TeamColorR);
+        ReadFloat(Colors, TeamColorG);
+        ReadFloat(Colors, TeamColorB);
+        ReadFloat(Colors, TeamColorA);
+        ReadFloat(Colors, TeamNameColorR);
+        ReadFloat(Colors, TeamNameColorG);
+        ReadFloat(Colors, TeamNameColorB);
+        ReadFloat(Colors, TeamNameColorA);
+        ReadFloat(Colors, CrosshairColorR);
+        ReadFloat(Colors, CrosshairColorG);
+        ReadFloat(Colors, CrosshairColorB);
+        ReadFloat(Colors, CrosshairColorA);
+        
+        ReadFloat(Colors, LightWeaponColorR);
+        ReadFloat(Colors, LightWeaponColorG);
+        ReadFloat(Colors, LightWeaponColorB);
+        ReadFloat(Colors, LightWeaponColorA);
+        ReadFloat(Colors, HeavyWeaponColorR);
+        ReadFloat(Colors, HeavyWeaponColorG);
+        ReadFloat(Colors, HeavyWeaponColorB);
+        ReadFloat(Colors, HeavyWeaponColorA);
+        ReadFloat(Colors, EnergyWeaponColorR);
+        ReadFloat(Colors, EnergyWeaponColorG);
+        ReadFloat(Colors, EnergyWeaponColorB);
+        ReadFloat(Colors, EnergyWeaponColorA);
+        ReadFloat(Colors, ShotgunWeaponColorR);
+        ReadFloat(Colors, ShotgunWeaponColorG);
+        ReadFloat(Colors, ShotgunWeaponColorB);
+        ReadFloat(Colors, ShotgunWeaponColorA);
+        ReadFloat(Colors, SniperWeaponColorR);
+        ReadFloat(Colors, SniperWeaponColorG);
+        ReadFloat(Colors, SniperWeaponColorB);
+        ReadFloat(Colors, SniperWeaponColorA);
+        ReadFloat(Colors, LegendaryWeaponColorR);
+        ReadFloat(Colors, LegendaryWeaponColorG);
+        ReadFloat(Colors, LegendaryWeaponColorB);
+        ReadFloat(Colors, LegendaryWeaponColorA);
+        ReadFloat(Colors, MeleeWeaponColorR);
+        ReadFloat(Colors, MeleeWeaponColorG);
+        ReadFloat(Colors, MeleeWeaponColorB);
+        ReadFloat(Colors, MeleeWeaponColorA);
+        ReadFloat(Colors, ThrowableWeaponColorR);
+        ReadFloat(Colors, ThrowableWeaponColorG);
+        ReadFloat(Colors, ThrowableWeaponColorB);
+        ReadFloat(Colors, ThrowableWeaponColorA);
     
     ReadBool(Triggerbot, Enabled);
     ReadFloat(Triggerbot, Range);
@@ -2801,6 +2667,14 @@ bool ReadConfig(const std::string &configFile) {
 	ReadBool(Triggerbot, Kraber);
 	ReadBool(Triggerbot, Knife);
     
+	ReadBool(Radar, MiniMap);
+	ReadFloat(Radar, MiniMapRange);
+	ReadInt(Radar, MiniMapScaleX);
+	ReadInt(Radar, MiniMapScaleY);
+	ReadInt(Radar, MiniMapDotSize);
+	ReadBool(Radar, MiniMapGuides);
+	ReadBool(Radar, BigMap);
+
     ReadBool(Misc, SkinChanger);
     ReadBool(Misc, AutoGrapple);
 	//Weapons
