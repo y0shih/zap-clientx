@@ -1,8 +1,9 @@
 #pragma once
-#include "../Utils/Config.hpp"
 #include <string>
 #include "Offsets.hpp"
 #include "LocalPlayer.hpp"
+#include "../Utils/Config.hpp"
+#include "../Utils/Modules.hpp"
 #include "../Utils/Memory.hpp"
 #include "../Utils/HitboxType.hpp"
 #include "../Math/Vector2D.hpp"
@@ -33,6 +34,7 @@ struct Player {
     bool IsDead;
     bool IsKnocked;
 
+    Vector2D ViewAngles;
     Vector3D LocalOrigin;
     Vector3D AbsoluteVelocity;
 
@@ -66,7 +68,7 @@ struct Player {
 
     bool IsLockedOn;
     
-    //For AimMode 2
+    //For AimbotMode Grinder
     int ducking;
     bool aimbotLocked;
     FloatVector3D localOrigin_prev;
@@ -97,6 +99,8 @@ struct Player {
 
         LocalOrigin = Memory::Read<Vector3D>(BasePointer + OFF_LOCAL_ORIGIN);
         AbsoluteVelocity = Memory::Read<Vector3D>(BasePointer + OFF_ABSVELOCITY);
+        ViewAngles = Memory::Read<Vector2D>(BasePointer + OFF_VIEW_ANGLES);
+        ViewYaw = Memory::Read<float>(BasePointer + OFF_YAW);
 
         GlowEnable = Memory::Read<int>(BasePointer + OFF_GLOW_ENABLE);
         GlowThroughWall = Memory::Read<int>(BasePointer + OFF_GLOW_THROUGH_WALL);
@@ -107,7 +111,7 @@ struct Player {
         LastTimeAimedAtPrevious = LastTimeAimedAt;
 
         LastVisibleTime = Memory::Read<int>(BasePointer + OFF_LAST_VISIBLE_TIME);
-        IsVisible = IsDummy() || IsAimedAt || LastTimeVisiblePrevious < LastVisibleTime;
+        IsVisible = IsAimedAt || LastTimeVisiblePrevious < LastVisibleTime;
         LastTimeVisiblePrevious = LastVisibleTime;
 
         Health = Memory::Read<int>(BasePointer + OFF_HEALTH);
@@ -147,13 +151,14 @@ struct Player {
               
                 IsAlly = friendly;
                 IsHostile = !IsAlly;
-		    if (IsVisible) {
+		    if (IsVisible) { //For AimbotMode Grinder
 		        aimbotDesiredAngles = calcDesiredAngles();
 		        aimbotDesiredAnglesIncrement = calcDesiredAnglesIncrement();
 		        aimbotScore = calcAimbotScore();
 		    }
         }
         
+        //For AimbotMode Grinder
         localOrigin = Memory::Read<FloatVector3D>(BasePointer + OFF_LOCAL_ORIGIN);
         absoluteVelocity = Memory::Read<FloatVector3D>(BasePointer + OFF_ABSVELOCITY);
         FloatVector3D localOrigin_diff = localOrigin.subtract(localOrigin_prev).normalize().multiply(20);
@@ -164,6 +169,7 @@ struct Player {
         Distance2DToLocalPlayer = Myself->LocalOrigin.To2D().Distance(LocalOrigin.To2D());
         
     }
+
     std::string GetPlayerName(){
         uintptr_t NameIndex = Memory::Read<uintptr_t>(BasePointer + OFF_NAME_INDEX);
         uintptr_t NameOffset = Memory::Read<uintptr_t>(OFF_REGION + OFF_NAME_LIST + ((NameIndex - 1) << 4 ));
@@ -216,14 +222,14 @@ struct Player {
     }
 
     bool IsValid() {
-        return BasePointer != 0 && Health > 0 && (IsPlayer() || IsDummy());
+        return BasePointer != 0 && Health >= 0 && (IsPlayer() || IsDummy());
     }
 
     bool IsCombatReady() {
         if (!IsValid())return false;
         if (IsDummy()) return true;
         if (IsDead) return false;
-        if (IsKnocked) return false;
+        //if (IsKnocked) return false;
         return true;
     }
 
@@ -281,7 +287,7 @@ struct Player {
         return BonePosition;
     }
     
-    //For AimMode 2
+    //For AimbotMode Grinder   
     float calcDesiredPitch() {
         if (IsLocal) return 0;
         const FloatVector3D shift = FloatVector3D(100000, 100000, 100000);
