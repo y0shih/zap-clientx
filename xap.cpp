@@ -24,7 +24,6 @@
 #include "Features/Misc.hpp"
 #include "Features/RCS.hpp"
 #include "Features/Glow.hpp"
-#include "Features/Test.hpp"
 
 #include "Overlay/Overlay.hpp"
 
