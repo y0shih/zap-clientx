@@ -14,6 +14,7 @@
 #include "../Utils/InputManager.hpp"
 #include "Utils/Themes.hpp"
 #include "Utils/Config.hpp"
+#include "../Utils/Modules.hpp"
 
 class Overlay {
 private:
@@ -91,8 +92,6 @@ public:
     int ThemeStyle;
     int ThemeColor;
     bool TeamGamemode = true;
-    int MenuX = 550;
-    int MenuY = 730;
     bool ErrorLogging = false;
 
     bool InitializeOverlay() {
@@ -160,7 +159,7 @@ public:
 	style.ItemInnerSpacing                  = ImVec2(6.00f, 6.00f);
 	style.TouchExtraPadding                 = ImVec2(0.00f, 0.00f);
 	style.IndentSpacing                     = 25;
-	style.ScrollbarSize                     = 15;
+	style.ScrollbarSize                     = 12;
 	style.GrabMinSize                       = 10;
 	style.WindowBorderSize                  = 1;
 	style.ChildBorderSize                   = 1;
@@ -190,7 +189,7 @@ public:
   	style.Colors[ImGuiCol_TitleBgActive]          = ImVec4(0.06f, 0.06f, 0.06f, 1.00f);
   	style.Colors[ImGuiCol_TitleBgCollapsed]       = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
   	style.Colors[ImGuiCol_MenuBarBg]              = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
-  	style.Colors[ImGuiCol_ScrollbarBg]            = ImVec4(0.05f, 0.05f, 0.05f, 0.54f);
+  	style.Colors[ImGuiCol_ScrollbarBg]            = ImVec4(0.05f, 0.05f, 0.05f, 0.00f);
   	style.Colors[ImGuiCol_ScrollbarGrab]          = ImVec4(0.34f, 0.34f, 0.34f, 0.54f);
   	style.Colors[ImGuiCol_ScrollbarGrabHovered]   = ImVec4(0.40f, 0.40f, 0.40f, 0.54f);
   	style.Colors[ImGuiCol_ScrollbarGrabActive]    = ImVec4(0.56f, 0.56f, 0.56f, 0.54f);
@@ -262,7 +261,7 @@ public:
 		ImVec2 WindowTitleAlign                = ImVec2(0.5f, 0.5f);
 		ImVec2 WindowMinSize                   = ImVec2(20.0f, 20.0f);
 		int IndentSpacing                      = 25;
-		int ScrollbarSize                      = 15;
+		int ScrollbarSize                      = 12;
 		int GrabMinSize                        = 10;
 		int WindowBorderSize                   = 1;
 		int ChildBorderSize                    = 1;
@@ -279,7 +278,7 @@ public:
 		int TabRounding                        = 4;
 		
 		//Colors
-	        ImVec4 Text                   = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
+	    ImVec4 Text                   = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
 	  	ImVec4 TextDisabled           = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
 	  	ImVec4 WindowBg               = ImVec4(0.10f, 0.10f, 0.10f, 1.00f);
 	  	ImVec4 ChildBg                = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
@@ -293,7 +292,7 @@ public:
 	  	ImVec4 TitleBgActive          = ImVec4(0.06f, 0.06f, 0.06f, 1.00f);
 	  	ImVec4 TitleBgCollapsed       = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
 	  	ImVec4 MenuBarBg              = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
-	  	ImVec4 ScrollbarBg            = ImVec4(0.05f, 0.05f, 0.05f, 0.54f);
+	  	ImVec4 ScrollbarBg            = ImVec4(0.05f, 0.05f, 0.05f, 0.00f);
 	  	ImVec4 ScrollbarGrab          = ImVec4(0.34f, 0.34f, 0.34f, 0.54f);
 	  	ImVec4 ScrollbarGrabHovered   = ImVec4(0.40f, 0.40f, 0.40f, 0.54f);
 	  	ImVec4 ScrollbarGrabActive    = ImVec4(0.56f, 0.56f, 0.56f, 0.54f);
@@ -335,121 +334,130 @@ public:
 
     void SetUIStyle() {
     	if (ImGui::BeginTabItem("Home", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton)) {
-    		ImGui::Text("Info: ");
-    		ImGui::TextColored(ImVec4(1, 0, 0, 1),"Detection Status: ");
-    		ImGui::SameLine();
-    		ImGui::TextColored(ImVec4(0, 1, 0, 1), "Undetected");
-    		ImGui::Text("(Disclamer: I'm not responsible for any bans)");
-    		ImGui::Text("ESP/Aimbot not working? Sounds like a config issue ngl... (Hint: Team Check, Smoothing Settings)");
-    		ImGui::Text("Got banned? Just create a new account and/or change config.");
-    		ImGui::Separator();
-    		ImGui::Text("Main Settings");
-    		ImGui::Checkbox("Team Check", &TeamGamemode);
-            	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-                	ImGui::SetTooltip("Enable if playing BR, Gun Run or Training\nDisable if playing Control or TDM");
-                Modules::Home::TeamGamemode = TeamGamemode;
-    	
-    		ImGui::Separator();
-		
-		ImGui::Text("Menu Configration");
-		ImGui::Text("Menu Size");
-	    	ImGui::SliderInt("X", &MenuX, 250, 1920);
-	    	ImGui::SliderInt("Y", &MenuY, 250, 1080);
+			ImVec2 TabSize;
+			TabSize = ImGui::GetWindowSize();
+			ImGui::Text("Homepage");
+			if (ImGui::BeginChild("Homepage", ImVec2(TabSize.x - TabSize.x , (TabSize.y - TabSize.y) + 154), true, ImGuiWindowFlags_NoScrollbar)) {
+				ImGui::Text("Info: ");
+				ImGui::TextColored(ImVec4(1, 0, 0, 1),"Detection Status: ");
+				ImGui::SameLine();
+				ImGui::TextColored(ImVec4(0, 1, 0, 1), "Undetected");
+				ImGui::Text("(Disclamer: I'm not responsible for any bans)");
+				ImGui::Text("ESP/Aimbot not working? Sounds like a config issue ngl... (Hint: Team Check, Smoothing Settings)");
+				ImGui::Text("Got banned? Just create a new account and/or change config.");
+				ImGui::Separator();
+				ImGui::Text("Main Settings");
+				ImGui::Checkbox("Team Check", &TeamGamemode);
+				if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+					ImGui::SetTooltip("Enable if playing BR, Gun Run or Training\nDisable if playing Control or TDM");
+				Modules::Home::TeamGamemode = TeamGamemode;
+
+				ImGui::EndChild();
+			}
+
+			ImGui::Text("Menu Configuration");
+			if (ImGui::BeginChild("Menu Configuration", ImVec2(TabSize.x - TabSize.x , (TabSize.y - TabSize.y) + 145), true, ImGuiWindowFlags_NoScrollbar)) {
+			ImGui::Text("Menu Configration Tab");
+	    	ImGui::SliderInt("Menu Width", &Modules::Home::MenuX, 250, 1920);
+	    	//ImGui::SliderInt("Y", &Modules::Home::MenuY, 250, 1080);
     		ImGui::Text("Style Selection");
     		if (ImGui::Button("Original##Theme")) {
     		    ThemeStyle = 0;
-		    Alpha                   = 1.0f;             
-		    WindowPadding           = ImVec2(8,8);      
-		    WindowRounding          = 0.0f;             
-		    WindowBorderSize        = 1.0f;             
-		    WindowMinSize           = ImVec2(32,32);    
-		    WindowTitleAlign        = ImVec2(0.0f,0.5f);
-		    ChildRounding           = 0.0f;             
-		    ChildBorderSize         = 1.0f;             
-		    PopupRounding           = 0.0f;            
-		    PopupBorderSize         = 1.0f;        
-		    FramePadding            = ImVec2(4,3);    
-		    FrameRounding           = 0.0f;          
-		    FrameBorderSize         = 0.0f;       
-		    ItemSpacing             = ImVec2(8,4);    
-		    ItemInnerSpacing        = ImVec2(4,4);     
-		    CellPadding             = ImVec2(4,2);      
-		    TouchExtraPadding       = ImVec2(0,0);     
-		    IndentSpacing           = 21.0f;          
-		    ColumnsMinSpacing       = 6.0f;            
-		    ScrollbarSize           = 14.0f;          
-		    ScrollbarRounding       = 9.0f;         
-		    GrabMinSize             = 10.0f;      
-		    GrabRounding            = 0.0f;          
-		    LogSliderDeadzone       = 4.0f;             
-		    TabRounding             = 4.0f;         
-		    TabBorderSize           = 0.0f;            
-		    TabMinWidthForCloseButton = 0.0f;           
-		    ButtonTextAlign         = ImVec2(0.5f,0.5f);
-		    SelectableTextAlign     = ImVec2(0.0f,0.0f);
+				Alpha                   = 1.0f;             
+				WindowPadding           = ImVec2(8,8);      
+				WindowRounding          = 0.0f;             
+				WindowBorderSize        = 1.0f;             
+				WindowMinSize           = ImVec2(32,32);    
+				WindowTitleAlign        = ImVec2(0.0f,0.5f);
+				ChildRounding           = 0.0f;             
+				ChildBorderSize         = 1.0f;             
+				PopupRounding           = 0.0f;            
+				PopupBorderSize         = 1.0f;        
+				FramePadding            = ImVec2(4,3);    
+				FrameRounding           = 0.0f;          
+				FrameBorderSize         = 0.0f;       
+				ItemSpacing             = ImVec2(8,4);    
+				ItemInnerSpacing        = ImVec2(4,4);     
+				CellPadding             = ImVec2(4,2);      
+				TouchExtraPadding       = ImVec2(0,0);     
+				IndentSpacing           = 21.0f;          
+				ColumnsMinSpacing       = 6.0f;            
+				ScrollbarSize           = 12.0f;          
+				ScrollbarRounding       = 9.0f;         
+				GrabMinSize             = 10.0f;      
+				GrabRounding            = 0.0f;          
+				LogSliderDeadzone       = 4.0f;             
+				TabRounding             = 4.0f;         
+				TabBorderSize           = 0.0f;            
+				TabMinWidthForCloseButton = 0.0f;           
+				ButtonTextAlign         = ImVec2(0.5f,0.5f);
+				SelectableTextAlign     = ImVec2(0.0f,0.0f);
     		}
+
     		ImGui::SameLine();
     		if (ImGui::Button("xap-client##Theme")) {
     			ThemeStyle = 1;
 	    		Alpha 			= 1.0f;
-			DisabledAlpha 		= 1.0f;
-			WindowPadding 		= ImVec2(12.0f, 12.0f);
-			WindowRounding 		= 0.0f;
-			WindowBorderSize 	= 0.0f;
-			WindowMinSize 		= ImVec2(20.0f, 20.0f);
-			WindowTitleAlign 	= ImVec2(0.5f, 0.5f);
-			ChildRounding 		= 0.0f;
-			ChildBorderSize 	= 1.0f;
-			PopupRounding 		= 0.0f;
-			PopupBorderSize 	= 1.0f;
-			FramePadding 		= ImVec2(6.0f, 6.0f);
-			FrameRounding 		= 0.0f;
-			FrameBorderSize 	= 0.0f;
-			ItemSpacing 		= ImVec2(12.0f, 6.0f);
-			ItemInnerSpacing 	= ImVec2(6.0f, 3.0f);
-			CellPadding 		= ImVec2(12.0f, 6.0f);
-			IndentSpacing 		= 20.0f;
-			ColumnsMinSpacing 	= 6.0f;
-			ScrollbarSize 		= 12.0f;
-			ScrollbarRounding 	= 0.0f;
-			GrabMinSize 		= 12.0f;
-			GrabRounding 		= 0.0f;
-			TabRounding 		= 0.0f;
-			TabBorderSize 		= 0.0f;
-			TabMinWidthForCloseButton = 0.0f;
-			ButtonTextAlign 	= ImVec2(0.5f, 0.5f);
-			SelectableTextAlign 	= ImVec2(0.0f, 0.0f);
-			LogSliderDeadzone 	= 4;
+				DisabledAlpha 		= 1.0f;
+				WindowPadding 		= ImVec2(12.0f, 12.0f);
+				WindowRounding 		= 0.0f;
+				WindowBorderSize 	= 0.0f;
+				WindowMinSize 		= ImVec2(20.0f, 20.0f);
+				WindowTitleAlign 	= ImVec2(0.5f, 0.5f);
+				ChildRounding 		= 0.0f;
+				ChildBorderSize 	= 1.0f;
+				PopupRounding 		= 0.0f;
+				PopupBorderSize 	= 1.0f;
+				FramePadding 		= ImVec2(6.0f, 6.0f);
+				FrameRounding 		= 0.0f;
+				FrameBorderSize 	= 0.0f;
+				ItemSpacing 		= ImVec2(12.0f, 6.0f);
+				ItemInnerSpacing 	= ImVec2(6.0f, 3.0f);
+				CellPadding 		= ImVec2(12.0f, 6.0f);
+				IndentSpacing 		= 20.0f;
+				ColumnsMinSpacing 	= 6.0f;
+				ScrollbarSize 		= 12.0f;
+				ScrollbarRounding 	= 0.0f;
+				GrabMinSize 		= 12.0f;
+				GrabRounding 		= 0.0f;
+				TabRounding 		= 0.0f;
+				TabBorderSize 		= 0.0f;
+				TabMinWidthForCloseButton = 0.0f;
+				ButtonTextAlign 	= ImVec2(0.5f, 0.5f);
+				SelectableTextAlign 	= ImVec2(0.0f, 0.0f);
+				LogSliderDeadzone 	= 4;
     		}
+
     		ImGui::SameLine();
-    	    	if (ImGui::Button("EmbraceTheDarkness##Theme")) {
-    	    		ThemeStyle = 2;
-    	    		Alpha 				= 1.0f;
-			DisabledAlpha 			= 1.0f;
+    	    if (ImGui::Button("EmbraceTheDarkness##Theme")) {
+    	    	ThemeStyle = 2;
+    	    	Alpha 				= 1.0f;
+				DisabledAlpha 			= 1.0f;
     			WindowPadding                   = ImVec2(8.00f, 8.00f);
-			FramePadding                    = ImVec2(5.00f, 2.00f);
-		 	CellPadding                     = ImVec2(6.00f, 6.00f);
-		 	ItemSpacing                     = ImVec2(6.00f, 6.00f);
-		 	ItemInnerSpacing                = ImVec2(6.00f, 6.00f);
-			TouchExtraPadding               = ImVec2(0.00f, 0.00f);
-			WindowTitleAlign                = ImVec2(0.5f, 0.5f);
-			IndentSpacing                      = 25;
-			ScrollbarSize                      = 15;
-			GrabMinSize                        = 10;
-			WindowBorderSize                   = 1;
-			ChildBorderSize                    = 1;
-			PopupBorderSize                    = 1;
-			FrameBorderSize                    = 1;
-			TabBorderSize                      = 1;
-			WindowRounding                     = 7;
-			ChildRounding                      = 4;
-			FrameRounding                      = 3;
-			PopupRounding                      = 4;
-			ScrollbarRounding                  = 9;
-			GrabRounding                       = 3;
-			LogSliderDeadzone                  = 4;
-			TabRounding                        = 4;
+				FramePadding                    = ImVec2(5.00f, 2.00f);
+				CellPadding                     = ImVec2(6.00f, 6.00f);
+				ItemSpacing                     = ImVec2(6.00f, 6.00f);
+				ItemInnerSpacing                = ImVec2(6.00f, 6.00f);
+				TouchExtraPadding               = ImVec2(0.00f, 0.00f);
+				WindowTitleAlign                = ImVec2(0.5f, 0.5f);
+				IndentSpacing                      = 25;
+				ScrollbarSize                      = 12;
+				GrabMinSize                        = 10;
+				WindowBorderSize                   = 1;
+				ChildBorderSize                    = 1;
+				PopupBorderSize                    = 1;
+				FrameBorderSize                    = 1;
+				TabBorderSize                      = 1;
+				WindowRounding                     = 7;
+				ChildRounding                      = 4;
+				FrameRounding                      = 3;
+				PopupRounding                      = 4;
+				ScrollbarRounding                  = 9;
+				GrabRounding                       = 3;
+				LogSliderDeadzone                  = 4;
+				TabRounding                        = 4;
     		}
+
     		ImGui::SameLine();
     		if (ImGui::Button("Enemymouse##Theme")) {
     			ThemeStyle = 3;
@@ -496,7 +504,7 @@ public:
 			TouchExtraPadding               = ImVec2(0.00f, 0.00f);
 			WindowTitleAlign                = ImVec2(0.5f, 0.5f);
 			IndentSpacing                      = 25;
-			ScrollbarSize                      = 15;
+			ScrollbarSize                      = 12;
 			GrabMinSize                        = 10;
 			WindowBorderSize                   = 1;
 			ChildBorderSize                    = 1;
@@ -535,7 +543,7 @@ public:
 			CellPadding = ImVec2(12.10000038146973f, 9.199999809265137f);
 			IndentSpacing = 0.0f;
 			ColumnsMinSpacing = 4.900000095367432f;
-			ScrollbarSize = 11.60000038146973f;
+			ScrollbarSize = 12.0f;
 			ScrollbarRounding = 15.89999961853027f;
 			GrabMinSize = 3.700000047683716f;
 			GrabRounding = 20.0f;
@@ -545,6 +553,7 @@ public:
 			ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			SelectableTextAlign = ImVec2(0.0f, 0.0f);
 		}
+		ImGui::SameLine();
     		if (ImGui::Button("Vine##Theme")) {
     		    ThemeStyle = 6;
 			Alpha = 1.0f;
@@ -566,7 +575,7 @@ public:
 			CellPadding = ImVec2(4.0f, 2.0f);
 			IndentSpacing = 21.0f;
 			ColumnsMinSpacing = 6.0f;
-			ScrollbarSize = 14.0f;
+			ScrollbarSize = 12.0f;
 			ScrollbarRounding = 9.0f;
 			GrabMinSize = 9.89f;
 			GrabRounding = 0.0f;
@@ -596,7 +605,7 @@ public:
 		    TitleBgActive          = ImVec4(0.32f, 0.32f, 0.63f, 0.87f);
 		    TitleBgCollapsed       = ImVec4(0.40f, 0.40f, 0.80f, 0.20f);
 		    MenuBarBg              = ImVec4(0.40f, 0.40f, 0.55f, 0.80f);
-		    ScrollbarBg            = ImVec4(0.20f, 0.25f, 0.30f, 0.60f);
+		    ScrollbarBg            = ImVec4(0.20f, 0.25f, 0.30f, 0.00f);
 		    ScrollbarGrab          = ImVec4(0.40f, 0.40f, 0.80f, 0.30f);
 		    ScrollbarGrabHovered   = ImVec4(0.40f, 0.40f, 0.80f, 0.40f);
 		    ScrollbarGrabActive    = ImVec4(0.41f, 0.39f, 0.80f, 0.60f);
@@ -649,7 +658,7 @@ public:
 			TitleBgActive 		= ImVec4(0.04f, 0.05f, 0.07f, 1.0f);
 			TitleBgCollapsed 	= ImVec4(0.07f, 0.08f, 0.10f, 1.0f);
 			MenuBarBg 		= ImVec4(0.09f, 0.10f, 0.12f, 1.0f);
-			ScrollbarBg 		= ImVec4(0.04f, 0.05f, 0.07f, 1.0f);
+			ScrollbarBg 		= ImVec4(0.04f, 0.05f, 0.07f, 0.00f);
 			ScrollbarGrab 		= ImVec4(0.11f, 0.13f, 0.14f, 1.0f);
 			ScrollbarGrabHovered 	= ImVec4(0.15f, 0.16f, 0.19f, 1.0f);
 			ScrollbarGrabActive 	= ImVec4(0.11f, 0.13f, 0.14f, 1.0f);
@@ -706,7 +715,7 @@ public:
 		  	TitleBgActive          = ImVec4(0.06f, 0.06f, 0.06f, 1.00f);
 		  	TitleBgCollapsed       = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
 		  	MenuBarBg              = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
-		  	ScrollbarBg            = ImVec4(0.05f, 0.05f, 0.05f, 0.54f);
+		  	ScrollbarBg            = ImVec4(0.05f, 0.05f, 0.05f, 0.00f);
 		  	ScrollbarGrab          = ImVec4(0.34f, 0.34f, 0.34f, 0.54f);
 		  	ScrollbarGrabHovered   = ImVec4(0.40f, 0.40f, 0.40f, 0.54f);
 		  	ScrollbarGrabActive    = ImVec4(0.56f, 0.56f, 0.56f, 0.54f);
@@ -765,7 +774,7 @@ public:
 			TitleBgCollapsed = ImVec4(0.00f, 0.00f, 0.00f, 0.54f);
 			TitleBgActive = ImVec4(0.00f, 1.00f, 1.00f, 0.27f);
 			MenuBarBg = ImVec4(0.00f, 0.00f, 0.00f, 0.20f);
-			ScrollbarBg = ImVec4(0.22f, 0.29f, 0.30f, 0.71f);
+			ScrollbarBg = ImVec4(0.22f, 0.29f, 0.30f, 0.00f);
 			ScrollbarGrab = ImVec4(0.00f, 1.00f, 1.00f, 0.44f);
 			ScrollbarGrabHovered = ImVec4(0.00f, 1.00f, 1.00f, 0.74f);
 			ScrollbarGrabActive = ImVec4(0.00f, 1.00f, 1.00f, 1.00f);
@@ -804,9 +813,9 @@ public:
 			TitleBgActive          = ImVec4(0.61f, 0.00f, 1.00f, 1.00f);
 			TitleBgCollapsed       = ImVec4(0.25f, 0.00f, 0.54f, 0.81f);
 			MenuBarBg              = ImVec4(0.61f, 0.00f, 1.00f, 1.00f);
-			ScrollbarBg            = ImVec4(0.00f, 0.88f, 1.00f, 1.00f);
+			ScrollbarBg            = ImVec4(0.00f, 0.88f, 1.00f, 0.00f);
 			ScrollbarGrab          = ImVec4(0.61f, 0.00f, 1.00f, 1.00f);
-			ScrollbarGrabHovered   = ImVec4(0.01f, 0.00f, 1.00f, 1.00f);
+			ScrollbarGrabHovered   = ImVec4(0.00f, 0.82f, 1.00f, 1.00f);
 			ScrollbarGrabActive    = ImVec4(0.95f, 0.19f, 0.67f, 1.00f);
 			CheckMark              = ImVec4(0.95f, 0.19f, 0.92f, 1.00f);
 			SliderGrab             = ImVec4(0.00f, 1.00f, 0.95f, 1.00f);
@@ -846,7 +855,7 @@ public:
 			TitleBgActive = ImVec4(0.047f, 0.05f, 0.07f, 1.0f);
 			TitleBgCollapsed = ImVec4(0.07f, 0.08f, 0.10f, 1.0f);
 			MenuBarBg = ImVec4(0.09f, 0.10f, 0.12f, 1.0f);
-			ScrollbarBg = ImVec4(0.04f, 0.05f, 0.07f, 1.0f);
+			ScrollbarBg = ImVec4(0.04f, 0.05f, 0.07f, 0.00f);
 			ScrollbarGrab = ImVec4(0.11f, 0.13f, 0.14f, 1.0f);
 			ScrollbarGrabHovered = ImVec4(0.15f, 0.16f, 0.19f, 1.0f);
 			ScrollbarGrabActive = ImVec4(0.11f, 0.13f, 0.14f, 1.0f);
@@ -886,6 +895,7 @@ public:
 			NavWindowingDimBg = ImVec4(0.19f, 0.17f, 0.54f, 0.50f);
 			ModalWindowDimBg = ImVec4(0.19f, 0.17f, 0.54f, 0.50f);
 		}
+		ImGui::SameLine();
 		if (ImGui::Button("Purpur-Fetthenne##Color")) {
 			  ThemeColor = 6;
 			  Text                   = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
@@ -902,7 +912,7 @@ public:
 			  TitleBgActive          = ImVec4(0.27f, 0.27f, 0.28f, 1.00f);
 			  TitleBgCollapsed       = ImVec4(0.27f, 0.27f, 0.28f, 1.00f);
 			  MenuBarBg              = ImVec4(0.27f, 0.27f, 0.28f, 1.00f);
-			  ScrollbarBg            = ImVec4(0.27f, 0.27f, 0.28f, 1.00f);
+			  ScrollbarBg            = ImVec4(0.27f, 0.27f, 0.28f, 0.00f);
 			  ScrollbarGrab          = ImVec4(0.13f, 0.13f, 0.13f, 1.00f);
 			  ScrollbarGrabHovered   = ImVec4(0.36f, 0.38f, 0.39f, 1.00f);
 			  ScrollbarGrabActive    = ImVec4(0.36f, 0.38f, 0.39f, 1.00f);
@@ -947,7 +957,7 @@ public:
 			TitleBgActive = ImVec4(0.2745098173618317f, 0.3568627536296844f, 0.9058823585510254f, 1.0f);
 			TitleBgCollapsed = ImVec4(0.105882354080677f, 0.09411764889955521f, 0.3254902064800262f, 1.0f);
 			MenuBarBg = ImVec4(0.105882354080677f, 0.09411764889955521f, 0.3254902064800262f, 1.0f);
-			ScrollbarBg = ImVec4(0.01960784383118153f, 0.01960784383118153f, 0.01960784383118153f, 0.5299999713897705f);
+			ScrollbarBg = ImVec4(0.01960784383118153f, 0.01960784383118153f, 0.01960784383118153f, 0.00f);
 			ScrollbarGrab = ImVec4(0.2745098173618317f, 0.3568627536296844f, 0.9058823585510254f, 1.0f);
 			ScrollbarGrabHovered = ImVec4(0.1647058874368668f, 0.7529411911964417f, 0.9490196108818054f, 1.0f);
 			ScrollbarGrabActive = ImVec4(0.1647058874368668f, 0.7529411911964417f, 0.9490196108818054f, 1.0f);
@@ -987,28 +997,21 @@ public:
 			NavWindowingDimBg = ImVec4(0.800000011920929f, 0.800000011920929f, 0.800000011920929f, 0.2000000029802322f);
 			ModalWindowDimBg = ImVec4(0.800000011920929f, 0.800000011920929f, 0.800000011920929f, 0.3499999940395355f);
     		}
-    		
-    		ImGui::Separator();
-    		
-    		ImGui::Text("Loading ASCII Art");
-    		const char* AsciiArtIndex[] = {"Cat 1", "Shotgun", "Glock", "Racoon", "Cat 2", "zap-client"};
-    		ImGui::Combo("ASCII Art", &AsciiArt, AsciiArtIndex, IM_ARRAYSIZE(AsciiArtIndex));
-    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-    			ImGui::SetTooltip("What ASCII Art Will Be Shown When Running (sudo ./zapclient).");
-    		ImGui::SliderInt("Speed", &AsciiArtSpeed, 1, 1000);
-    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-    			ImGui::SetTooltip("Speed (In Milliseconds) Between Each Line.");
-    			
-    		ImGui::Separator();
-    		
-    		ImGui::Text("Other");
-    		ImGui::Checkbox("Error Logging", &ErrorLogging);
-    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-    			ImGui::SetTooltip("Shows errors in console.\nUse if debugging.");
+			ImGui::EndChild();
+			}
+
+			ImGui::Text("Credits Tab");
+			if (ImGui::BeginChild("Credits", ImVec2(TabSize.x - TabSize.x , (TabSize.y - TabSize.y) + 231), true, ImGuiWindowFlags_NoScrollbar)) {
+				ImGui::TextColored(ImVec4(0.65, 1, 0.95, 1), "Credits:");
+            	ImGui::TextColored(ImVec4(0.03, 1, 0.95, 1), "arturzxc: ESP, Triggerbot and X11Display's Move Mouse method");
+            	ImGui::TextColored(ImVec4(0.3, 1, 0.64, 1), "Koelion: ImGui Menu, AimbotResolver");
+            	ImGui::TextColored(ImVec4(0.3, 0.6, 0.9, 1), "unknowncheats: Offsets and ton of other things");
+            	ImGui::TextColored(ImVec4(0.6, 1, 0.64, 1), "Made by Azreol/Nexilist");
+            	ImGui::TextColored(ImVec4(0.744, 0.0400, 1.00, 1), "Pasted + Updated (With love) by Gerosity <3");
+				ImGui::EndChild();
+			}
     	
-    		ImGui::Separator();
-    	
-    		ImGui::Text("Advanced Menu Customization");
+				/*ImGui::Text("Advanced Menu Customization");
     		if (ImGui::CollapsingHeader("Menu Customization", nullptr)) {
     			ImGui::Text("Some things may not change.");
     			ImGui::Text("These do not save.");
@@ -1091,15 +1094,8 @@ public:
     			ImGui::ColorEdit4("NavWindowingHighlight", (float*)&NavWindowingHighlight, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
     			ImGui::ColorEdit4("NavWindowingDimBg", (float*)&NavWindowingDimBg, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
     			ImGui::ColorEdit4("ModalWindowDimBg", (float*)&ModalWindowDimBg, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-    		}
-    		
-    		ImGui::TextColored(ImVec4(0.65, 1, 0.95, 1), "Credits:");
-            	ImGui::TextColored(ImVec4(0.03, 1, 0.95, 1), "arturzxc: ESP, Triggerbot and X11Display's Move Mouse method");
-            	ImGui::TextColored(ImVec4(0.3, 1, 0.64, 1), "Koelion: ImGui Menu, AimbotResolver");
-            	ImGui::TextColored(ImVec4(0.3, 0.6, 0.9, 1), "unknowncheats: Offsets and ton of other things");
-            	ImGui::TextColored(ImVec4(0.6, 1, 0.64, 1), "Made by Azreol/Nexilist");
-            	ImGui::TextColored(ImVec4(0.744, 0.0400, 1.00, 1), "Pasted + Updated (With love) by Gerosity <3");
-    		
+    		}*/
+
     	ImGui::EndTabItem();
     
         ImGuiStyle& style = ImGui::GetStyle();
@@ -1196,8 +1192,8 @@ public:
             Config::Home::TeamGamemode = TeamGamemode;
             Config::Home::Style = ThemeStyle;
             Config::Home::Color = ThemeColor;
-            Config::Home::MenuX = MenuX;
-            Config::Home::MenuY = MenuY;
+            //Config::Home::MenuX = MenuX;
+            //Config::Home::MenuY = MenuY;
             Config::Home::ErrorLogging = ErrorLogging;
             return true;
         } catch (...) {
@@ -1236,11 +1232,12 @@ public:
             glLoadIdentity();
             glOrtho(0, ScreenWidth, ScreenHeight, 0, -1, 1);
 
-            if (Update != nullptr) {
+			//Update
+			if (Update != nullptr) {
                 Update();
             }
 
-            ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
             
