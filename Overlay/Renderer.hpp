@@ -3,6 +3,7 @@
 #include <algorithm>
 #include "../imgui/imgui.h"
 #include "../Utils/Color.hpp"
+#include "../Utils/Modules.hpp"
 #include "../Math/Vector2D.hpp"
 #include "../Math/Vector4D.hpp"
 #include "../Core/LocalPlayer.hpp"
@@ -10,6 +11,7 @@
 
 class Renderer {
 public:
+
     static void DrawText(ImDrawList* canvas, const Vector2D& pos, const char* text, ImColor color, bool outline, bool centered, bool adjustHeight) {
 	const auto textColor = color;
         const auto outlineColor = ImColor(0, 0, 0);
@@ -51,54 +53,262 @@ public:
     static void DrawHexagonFilled(ImDrawList* canvas, const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4, const ImVec2& p5, const ImVec2& p6, ImU32 col) {
         canvas->AddHexagonFilled(p1, p2, p3, p4, p5, p6, col);
     }
-    
-//DrawBox
-    static void DrawBox(ImDrawList* canvas,const Vector2D& foot, const Vector2D& head,const ImColor& color, float thickness)
-    {
-    	float height = head.y - foot.y;
-    	float width = height / 2.0f;
-    	canvas->AddRect(ImVec2(foot.x - (width / 2), foot.y), ImVec2(head.x + (width/2), head.y+(height*0.2)), color, 0.0f, 0, thickness);
+
+    //Bar Style 1
+    static void drawRectangleOutline(Vector2D position, Vector2D size, Color color, float lineWidth) {
+
+        glLineWidth(lineWidth);
+        glColor3f(color.r, color.g, color.b);
+
+        glBegin(GL_LINE_LOOP);
+            glVertex2f(position.x, position.y);
+            glVertex2f(position.x + size.x, position.y);
+            glVertex2f(position.x + size.x, position.y + size.y);
+            glVertex2f(position.x, position.y + size.y);
+        glEnd();
+
+        glLineWidth(1.0f);
     }
     
-    static void DrawFilledBox(ImDrawList* canvas,const Vector2D& foot, const Vector2D& head,const ImColor& color)
-    {
-    	float height = head.y - foot.y;
-    	float width = height / 2.0f;
-    	canvas->AddRectFilled(ImVec2(foot.x - (width / 2), foot.y), ImVec2(head.x + (width/2), head.y+(height*0.2)), color, 0.0f, 0);
+    static void drawFilledRectagle(Vector2D position, Vector2D size, Color color) {
+
+        glColor3f(color.r, color.g, color.b);
+        glBegin(GL_QUADS);
+            glVertex2f(position.x, position.y);
+            glVertex2f(position.x + size.x, position.y);
+            glVertex2f(position.x + size.x, position.y + size.y);
+            glVertex2f(position.x, position.y + size.y);
+        glEnd();
+    }
+    
+    static void drawBorderedFillRectangle(Vector2D position, Vector2D size, Color fillColor, Color borderColor, float lineWidth, float fill) {
+        drawFilledRectagle(position, Vector2D(size.x, size.y), Color(0, 0, 0));
+        drawFilledRectagle(position, Vector2D(size.x * fill, size.y), fillColor);
+        drawRectangleOutline(position, size, borderColor, lineWidth);
     }
 
-    static void DrawHealthBar(ImDrawList* canvas, Vector2D& Foot, Vector2D& Head, int health, float thickness)
-    {
-    	int heightTest = Foot.y - Head.y;
-    	int dX = (Foot.x - Head.x);
-    	float heatlhPerc = health / 100.0f;
-    	ImVec2 bottomHP, topHP;
-    	int healthHeight = heightTest * heatlhPerc;
-    	
-    	bottomHP.y = Foot.y;
-    	bottomHP.x = Foot.x - (heightTest / 2.5f);
-    	
-    	topHP.y = (Head.y - 5) + heightTest - healthHeight;
-    	topHP.x = Foot.x - (heightTest / 2.5) - (dX * heatlhPerc);
-    	
-    	canvas->AddLine(bottomHP, topHP, ImColor(0, 255, 0), thickness);
+//Features
+
+//DrawBox
+    static void Draw2DBox(ImDrawList* canvas, int Type, int Style, Vector2D& foot, const Vector2D& head, const ImColor& color2D, const ImColor& Filledcolor, float thickness) {
+        //Type = 2D, 2D Filled
+        //Style = 1 or 2, idk what to call them (for now)
+        if (Type == 0) { //2D Box
+            if (Style == 0) {
+                float height = head.y - foot.y;
+    	        float width = height / 2.0f;
+    	        canvas->AddRect(ImVec2(foot.x - (width / 2), foot.y), ImVec2(head.x + (width/2), head.y+(height*0.2)), color2D, 0.0f, 0, thickness);
+            }
+            if (Style == 1) {
+                float Height = (head.y - foot.y);
+                Vector2D rectTop = Vector2D(head.x - Height / 3, head.y);
+                Vector2D rectBottom = Vector2D(foot.x + Height / 3, foot.y);
+                canvas->AddRect(ImVec2(rectBottom.x, rectBottom.y), ImVec2(rectTop.x, rectTop.y + (Height*0.2)), color2D, 0.0f, 0, thickness);
+            }
+        }
+        if (Type == 1) { //2D Box + 2D Filled Box
+            if (Style == 0) {
+                float height = head.y - foot.y;
+    	        float width = height / 2.0f;
+    	        canvas->AddRect(ImVec2(foot.x - (width / 2), foot.y), ImVec2(head.x + (width/2), head.y+(height*0.2)), color2D, 0.0f, 0, thickness);
+                canvas->AddRectFilled(ImVec2(foot.x - (width / 2), foot.y), ImVec2(head.x + (width/2), head.y+(height*0.2)), Filledcolor, 0.0f, 0);
+            }
+            if (Style == 1) {
+                float Height = (head.y - foot.y);
+                Vector2D rectTop = Vector2D(head.x - Height / 3, head.y);
+                Vector2D rectBottom = Vector2D(foot.x + Height / 3, foot.y);
+                canvas->AddRect(ImVec2(rectBottom.x, rectBottom.y), ImVec2(rectTop.x, rectTop.y + (Height*0.2)), color2D, 0.0f, 0, thickness);
+                canvas->AddRectFilled(ImVec2(rectBottom.x, rectBottom.y), ImVec2(rectTop.x, rectTop.y + (Height*0.2)), Filledcolor, thickness);
+            }
+        }
     }
-    
-    static void DrawShieldBar(ImDrawList* canvas, Vector2D& Foot, Vector2D& Head, int shield, const ImColor &shieldBarColor, float thickness)
-    {
-    	int heightTest = Foot.y - Head.y;
-    	int dX = (Foot.x - Head.x);
-    	float shieldPerc = shield / 100.0f;
-    	ImVec2 bottomAP, topAP;
-    	int shieldHeight = heightTest * shieldPerc;
-    	
-    	bottomAP.y = Foot.y;
-    	bottomAP.x = Foot.x - (heightTest / 2.5f);
-    	
-    	topAP.y = (Head.y - 5) + heightTest - shieldHeight;
-    	topAP.x = Foot.x - (heightTest / 2.5) - (dX * shieldPerc);
-    	
-    	canvas->AddLine(bottomAP, topAP, shieldBarColor, thickness);
+
+//Draw 2D Bars
+    static void Draw2DBar(ImDrawList* canvas, int BarMode, int BarStyle, int ColorMode, bool Background, Vector2D& Foot, Vector2D& Head, int health, int maxHealth, int shield, int maxShield, float thickness, float thickness2, float BarWidth, float BarHeight, const ImColor& BGColor) {
+        //Pre-Stuff
+        if (Background) { //Background
+            if (BarStyle == 0) { //Side Bar Background
+                float entityHeight = Foot.y - Head.y;
+                float boxLeft = Foot.x - entityHeight / 3;
+                float boxRight = Head.x + entityHeight / 3;
+                float barPercentWidth = thickness2;
+                float barPixelWidth = barPercentWidth * (boxRight - boxLeft);
+                float barHeight = entityHeight;
+                Vector2D barTopBG = Vector2D(boxLeft - barPixelWidth, Foot.y - barHeight);
+                Vector2D barBottomBG = Vector2D(boxLeft, Foot.y);
+                canvas->AddRectFilled(ImVec2(barTopBG.x, barTopBG.y - (entityHeight * 0.2)), ImVec2(barBottomBG.x, barBottomBG.y), BGColor);
+            }
+        }
+        //Shield Color
+        ImColor shieldBarColor;
+        if (ColorMode == 0) {//MaxShield
+			if (maxShield == 50) { //white
+				shieldBarColor = ImColor(168, 168, 168, 255);
+			}
+			else if (maxShield == 75) { //blue
+				shieldBarColor = ImColor(39, 178, 255, 255);
+			}
+			else if (maxShield == 100) { //purple
+				shieldBarColor = ImColor(206, 59, 255, 255);
+			}
+			else if (maxShield == 125) { //red
+				shieldBarColor = ImColor(219, 2, 2, 255);
+			}
+        }
+
+        if (ColorMode == 1) {//Current Shield
+			if (shield <= 50) { //white
+				shieldBarColor = ImColor(168, 168, 168, 255);
+			}
+			else if (shield <= 75) { //blue
+				shieldBarColor = ImColor(39, 178, 255, 255);
+			}
+			else if (shield <= 100) { //purple
+				shieldBarColor = ImColor(206, 59, 255, 255);
+			}
+			else if (shield <= 125) { //red
+				shieldBarColor = ImColor(219, 2, 2, 255);
+			}
+        }
+
+        //Bars
+        if (BarMode == 0) { //Health Only
+            if (BarStyle == 0) {//Side Bar
+                //New Bar
+                float entityHeight = Foot.y - Head.y;
+                float boxLeft = Foot.x - entityHeight / 3;
+                float boxRight = Head.x + entityHeight / 3;
+                float barPercentWidth = thickness2;
+                float barPixelWidth = barPercentWidth * (boxRight - boxLeft);
+                float barHeight = entityHeight * (health / 100.0f);
+                Vector2D barTop = Vector2D(boxLeft - barPixelWidth, Foot.y - barHeight);
+                Vector2D barBottom = Vector2D(boxLeft, Foot.y);
+
+                canvas->AddRectFilled(ImVec2(barTop.x, barTop.y - (entityHeight * 0.2)), ImVec2(barBottom.x, barBottom.y), ImColor(0, 255, 0));
+            }
+            if (BarStyle == 1) {//Top Bar
+                float height = BarHeight; //8.0f
+                float width = BarWidth; //80.0f
+                Vector2D rectPosition = Vector2D(Foot.x - width/2, Head.y - 10.0f);
+                Vector2D size = Vector2D(width, height);
+                
+                //HealthBar
+                float fill = (float)health/(float)maxHealth;
+                Renderer::drawBorderedFillRectangle(rectPosition, size, Color::lerp(Color(1.0, 0.0, 0.0), Color(0.0, 1.0, 0.0), fill), Color(), thickness, fill);
+            }
+
+        }
+        if (BarMode == 1) { //Shield Only
+            if (BarStyle == 0) {//Side Bar
+                //New Bar
+                float entityHeight = Foot.y - Head.y;
+                float boxLeft = Foot.x - entityHeight / 3;
+                float boxRight = Head.x + entityHeight / 3;
+                float barPercentWidth = thickness2;
+                float barPixelWidth = barPercentWidth * (boxRight - boxLeft);
+                float maxS; //maxShield
+                float s = shield; //shield
+
+                if (s == 0) {
+                shieldBarColor = ImColor(0, 0, 0, 0);
+                }
+
+                float barHeight = entityHeight * (s / maxS);
+                Vector2D barTop = Vector2D(boxLeft - barPixelWidth, Foot.y - barHeight);
+                Vector2D barBottom = Vector2D(boxLeft, Foot.y);
+
+                canvas->AddRectFilled(ImVec2(barTop.x, barTop.y - (entityHeight * 0.2)), ImVec2(barBottom.x, barBottom.y), ImColor(shieldBarColor));
+            }
+            if (BarStyle == 1) {//Top Bar
+                float height = BarHeight; //8.0f
+                float width = BarWidth; //80.0f
+                Vector2D rectPosition = Vector2D(Foot.x - width/2, Head.y - 10.0f);
+                Vector2D size = Vector2D(width, height);
+                
+                //ShieldBar
+                float fill = (float)shield/(float)maxShield;
+                if (maxShield == 125) { //Red Shield
+                    Renderer::drawBorderedFillRectangle(Vector2D(rectPosition.x, rectPosition.y - (height + 3)), size, Color::lerp(Color(1.0, 0.0, 0.0), Color(1.0, 0.0, 0.0), fill), Color(), thickness, fill);
+                }
+                if (maxShield == 100) { //Purple Shield
+                    Renderer::drawBorderedFillRectangle(Vector2D(rectPosition.x, rectPosition.y - (height + 3)), size, Color::lerp(Color(0.501, 0.00, 0.970), Color(0.501, 0.00, 0.970), fill), Color(), thickness, fill);
+                }
+                if (maxShield == 75) { //Blue Shield
+                    Renderer::drawBorderedFillRectangle(Vector2D(rectPosition.x, rectPosition.y - (height + 3)), size, Color::lerp(Color(0.0297, 0.734, 0.990), Color(0.0297, 0.734, 0.990), fill), Color(), thickness, fill);
+                }
+                if (maxShield == 50) { //Grey Shield
+                    Renderer::drawBorderedFillRectangle(Vector2D(rectPosition.x, rectPosition.y - (height + 3)), size, Color::lerp(Color(0.707, 0.702, 0.700), Color(0.707, 0.702, 0.700), fill), Color(), thickness, fill);
+                }
+            }
+        }
+
+        if (BarMode == 2) { //Health & Shield
+            if (BarStyle == 0) {//Side Bar
+                //HP Bar
+                float entityHeight = Foot.y - Head.y;
+                float boxLeft = Foot.x - entityHeight / 3;
+                float boxRight = Head.x + entityHeight / 3;
+                float barPercentWidth = thickness2;
+                float barPixelWidth = barPercentWidth * (boxRight - boxLeft);
+                float barHeight = entityHeight * (health / 100.0f);
+                Vector2D barTop = Vector2D(boxLeft - barPixelWidth, Foot.y - barHeight);
+                Vector2D barBottom = Vector2D(boxLeft, Foot.y);
+
+                canvas->AddRectFilled(ImVec2(barTop.x, barTop.y - (entityHeight * 0.2)), ImVec2(barBottom.x, barBottom.y), ImColor(0, 255, 0));
+            
+                //Shield Bar
+                float maxS; //maxShield
+                float s = shield; //shield
+                if (maxShield == 125) {
+                    maxS = 125.0f;
+                }
+                else if (maxShield == 100) {
+                    maxS = 100.0f;
+                }
+                else if (maxShield == 75) {
+                    maxS = 75.0f;
+                }
+                else if (maxShield == 50) {
+                    maxS = 50.0f;
+                }
+
+                if (s == 0) {
+                    shieldBarColor = ImColor(0, 0, 0, 0);
+                }
+
+                float barHeightAP = entityHeight * (s / maxS);
+                Vector2D barTopAP = Vector2D(boxLeft - barPixelWidth, Foot.y - barHeightAP);
+                Vector2D barBottomAP = Vector2D(boxLeft, Foot.y);
+
+                canvas->AddRectFilled(ImVec2(barTopAP.x, barTopAP.y - (entityHeight * 0.2)), ImVec2(barBottomAP.x, barBottomAP.y), ImColor(shieldBarColor));
+            }
+
+            if (BarStyle == 1) {//Top Bar
+                float height = BarHeight; //8.0f
+                float width = BarWidth; //80.0f
+                Vector2D rectPosition = Vector2D(Foot.x - width/2, Head.y - 10.0f);
+                Vector2D size = Vector2D(width, height);
+                
+                //HealthBar
+                float fillHP = (float)health/(float)maxHealth;
+                Renderer::drawBorderedFillRectangle(rectPosition, size, Color::lerp(Color(1.0, 0.0, 0.0), Color(0.0, 1.0, 0.0), fillHP), Color(), thickness, fillHP);
+                
+                //ShieldBar
+                float fillAP = (float)shield/(float)maxShield;
+                if (maxShield == 125) { //Red Shield
+                    Renderer::drawBorderedFillRectangle(Vector2D(rectPosition.x, rectPosition.y - (height + 3)), size, Color::lerp(Color(1.0, 0.0, 0.0), Color(1.0, 0.0, 0.0), fillAP), Color(), thickness, fillAP);
+                }
+                if (maxShield == 100) { //Purple Shield
+                    Renderer::drawBorderedFillRectangle(Vector2D(rectPosition.x, rectPosition.y - (height + 3)), size, Color::lerp(Color(0.501, 0.00, 0.970), Color(0.501, 0.00, 0.970), fillAP), Color(), thickness, fillAP);
+                }
+                if (maxShield == 75) { //Blue Shield
+                    Renderer::drawBorderedFillRectangle(Vector2D(rectPosition.x, rectPosition.y - (height + 3)), size, Color::lerp(Color(0.0297, 0.734, 0.990), Color(0.0297, 0.734, 0.990), fillAP), Color(), thickness, fillAP);
+                }
+                if (maxShield == 50) { //Grey Shield
+                    Renderer::drawBorderedFillRectangle(Vector2D(rectPosition.x, rectPosition.y - (height + 3)), size, Color::lerp(Color(0.707, 0.702, 0.700), Color(0.707, 0.702, 0.700), fillAP), Color(), thickness, fillAP);
+                }
+            }
+        }
     }
 
     static void DrawSeer(ImDrawList* Canvas, float x, float y, int shield, int max_shield, int health) {
@@ -123,6 +333,7 @@ public:
         Renderer::DrawQuadFilled(Canvas, h1, h2, h3m, h4m, ImColor(10,10,30,60));
         Renderer::DrawQuadFilled(Canvas, h1, h2, h3, h4, ImColor(255, 255, 255, 255));
     
+        //Shield
         ImColor shieldCracked(97,97,97);
         ImColor shieldCrackedDark(67, 67, 67);
 
@@ -369,6 +580,65 @@ public:
                 if (shield != 0)
                     Renderer::DrawQuadFilled(Canvas, sssss1, sssss2, sssss3, sssss4, shieldCol);
             }
+        }
+    }
+    
+    static Vector3D RotatePoint(Vector3D EntityPos, Vector3D LocalPlayerPos, int posX, int posY, int sizeX, int sizeY, float angle, float zoom, bool* viewCheck) {
+    	float r_1, r_2;
+    	float x_1, y_1;
+     
+    	r_1 = -(EntityPos.y - LocalPlayerPos.y);
+    	r_2 = EntityPos.x - LocalPlayerPos.x;
+    	
+    	float yawToRadian = angle * (float)(M_PI / 180.0F);
+    	x_1 = (float)(r_2 * (float)cos((double)(yawToRadian)) - r_1 * sin((double)(yawToRadian))) / 20;
+    	y_1 = (float)(r_2 * (float)sin((double)(yawToRadian)) + r_1 * cos((double)(yawToRadian))) / 20;
+     
+    	*viewCheck = y_1 < 0;
+     
+    	x_1 *= zoom;
+    	y_1 *= zoom;
+     
+    	int sizX = sizeX / 2;
+    	int sizY = sizeY / 2;
+     
+    	x_1 += sizX;
+    	y_1 += sizY;
+     
+    	if (x_1 < 5)
+    		x_1 = 5;
+     
+    	if (x_1 > sizeX - 5)
+    		x_1 = sizeX - 5;
+     
+    	if (y_1 < 5)
+    		y_1 = 5;
+     
+    	if (y_1 > sizeY - 5)
+    		y_1 = sizeY - 5;
+     
+     
+    	x_1 += posX;
+    	y_1 += posY;
+     
+     
+    	return Vector3D(x_1, y_1, 0);
+    }
+    
+    static void TeamMiniMap(int x, int y, int radius, int teamID, float targetyaw, int dotSize, int outlineSize, const ImColor& circleColor) {
+        auto colOutline = ImGui::ColorConvertFloat4ToU32(ImVec4(0.0, 0.0, 0.0, 1.0));
+        ImVec2 center(x, y);
+        //ImGui::GetWindowDrawList()->AddCircleFilled(center, radius, ImGui::ColorConvertFloat4ToU32(ImVec4(0.99, 0, 0, 0.99)));
+        //ImGui::GetWindowDrawList()->AddCircle(center, radius, colOutline, 12, radius);
+        ImGui::GetWindowDrawList()->AddCircleFilled(center, radius, circleColor);
+        ImGui::GetWindowDrawList()->AddCircle(center, outlineSize, colOutline, 12, radius);
+
+        // Draw a line pointing in the direction of each player's aim
+        const int numPlayers = 3;
+        for (int i = 0; i < numPlayers; i++) {
+            float angle = (360.0 - targetyaw) * (M_PI / 180.0); // Replace this with the actual yaw of the player, then convert it to radians.
+            ImVec2 endpoint(center.x + radius * cos(angle), center.y + radius * sin(angle));
+            ImGui::GetWindowDrawList()->AddLine(center, endpoint, colOutline);
         }
     }
 };
