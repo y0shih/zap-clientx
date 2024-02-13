@@ -24,6 +24,7 @@
 #include "../Utils/XDisplay.hpp"
 #include "../Utils/Conversion.hpp"
 #include "../Utils/Config.hpp"
+#include "../Utils/Modules.hpp"
 #include "../Utils/HitboxType.hpp"
 #include "../Utils/InputManager.hpp"
 #include "../Utils/InputTypes.hpp"
@@ -38,7 +39,12 @@ struct Misc {
     bool TeamGamemode = true;
     bool SkinChanger = false;
     bool AutoGrapple = false;
-    
+    bool Superglide = false;
+    bool QuickTurn = false;
+    InputKeyType QuickTurnKey = InputKeyType::KEYBOARD_K;
+    int QuickTurnHotkey = static_cast<int>(QuickTurnKey);
+    int QuickTurnAngle = 180;
+
     //Weapon IDs
     //Light
     int SkinP2020 = 1;
@@ -95,62 +101,73 @@ struct Misc {
 
     void RenderUI() {
         if (ImGui::BeginTabItem("Misc", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
-            ImGui::Text("Movement");
-            ImGui::Checkbox("Super Grapple", &AutoGrapple);
-            ImGui::Separator();
-            
-            ImGui::Checkbox("Skin Changer", &SkinChanger);
-            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-                ImGui::SetTooltip("Change's weapon skins ONLY. May also change legend skin?\nMay be glitchy at first.\nNot all skins are avaliable.");
+			ImVec2 TabSize;
+			TabSize = ImGui::GetWindowSize();
 
-            //Select Weapons
-            ImGui::Text("Weapons");
-            if (ImGui::CollapsingHeader("Light", nullptr)) {
-            	ImGui::SliderInt("P2020", &SkinP2020, 0, 10);
-            	ImGui::SliderInt("RE-45 Auto", &SkinRE45, 0, 16);
-            	ImGui::SliderInt("Alternator SMG", &SkinALTERNATOR, 0, 16);
-            	ImGui::SliderInt("R-99 SMG", &SkinR99, 0, 16);
-            	ImGui::SliderInt("R-301 Carbine", &SkinR301, 0, 18);
-            	ImGui::SliderInt("M600 Spitfire", &SkinSPITFIRE, 0, 16);
-            	ImGui::SliderInt("G7 Scout", &SkinG7, 0, 21);
-            }
-            
-            if (ImGui::CollapsingHeader("Heavy", nullptr)) {
-            	ImGui::SliderInt("VK-47 Flatline", &SkinFLATLINE, 0, 20);
-            	ImGui::SliderInt("Hemlock Burst AR", &SkinHEMLOCK, 0, 18);
-            	ImGui::SliderInt("30-30 Repeater", &SkinREPEATER, 0, 11);
-            	ImGui::SliderInt("Rampage LMG", &SkinRAMPAGE, 0, 11);
-            	ImGui::SliderInt("C.A.R SMG", &SkinCAR, 0, 11);
-            }
-            
-            if (ImGui::CollapsingHeader("Energy", nullptr)) {
-            	ImGui::SliderInt("Havoc Rifle", &SkinHAVOC, 0, 14);
-            	ImGui::SliderInt("Devotion LMG", &SkinDEVOTION, 0, 11);
-            	ImGui::SliderInt("L-Star EMG", &SkinLSTAR, 0, 11);
-            	ImGui::SliderInt("Triple-Take", &SkinTRIPLETAKE, 0, 11);
-            	ImGui::SliderInt("Volt", &SkinVOLT, 0, 14);
-            	ImGui::SliderInt("Nemesis Burst AR", &SkinNEMESIS, 0, 9);
-            }
-            
-            if (ImGui::CollapsingHeader("Shotguns", nullptr)) {
-            	ImGui::SliderInt("Mozambique", &SkinMOZAMBIQUE, 0, 11);
-            	ImGui::SliderInt("EVA-8 Auto", &SkinEVA8, 0, 11);
-            	ImGui::SliderInt("Peacekeeper", &SkinPEACEKEEPER, 0, 16);
-            	ImGui::SliderInt("Mastiff", &SkinMASTIFF, 0, 11);
-            }
-            
-            if (ImGui::CollapsingHeader("Snipers", nullptr)) {
-            	ImGui::SliderInt("Longbow DMR", &SkinLONGBOW, 0, 11);
-            	ImGui::SliderInt("Charge Rifle", &SkinCHARGE_RIFLE, 0, 11);
-            	ImGui::SliderInt("Sentinel", &SkinSENTINEL, 0, 10);
-            }
-            
-            if (ImGui::CollapsingHeader("Legendary", nullptr)) {
-            	ImGui::SliderInt("Wingman", &SkinWINGMAN, 0, 11);
-            	ImGui::SliderInt("Prowler Burst SMG", &SkinPROWLER, 0, 11);
-            	ImGui::SliderInt("Bocek Compound Bow", &SkinBOCEK, 0, 11);
-            	ImGui::SliderInt("Kraber .50-CAL Sniper", &SkinKRABER, 0, 11);
-            }
+			ImGui::Text("Movement");
+			if (ImGui::BeginChild("Movement", ImVec2(TabSize.x - TabSize.x , (TabSize.y - TabSize.y) + 270), true, ImGuiWindowFlags_NoScrollbar)) {
+				ImGui::Text("Movement Tab");
+				ImGui::TextColored(ImVec4(0, 0.99, 0.99, 0.99), "Soon");
+				ImGui::EndChild();
+			}
+
+			ImGui::Text("Skin Changer");
+			if (ImGui::BeginChild("Skin Changer", ImVec2(TabSize.x - TabSize.x , (TabSize.y - TabSize.y) + 285), true)) {
+				ImGui::Text("Skin Changer Tab");
+				ImGui::Checkbox("Skin Changer", &SkinChanger);
+				if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+					ImGui::SetTooltip("Change's weapon skins ONLY.\nMay be glitchy at first.\nNot all skins are avaliable.");
+
+				//Select Weapons
+				ImGui::Text("Weapons");
+				if (ImGui::CollapsingHeader("Light", nullptr)) {
+					ImGui::SliderInt("P2020", &SkinP2020, 0, 10);
+					ImGui::SliderInt("RE-45 Auto", &SkinRE45, 0, 16);
+					ImGui::SliderInt("Alternator SMG", &SkinALTERNATOR, 0, 16);
+					ImGui::SliderInt("R-99 SMG", &SkinR99, 0, 16);
+					ImGui::SliderInt("R-301 Carbine", &SkinR301, 0, 18);
+					ImGui::SliderInt("M600 Spitfire", &SkinSPITFIRE, 0, 16);
+					ImGui::SliderInt("G7 Scout", &SkinG7, 0, 21);
+				}
+				
+				if (ImGui::CollapsingHeader("Heavy", nullptr)) {
+					ImGui::SliderInt("VK-47 Flatline", &SkinFLATLINE, 0, 20);
+					ImGui::SliderInt("Hemlock Burst AR", &SkinHEMLOCK, 0, 18);
+					ImGui::SliderInt("30-30 Repeater", &SkinREPEATER, 0, 11);
+					ImGui::SliderInt("Rampage LMG", &SkinRAMPAGE, 0, 11);
+					ImGui::SliderInt("C.A.R SMG", &SkinCAR, 0, 11);
+				}
+				
+				if (ImGui::CollapsingHeader("Energy", nullptr)) {
+					ImGui::SliderInt("Havoc Rifle", &SkinHAVOC, 0, 14);
+					ImGui::SliderInt("Devotion LMG", &SkinDEVOTION, 0, 11);
+					ImGui::SliderInt("L-Star EMG", &SkinLSTAR, 0, 11);
+					ImGui::SliderInt("Triple-Take", &SkinTRIPLETAKE, 0, 11);
+					ImGui::SliderInt("Volt", &SkinVOLT, 0, 14);
+					ImGui::SliderInt("Nemesis Burst AR", &SkinNEMESIS, 0, 9);
+				}
+				
+				if (ImGui::CollapsingHeader("Shotguns", nullptr)) {
+					ImGui::SliderInt("Mozambique", &SkinMOZAMBIQUE, 0, 11);
+					ImGui::SliderInt("EVA-8 Auto", &SkinEVA8, 0, 11);
+					ImGui::SliderInt("Peacekeeper", &SkinPEACEKEEPER, 0, 16);
+					ImGui::SliderInt("Mastiff", &SkinMASTIFF, 0, 11);
+				}
+				
+				if (ImGui::CollapsingHeader("Snipers", nullptr)) {
+					ImGui::SliderInt("Longbow DMR", &SkinLONGBOW, 0, 11);
+					ImGui::SliderInt("Charge Rifle", &SkinCHARGE_RIFLE, 0, 11);
+					ImGui::SliderInt("Sentinel", &SkinSENTINEL, 0, 10);
+				}
+				
+				if (ImGui::CollapsingHeader("Legendary", nullptr)) {
+					ImGui::SliderInt("Wingman", &SkinWINGMAN, 0, 11);
+					ImGui::SliderInt("Prowler Burst SMG", &SkinPROWLER, 0, 11);
+					ImGui::SliderInt("Bocek Compound Bow", &SkinBOCEK, 0, 11);
+					ImGui::SliderInt("Kraber .50-CAL Sniper", &SkinKRABER, 0, 11);
+				}
+				ImGui::EndChild();
+			}
             
             ImGui::EndTabItem();
         }
@@ -280,5 +297,16 @@ struct Misc {
 			}
 		}
     	}
-    }
+    } //End of update
+    	
+    	/*if (QuickTurn) {
+  		FloatVector2D localYawtoClamp = Myself->viewAngles;
+		localYawtoClamp.clamp();
+		float localYaw = localYawtoClamp.y;
+		// quickTurn
+		if(InputManager::isKeyDown(static_cast<InputKeyType>(21))) {
+		        Myself->setYaw((localYaw + QuickTurnAngle));
+		        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+		}
+    	}*/
 };
