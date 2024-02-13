@@ -15,6 +15,7 @@
 #include "../Utils/XDisplay.hpp"
 #include "../Utils/Conversion.hpp"
 #include "../Utils/Config.hpp"
+#include "../Utils/Modules.hpp"
 #include "../Utils/HitboxType.hpp"
 #include "../Utils/InputManager.hpp"
 #include "../Utils/InputTypes.hpp"
@@ -126,67 +127,6 @@ struct Aimbot {
     float AdvancedMinDistance1 = 1;
     float AdvancedMaxDistance1 = 200;
     
-    //Advanced OnFire & OnADS - Aimbot Mode 0 & 1 - xap-client & grinder
-    bool P2020Fire = true;
-    bool P2020ADS = false;
-    bool RE45Fire = true;
-    bool RE45ADS = false;
-    bool AlternatorFire = true;
-    bool AlternatorADS = false;
-    bool R99Fire = true;
-    bool R99ADS = false;
-    bool R301Fire = true;
-    bool R301ADS = false;
-    bool SpitfireFire = true;
-    bool SpitfireADS = false;
-    bool G7Fire = true;
-    bool G7ADS = false;
-    bool FlatlineFire = true;
-    bool FlatlineADS = false;
-    bool HemlockFire = true;
-    bool HemlockADS = false;
-    bool RepeaterFire = true;
-    bool RepeaterADS = false;
-    bool RampageFire = true;
-    bool RampageADS = false;
-    bool CARSMGFire = true;
-    bool CARSMGADS = false;
-    bool HavocFire = true;
-    bool HavocADS = false;
-    bool DevotionFire = true;
-    bool DevotionADS = false;
-    bool LSTARFire = true;
-    bool LSTARADS = false;
-    bool TripleTakeFire = true;
-    bool TripleTakeADS = false;
-    bool VoltFire = true;
-    bool VoltADS = false;
-    bool NemesisFire = true;
-    bool NemesisADS = false;
-    bool MozambiqueFire = true;
-    bool MozambiqueADS = false;
-    bool EVA8Fire = true;
-    bool EVA8ADS = false;
-    bool PeacekeeperFire = true;
-    bool PeacekeeperADS = false;
-    bool MastiffFire = true;
-    bool MastiffADS = false;
-    bool LongbowFire = true;
-    bool LongbowADS = false;
-    bool ChargeRifleFire = true;
-    bool ChargeRifleADS = false;
-    bool SentinelFire = true;
-    bool SentinelADS = false;
-    bool WingmanFire = true;
-    bool WingmanADS = false;
-    bool ProwlerFire = true;
-    bool ProwlerADS = false;
-    bool KraberFire = true;
-    bool KraberADS = false;
-    bool BocekFire = true;
-    bool BocekADS = false;
-    bool ThrowingKnifeFire = true;
-    bool ThrowingKnifeADS = false;
     //Advanced Speed, Smooth + Hitbox - Aimbot Mode 0 - xap-client
     bool P2020ClosestHitbox = true;
     float P2020Hitbox = 2;
@@ -581,1965 +521,2069 @@ struct Aimbot {
     }
 
     void RenderUI() {
-    	if (Config::Home::Layout == 0 or Config::Home::Layout == 1) { //Removed the choice of having two menus. OR is for people still using old configs.
 		if (ImGui::BeginTabItem("Aim", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
-		    ImGui::Text("Aimbot");
-		    ImGui::Checkbox("Enabled", &AimbotEnabled);
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        ImGui::SetTooltip("Toggle the Aimbot");
-		        
-		    //ImGui::Separator();
-		    //ImGui::Text("Aimbot Mode");
-		    ImGui::SameLine();
-		    const char* AimbotModeIndex[] = {"Cubic Bezier (xap-client)", "Grinder"};
-		    ImGui::Combo("Aimbot Mode", &AimbotMode, AimbotModeIndex, IM_ARRAYSIZE(AimbotModeIndex));
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		    	ImGui::SetTooltip("What Aimbot Method You Would Like.\nYou may find Grinder To Be More Legit/Smooth.");
-
-		    ImGui::Separator();
-		    
-		    //Select Hitbox
-		    if (AimbotMode == 0 && !AdvancedAim) {
-			    ImGui::Text("Hitbox");
-			    ImGui::Checkbox("Closest To Crosshair", &ClosestHitbox);
-			    if (!ClosestHitbox) {
-			    	const char* HitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-			    	int HitboxTypeIndex = static_cast<int>(Modules::Aimbot::Hitbox);
-			    	ImGui::Combo("Hitbox Type", &HitboxTypeIndex, HitboxTypes, IM_ARRAYSIZE(HitboxTypes));
-			    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-					ImGui::SetTooltip("Which bone the aimbot will aim at.");
-			    	Modules::Aimbot::Hitbox = static_cast<HitboxType>(HitboxTypeIndex);
-			    	ImGui::Separator();
-			    }
-		    }
-	   	    
-	   	    ImGui::Text("Aim Conditions");
-		    ImGui::Checkbox("On Fire?", &OnFire);
-		    ImGui::SameLine();
-		    ImGui::Checkbox("On ADS?", &OnADS);
-		    ImGui::SameLine();
-		    ImGui::Checkbox("Team Check##Aimbot", &TeamCheck);
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		    	ImGui::SetTooltip("Disable this if doing 1v1s in the firing range.");
-		    if (AimbotMode == 0) {
-			    ImGui::SameLine();
-		   	    ImGui::Checkbox("Visibility Check", &VisCheck);
-			    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-			    	ImGui::SetTooltip("Aims At Only Visible Enemies.");
-	   	    }
-	   	    
-		    ImGui::Separator();
-		    
-		    //Select Weapons
-		    ImGui::Text("Weapons");
-		    if (ImGui::CollapsingHeader("Selected Weapons", nullptr)) {
-		    	ImGui::Text("Light");
-			ImGui::Checkbox("P2020", &P2020);
-			ImGui::SameLine();
-			ImGui::Checkbox("RE-45 Auto", &RE45);
-			ImGui::SameLine();
-			ImGui::Checkbox("Alternator SMG", &Alternator);
-			ImGui::SameLine();
-			ImGui::Checkbox("R-99 SMG", &R99);
-			ImGui::SameLine();
-			ImGui::Checkbox("R-301 Carbine", &R301);
-			ImGui::Checkbox("M600 Spitfire", &Spitfire);
-			ImGui::SameLine();
-			ImGui::Checkbox("G7 Scout", &G7);
-				    
-			ImGui::Text("Heavy");
-			ImGui::Checkbox("VK-47 Flatline", &Flatline);
-			ImGui::SameLine();
-			ImGui::Checkbox("Hemlock Burst AR", &Hemlock);
-			ImGui::SameLine();
-			ImGui::Checkbox("30-30 Repeater", &Repeater);
-			ImGui::SameLine();
-			ImGui::Checkbox("Rampage LMG", &Rampage);
-			ImGui::Checkbox("C.A.R SMG", &CARSMG);
-				    
-			ImGui::Text("Energy");
-			ImGui::Checkbox("Havoc Rifle", &Havoc);
-			ImGui::SameLine();
-			ImGui::Checkbox("Devotion LMG", &Devotion);
-			ImGui::SameLine();
-			ImGui::Checkbox("L-Star EMG", &LSTAR);
-			ImGui::SameLine();
-			ImGui::Checkbox("Triple-Take", &TripleTake);
-			ImGui::SameLine();
-			ImGui::Checkbox("Volt", &Volt);
-			ImGui::Checkbox("Nemesis Burst AR", &Nemesis);
-
-			ImGui::Text("Shotguns");
-			ImGui::Checkbox("Mozambique", &Mozambique);
-			ImGui::SameLine();
-			ImGui::Checkbox("EVA-8 Auto", &EVA8);
-			ImGui::SameLine();
-			ImGui::Checkbox("Peacekeeper", &Peacekeeper);
-			ImGui::SameLine();
-			ImGui::Checkbox("Mastiff", &Mastiff);
-
-			ImGui::Text("Snipers");
-			ImGui::Checkbox("Longbow DMR", &Longbow);
-			ImGui::SameLine();
-			ImGui::Checkbox("Charge Rifle", &ChargeRifle);
-			ImGui::SameLine();
-			ImGui::Checkbox("Sentinel", &Sentinel);
-				    
-			ImGui::Text("Legendary");
-			ImGui::Checkbox("Wingman", &Wingman);
-			ImGui::SameLine();
-			ImGui::Checkbox("Prowler Burst SMG", &Prowler);
-			ImGui::SameLine();
-			ImGui::Checkbox("Bocek Compound Bow", &Bocek);
-			ImGui::Checkbox("Kraber .50-CAL Sniper", &Kraber);
-			ImGui::SameLine();
-			ImGui::Checkbox("Throwing Knife", &Knife);
-		    }
-		    
-		    if (AimbotMode == 0) {
-		    	    ImGui::Separator();
-			    //Smoothness Settings
-			    ImGui::Text("Smoothness");
-			    if (ImGui::CollapsingHeader("Smoothness Settings", nullptr)) {
-			    	ImGui::SliderFloat("Speed", &Speed, 1, 100, "%.0f");
-			    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-					ImGui::SetTooltip("Speed of the Aim-Assist\nHigher = Faster");
-
-			    	/*ImGui::SliderFloat("Smoothing", &Smooth, 0, 0.99, "%.3f");
-			    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-					ImGui::SetTooltip("Smoothing for the Aim-Assist\nHigher = Smoother");*/
-					
-			    	ImGui::SliderFloat("Hipefire Smoothing", &HipfireSmooth, 0, 0.99, "%.3f");
-			    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-					ImGui::SetTooltip("Smoothing for the Aim-Assist whilst hipfiring.\nHigher = Smoother");
-					
-			    	ImGui::SliderFloat("ADS Smoothing", &ADSSmooth, 0, 0.99, "%.3f");
-			    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-					ImGui::SetTooltip("Smoothing for the Aim-Assist whilst ADS.\nHigher = Smoother");
-					
-			    	ImGui::SliderFloat("Distance Smoothing", &SmoothDistance, 1, 10000, "%.0f");
+			ImVec2 TabSize;
+			TabSize = ImGui::GetWindowSize();
+			//Aimbot
+			ImGui::Text("Aimbot");
+			if (ImGui::BeginChild("Aimbot Main", ImVec2(TabSize.x - TabSize.x , (TabSize.y - TabSize.y) + 270), true)) {
+				ImGui::Text("Aimbot Tab");
+				ImGui::Checkbox("Enabled", &AimbotEnabled);
 				if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-					ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.\nMay not change much.");
-			    	ImGui::SliderInt("Delay", &Delay, 1, 50);
-			    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-					ImGui::SetTooltip("Delay time for the aimbot smoothing.\n");
-			    }
-			    
-			    ImGui::Separator();
+					ImGui::SetTooltip("Toggle the Aimbot.");
 
-			    //Prediction Settings
-			    ImGui::Text("Prediction");
-			    if (ImGui::CollapsingHeader("Prediction Settings", nullptr)) {
-			    	ImGui::Checkbox("Predict Movement", &PredictMovement);
-			    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-					ImGui::SetTooltip("Predict target's movement");
-			    	ImGui::SameLine();
-			    	ImGui::Checkbox("Predict Bullet Drop", &PredictBulletDrop);
-			    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-					ImGui::SetTooltip("Predict weapon's bullet drop");
-			    }
-			    
-			    ImGui::Separator();
+				ImGui::SameLine();
+				const char* AimbotModeIndex[] = {"Cubic Bezier (xap-client)", "Grinder"};
+				ImGui::Combo("Aimbot Method", &AimbotMode, AimbotModeIndex, IM_ARRAYSIZE(AimbotModeIndex));
+				if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+					ImGui::SetTooltip("What Aimbot Method You Would Like.\nYou may find Grinder To Be More Legit/Smooth.");
 
-			    //FOV Settings
-			    ImGui::Text("FOV");
-			    if (ImGui::CollapsingHeader("FOV Settings", nullptr)) {
-			    	ImGui::SliderFloat("FOV", &FOV, 1, 90, "%.0f");
-			    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-					ImGui::SetTooltip("Field of View");
-			    	ImGui::SliderFloat("Zoom Scale", &ZoomScale, 0, 5, "%.1f");
-			    }
-			    
-			    ImGui::Separator();
+				ImGui::Separator();
+				
+				//Select Hitbox
+				if (AimbotMode == 0 && !AdvancedAim) {
+					ImGui::Text("Hitbox");
+					ImGui::Checkbox("Closest To Crosshair", &ClosestHitbox);
+					if (!ClosestHitbox) {
+						const char* HitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+						int HitboxTypeIndex = static_cast<int>(Modules::Aimbot::Hitbox);
+						ImGui::Combo("Hitbox Type", &HitboxTypeIndex, HitboxTypes, IM_ARRAYSIZE(HitboxTypes));
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("Which bone the aimbot will aim at.");
+						Modules::Aimbot::Hitbox = static_cast<HitboxType>(HitboxTypeIndex);
+					}
+				}
+				
+				ImGui::Separator();
 
-			    //Distance Settings
-			    ImGui::Text("Distance");
-			    if (ImGui::CollapsingHeader("Distance Settings", nullptr)) {
-			    	ImGui::SliderFloat("Hipfire Max Distance", &HipfireDistance, 1, 500, "%.0f");
-			    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-					ImGui::SetTooltip("Maximum Hipfire distance for Aim-Assist to work");
-			    	ImGui::SliderFloat("Zoom Max Distance", &ZoomDistance, 1, 500, "%.0f");
-			    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-					ImGui::SetTooltip("Maximum ADS Distance for Aim-Assist to work");
-			    }
-		    }
-		    
-		    if (AimbotMode == 1 && !AdvancedAim) {
-		    	ImGui::Text("Smoothness");
-		    	if (ImGui::CollapsingHeader("Smoothness Settings", nullptr)) {
+				ImGui::Text("Aim Conditions");
+				if (!AdvancedAim) {
+					int AimBind = static_cast<int>(Modules::Aimbot::AimBind);
+					ImGui::Combo("Aim Bind##Aimbot", &AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+					Modules::Aimbot::AimBind = static_cast<InputKeyType>(AimBind);
+					int ExtraBind = static_cast<int>(Modules::Aimbot::ExtraBind);
+					ImGui::Combo("Extra Bind##Aimbot", &ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+					Modules::Aimbot::ExtraBind = static_cast<InputKeyType>(ExtraBind);
+				}
+				
+				ImGui::Checkbox("Team Check##Aimbot", &TeamCheck);
+				if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+					ImGui::SetTooltip("Disable this if doing 1v1s in the firing range.\nMay not work with Grinder Aim Method.");
+				if (AimbotMode == 0) { //xap-client
+					ImGui::SameLine();
+					ImGui::Checkbox("Visibility Check", &VisCheck);
+					if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("Aims At Only Visible Enemies.");
+				}
+				
+				ImGui::Separator();
+				
+				//Select Weapons
+				ImGui::Text("Weapons");
+				if (ImGui::CollapsingHeader("Selected Weapons", nullptr)) {
+					ImGui::Text("Light");
+					ImGui::Checkbox("P2020", &P2020);
+					ImGui::SameLine();
+					ImGui::Checkbox("RE-45 Auto", &RE45);
+					ImGui::SameLine();
+					ImGui::Checkbox("Alternator SMG", &Alternator);
+					ImGui::SameLine();
+					ImGui::Checkbox("R-99 SMG", &R99);
+					ImGui::SameLine();
+					ImGui::Checkbox("R-301 Carbine", &R301);
+					ImGui::Checkbox("M600 Spitfire", &Spitfire);
+					ImGui::SameLine();
+					ImGui::Checkbox("G7 Scout", &G7);
+							
+					ImGui::Text("Heavy");
+					ImGui::Checkbox("VK-47 Flatline", &Flatline);
+					ImGui::SameLine();
+					ImGui::Checkbox("Hemlock Burst AR", &Hemlock);
+					ImGui::SameLine();
+					ImGui::Checkbox("30-30 Repeater", &Repeater);
+					ImGui::SameLine();
+					ImGui::Checkbox("Rampage LMG", &Rampage);
+					ImGui::Checkbox("C.A.R SMG", &CARSMG);
+							
+					ImGui::Text("Energy");
+					ImGui::Checkbox("Havoc Rifle", &Havoc);
+					ImGui::SameLine();
+					ImGui::Checkbox("Devotion LMG", &Devotion);
+					ImGui::SameLine();
+					ImGui::Checkbox("L-Star EMG", &LSTAR);
+					ImGui::SameLine();
+					ImGui::Checkbox("Triple-Take", &TripleTake);
+					ImGui::SameLine();
+					ImGui::Checkbox("Volt", &Volt);
+					ImGui::Checkbox("Nemesis Burst AR", &Nemesis);
 
-		    		ImGui::SliderFloat("Hipfire Smoothing", &HipfireSmooth1, 1, 1000, "%.0f");
-		    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        		ImGui::SetTooltip("Smoothing for the Aim-Assist Whilst Hipfiring\nHigher = Smoother");
-		        		
-		    		ImGui::SliderFloat("ADS Smoothing", &ADSSmooth1, 1, 1000, "%.0f");
-		    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        		ImGui::SetTooltip("Smoothing for the Aim-Assist Whilst ADS\nHigher = Smoother");
-		        	
-		    		ImGui::SliderFloat("Extra Smoothing", &ExtraSmoothing, 1, 9999, "%.0f");
-		        	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        		ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-		        		
-				ImGui::SliderFloat("Deadzone", &Deadzone, 0, 10, "%.03f");
-		        	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        		ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.\n If you have very low smoothing then you might want to up this to prevent 'shaking'.");
-		    	}
-		    
-		    	ImGui::Separator();
+					ImGui::Text("Shotguns");
+					ImGui::Checkbox("Mozambique", &Mozambique);
+					ImGui::SameLine();
+					ImGui::Checkbox("EVA-8 Auto", &EVA8);
+					ImGui::SameLine();
+					ImGui::Checkbox("Peacekeeper", &Peacekeeper);
+					ImGui::SameLine();
+					ImGui::Checkbox("Mastiff", &Mastiff);
 
-		    	//FOV Settings
-		    	ImGui::Text("FOV");
-		    	if (ImGui::CollapsingHeader("FOV Settings", nullptr)) {
-		    		ImGui::SliderFloat("FOV", &FOV1, 1, 90, "%.0f");
-		    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        		ImGui::SetTooltip("Field of View");
-		    	}
-		    
-		    	ImGui::Separator();
-
-		    	//Distance Settings
-		    	ImGui::Text("Distance");
-		    	if (ImGui::CollapsingHeader("Distance Settings", nullptr)) {
-		    		ImGui::SliderFloat("Min Distance", &MinDistance2, 1, 500, "%.0f");
-		    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        		ImGui::SetTooltip("Minimum Distance for Aim-Assist to work");
-		    		ImGui::SliderFloat("Max Distance", &MaxDistance2, 1, 500, "%.0f");
-		    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        		ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
-		    	}
-		    }
-		    
-		    ImGui::Separator();
-	            
-		    ImGui::Text("Advanced Aimbot Settings");
-		    ImGui::Checkbox("Enabled Advanced Aimbot", &AdvancedAim);
-		    if (AdvancedAim) {
-			    	ImGui::Separator();
-			    	ImGui::Text("Light Weapons");
-			    		if (P2020) {
-			    			if (ImGui::CollapsingHeader("P2020", nullptr)) {
-					    		ImGui::Text("P2020");
-					    		ImGui::Checkbox("On Fire?##AdvancedP2020", &P2020Fire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedP2020", &P2020ADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##P2020AdvancedHitbox", &P2020ClosestHitbox);
-					    			if (!P2020ClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* P2020HitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int P2020HitboxTypeIndex = static_cast<int>(Modules::Aimbot::P2020Hitbox);
-								    	ImGui::Combo("Hitbox Type##P2020AdvancedHitbox", &P2020HitboxTypeIndex, P2020HitboxTypes, IM_ARRAYSIZE(P2020HitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::P2020Hitbox = static_cast<HitboxType>(P2020HitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedP2020", &P2020Speed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The P2020\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedP2020", &P2020HipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The P2020 Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedP2020", &P2020ADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The P2020 Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedP2020", &P2020HipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The P2020 Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedP2020", &P2020ADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The P2020 Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedP2020", &P2020ExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &Deadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV", &P2020FOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance", &P2020MinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aim-Assist to work");
-						    		ImGui::SliderFloat("Max Distance", &P2020MaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
-							}
-						}
-					}
-			    		if (RE45) {
-			    			if (ImGui::CollapsingHeader("RE-45", nullptr)) {
-					    		ImGui::Text("RE-45");
-					    		ImGui::Checkbox("On Fire?##AdvancedRE45", &RE45Fire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedRE45", &RE45ADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##RE45AdvancedHitbox", &RE45ClosestHitbox);
-					    			if (!RE45ClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* RE45HitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int RE45HitboxTypeIndex = static_cast<int>(Modules::Aimbot::RE45Hitbox);
-								    	ImGui::Combo("Hitbox Type##RE45AdvancedHitbox", &RE45HitboxTypeIndex, RE45HitboxTypes, IM_ARRAYSIZE(RE45HitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::RE45Hitbox = static_cast<HitboxType>(RE45HitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedRE45", &RE45Speed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The RE45\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedRE45", &RE45HipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The RE45 Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedRE45", &RE45ADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The RE45 Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedRE45", &RE45HipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The RE45 Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedRE45", &RE45ADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The RE45 Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedRE45", &RE45ExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &RE45Deadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedRE45", &RE45FOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The RE45.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedRE45", &RE45MinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the RE45.");
-						    		ImGui::SliderFloat("Max Distance", &RE45MaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the RE45.");
-							}
-						}
-					}
-			    		if (Alternator) {
-			    			if (ImGui::CollapsingHeader("Alternator", nullptr)) {
-					    		ImGui::Text("Alternator");
-					    		ImGui::Checkbox("On Fire?##AdvancedAlternator", &AlternatorFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedAlternator", &AlternatorADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##AlternatorAdvancedHitbox", &AlternatorClosestHitbox);
-					    			if (!AlternatorClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* AlternatorHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int AlternatorHitboxTypeIndex = static_cast<int>(Modules::Aimbot::AlternatorHitbox);
-								    	ImGui::Combo("Hitbox Type##AlternatorAdvancedHitbox", &AlternatorHitboxTypeIndex, AlternatorHitboxTypes, IM_ARRAYSIZE(AlternatorHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::AlternatorHitbox = static_cast<HitboxType>(AlternatorHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedAlternator", &AlternatorSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Alternator\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedAlternator", &AlternatorHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Alternator Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedAlternator", &AlternatorADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Alternator Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedAlternator", &AlternatorHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Alternator Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedAlternator", &AlternatorADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Alternator Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedAlternator", &AlternatorExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &AlternatorDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedAlternator", &AlternatorFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Alternator.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedAlternator", &AlternatorMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Alternator.");
-						    		ImGui::SliderFloat("Max Distance", &AlternatorMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Alternator.");
-							}
-						}
-					}
-			    		if (R99) {
-			    			if (ImGui::CollapsingHeader("R-99", nullptr)) {
-					    		ImGui::Text("R-99");
-					    		ImGui::Checkbox("On Fire?##AdvancedR99", &R99Fire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedR99", &R99ADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##R99AdvancedHitbox", &R99ClosestHitbox);
-					    			if (!R99ClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* R99HitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int R99HitboxTypeIndex = static_cast<int>(Modules::Aimbot::R99Hitbox);
-								    	ImGui::Combo("Hitbox Type##R99AdvancedHitbox", &R99HitboxTypeIndex, R99HitboxTypes, IM_ARRAYSIZE(R99HitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::R99Hitbox = static_cast<HitboxType>(R99HitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedR99", &R99Speed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The R99\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedR99", &R99HipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R99 Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedR99", &R99ADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R99 Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedR99", &R99HipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R99 Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedR99", &R99ADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R99 Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedR99", &R99ExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &R99Deadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedR99", &R99FOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The R99.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedR99", &R99MinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the R99.");
-						    		ImGui::SliderFloat("Max Distance", &R99MaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the R99.");
-							}
-						}
-					}
-			    		if (R301) {
-			    			if (ImGui::CollapsingHeader("R-301", nullptr)) {
-					    		ImGui::Text("R-301");
-					    		ImGui::Checkbox("On Fire?##AdvancedR301", &R301Fire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedR301", &R301ADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##R301AdvancedHitbox", &R301ClosestHitbox);
-					    			if (!R301ClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* R301HitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int R301HitboxTypeIndex = static_cast<int>(Modules::Aimbot::R301Hitbox);
-								    	ImGui::Combo("Hitbox Type##R301AdvancedHitbox", &R301HitboxTypeIndex, R301HitboxTypes, IM_ARRAYSIZE(R301HitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::R301Hitbox = static_cast<HitboxType>(R301HitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedR301", &R301Speed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The R301\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedR301", &R301HipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R301 Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedR301", &R301ADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R301 Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedR301", &R301HipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R301 Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedR301", &R301ADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R301 Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedR301", &R301ExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &R301Deadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedR301", &R301FOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The R301.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedR301", &R301MinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the R301.");
-						    		ImGui::SliderFloat("Max Distance", &R301MaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the R301.");
-							}
-						}
-					}
-			    		if (Spitfire) {
-			    			if (ImGui::CollapsingHeader("Spitfire", nullptr)) {
-					    		ImGui::Text("Spitfire");
-					    		ImGui::Checkbox("On Fire?##AdvancedSpitfire", &SpitfireFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedSpitfire", &SpitfireADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##SpitfireAdvancedHitbox", &SpitfireClosestHitbox);
-					    			if (!SpitfireClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* SpitfireHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int SpitfireHitboxTypeIndex = static_cast<int>(Modules::Aimbot::SpitfireHitbox);
-								    	ImGui::Combo("Hitbox Type##SpitfireAdvancedHitbox", &SpitfireHitboxTypeIndex, SpitfireHitboxTypes, IM_ARRAYSIZE(SpitfireHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::SpitfireHitbox = static_cast<HitboxType>(SpitfireHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedSpitfire", &SpitfireSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Spitfire\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedSpitfire", &SpitfireHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Spitfire Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedSpitfire", &SpitfireADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Spitfire Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedSpitfire", &SpitfireHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Spitfire Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedSpitfire", &SpitfireADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Spitfire Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedSpitfire", &SpitfireExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &SpitfireDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedSpitfire", &SpitfireFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Spitfire.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedSpitfire", &SpitfireMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Spitfire.");
-						    		ImGui::SliderFloat("Max Distance", &SpitfireMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Spitfire.");
-							}
-						}
-					}
-			    		if (G7) {
-			    			if (ImGui::CollapsingHeader("G7 Scout", nullptr)) {
-					    		ImGui::Text("G7 Scout");
-					    		ImGui::Checkbox("On Fire?##AdvancedG7", &G7Fire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedG7", &G7ADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##G7AdvancedHitbox", &G7ClosestHitbox);
-					    			if (!G7ClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* G7HitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int G7HitboxTypeIndex = static_cast<int>(Modules::Aimbot::G7Hitbox);
-								    	ImGui::Combo("Hitbox Type##G7AdvancedHitbox", &G7HitboxTypeIndex, G7HitboxTypes, IM_ARRAYSIZE(G7HitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::G7Hitbox = static_cast<HitboxType>(G7HitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedG7", &G7Speed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The G7\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedG7", &G7HipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The G7 Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedG7", &G7ADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The G7 Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedG7", &G7HipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The G7 Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedG7", &G7ADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The G7 Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedG7", &G7ExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &G7Deadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedG7", &G7FOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The G7.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedG7", &G7MinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the G7.");
-						    		ImGui::SliderFloat("Max Distance", &G7MaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the G7.");
-							}
-						}
-					}
+					ImGui::Text("Snipers");
+					ImGui::Checkbox("Longbow DMR", &Longbow);
+					ImGui::SameLine();
+					ImGui::Checkbox("Charge Rifle", &ChargeRifle);
+					ImGui::SameLine();
+					ImGui::Checkbox("Sentinel", &Sentinel);
+							
+					ImGui::Text("Legendary");
+					ImGui::Checkbox("Wingman", &Wingman);
+					ImGui::SameLine();
+					ImGui::Checkbox("Prowler Burst SMG", &Prowler);
+					ImGui::SameLine();
+					ImGui::Checkbox("Bocek Compound Bow", &Bocek);
+					ImGui::Checkbox("Kraber .50-CAL Sniper", &Kraber);
+					ImGui::SameLine();
+					ImGui::Checkbox("Throwing Knife", &Knife);
+				}
+				
+				if (AimbotMode == 0 && !AdvancedAim) {
 					ImGui::Separator();
-			    		ImGui::Text("Heavy Weapons");
-			    		if (Flatline) {
-			    			if (ImGui::CollapsingHeader("Flatline", nullptr)) {
-					    		ImGui::Text("Flatline");
-					    		ImGui::Checkbox("On Fire?##AdvancedFlatline", &FlatlineFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedFlatline", &FlatlineADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##FlatlineAdvancedHitbox", &FlatlineClosestHitbox);
-					    			if (!FlatlineClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* FlatlineHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int FlatlineHitboxTypeIndex = static_cast<int>(Modules::Aimbot::FlatlineHitbox);
-								    	ImGui::Combo("Hitbox Type##FlatlineAdvancedHitbox", &FlatlineHitboxTypeIndex, FlatlineHitboxTypes, IM_ARRAYSIZE(FlatlineHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::FlatlineHitbox = static_cast<HitboxType>(FlatlineHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedFlatline", &FlatlineSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Flatline\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedFlatline", &FlatlineHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Flatline Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedFlatline", &FlatlineADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Flatline Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedFlatline", &FlatlineHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Flatline Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedFlatline", &FlatlineADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Flatline Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedFlatline", &FlatlineExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &FlatlineDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedFlatline", &FlatlineFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Flatline.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedFlatline", &FlatlineMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Flatline.");
-						    		ImGui::SliderFloat("Max Distance", &FlatlineMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Flatline.");
-							}
-						}
+					//Smoothness Settings
+					ImGui::Text("Smoothness");
+					if (ImGui::CollapsingHeader("Smoothness Settings", nullptr)) {
+						ImGui::SliderFloat("Speed", &Speed, 1, 100, "%.0f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("Speed of the Aim-Assist\nHigher = Faster");
+
+						/*ImGui::SliderFloat("Smoothing", &Smooth, 0, 0.99, "%.3f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("Smoothing for the Aim-Assist\nHigher = Smoother");*/
+						
+						ImGui::SliderFloat("Hipefire Smoothing", &HipfireSmooth, 0, 0.99, "%.3f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("Smoothing for the Aim-Assist whilst hipfiring.\nHigher = Smoother");
+						
+						ImGui::SliderFloat("ADS Smoothing", &ADSSmooth, 0, 0.99, "%.3f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("Smoothing for the Aim-Assist whilst ADS.\nHigher = Smoother");
+						
+						ImGui::SliderFloat("Distance Smoothing", &SmoothDistance, 1, 10000, "%.0f");
+					if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.\nMay not change much.");
+						ImGui::SliderInt("Delay", &Delay, 1, 50);
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("Delay time for the aimbot smoothing.\n");
 					}
-			    		if (Hemlock) {
-			    			if (ImGui::CollapsingHeader("Hemlock", nullptr)) {
-					    		ImGui::Text("Hemlock");
-					    		ImGui::Checkbox("On Fire?##AdvancedHemlock", &HemlockFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedHemlock", &HemlockADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##HemlockAdvancedHitbox", &HemlockClosestHitbox);
-					    			if (!HemlockClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* HemlockHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int HemlockHitboxTypeIndex = static_cast<int>(Modules::Aimbot::HemlockHitbox);
-								    	ImGui::Combo("Hitbox Type##HemlockAdvancedHitbox", &HemlockHitboxTypeIndex, HemlockHitboxTypes, IM_ARRAYSIZE(HemlockHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::HemlockHitbox = static_cast<HitboxType>(HemlockHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedHemlock", &HemlockSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Hemlock\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedHemlock", &HemlockHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Hemlock Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedHemlock", &HemlockADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Hemlock Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedHemlock", &HemlockHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Hemlock Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedHemlock", &HemlockADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Hemlock Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedHemlock", &HemlockExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &HemlockDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedHemlock", &HemlockFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Hemlock.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedHemlock", &HemlockMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Hemlock.");
-						    		ImGui::SliderFloat("Max Distance", &HemlockMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Hemlock.");
-							}
-						}
-					}
-			    		if (Repeater) {
-			    			if (ImGui::CollapsingHeader("30-30 Repeater", nullptr)) {
-					    		ImGui::Text("30-30 Repeater");
-					    		ImGui::Checkbox("On Fire?##AdvancedRepeater", &RepeaterFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedRepeater", &RepeaterADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##RepeaterAdvancedHitbox", &RepeaterClosestHitbox);
-					    			if (!RepeaterClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* RepeaterHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int RepeaterHitboxTypeIndex = static_cast<int>(Modules::Aimbot::RepeaterHitbox);
-								    	ImGui::Combo("Hitbox Type##RepeaterAdvancedHitbox", &RepeaterHitboxTypeIndex, RepeaterHitboxTypes, IM_ARRAYSIZE(RepeaterHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::RepeaterHitbox = static_cast<HitboxType>(RepeaterHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedRepeater", &RepeaterSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Repeater\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedRepeater", &RepeaterHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Repeater Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedRepeater", &RepeaterADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Repeater Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedRepeater", &RepeaterHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Repeater Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedRepeater", &RepeaterADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Repeater Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedRepeater", &RepeaterExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &RepeaterDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedRepeater", &RepeaterFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Repeater.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedRepeater", &RepeaterMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Repeater.");
-						    		ImGui::SliderFloat("Max Distance", &RepeaterMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Repeater.");
-							}
-						}
-					}
-			    		if (Rampage) {
-			    			if (ImGui::CollapsingHeader("Rampage", nullptr)) {
-					    		ImGui::Text("Rampage");
-					    		ImGui::Checkbox("On Fire?##AdvancedRampage", &RampageFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedRampage", &RampageADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##RampageAdvancedHitbox", &RampageClosestHitbox);
-					    			if (!RampageClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* RampageHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int RampageHitboxTypeIndex = static_cast<int>(Modules::Aimbot::RampageHitbox);
-								    	ImGui::Combo("Hitbox Type##RampageAdvancedHitbox", &RampageHitboxTypeIndex, RampageHitboxTypes, IM_ARRAYSIZE(RampageHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::RampageHitbox = static_cast<HitboxType>(RampageHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedRampage", &RampageSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Rampage\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedRampage", &RampageHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Rampage Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedRampage", &RampageADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Rampage Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedRampage", &RampageHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Rampage Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedRampage", &RampageADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Rampage Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedRampage", &RampageExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &RampageDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedRampage", &RampageFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Rampage.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedRampage", &RampageMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Rampage.");
-						    		ImGui::SliderFloat("Max Distance", &RampageMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Rampage.");
-							}
-						}
-					}
-			    		if (CARSMG) {
-			    			if (ImGui::CollapsingHeader("CAR SMG", nullptr)) {
-					    		ImGui::Text("CAR SMG");
-					    		ImGui::Checkbox("On Fire?##AdvancedCARSMG", &CARSMGFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedCARSMG", &CARSMGADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##CARSMGAdvancedHitbox", &CARSMGClosestHitbox);
-					    			if (!CARSMGClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* CARSMGHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int CARSMGHitboxTypeIndex = static_cast<int>(Modules::Aimbot::CARSMGHitbox);
-								    	ImGui::Combo("Hitbox Type##CARSMGAdvancedHitbox", &CARSMGHitboxTypeIndex, CARSMGHitboxTypes, IM_ARRAYSIZE(CARSMGHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::CARSMGHitbox = static_cast<HitboxType>(CARSMGHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedCARSMG", &CARSMGSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The CARSMG\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedCARSMG", &CARSMGHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The CARSMG Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedCARSMG", &CARSMGADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The CARSMG Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedCARSMG", &CARSMGHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The CARSMG Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedCARSMG", &CARSMGADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The CARSMG Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedCARSMG", &CARSMGExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &CARSMGDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedCARSMG", &CARSMGFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The CARSMG.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedCARSMG", &CARSMGMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the CARSMG.");
-						    		ImGui::SliderFloat("Max Distance", &CARSMGMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the CARSMG.");
-							}
-						}
-					}
+					
 					ImGui::Separator();
-			    		ImGui::Text("Energy Weapons");
-			    		if (Havoc) {
-			    			if (ImGui::CollapsingHeader("Havoc", nullptr)) {
-					    		ImGui::Text("Havoc");
-					    		ImGui::Checkbox("On Fire?##AdvancedHavoc", &HavocFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedHavoc", &HavocADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##HavocAdvancedHitbox", &HavocClosestHitbox);
-					    			if (!HavocClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* HavocHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int HavocHitboxTypeIndex = static_cast<int>(Modules::Aimbot::HavocHitbox);
-								    	ImGui::Combo("Hitbox Type##HavocAdvancedHitbox", &HavocHitboxTypeIndex, HavocHitboxTypes, IM_ARRAYSIZE(HavocHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::HavocHitbox = static_cast<HitboxType>(HavocHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedHavoc", &HavocSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Havoc\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedHavoc", &HavocHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Havoc Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedHavoc", &HavocADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Havoc Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedHavoc", &HavocHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Havoc Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedHavoc", &HavocADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Havoc Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedHavoc", &HavocExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &HavocDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedHavoc", &HavocFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Havoc.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedHavoc", &HavocMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Havoc.");
-						    		ImGui::SliderFloat("Max Distance", &HavocMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Havoc.");
-							}
-						}
+
+					//Prediction Settings
+					ImGui::Text("Prediction");
+					if (ImGui::CollapsingHeader("Prediction Settings", nullptr)) {
+						ImGui::Checkbox("Predict Movement", &PredictMovement);
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("Predict target's movement");
+						ImGui::SameLine();
+						ImGui::Checkbox("Predict Bullet Drop", &PredictBulletDrop);
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("Predict weapon's bullet drop");
 					}
-			    		if (Devotion) {
-			    			if (ImGui::CollapsingHeader("Devotion", nullptr)) {
-					    		ImGui::Text("Devotion");
-					    		ImGui::Checkbox("On Fire?##AdvancedDevotion", &DevotionFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedDevotion", &DevotionADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##DevotionAdvancedHitbox", &DevotionClosestHitbox);
-					    			if (!DevotionClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* DevotionHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int DevotionHitboxTypeIndex = static_cast<int>(Modules::Aimbot::DevotionHitbox);
-								    	ImGui::Combo("Hitbox Type##DevotionAdvancedHitbox", &DevotionHitboxTypeIndex, DevotionHitboxTypes, IM_ARRAYSIZE(DevotionHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::DevotionHitbox = static_cast<HitboxType>(DevotionHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedDevotion", &DevotionSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Devotion\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedDevotion", &DevotionHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Devotion Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedDevotion", &DevotionADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Devotion Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedDevotion", &DevotionHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Devotion Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedDevotion", &DevotionADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Devotion Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedDevotion", &DevotionExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &DevotionDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedDevotion", &DevotionFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Devotion.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedDevotion", &DevotionMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Devotion.");
-						    		ImGui::SliderFloat("Max Distance", &DevotionMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Devotion.");
-							}
-						}
-					}
-			    		if (LSTAR) {
-			    			if (ImGui::CollapsingHeader("LSTAR", nullptr)) {
-					    		ImGui::Text("LSTAR");
-					    		ImGui::Checkbox("On Fire?##AdvancedLSTAR", &LSTARFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedLSTAR", &LSTARADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##LSTARAdvancedHitbox", &LSTARClosestHitbox);
-					    			if (!LSTARClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* LSTARHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int LSTARHitboxTypeIndex = static_cast<int>(Modules::Aimbot::LSTARHitbox);
-								    	ImGui::Combo("Hitbox Type##LSTARAdvancedHitbox", &LSTARHitboxTypeIndex, LSTARHitboxTypes, IM_ARRAYSIZE(LSTARHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::LSTARHitbox = static_cast<HitboxType>(LSTARHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedLSTAR", &LSTARSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The LSTAR\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedLSTAR", &LSTARHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The LSTAR Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedLSTAR", &LSTARADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The LSTAR Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedLSTAR", &LSTARHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The LSTAR Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedLSTAR", &LSTARADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The LSTAR Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedLSTAR", &LSTARExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &LSTARDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedLSTAR", &LSTARFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The LSTAR.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedLSTAR", &LSTARMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the LSTAR.");
-						    		ImGui::SliderFloat("Max Distance", &LSTARMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the LSTAR.");
-							}
-						}
-					}
-			    		if (TripleTake) {
-			    			if (ImGui::CollapsingHeader("Triple Take", nullptr)) {
-					    		ImGui::Text("Triple Take");
-					    		ImGui::Checkbox("On Fire?##AdvancedTripleTake", &TripleTakeFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedTripleTake", &TripleTakeADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##TripleTakeAdvancedHitbox", &TripleTakeClosestHitbox);
-					    			if (!TripleTakeClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* TripleTakeHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int TripleTakeHitboxTypeIndex = static_cast<int>(Modules::Aimbot::TripleTakeHitbox);
-								    	ImGui::Combo("Hitbox Type##TripleTakeAdvancedHitbox", &TripleTakeHitboxTypeIndex, TripleTakeHitboxTypes, IM_ARRAYSIZE(TripleTakeHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::TripleTakeHitbox = static_cast<HitboxType>(TripleTakeHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedTripleTake", &TripleTakeSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The TripleTake\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedTripleTake", &TripleTakeHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The TripleTake Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedTripleTake", &TripleTakeADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The TripleTake Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedTripleTake", &TripleTakeHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The TripleTake Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedTripleTake", &TripleTakeADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The TripleTake Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedTripleTake", &TripleTakeExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &TripleTakeDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedTripleTake", &TripleTakeFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The TripleTake.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedTripleTake", &TripleTakeMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the TripleTake.");
-						    		ImGui::SliderFloat("Max Distance", &TripleTakeMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the TripleTake.");
-							}
-						}
-					}
-			    		if (Volt) {
-			    			if (ImGui::CollapsingHeader("Volt", nullptr)) {
-					    		ImGui::Text("Volt");
-					    		ImGui::Checkbox("On Fire?##AdvancedVolt", &VoltFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedVolt", &VoltADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##VoltAdvancedHitbox", &VoltClosestHitbox);
-					    			if (!VoltClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* VoltHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int VoltHitboxTypeIndex = static_cast<int>(Modules::Aimbot::VoltHitbox);
-								    	ImGui::Combo("Hitbox Type##VoltAdvancedHitbox", &VoltHitboxTypeIndex, VoltHitboxTypes, IM_ARRAYSIZE(VoltHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::VoltHitbox = static_cast<HitboxType>(VoltHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedVolt", &VoltSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Volt\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedVolt", &VoltHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Volt Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedVolt", &VoltADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Volt Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedVolt", &VoltHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Volt Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedVolt", &VoltADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Volt Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedVolt", &VoltExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &VoltDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedVolt", &VoltFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Volt.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedVolt", &VoltMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Volt.");
-						    		ImGui::SliderFloat("Max Distance", &VoltMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Volt.");
-							}
-						}
-					}
-			    		if (Nemesis) {
-			    			if (ImGui::CollapsingHeader("Nemesis", nullptr)) {
-					    		ImGui::Text("Nemesis");
-					    		ImGui::Checkbox("On Fire?##AdvancedNemesis", &NemesisFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedNemesis", &NemesisADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##NemesisAdvancedHitbox", &NemesisClosestHitbox);
-					    			if (!NemesisClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* NemesisHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int NemesisHitboxTypeIndex = static_cast<int>(Modules::Aimbot::NemesisHitbox);
-								    	ImGui::Combo("Hitbox Type##NemesisAdvancedHitbox", &NemesisHitboxTypeIndex, NemesisHitboxTypes, IM_ARRAYSIZE(NemesisHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::NemesisHitbox = static_cast<HitboxType>(NemesisHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedNemesis", &NemesisSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Nemesis\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedNemesis", &NemesisHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Nemesis Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedNemesis", &NemesisADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Nemesis Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedNemesis", &NemesisHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Nemesis Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedNemesis", &NemesisADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Nemesis Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedNemesis", &NemesisExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &NemesisDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedNemesis", &NemesisFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Nemesis.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedNemesis", &NemesisMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Nemesis.");
-						    		ImGui::SliderFloat("Max Distance", &NemesisMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Nemesis.");
-							}
-						}
-					}
+					
 					ImGui::Separator();
-			    		ImGui::Text("Shotguns");
-			    		if (Mozambique) {
-			    			if (ImGui::CollapsingHeader("Mozambique", nullptr)) {
-					    		ImGui::Text("Mozambique");
-					    		ImGui::Checkbox("On Fire?##AdvancedMozambique", &MozambiqueFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedMozambique", &MozambiqueADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##MozambiqueAdvancedHitbox", &MozambiqueClosestHitbox);
-					    			if (!MozambiqueClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* MozambiqueHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int MozambiqueHitboxTypeIndex = static_cast<int>(Modules::Aimbot::MozambiqueHitbox);
-								    	ImGui::Combo("Hitbox Type##MozambiqueAdvancedHitbox", &MozambiqueHitboxTypeIndex, MozambiqueHitboxTypes, IM_ARRAYSIZE(MozambiqueHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::MozambiqueHitbox = static_cast<HitboxType>(MozambiqueHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedMozambique", &MozambiqueSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Mozambique\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedMozambique", &MozambiqueHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mozambique Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedMozambique", &MozambiqueADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mozambique Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedMozambique", &MozambiqueHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mozambique Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedMozambique", &MozambiqueADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mozambique Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedMozambique", &MozambiqueExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &MozambiqueDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedMozambique", &MozambiqueFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Mozambique.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedMozambique", &MozambiqueMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Mozambique.");
-						    		ImGui::SliderFloat("Max Distance", &MozambiqueMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Mozambique.");
-							}
-						}
+
+					//FOV Settings
+					ImGui::Text("FOV");
+					if (ImGui::CollapsingHeader("FOV Settings", nullptr)) {
+						ImGui::SliderFloat("FOV", &FOV, 1, 90, "%.0f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("Field of View");
+						ImGui::SliderFloat("Zoom Scale", &ZoomScale, 0, 5, "%.1f");
 					}
-			    		if (EVA8) {
-			    			if (ImGui::CollapsingHeader("EVA8", nullptr)) {
-					    		ImGui::Text("EVA8");
-					    		ImGui::Checkbox("On Fire?##AdvancedEVA8", &EVA8Fire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedEVA8", &EVA8ADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##EVA8AdvancedHitbox", &EVA8ClosestHitbox);
-					    			if (!EVA8ClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* EVA8HitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int EVA8HitboxTypeIndex = static_cast<int>(Modules::Aimbot::EVA8Hitbox);
-								    	ImGui::Combo("Hitbox Type##EVA8AdvancedHitbox", &EVA8HitboxTypeIndex, EVA8HitboxTypes, IM_ARRAYSIZE(EVA8HitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::EVA8Hitbox = static_cast<HitboxType>(EVA8HitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedEVA8", &EVA8Speed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The EVA8\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedEVA8", &EVA8HipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The EVA8 Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedEVA8", &EVA8ADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The EVA8 Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedEVA8", &EVA8HipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The EVA8 Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedEVA8", &EVA8ADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The EVA8 Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedEVA8", &EVA8ExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &EVA8Deadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedEVA8", &EVA8FOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The EVA8.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedEVA8", &EVA8MinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the EVA8.");
-						    		ImGui::SliderFloat("Max Distance", &EVA8MaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the EVA8.");
-							}
-						}
-					}
-			    		if (Peacekeeper) {
-			    			if (ImGui::CollapsingHeader("Peacekeeper", nullptr)) {
-					    		ImGui::Text("Peacekeeper");
-					    		ImGui::Checkbox("On Fire?##AdvancedPeacekeeper", &PeacekeeperFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedPeacekeeper", &PeacekeeperADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##PeacekeeperAdvancedHitbox", &PeacekeeperClosestHitbox);
-					    			if (!PeacekeeperClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* PeacekeeperHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int PeacekeeperHitboxTypeIndex = static_cast<int>(Modules::Aimbot::PeacekeeperHitbox);
-								    	ImGui::Combo("Hitbox Type##PeacekeeperAdvancedHitbox", &PeacekeeperHitboxTypeIndex, PeacekeeperHitboxTypes, IM_ARRAYSIZE(PeacekeeperHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::PeacekeeperHitbox = static_cast<HitboxType>(PeacekeeperHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedPeacekeeper", &PeacekeeperSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Peacekeeper\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedPeacekeeper", &PeacekeeperHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Peacekeeper Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedPeacekeeper", &PeacekeeperADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Peacekeeper Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedPeacekeeper", &PeacekeeperHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Peacekeeper Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedPeacekeeper", &PeacekeeperADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Peacekeeper Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedPeacekeeper", &PeacekeeperExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &PeacekeeperDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedPeacekeeper", &PeacekeeperFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Peacekeeper.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedPeacekeeper", &PeacekeeperMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Peacekeeper.");
-						    		ImGui::SliderFloat("Max Distance", &PeacekeeperMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Peacekeeper.");
-							}
-						}
-					}
-			    		if (Mastiff) {
-			    			if (ImGui::CollapsingHeader("Mastiff", nullptr)) {
-					    		ImGui::Text("Mastiff");
-					    		ImGui::Checkbox("On Fire?##AdvancedMastiff", &MastiffFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedMastiff", &MastiffADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##MastiffAdvancedHitbox", &MastiffClosestHitbox);
-					    			if (!MastiffClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* MastiffHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int MastiffHitboxTypeIndex = static_cast<int>(Modules::Aimbot::MastiffHitbox);
-								    	ImGui::Combo("Hitbox Type##MastiffAdvancedHitbox", &MastiffHitboxTypeIndex, MastiffHitboxTypes, IM_ARRAYSIZE(MastiffHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::MastiffHitbox = static_cast<HitboxType>(MastiffHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedMastiff", &MastiffSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Mastiff\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedMastiff", &MastiffHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mastiff Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedMastiff", &MastiffADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mastiff Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedMastiff", &MastiffHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mastiff Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedMastiff", &MastiffADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mastiff Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedMastiff", &MastiffExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &MastiffDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedMastiff", &MastiffFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Mastiff.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedMastiff", &MastiffMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Mastiff.");
-						    		ImGui::SliderFloat("Max Distance", &MastiffMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Mastiff.");
-							}
-						}
-					}
+					
 					ImGui::Separator();
-			    		ImGui::Text("Snipers");
-			    		if (Longbow) {
-			    			if (ImGui::CollapsingHeader("Longbow", nullptr)) {
-					    		ImGui::Text("Longbow");
-					    		ImGui::Checkbox("On Fire?##AdvancedLongbow", &LongbowFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedLongbow", &LongbowADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##LongbowAdvancedHitbox", &LongbowClosestHitbox);
-					    			if (!LongbowClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* LongbowHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int LongbowHitboxTypeIndex = static_cast<int>(Modules::Aimbot::LongbowHitbox);
-								    	ImGui::Combo("Hitbox Type##LongbowAdvancedHitbox", &LongbowHitboxTypeIndex, LongbowHitboxTypes, IM_ARRAYSIZE(LongbowHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::LongbowHitbox = static_cast<HitboxType>(LongbowHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedLongbow", &LongbowSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Longbow\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedLongbow", &LongbowHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Longbow Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedLongbow", &LongbowADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Longbow Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedLongbow", &LongbowHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Longbow Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedLongbow", &LongbowADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Longbow Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedLongbow", &LongbowExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &LongbowDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedLongbow", &LongbowFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Longbow.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedLongbow", &LongbowMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Longbow.");
-						    		ImGui::SliderFloat("Max Distance", &LongbowMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Longbow.");
-							}
-						}
+
+					//Distance Settings
+					ImGui::Text("Distance");
+					if (ImGui::CollapsingHeader("Distance Settings", nullptr)) {
+						ImGui::SliderFloat("Hipfire Max Distance", &HipfireDistance, 1, 500, "%.0f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("Maximum Hipfire distance for Aim-Assist to work");
+						ImGui::SliderFloat("Zoom Max Distance", &ZoomDistance, 1, 500, "%.0f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("Maximum ADS Distance for Aim-Assist to work");
 					}
-			    		if (ChargeRifle) {
-			    			if (ImGui::CollapsingHeader("Charge Rifle", nullptr)) {
-					    		ImGui::Text("Charge Rifle");
-					    		ImGui::Checkbox("On Fire?##AdvancedChargeRifle", &ChargeRifleFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedChargeRifle", &ChargeRifleADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##ChargeRifleAdvancedHitbox", &ChargeRifleClosestHitbox);
-					    			if (!ChargeRifleClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* ChargeRifleHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int ChargeRifleHitboxTypeIndex = static_cast<int>(Modules::Aimbot::ChargeRifleHitbox);
-								    	ImGui::Combo("Hitbox Type##ChargeRifleAdvancedHitbox", &ChargeRifleHitboxTypeIndex, ChargeRifleHitboxTypes, IM_ARRAYSIZE(ChargeRifleHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::ChargeRifleHitbox = static_cast<HitboxType>(ChargeRifleHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedChargeRifle", &ChargeRifleSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The ChargeRifle\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedChargeRifle", &ChargeRifleHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ChargeRifle Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedChargeRifle", &ChargeRifleADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ChargeRifle Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedChargeRifle", &ChargeRifleHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ChargeRifle Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedChargeRifle", &ChargeRifleADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ChargeRifle Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedChargeRifle", &ChargeRifleExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &ChargeRifleDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedChargeRifle", &ChargeRifleFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The ChargeRifle.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedChargeRifle", &ChargeRifleMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the ChargeRifle.");
-						    		ImGui::SliderFloat("Max Distance", &ChargeRifleMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the ChargeRifle.");
-							}
-						}
-					}
-			    		if (Sentinel) {
-			    			if (ImGui::CollapsingHeader("Sentinel", nullptr)) {
-					    		ImGui::Text("Sentinel");
-					    		ImGui::Checkbox("On Fire?##AdvancedSentinel", &SentinelFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedSentinel", &SentinelADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##SentinelAdvancedHitbox", &SentinelClosestHitbox);
-					    			if (!SentinelClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* SentinelHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int SentinelHitboxTypeIndex = static_cast<int>(Modules::Aimbot::SentinelHitbox);
-								    	ImGui::Combo("Hitbox Type##SentinelAdvancedHitbox", &SentinelHitboxTypeIndex, SentinelHitboxTypes, IM_ARRAYSIZE(SentinelHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::SentinelHitbox = static_cast<HitboxType>(SentinelHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedSentinel", &SentinelSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Sentinel\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedSentinel", &SentinelHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Sentinel Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedSentinel", &SentinelADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Sentinel Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedSentinel", &SentinelHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Sentinel Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedSentinel", &SentinelADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Sentinel Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedSentinel", &SentinelExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &SentinelDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedSentinel", &SentinelFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Sentinel.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedSentinel", &SentinelMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Sentinel.");
-						    		ImGui::SliderFloat("Max Distance", &SentinelMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Sentinel.");
-							}
-						}
-					}
+				}
+				
+				if (AimbotMode == 1 && !AdvancedAim) {
 					ImGui::Separator();
-			    		ImGui::Text("Legendary Weapons");
-			    		if (Wingman) {
-			    			if (ImGui::CollapsingHeader("Wingman", nullptr)) {
-					    		ImGui::Text("Wingman");
-					    		ImGui::Checkbox("On Fire?##AdvancedWingman", &WingmanFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedWingman", &WingmanADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##WingmanAdvancedHitbox", &WingmanClosestHitbox);
-					    			if (!WingmanClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* WingmanHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int WingmanHitboxTypeIndex = static_cast<int>(Modules::Aimbot::WingmanHitbox);
-								    	ImGui::Combo("Hitbox Type##WingmanAdvancedHitbox", &WingmanHitboxTypeIndex, WingmanHitboxTypes, IM_ARRAYSIZE(WingmanHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::WingmanHitbox = static_cast<HitboxType>(WingmanHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedWingman", &WingmanSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Wingman\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedWingman", &WingmanHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Wingman Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedWingman", &WingmanADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Wingman Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedWingman", &WingmanHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Wingman Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedWingman", &WingmanADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Wingman Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedWingman", &WingmanExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &WingmanDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedWingman", &WingmanFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Wingman.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedWingman", &WingmanMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Wingman.");
-						    		ImGui::SliderFloat("Max Distance", &WingmanMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Wingman.");
+					ImGui::Text("Smoothness");
+					if (ImGui::CollapsingHeader("Smoothness Settings", nullptr)) {
+
+						ImGui::SliderFloat("Hipfire Smoothing", &HipfireSmooth1, 1, 1000, "%.0f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing for the Aim-Assist Whilst Hipfiring\nHigher = Smoother");
+							
+						ImGui::SliderFloat("ADS Smoothing", &ADSSmooth1, 1, 1000, "%.0f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing for the Aim-Assist Whilst ADS\nHigher = Smoother");
+						
+						ImGui::SliderFloat("Extra Smoothing", &ExtraSmoothing, 1, 9999, "%.0f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+							
+					ImGui::SliderFloat("Deadzone", &Deadzone, 0, 10, "%.03f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.\n If you have very low smoothing then you might want to up this to prevent 'shaking'.");
+					}
+				
+					ImGui::Separator();
+
+					//FOV Settings
+					ImGui::Text("FOV");
+					if (ImGui::CollapsingHeader("FOV Settings", nullptr)) {
+						ImGui::SliderFloat("FOV", &FOV1, 1, 90, "%.0f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Field of View");
+					}
+				
+					ImGui::Separator();
+
+					//Distance Settings
+					ImGui::Text("Distance");
+					if (ImGui::CollapsingHeader("Distance Settings", nullptr)) {
+						ImGui::SliderFloat("Min Distance", &MinDistance2, 1, 500, "%.0f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Minimum Distance for Aim-Assist to work");
+						ImGui::SliderFloat("Max Distance", &MaxDistance2, 1, 500, "%.0f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
+					}
+				}
+				
+				ImGui::EndChild();
+			}
+
+			ImGui::Text("Advanced Aimbot");
+			if (ImGui::BeginChild("Aimbot Advanced", ImVec2(TabSize.x - TabSize.x , (TabSize.y - TabSize.y) + 285), true)) {
+				ImGui::Text("Advanced Aimbot Tab");
+				ImGui::Checkbox("Enabled Advanced Aimbot", &AdvancedAim);
+				if (AdvancedAim) {
+						ImGui::Separator();
+						ImGui::Text("Light Weapons");
+							if (P2020) {
+								if (ImGui::CollapsingHeader("P2020", nullptr)) {
+									ImGui::Text("P2020");
+									int P2020AimBind = static_cast<int>(Modules::Aimbot::P2020AimBind);
+									ImGui::Combo("Aim Bind##P2020Aimbot", &P2020AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::P2020AimBind = static_cast<InputKeyType>(P2020AimBind);
+									int P2020ExtraBind = static_cast<int>(Modules::Aimbot::P2020ExtraBind);
+									ImGui::Combo("Extra Bind##P2020Aimbot", &P2020ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::P2020ExtraBind = static_cast<InputKeyType>(P2020ExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##P2020AdvancedHitbox", &P2020ClosestHitbox);
+										if (!P2020ClosestHitbox) {
+											ImGui::SameLine();
+											const char* P2020HitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int P2020HitboxTypeIndex = static_cast<int>(Modules::Aimbot::P2020Hitbox);
+											ImGui::Combo("Hitbox Type##P2020AdvancedHitbox", &P2020HitboxTypeIndex, P2020HitboxTypes, IM_ARRAYSIZE(P2020HitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::P2020Hitbox = static_cast<HitboxType>(P2020HitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedP2020", &P2020Speed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The P2020\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedP2020", &P2020HipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The P2020 Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedP2020", &P2020ADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The P2020 Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedP2020", &P2020HipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The P2020 Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedP2020", &P2020ADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The P2020 Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedP2020", &P2020ExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &Deadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV", &P2020FOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance", &P2020MinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aim-Assist to work");
+										ImGui::SliderFloat("Max Distance", &P2020MaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
+								}
+							}
+						}
+							if (RE45) {
+								if (ImGui::CollapsingHeader("RE-45", nullptr)) {
+									ImGui::Text("RE-45");
+									int RE45AimBind = static_cast<int>(Modules::Aimbot::RE45AimBind);
+									ImGui::Combo("Aim Bind##RE45Aimbot", &RE45AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::RE45AimBind = static_cast<InputKeyType>(RE45AimBind);
+									int RE45ExtraBind = static_cast<int>(Modules::Aimbot::RE45ExtraBind);
+									ImGui::Combo("Extra Bind##RE45Aimbot", &RE45ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::RE45ExtraBind = static_cast<InputKeyType>(RE45ExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##RE45AdvancedHitbox", &RE45ClosestHitbox);
+										if (!RE45ClosestHitbox) {
+											ImGui::SameLine();
+											const char* RE45HitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int RE45HitboxTypeIndex = static_cast<int>(Modules::Aimbot::RE45Hitbox);
+											ImGui::Combo("Hitbox Type##RE45AdvancedHitbox", &RE45HitboxTypeIndex, RE45HitboxTypes, IM_ARRAYSIZE(RE45HitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::RE45Hitbox = static_cast<HitboxType>(RE45HitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedRE45", &RE45Speed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The RE45\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedRE45", &RE45HipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The RE45 Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedRE45", &RE45ADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The RE45 Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedRE45", &RE45HipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The RE45 Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedRE45", &RE45ADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The RE45 Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedRE45", &RE45ExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &RE45Deadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedRE45", &RE45FOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The RE45.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedRE45", &RE45MinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the RE45.");
+										ImGui::SliderFloat("Max Distance", &RE45MaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the RE45.");
+								}
+							}
+						}
+							if (Alternator) {
+								if (ImGui::CollapsingHeader("Alternator", nullptr)) {
+									ImGui::Text("Alternator");
+									int AlternatorAimBind = static_cast<int>(Modules::Aimbot::AlternatorAimBind);
+									ImGui::Combo("Aim Bind##AlternatorAimbot", &AlternatorAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::AlternatorAimBind = static_cast<InputKeyType>(AlternatorAimBind);
+									int AlternatorExtraBind = static_cast<int>(Modules::Aimbot::AlternatorExtraBind);
+									ImGui::Combo("Extra Bind##AlternatorAimbot", &AlternatorExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::AlternatorExtraBind = static_cast<InputKeyType>(AlternatorExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##AlternatorAdvancedHitbox", &AlternatorClosestHitbox);
+										if (!AlternatorClosestHitbox) {
+											ImGui::SameLine();
+											const char* AlternatorHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int AlternatorHitboxTypeIndex = static_cast<int>(Modules::Aimbot::AlternatorHitbox);
+											ImGui::Combo("Hitbox Type##AlternatorAdvancedHitbox", &AlternatorHitboxTypeIndex, AlternatorHitboxTypes, IM_ARRAYSIZE(AlternatorHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::AlternatorHitbox = static_cast<HitboxType>(AlternatorHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedAlternator", &AlternatorSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Alternator\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedAlternator", &AlternatorHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Alternator Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedAlternator", &AlternatorADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Alternator Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedAlternator", &AlternatorHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Alternator Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedAlternator", &AlternatorADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Alternator Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedAlternator", &AlternatorExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &AlternatorDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedAlternator", &AlternatorFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Alternator.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedAlternator", &AlternatorMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Alternator.");
+										ImGui::SliderFloat("Max Distance", &AlternatorMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Alternator.");
+								}
+							}
+						}
+							if (R99) {
+								if (ImGui::CollapsingHeader("R-99", nullptr)) {
+									ImGui::Text("R-99");
+									int R99AimBind = static_cast<int>(Modules::Aimbot::R99AimBind);
+									ImGui::Combo("Aim Bind##R99Aimbot", &R99AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::R99AimBind = static_cast<InputKeyType>(R99AimBind);
+									int R99ExtraBind = static_cast<int>(Modules::Aimbot::R99ExtraBind);
+									ImGui::Combo("Extra Bind##R99Aimbot", &R99ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::R99ExtraBind = static_cast<InputKeyType>(R99ExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##R99AdvancedHitbox", &R99ClosestHitbox);
+										if (!R99ClosestHitbox) {
+											ImGui::SameLine();
+											const char* R99HitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int R99HitboxTypeIndex = static_cast<int>(Modules::Aimbot::R99Hitbox);
+											ImGui::Combo("Hitbox Type##R99AdvancedHitbox", &R99HitboxTypeIndex, R99HitboxTypes, IM_ARRAYSIZE(R99HitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::R99Hitbox = static_cast<HitboxType>(R99HitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedR99", &R99Speed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The R99\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedR99", &R99HipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R99 Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedR99", &R99ADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R99 Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedR99", &R99HipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R99 Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedR99", &R99ADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R99 Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedR99", &R99ExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &R99Deadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedR99", &R99FOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The R99.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedR99", &R99MinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the R99.");
+										ImGui::SliderFloat("Max Distance", &R99MaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the R99.");
+								}
+							}
+						}
+							if (R301) {
+								if (ImGui::CollapsingHeader("R-301", nullptr)) {
+									ImGui::Text("R-301");
+									int R301AimBind = static_cast<int>(Modules::Aimbot::R301AimBind);
+									ImGui::Combo("Aim Bind##R301Aimbot", &R301AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::R301AimBind = static_cast<InputKeyType>(R301AimBind);
+									int R301ExtraBind = static_cast<int>(Modules::Aimbot::R301ExtraBind);
+									ImGui::Combo("Extra Bind##R301Aimbot", &R301ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::R301ExtraBind = static_cast<InputKeyType>(R301ExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##R301AdvancedHitbox", &R301ClosestHitbox);
+										if (!R301ClosestHitbox) {
+											ImGui::SameLine();
+											const char* R301HitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int R301HitboxTypeIndex = static_cast<int>(Modules::Aimbot::R301Hitbox);
+											ImGui::Combo("Hitbox Type##R301AdvancedHitbox", &R301HitboxTypeIndex, R301HitboxTypes, IM_ARRAYSIZE(R301HitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::R301Hitbox = static_cast<HitboxType>(R301HitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedR301", &R301Speed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The R301\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedR301", &R301HipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R301 Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedR301", &R301ADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R301 Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedR301", &R301HipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R301 Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedR301", &R301ADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R301 Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedR301", &R301ExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &R301Deadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedR301", &R301FOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The R301.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedR301", &R301MinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the R301.");
+										ImGui::SliderFloat("Max Distance", &R301MaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the R301.");
+								}
+							}
+						}
+							if (Spitfire) {
+								if (ImGui::CollapsingHeader("Spitfire", nullptr)) {
+									ImGui::Text("Spitfire");
+									int SpitfireAimBind = static_cast<int>(Modules::Aimbot::SpitfireAimBind);
+									ImGui::Combo("Aim Bind##SpitfireAimbot", &SpitfireAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::SpitfireAimBind = static_cast<InputKeyType>(SpitfireAimBind);
+									int SpitfireExtraBind = static_cast<int>(Modules::Aimbot::SpitfireExtraBind);
+									ImGui::Combo("Extra Bind##SpitfireAimbot", &SpitfireExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::SpitfireExtraBind = static_cast<InputKeyType>(SpitfireExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##SpitfireAdvancedHitbox", &SpitfireClosestHitbox);
+										if (!SpitfireClosestHitbox) {
+											ImGui::SameLine();
+											const char* SpitfireHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int SpitfireHitboxTypeIndex = static_cast<int>(Modules::Aimbot::SpitfireHitbox);
+											ImGui::Combo("Hitbox Type##SpitfireAdvancedHitbox", &SpitfireHitboxTypeIndex, SpitfireHitboxTypes, IM_ARRAYSIZE(SpitfireHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::SpitfireHitbox = static_cast<HitboxType>(SpitfireHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedSpitfire", &SpitfireSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Spitfire\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedSpitfire", &SpitfireHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Spitfire Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedSpitfire", &SpitfireADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Spitfire Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedSpitfire", &SpitfireHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Spitfire Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedSpitfire", &SpitfireADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Spitfire Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedSpitfire", &SpitfireExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &SpitfireDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedSpitfire", &SpitfireFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Spitfire.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedSpitfire", &SpitfireMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Spitfire.");
+										ImGui::SliderFloat("Max Distance", &SpitfireMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Spitfire.");
+								}
+							}
+						}
+							if (G7) {
+								if (ImGui::CollapsingHeader("G7 Scout", nullptr)) {
+									ImGui::Text("G7 Scout");
+									int G7AimBind = static_cast<int>(Modules::Aimbot::G7AimBind);
+									ImGui::Combo("Aim Bind##G7Aimbot", &G7AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::G7AimBind = static_cast<InputKeyType>(G7AimBind);
+									int G7ExtraBind = static_cast<int>(Modules::Aimbot::G7ExtraBind);
+									ImGui::Combo("Extra Bind##G7Aimbot", &G7ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::G7ExtraBind = static_cast<InputKeyType>(G7ExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##G7AdvancedHitbox", &G7ClosestHitbox);
+										if (!G7ClosestHitbox) {
+											ImGui::SameLine();
+											const char* G7HitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int G7HitboxTypeIndex = static_cast<int>(Modules::Aimbot::G7Hitbox);
+											ImGui::Combo("Hitbox Type##G7AdvancedHitbox", &G7HitboxTypeIndex, G7HitboxTypes, IM_ARRAYSIZE(G7HitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::G7Hitbox = static_cast<HitboxType>(G7HitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedG7", &G7Speed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The G7\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedG7", &G7HipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The G7 Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedG7", &G7ADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The G7 Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedG7", &G7HipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The G7 Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedG7", &G7ADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The G7 Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedG7", &G7ExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &G7Deadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedG7", &G7FOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The G7.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedG7", &G7MinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the G7.");
+										ImGui::SliderFloat("Max Distance", &G7MaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the G7.");
+								}
+							}
+						}
+						ImGui::Separator();
+							ImGui::Text("Heavy Weapons");
+							if (Flatline) {
+								if (ImGui::CollapsingHeader("Flatline", nullptr)) {
+									ImGui::Text("Flatline");
+									int FlatlineAimBind = static_cast<int>(Modules::Aimbot::FlatlineAimBind);
+									ImGui::Combo("Aim Bind##FlatlineAimbot", &FlatlineAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::FlatlineAimBind = static_cast<InputKeyType>(FlatlineAimBind);
+									int FlatlineExtraBind = static_cast<int>(Modules::Aimbot::FlatlineExtraBind);
+									ImGui::Combo("Extra Bind##FlatlineAimbot", &FlatlineExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::FlatlineExtraBind = static_cast<InputKeyType>(FlatlineExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##FlatlineAdvancedHitbox", &FlatlineClosestHitbox);
+										if (!FlatlineClosestHitbox) {
+											ImGui::SameLine();
+											const char* FlatlineHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int FlatlineHitboxTypeIndex = static_cast<int>(Modules::Aimbot::FlatlineHitbox);
+											ImGui::Combo("Hitbox Type##FlatlineAdvancedHitbox", &FlatlineHitboxTypeIndex, FlatlineHitboxTypes, IM_ARRAYSIZE(FlatlineHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::FlatlineHitbox = static_cast<HitboxType>(FlatlineHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedFlatline", &FlatlineSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Flatline\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedFlatline", &FlatlineHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Flatline Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedFlatline", &FlatlineADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Flatline Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedFlatline", &FlatlineHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Flatline Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedFlatline", &FlatlineADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Flatline Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedFlatline", &FlatlineExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &FlatlineDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedFlatline", &FlatlineFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Flatline.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedFlatline", &FlatlineMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Flatline.");
+										ImGui::SliderFloat("Max Distance", &FlatlineMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Flatline.");
+								}
+							}
+						}
+							if (Hemlock) {
+								if (ImGui::CollapsingHeader("Hemlock", nullptr)) {
+									ImGui::Text("Hemlock");
+									int HemlockAimBind = static_cast<int>(Modules::Aimbot::HemlockAimBind);
+									ImGui::Combo("Aim Bind##HemlockAimbot", &HemlockAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::HemlockAimBind = static_cast<InputKeyType>(HemlockAimBind);
+									int HemlockExtraBind = static_cast<int>(Modules::Aimbot::HemlockExtraBind);
+									ImGui::Combo("Extra Bind##HemlockAimbot", &HemlockExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::HemlockExtraBind = static_cast<InputKeyType>(HemlockExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##HemlockAdvancedHitbox", &HemlockClosestHitbox);
+										if (!HemlockClosestHitbox) {
+											ImGui::SameLine();
+											const char* HemlockHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int HemlockHitboxTypeIndex = static_cast<int>(Modules::Aimbot::HemlockHitbox);
+											ImGui::Combo("Hitbox Type##HemlockAdvancedHitbox", &HemlockHitboxTypeIndex, HemlockHitboxTypes, IM_ARRAYSIZE(HemlockHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::HemlockHitbox = static_cast<HitboxType>(HemlockHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedHemlock", &HemlockSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Hemlock\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedHemlock", &HemlockHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Hemlock Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedHemlock", &HemlockADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Hemlock Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedHemlock", &HemlockHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Hemlock Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedHemlock", &HemlockADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Hemlock Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedHemlock", &HemlockExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &HemlockDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedHemlock", &HemlockFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Hemlock.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedHemlock", &HemlockMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Hemlock.");
+										ImGui::SliderFloat("Max Distance", &HemlockMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Hemlock.");
+								}
+							}
+						}
+							if (Repeater) {
+								if (ImGui::CollapsingHeader("30-30 Repeater", nullptr)) {
+									ImGui::Text("30-30 Repeater");
+									int RepeaterAimBind = static_cast<int>(Modules::Aimbot::RepeaterAimBind);
+									ImGui::Combo("Aim Bind##RepeaterAimbot", &RepeaterAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::RepeaterAimBind = static_cast<InputKeyType>(RepeaterAimBind);
+									int RepeaterExtraBind = static_cast<int>(Modules::Aimbot::RepeaterExtraBind);
+									ImGui::Combo("Extra Bind##RepeaterAimbot", &RepeaterExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::RepeaterExtraBind = static_cast<InputKeyType>(RepeaterExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##RepeaterAdvancedHitbox", &RepeaterClosestHitbox);
+										if (!RepeaterClosestHitbox) {
+											ImGui::SameLine();
+											const char* RepeaterHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int RepeaterHitboxTypeIndex = static_cast<int>(Modules::Aimbot::RepeaterHitbox);
+											ImGui::Combo("Hitbox Type##RepeaterAdvancedHitbox", &RepeaterHitboxTypeIndex, RepeaterHitboxTypes, IM_ARRAYSIZE(RepeaterHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::RepeaterHitbox = static_cast<HitboxType>(RepeaterHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedRepeater", &RepeaterSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Repeater\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedRepeater", &RepeaterHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Repeater Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedRepeater", &RepeaterADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Repeater Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedRepeater", &RepeaterHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Repeater Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedRepeater", &RepeaterADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Repeater Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedRepeater", &RepeaterExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &RepeaterDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedRepeater", &RepeaterFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Repeater.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedRepeater", &RepeaterMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Repeater.");
+										ImGui::SliderFloat("Max Distance", &RepeaterMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Repeater.");
+								}
+							}
+						}
+							if (Rampage) {
+								if (ImGui::CollapsingHeader("Rampage", nullptr)) {
+									ImGui::Text("Rampage");
+									int RampageAimBind = static_cast<int>(Modules::Aimbot::RampageAimBind);
+									ImGui::Combo("Aim Bind##RampageAimbot", &RampageAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::RampageAimBind = static_cast<InputKeyType>(RampageAimBind);
+									int RampageExtraBind = static_cast<int>(Modules::Aimbot::RampageExtraBind);
+									ImGui::Combo("Extra Bind##RampageAimbot", &RampageExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::RampageExtraBind = static_cast<InputKeyType>(RampageExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##RampageAdvancedHitbox", &RampageClosestHitbox);
+										if (!RampageClosestHitbox) {
+											ImGui::SameLine();
+											const char* RampageHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int RampageHitboxTypeIndex = static_cast<int>(Modules::Aimbot::RampageHitbox);
+											ImGui::Combo("Hitbox Type##RampageAdvancedHitbox", &RampageHitboxTypeIndex, RampageHitboxTypes, IM_ARRAYSIZE(RampageHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::RampageHitbox = static_cast<HitboxType>(RampageHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedRampage", &RampageSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Rampage\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedRampage", &RampageHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Rampage Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedRampage", &RampageADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Rampage Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedRampage", &RampageHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Rampage Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedRampage", &RampageADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Rampage Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedRampage", &RampageExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &RampageDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedRampage", &RampageFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Rampage.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedRampage", &RampageMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Rampage.");
+										ImGui::SliderFloat("Max Distance", &RampageMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Rampage.");
+								}
+							}
+						}
+							if (CARSMG) {
+								if (ImGui::CollapsingHeader("CAR SMG", nullptr)) {
+									ImGui::Text("CAR SMG");
+									int CARSMGAimBind = static_cast<int>(Modules::Aimbot::CARSMGAimBind);
+									ImGui::Combo("Aim Bind##CARSMGAimbot", &CARSMGAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::CARSMGAimBind = static_cast<InputKeyType>(CARSMGAimBind);
+									int CARSMGExtraBind = static_cast<int>(Modules::Aimbot::CARSMGExtraBind);
+									ImGui::Combo("Extra Bind##CARSMGAimbot", &CARSMGExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::CARSMGExtraBind = static_cast<InputKeyType>(CARSMGExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##CARSMGAdvancedHitbox", &CARSMGClosestHitbox);
+										if (!CARSMGClosestHitbox) {
+											ImGui::SameLine();
+											const char* CARSMGHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int CARSMGHitboxTypeIndex = static_cast<int>(Modules::Aimbot::CARSMGHitbox);
+											ImGui::Combo("Hitbox Type##CARSMGAdvancedHitbox", &CARSMGHitboxTypeIndex, CARSMGHitboxTypes, IM_ARRAYSIZE(CARSMGHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::CARSMGHitbox = static_cast<HitboxType>(CARSMGHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedCARSMG", &CARSMGSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The CARSMG\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedCARSMG", &CARSMGHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The CARSMG Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedCARSMG", &CARSMGADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The CARSMG Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedCARSMG", &CARSMGHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The CARSMG Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedCARSMG", &CARSMGADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The CARSMG Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedCARSMG", &CARSMGExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &CARSMGDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedCARSMG", &CARSMGFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The CARSMG.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedCARSMG", &CARSMGMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the CARSMG.");
+										ImGui::SliderFloat("Max Distance", &CARSMGMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the CARSMG.");
+								}
+							}
+						}
+						ImGui::Separator();
+							ImGui::Text("Energy Weapons");
+							if (Havoc) {
+								if (ImGui::CollapsingHeader("Havoc", nullptr)) {
+									ImGui::Text("Havoc");
+									int HavocAimBind = static_cast<int>(Modules::Aimbot::HavocAimBind);
+									ImGui::Combo("Aim Bind##HavocAimbot", &HavocAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::HavocAimBind = static_cast<InputKeyType>(HavocAimBind);
+									int HavocExtraBind = static_cast<int>(Modules::Aimbot::HavocExtraBind);
+									ImGui::Combo("Extra Bind##HavocAimbot", &HavocExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::HavocExtraBind = static_cast<InputKeyType>(HavocExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##HavocAdvancedHitbox", &HavocClosestHitbox);
+										if (!HavocClosestHitbox) {
+											ImGui::SameLine();
+											const char* HavocHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int HavocHitboxTypeIndex = static_cast<int>(Modules::Aimbot::HavocHitbox);
+											ImGui::Combo("Hitbox Type##HavocAdvancedHitbox", &HavocHitboxTypeIndex, HavocHitboxTypes, IM_ARRAYSIZE(HavocHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::HavocHitbox = static_cast<HitboxType>(HavocHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedHavoc", &HavocSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Havoc\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedHavoc", &HavocHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Havoc Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedHavoc", &HavocADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Havoc Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedHavoc", &HavocHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Havoc Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedHavoc", &HavocADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Havoc Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedHavoc", &HavocExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &HavocDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedHavoc", &HavocFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Havoc.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedHavoc", &HavocMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Havoc.");
+										ImGui::SliderFloat("Max Distance", &HavocMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Havoc.");
+								}
+							}
+						}
+							if (Devotion) {
+								if (ImGui::CollapsingHeader("Devotion", nullptr)) {
+									ImGui::Text("Devotion");
+									int DevotionAimBind = static_cast<int>(Modules::Aimbot::DevotionAimBind);
+									ImGui::Combo("Aim Bind##DevotionAimbot", &DevotionAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::DevotionAimBind = static_cast<InputKeyType>(DevotionAimBind);
+									int DevotionExtraBind = static_cast<int>(Modules::Aimbot::DevotionExtraBind);
+									ImGui::Combo("Extra Bind##DevotionAimbot", &DevotionExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::DevotionExtraBind = static_cast<InputKeyType>(DevotionExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##DevotionAdvancedHitbox", &DevotionClosestHitbox);
+										if (!DevotionClosestHitbox) {
+											ImGui::SameLine();
+											const char* DevotionHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int DevotionHitboxTypeIndex = static_cast<int>(Modules::Aimbot::DevotionHitbox);
+											ImGui::Combo("Hitbox Type##DevotionAdvancedHitbox", &DevotionHitboxTypeIndex, DevotionHitboxTypes, IM_ARRAYSIZE(DevotionHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::DevotionHitbox = static_cast<HitboxType>(DevotionHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedDevotion", &DevotionSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Devotion\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedDevotion", &DevotionHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Devotion Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedDevotion", &DevotionADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Devotion Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedDevotion", &DevotionHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Devotion Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedDevotion", &DevotionADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Devotion Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedDevotion", &DevotionExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &DevotionDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedDevotion", &DevotionFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Devotion.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedDevotion", &DevotionMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Devotion.");
+										ImGui::SliderFloat("Max Distance", &DevotionMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Devotion.");
+								}
+							}
+						}
+							if (LSTAR) {
+								if (ImGui::CollapsingHeader("LSTAR", nullptr)) {
+									ImGui::Text("LSTAR");
+									int LSTARAimBind = static_cast<int>(Modules::Aimbot::LSTARAimBind);
+									ImGui::Combo("Aim Bind##LSTARAimbot", &LSTARAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::LSTARAimBind = static_cast<InputKeyType>(LSTARAimBind);
+									int LSTARExtraBind = static_cast<int>(Modules::Aimbot::LSTARExtraBind);
+									ImGui::Combo("Extra Bind##LSTARAimbot", &LSTARExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::LSTARExtraBind = static_cast<InputKeyType>(LSTARExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##LSTARAdvancedHitbox", &LSTARClosestHitbox);
+										if (!LSTARClosestHitbox) {
+											ImGui::SameLine();
+											const char* LSTARHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int LSTARHitboxTypeIndex = static_cast<int>(Modules::Aimbot::LSTARHitbox);
+											ImGui::Combo("Hitbox Type##LSTARAdvancedHitbox", &LSTARHitboxTypeIndex, LSTARHitboxTypes, IM_ARRAYSIZE(LSTARHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::LSTARHitbox = static_cast<HitboxType>(LSTARHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedLSTAR", &LSTARSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The LSTAR\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedLSTAR", &LSTARHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The LSTAR Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedLSTAR", &LSTARADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The LSTAR Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedLSTAR", &LSTARHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The LSTAR Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedLSTAR", &LSTARADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The LSTAR Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedLSTAR", &LSTARExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &LSTARDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedLSTAR", &LSTARFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The LSTAR.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedLSTAR", &LSTARMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the LSTAR.");
+										ImGui::SliderFloat("Max Distance", &LSTARMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the LSTAR.");
+								}
+							}
+						}
+							if (TripleTake) {
+								if (ImGui::CollapsingHeader("Triple Take", nullptr)) {
+									ImGui::Text("Triple Take");
+									int TripleTakeAimBind = static_cast<int>(Modules::Aimbot::TripleTakeAimBind);
+									ImGui::Combo("Aim Bind##TripleTakeAimbot", &TripleTakeAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::TripleTakeAimBind = static_cast<InputKeyType>(TripleTakeAimBind);
+									int TripleTakeExtraBind = static_cast<int>(Modules::Aimbot::TripleTakeExtraBind);
+									ImGui::Combo("Extra Bind##TripleTakeAimbot", &TripleTakeExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::TripleTakeExtraBind = static_cast<InputKeyType>(TripleTakeExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##TripleTakeAdvancedHitbox", &TripleTakeClosestHitbox);
+										if (!TripleTakeClosestHitbox) {
+											ImGui::SameLine();
+											const char* TripleTakeHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int TripleTakeHitboxTypeIndex = static_cast<int>(Modules::Aimbot::TripleTakeHitbox);
+											ImGui::Combo("Hitbox Type##TripleTakeAdvancedHitbox", &TripleTakeHitboxTypeIndex, TripleTakeHitboxTypes, IM_ARRAYSIZE(TripleTakeHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::TripleTakeHitbox = static_cast<HitboxType>(TripleTakeHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedTripleTake", &TripleTakeSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The TripleTake\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedTripleTake", &TripleTakeHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The TripleTake Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedTripleTake", &TripleTakeADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The TripleTake Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedTripleTake", &TripleTakeHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The TripleTake Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedTripleTake", &TripleTakeADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The TripleTake Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedTripleTake", &TripleTakeExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &TripleTakeDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedTripleTake", &TripleTakeFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The TripleTake.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedTripleTake", &TripleTakeMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the TripleTake.");
+										ImGui::SliderFloat("Max Distance", &TripleTakeMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the TripleTake.");
+								}
+							}
+						}
+							if (Volt) {
+								if (ImGui::CollapsingHeader("Volt", nullptr)) {
+									ImGui::Text("Volt");
+									int VoltAimBind = static_cast<int>(Modules::Aimbot::VoltAimBind);
+									ImGui::Combo("Aim Bind##VoltAimbot", &VoltAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::VoltAimBind = static_cast<InputKeyType>(VoltAimBind);
+									int VoltExtraBind = static_cast<int>(Modules::Aimbot::VoltExtraBind);
+									ImGui::Combo("Extra Bind##VoltAimbot", &VoltExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::VoltExtraBind = static_cast<InputKeyType>(VoltExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##VoltAdvancedHitbox", &VoltClosestHitbox);
+										if (!VoltClosestHitbox) {
+											ImGui::SameLine();
+											const char* VoltHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int VoltHitboxTypeIndex = static_cast<int>(Modules::Aimbot::VoltHitbox);
+											ImGui::Combo("Hitbox Type##VoltAdvancedHitbox", &VoltHitboxTypeIndex, VoltHitboxTypes, IM_ARRAYSIZE(VoltHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::VoltHitbox = static_cast<HitboxType>(VoltHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedVolt", &VoltSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Volt\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedVolt", &VoltHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Volt Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedVolt", &VoltADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Volt Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedVolt", &VoltHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Volt Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedVolt", &VoltADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Volt Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedVolt", &VoltExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &VoltDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedVolt", &VoltFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Volt.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedVolt", &VoltMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Volt.");
+										ImGui::SliderFloat("Max Distance", &VoltMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Volt.");
+								}
+							}
+						}
+							if (Nemesis) {
+								if (ImGui::CollapsingHeader("Nemesis", nullptr)) {
+									ImGui::Text("Nemesis");
+									int NemesisAimBind = static_cast<int>(Modules::Aimbot::NemesisAimBind);
+									ImGui::Combo("Aim Bind##NemesisAimbot", &NemesisAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::NemesisAimBind = static_cast<InputKeyType>(NemesisAimBind);
+									int NemesisExtraBind = static_cast<int>(Modules::Aimbot::NemesisExtraBind);
+									ImGui::Combo("Extra Bind##NemesisAimbot", &NemesisExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::NemesisExtraBind = static_cast<InputKeyType>(NemesisExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##NemesisAdvancedHitbox", &NemesisClosestHitbox);
+										if (!NemesisClosestHitbox) {
+											ImGui::SameLine();
+											const char* NemesisHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int NemesisHitboxTypeIndex = static_cast<int>(Modules::Aimbot::NemesisHitbox);
+											ImGui::Combo("Hitbox Type##NemesisAdvancedHitbox", &NemesisHitboxTypeIndex, NemesisHitboxTypes, IM_ARRAYSIZE(NemesisHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::NemesisHitbox = static_cast<HitboxType>(NemesisHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedNemesis", &NemesisSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Nemesis\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedNemesis", &NemesisHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Nemesis Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedNemesis", &NemesisADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Nemesis Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedNemesis", &NemesisHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Nemesis Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedNemesis", &NemesisADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Nemesis Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedNemesis", &NemesisExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &NemesisDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedNemesis", &NemesisFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Nemesis.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedNemesis", &NemesisMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Nemesis.");
+										ImGui::SliderFloat("Max Distance", &NemesisMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Nemesis.");
+								}
+							}
+						}
+						ImGui::Separator();
+							ImGui::Text("Shotguns");
+							if (Mozambique) {
+								if (ImGui::CollapsingHeader("Mozambique", nullptr)) {
+									ImGui::Text("Mozambique");
+									int MozambiqueAimBind = static_cast<int>(Modules::Aimbot::MozambiqueAimBind);
+									ImGui::Combo("Aim Bind##MozambiqueAimbot", &MozambiqueAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::MozambiqueAimBind = static_cast<InputKeyType>(MozambiqueAimBind);
+									int MozambiqueExtraBind = static_cast<int>(Modules::Aimbot::MozambiqueExtraBind);
+									ImGui::Combo("Extra Bind##MozambiqueAimbot", &MozambiqueExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::MozambiqueExtraBind = static_cast<InputKeyType>(MozambiqueExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##MozambiqueAdvancedHitbox", &MozambiqueClosestHitbox);
+										if (!MozambiqueClosestHitbox) {
+											ImGui::SameLine();
+											const char* MozambiqueHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int MozambiqueHitboxTypeIndex = static_cast<int>(Modules::Aimbot::MozambiqueHitbox);
+											ImGui::Combo("Hitbox Type##MozambiqueAdvancedHitbox", &MozambiqueHitboxTypeIndex, MozambiqueHitboxTypes, IM_ARRAYSIZE(MozambiqueHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::MozambiqueHitbox = static_cast<HitboxType>(MozambiqueHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedMozambique", &MozambiqueSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Mozambique\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedMozambique", &MozambiqueHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mozambique Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedMozambique", &MozambiqueADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mozambique Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedMozambique", &MozambiqueHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mozambique Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedMozambique", &MozambiqueADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mozambique Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedMozambique", &MozambiqueExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &MozambiqueDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedMozambique", &MozambiqueFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Mozambique.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedMozambique", &MozambiqueMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Mozambique.");
+										ImGui::SliderFloat("Max Distance", &MozambiqueMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Mozambique.");
+								}
+							}
+						}
+							if (EVA8) {
+								if (ImGui::CollapsingHeader("EVA8", nullptr)) {
+									ImGui::Text("EVA8");
+									int EVA8AimBind = static_cast<int>(Modules::Aimbot::EVA8AimBind);
+									ImGui::Combo("Aim Bind##EVA8Aimbot", &EVA8AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::EVA8AimBind = static_cast<InputKeyType>(EVA8AimBind);
+									int EVA8ExtraBind = static_cast<int>(Modules::Aimbot::EVA8ExtraBind);
+									ImGui::Combo("Extra Bind##EVA8Aimbot", &EVA8ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::EVA8ExtraBind = static_cast<InputKeyType>(EVA8ExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##EVA8AdvancedHitbox", &EVA8ClosestHitbox);
+										if (!EVA8ClosestHitbox) {
+											ImGui::SameLine();
+											const char* EVA8HitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int EVA8HitboxTypeIndex = static_cast<int>(Modules::Aimbot::EVA8Hitbox);
+											ImGui::Combo("Hitbox Type##EVA8AdvancedHitbox", &EVA8HitboxTypeIndex, EVA8HitboxTypes, IM_ARRAYSIZE(EVA8HitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::EVA8Hitbox = static_cast<HitboxType>(EVA8HitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedEVA8", &EVA8Speed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The EVA8\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedEVA8", &EVA8HipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The EVA8 Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedEVA8", &EVA8ADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The EVA8 Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedEVA8", &EVA8HipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The EVA8 Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedEVA8", &EVA8ADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The EVA8 Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedEVA8", &EVA8ExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &EVA8Deadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedEVA8", &EVA8FOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The EVA8.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedEVA8", &EVA8MinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the EVA8.");
+										ImGui::SliderFloat("Max Distance", &EVA8MaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the EVA8.");
+								}
+							}
+						}
+							if (Peacekeeper) {
+								if (ImGui::CollapsingHeader("Peacekeeper", nullptr)) {
+									ImGui::Text("Peacekeeper");
+									int PeacekeeperAimBind = static_cast<int>(Modules::Aimbot::PeacekeeperAimBind);
+									ImGui::Combo("Aim Bind##PeacekeeperAimbot", &PeacekeeperAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::PeacekeeperAimBind = static_cast<InputKeyType>(PeacekeeperAimBind);
+									int PeacekeeperExtraBind = static_cast<int>(Modules::Aimbot::PeacekeeperExtraBind);
+									ImGui::Combo("Extra Bind##PeacekeeperAimbot", &PeacekeeperExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::PeacekeeperExtraBind = static_cast<InputKeyType>(PeacekeeperExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##PeacekeeperAdvancedHitbox", &PeacekeeperClosestHitbox);
+										if (!PeacekeeperClosestHitbox) {
+											ImGui::SameLine();
+											const char* PeacekeeperHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int PeacekeeperHitboxTypeIndex = static_cast<int>(Modules::Aimbot::PeacekeeperHitbox);
+											ImGui::Combo("Hitbox Type##PeacekeeperAdvancedHitbox", &PeacekeeperHitboxTypeIndex, PeacekeeperHitboxTypes, IM_ARRAYSIZE(PeacekeeperHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::PeacekeeperHitbox = static_cast<HitboxType>(PeacekeeperHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedPeacekeeper", &PeacekeeperSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Peacekeeper\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedPeacekeeper", &PeacekeeperHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Peacekeeper Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedPeacekeeper", &PeacekeeperADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Peacekeeper Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedPeacekeeper", &PeacekeeperHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Peacekeeper Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedPeacekeeper", &PeacekeeperADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Peacekeeper Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedPeacekeeper", &PeacekeeperExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &PeacekeeperDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedPeacekeeper", &PeacekeeperFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Peacekeeper.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedPeacekeeper", &PeacekeeperMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Peacekeeper.");
+										ImGui::SliderFloat("Max Distance", &PeacekeeperMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Peacekeeper.");
+								}
+							}
+						}
+							if (Mastiff) {
+								if (ImGui::CollapsingHeader("Mastiff", nullptr)) {
+									ImGui::Text("Mastiff");
+									int MastiffAimBind = static_cast<int>(Modules::Aimbot::MastiffAimBind);
+									ImGui::Combo("Aim Bind##MastiffAimbot", &MastiffAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::MastiffAimBind = static_cast<InputKeyType>(MastiffAimBind);
+									int MastiffExtraBind = static_cast<int>(Modules::Aimbot::MastiffExtraBind);
+									ImGui::Combo("Extra Bind##MastiffAimbot", &MastiffExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::MastiffExtraBind = static_cast<InputKeyType>(MastiffExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##MastiffAdvancedHitbox", &MastiffClosestHitbox);
+										if (!MastiffClosestHitbox) {
+											ImGui::SameLine();
+											const char* MastiffHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int MastiffHitboxTypeIndex = static_cast<int>(Modules::Aimbot::MastiffHitbox);
+											ImGui::Combo("Hitbox Type##MastiffAdvancedHitbox", &MastiffHitboxTypeIndex, MastiffHitboxTypes, IM_ARRAYSIZE(MastiffHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::MastiffHitbox = static_cast<HitboxType>(MastiffHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedMastiff", &MastiffSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Mastiff\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedMastiff", &MastiffHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mastiff Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedMastiff", &MastiffADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mastiff Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedMastiff", &MastiffHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mastiff Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedMastiff", &MastiffADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mastiff Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedMastiff", &MastiffExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &MastiffDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedMastiff", &MastiffFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Mastiff.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedMastiff", &MastiffMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Mastiff.");
+										ImGui::SliderFloat("Max Distance", &MastiffMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Mastiff.");
+								}
+							}
+						}
+						ImGui::Separator();
+							ImGui::Text("Snipers");
+							if (Longbow) {
+								if (ImGui::CollapsingHeader("Longbow", nullptr)) {
+									ImGui::Text("Longbow");
+									int LongbowAimBind = static_cast<int>(Modules::Aimbot::LongbowAimBind);
+									ImGui::Combo("Aim Bind##LongbowAimbot", &LongbowAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::LongbowAimBind = static_cast<InputKeyType>(LongbowAimBind);
+									int LongbowExtraBind = static_cast<int>(Modules::Aimbot::LongbowExtraBind);
+									ImGui::Combo("Extra Bind##LongbowAimbot", &LongbowExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::LongbowExtraBind = static_cast<InputKeyType>(LongbowExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##LongbowAdvancedHitbox", &LongbowClosestHitbox);
+										if (!LongbowClosestHitbox) {
+											ImGui::SameLine();
+											const char* LongbowHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int LongbowHitboxTypeIndex = static_cast<int>(Modules::Aimbot::LongbowHitbox);
+											ImGui::Combo("Hitbox Type##LongbowAdvancedHitbox", &LongbowHitboxTypeIndex, LongbowHitboxTypes, IM_ARRAYSIZE(LongbowHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::LongbowHitbox = static_cast<HitboxType>(LongbowHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedLongbow", &LongbowSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Longbow\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedLongbow", &LongbowHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Longbow Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedLongbow", &LongbowADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Longbow Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedLongbow", &LongbowHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Longbow Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedLongbow", &LongbowADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Longbow Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedLongbow", &LongbowExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &LongbowDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedLongbow", &LongbowFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Longbow.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedLongbow", &LongbowMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Longbow.");
+										ImGui::SliderFloat("Max Distance", &LongbowMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Longbow.");
+								}
+							}
+						}
+							if (ChargeRifle) {
+								if (ImGui::CollapsingHeader("Charge Rifle", nullptr)) {
+									ImGui::Text("Charge Rifle");
+									int ChargeRifleAimBind = static_cast<int>(Modules::Aimbot::ChargeRifleAimBind);
+									ImGui::Combo("Aim Bind##ChargeRifleAimbot", &ChargeRifleAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::ChargeRifleAimBind = static_cast<InputKeyType>(ChargeRifleAimBind);
+									int ChargeRifleExtraBind = static_cast<int>(Modules::Aimbot::ChargeRifleExtraBind);
+									ImGui::Combo("Extra Bind##ChargeRifleAimbot", &ChargeRifleExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::ChargeRifleExtraBind = static_cast<InputKeyType>(ChargeRifleExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##ChargeRifleAdvancedHitbox", &ChargeRifleClosestHitbox);
+										if (!ChargeRifleClosestHitbox) {
+											ImGui::SameLine();
+											const char* ChargeRifleHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int ChargeRifleHitboxTypeIndex = static_cast<int>(Modules::Aimbot::ChargeRifleHitbox);
+											ImGui::Combo("Hitbox Type##ChargeRifleAdvancedHitbox", &ChargeRifleHitboxTypeIndex, ChargeRifleHitboxTypes, IM_ARRAYSIZE(ChargeRifleHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::ChargeRifleHitbox = static_cast<HitboxType>(ChargeRifleHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedChargeRifle", &ChargeRifleSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The ChargeRifle\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedChargeRifle", &ChargeRifleHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ChargeRifle Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedChargeRifle", &ChargeRifleADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ChargeRifle Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedChargeRifle", &ChargeRifleHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ChargeRifle Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedChargeRifle", &ChargeRifleADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ChargeRifle Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedChargeRifle", &ChargeRifleExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &ChargeRifleDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedChargeRifle", &ChargeRifleFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The ChargeRifle.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedChargeRifle", &ChargeRifleMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the ChargeRifle.");
+										ImGui::SliderFloat("Max Distance", &ChargeRifleMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the ChargeRifle.");
+								}
+							}
+						}
+							if (Sentinel) {
+								if (ImGui::CollapsingHeader("Sentinel", nullptr)) {
+									ImGui::Text("Sentinel");
+									int SentinelAimBind = static_cast<int>(Modules::Aimbot::SentinelAimBind);
+									ImGui::Combo("Aim Bind##SentinelAimbot", &SentinelAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::SentinelAimBind = static_cast<InputKeyType>(SentinelAimBind);
+									int SentinelExtraBind = static_cast<int>(Modules::Aimbot::SentinelExtraBind);
+									ImGui::Combo("Extra Bind##SentinelAimbot", &SentinelExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::SentinelExtraBind = static_cast<InputKeyType>(SentinelExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##SentinelAdvancedHitbox", &SentinelClosestHitbox);
+										if (!SentinelClosestHitbox) {
+											ImGui::SameLine();
+											const char* SentinelHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int SentinelHitboxTypeIndex = static_cast<int>(Modules::Aimbot::SentinelHitbox);
+											ImGui::Combo("Hitbox Type##SentinelAdvancedHitbox", &SentinelHitboxTypeIndex, SentinelHitboxTypes, IM_ARRAYSIZE(SentinelHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::SentinelHitbox = static_cast<HitboxType>(SentinelHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedSentinel", &SentinelSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Sentinel\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedSentinel", &SentinelHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Sentinel Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedSentinel", &SentinelADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Sentinel Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedSentinel", &SentinelHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Sentinel Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedSentinel", &SentinelADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Sentinel Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedSentinel", &SentinelExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &SentinelDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedSentinel", &SentinelFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Sentinel.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedSentinel", &SentinelMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Sentinel.");
+										ImGui::SliderFloat("Max Distance", &SentinelMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Sentinel.");
+								}
+							}
+						}
+						ImGui::Separator();
+							ImGui::Text("Legendary Weapons");
+							if (Wingman) {
+								if (ImGui::CollapsingHeader("Wingman", nullptr)) {
+									ImGui::Text("Wingman");
+									int WingmanAimBind = static_cast<int>(Modules::Aimbot::WingmanAimBind);
+									ImGui::Combo("Aim Bind##WingmanAimbot", &WingmanAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::WingmanAimBind = static_cast<InputKeyType>(WingmanAimBind);
+									int WingmanExtraBind = static_cast<int>(Modules::Aimbot::WingmanExtraBind);
+									ImGui::Combo("Extra Bind##WingmanAimbot", &WingmanExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::WingmanExtraBind = static_cast<InputKeyType>(WingmanExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##WingmanAdvancedHitbox", &WingmanClosestHitbox);
+										if (!WingmanClosestHitbox) {
+											ImGui::SameLine();
+											const char* WingmanHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int WingmanHitboxTypeIndex = static_cast<int>(Modules::Aimbot::WingmanHitbox);
+											ImGui::Combo("Hitbox Type##WingmanAdvancedHitbox", &WingmanHitboxTypeIndex, WingmanHitboxTypes, IM_ARRAYSIZE(WingmanHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::WingmanHitbox = static_cast<HitboxType>(WingmanHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedWingman", &WingmanSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Wingman\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedWingman", &WingmanHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Wingman Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedWingman", &WingmanADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Wingman Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedWingman", &WingmanHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Wingman Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedWingman", &WingmanADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Wingman Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedWingman", &WingmanExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &WingmanDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedWingman", &WingmanFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Wingman.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedWingman", &WingmanMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Wingman.");
+										ImGui::SliderFloat("Max Distance", &WingmanMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Wingman.");
+								}
+							}
+						}
+							if (Prowler) {
+								if (ImGui::CollapsingHeader("Prowler", nullptr)) {
+									ImGui::Text("Prowler");
+									int ProwlerAimBind = static_cast<int>(Modules::Aimbot::ProwlerAimBind);
+									ImGui::Combo("Aim Bind##ProwlerAimbot", &ProwlerAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::ProwlerAimBind = static_cast<InputKeyType>(ProwlerAimBind);
+									int ProwlerExtraBind = static_cast<int>(Modules::Aimbot::ProwlerExtraBind);
+									ImGui::Combo("Extra Bind##ProwlerAimbot", &ProwlerExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::ProwlerExtraBind = static_cast<InputKeyType>(ProwlerExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##ProwlerAdvancedHitbox", &ProwlerClosestHitbox);
+										if (!ProwlerClosestHitbox) {
+											ImGui::SameLine();
+											const char* ProwlerHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int ProwlerHitboxTypeIndex = static_cast<int>(Modules::Aimbot::ProwlerHitbox);
+											ImGui::Combo("Hitbox Type##ProwlerAdvancedHitbox", &ProwlerHitboxTypeIndex, ProwlerHitboxTypes, IM_ARRAYSIZE(ProwlerHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::ProwlerHitbox = static_cast<HitboxType>(ProwlerHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedProwler", &ProwlerSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Prowler\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedProwler", &ProwlerHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Prowler Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedProwler", &ProwlerADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Prowler Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedProwler", &ProwlerHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Prowler Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedProwler", &ProwlerADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Prowler Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedProwler", &ProwlerExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &ProwlerDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedProwler", &ProwlerFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Prowler.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedProwler", &ProwlerMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Prowler.");
+										ImGui::SliderFloat("Max Distance", &ProwlerMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Prowler.");
+								}
+							}
+						}
+							if (Bocek) {
+								if (ImGui::CollapsingHeader("Bocek", nullptr)) {
+									ImGui::Text("Bocek");
+									int BocekAimBind = static_cast<int>(Modules::Aimbot::BocekAimBind);
+									ImGui::Combo("Aim Bind##BocekAimbot", &BocekAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::BocekAimBind = static_cast<InputKeyType>(BocekAimBind);
+									int BocekExtraBind = static_cast<int>(Modules::Aimbot::BocekExtraBind);
+									ImGui::Combo("Extra Bind##BocekAimbot", &BocekExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::BocekExtraBind = static_cast<InputKeyType>(BocekExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##BocekAdvancedHitbox", &BocekClosestHitbox);
+										if (!BocekClosestHitbox) {
+											ImGui::SameLine();
+											const char* BocekHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int BocekHitboxTypeIndex = static_cast<int>(Modules::Aimbot::BocekHitbox);
+											ImGui::Combo("Hitbox Type##BocekAdvancedHitbox", &BocekHitboxTypeIndex, BocekHitboxTypes, IM_ARRAYSIZE(BocekHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::BocekHitbox = static_cast<HitboxType>(BocekHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedBocek", &BocekSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Bocek\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedBocek", &BocekHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Bocek Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedBocek", &BocekADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Bocek Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedBocek", &BocekHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Bocek Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedBocek", &BocekADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Bocek Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedBocek", &BocekExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &BocekDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedBocek", &BocekFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Bocek.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedBocek", &BocekMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Bocek.");
+										ImGui::SliderFloat("Max Distance", &BocekMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Bocek.");
+								}
+							}
+						}
+							if (Kraber) {
+								if (ImGui::CollapsingHeader("Kraber", nullptr)) {
+									ImGui::Text("Kraber");
+									int KraberAimBind = static_cast<int>(Modules::Aimbot::KraberAimBind);
+									ImGui::Combo("Aim Bind##KraberAimbot", &KraberAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::KraberAimBind = static_cast<InputKeyType>(KraberAimBind);
+									int KraberExtraBind = static_cast<int>(Modules::Aimbot::KraberExtraBind);
+									ImGui::Combo("Extra Bind##KraberAimbot", &KraberExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::KraberExtraBind = static_cast<InputKeyType>(KraberExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##KraberAdvancedHitbox", &KraberClosestHitbox);
+										if (!KraberClosestHitbox) {
+											ImGui::SameLine();
+											const char* KraberHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int KraberHitboxTypeIndex = static_cast<int>(Modules::Aimbot::KraberHitbox);
+											ImGui::Combo("Hitbox Type##KraberAdvancedHitbox", &KraberHitboxTypeIndex, KraberHitboxTypes, IM_ARRAYSIZE(KraberHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::KraberHitbox = static_cast<HitboxType>(KraberHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedKraber", &KraberSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The Kraber\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedKraber", &KraberHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Kraber Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedKraber", &KraberADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Kraber Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedKraber", &KraberHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Kraber Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedKraber", &KraberADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Kraber Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedKraber", &KraberExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &KraberDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedKraber", &KraberFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The Kraber.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedKraber", &KraberMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Kraber.");
+										ImGui::SliderFloat("Max Distance", &KraberMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Kraber.");
+								}
+							}
+						}
+							if (Knife) {
+								if (ImGui::CollapsingHeader("Throwing Knife", nullptr)) {
+									ImGui::Text("Throwing Knife");
+									int ThrowingKnifeAimBind = static_cast<int>(Modules::Aimbot::ThrowingKnifeAimBind);
+									ImGui::Combo("Aim Bind##ThrowingKnifeAimbot", &ThrowingKnifeAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::ThrowingKnifeAimBind = static_cast<InputKeyType>(ThrowingKnifeAimBind);
+									int ThrowingKnifeExtraBind = static_cast<int>(Modules::Aimbot::ThrowingKnifeExtraBind);
+									ImGui::Combo("Extra Bind##ThrowingKnifeAimbot", &ThrowingKnifeExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+									Modules::Aimbot::ThrowingKnifeExtraBind = static_cast<InputKeyType>(ThrowingKnifeExtraBind);
+									if (AimbotMode == 0) {
+										ImGui::Text("Hitbox");
+										ImGui::Checkbox("Closest To Crosshair##ThrowingKnifeAdvancedHitbox", &ThrowingKnifeClosestHitbox);
+										if (!ThrowingKnifeClosestHitbox) {
+											ImGui::SameLine();
+											const char* ThrowingKnifeHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
+											int ThrowingKnifeHitboxTypeIndex = static_cast<int>(Modules::Aimbot::ThrowingKnifeHitbox);
+											ImGui::Combo("Hitbox Type##ThrowingKnifeAdvancedHitbox", &ThrowingKnifeHitboxTypeIndex, ThrowingKnifeHitboxTypes, IM_ARRAYSIZE(ThrowingKnifeHitboxTypes));
+											if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Which bone the aimbot will aim at.");
+											Modules::Aimbot::ThrowingKnifeHitbox = static_cast<HitboxType>(ThrowingKnifeHitboxTypeIndex);
+										}
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Speed##AdvancedThrowingKnife", &ThrowingKnifeSpeed, 1, 100, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Speed Of The Aim-Assist For The ThrowingKnife\nHigher = Faster");
+										ImGui::SliderFloat("Hipfire Smoothing##AdvancedThrowingKnife", &ThrowingKnifeHipfireSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ThrowingKnife Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##AdvancedThrowingKnife", &ThrowingKnifeADSSmooth, 0, 0.99, "%.3f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ThrowingKnife Whilst ADS.\nHigher = Smoother");
+									}
+									if (AimbotMode == 1) {
+										ImGui::Text("Smoothing");
+										ImGui::SliderFloat("Hipfire Smoothing##1AdvancedThrowingKnife", &ThrowingKnifeHipfireSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ThrowingKnife Whilst Hipfiring.\nHigher = Smoother");
+										ImGui::SliderFloat("ADS Smoothing##1AdvancedThrowingKnife", &ThrowingKnifeADSSmooth1, 1, 1000, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ThrowingKnife Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Extra Smoothing##1AdvancedThrowingKnife", &ThrowingKnifeExtraSmooth1, 1, 9999, "%.0f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+									ImGui::SliderFloat("Deadzone", &ThrowingKnifeDeadzone, 0, 10, "%.03f");
+									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::Text("FOV");
+										ImGui::SliderFloat("FOV##1AdvancedThrowingKnife", &ThrowingKnifeFOV1, 1, 90, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Field of View For The ThrowingKnife.");
+										ImGui::Text("Distance");
+										ImGui::SliderFloat("Min Distance##1AdvancedThrowingKnife", &ThrowingKnifeMinDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the ThrowingKnife.");
+										ImGui::SliderFloat("Max Distance", &ThrowingKnifeMaxDistance1, 1, 500, "%.0f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+										ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the ThrowingKnife.");
+									}
 							}
 						}
 					}
-			    		if (Prowler) {
-			    			if (ImGui::CollapsingHeader("Prowler", nullptr)) {
-					    		ImGui::Text("Prowler");
-					    		ImGui::Checkbox("On Fire?##AdvancedProwler", &ProwlerFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedProwler", &ProwlerADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##ProwlerAdvancedHitbox", &ProwlerClosestHitbox);
-					    			if (!ProwlerClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* ProwlerHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int ProwlerHitboxTypeIndex = static_cast<int>(Modules::Aimbot::ProwlerHitbox);
-								    	ImGui::Combo("Hitbox Type##ProwlerAdvancedHitbox", &ProwlerHitboxTypeIndex, ProwlerHitboxTypes, IM_ARRAYSIZE(ProwlerHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::ProwlerHitbox = static_cast<HitboxType>(ProwlerHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedProwler", &ProwlerSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Prowler\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedProwler", &ProwlerHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Prowler Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedProwler", &ProwlerADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Prowler Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedProwler", &ProwlerHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Prowler Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedProwler", &ProwlerADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Prowler Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedProwler", &ProwlerExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &ProwlerDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedProwler", &ProwlerFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Prowler.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedProwler", &ProwlerMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Prowler.");
-						    		ImGui::SliderFloat("Max Distance", &ProwlerMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Prowler.");
-							}
-						}
-					}
-			    		if (Bocek) {
-			    			if (ImGui::CollapsingHeader("Bocek", nullptr)) {
-					    		ImGui::Text("Bocek");
-					    		ImGui::Checkbox("On Fire?##AdvancedBocek", &BocekFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedBocek", &BocekADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##BocekAdvancedHitbox", &BocekClosestHitbox);
-					    			if (!BocekClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* BocekHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int BocekHitboxTypeIndex = static_cast<int>(Modules::Aimbot::BocekHitbox);
-								    	ImGui::Combo("Hitbox Type##BocekAdvancedHitbox", &BocekHitboxTypeIndex, BocekHitboxTypes, IM_ARRAYSIZE(BocekHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::BocekHitbox = static_cast<HitboxType>(BocekHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedBocek", &BocekSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Bocek\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedBocek", &BocekHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Bocek Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedBocek", &BocekADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Bocek Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedBocek", &BocekHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Bocek Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedBocek", &BocekADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Bocek Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedBocek", &BocekExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &BocekDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedBocek", &BocekFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Bocek.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedBocek", &BocekMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Bocek.");
-						    		ImGui::SliderFloat("Max Distance", &BocekMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Bocek.");
-							}
-						}
-					}
-			    		if (Kraber) {
-			    			if (ImGui::CollapsingHeader("Kraber", nullptr)) {
-					    		ImGui::Text("Kraber");
-					    		ImGui::Checkbox("On Fire?##AdvancedKraber", &KraberFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedKraber", &KraberADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##KraberAdvancedHitbox", &KraberClosestHitbox);
-					    			if (!KraberClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* KraberHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int KraberHitboxTypeIndex = static_cast<int>(Modules::Aimbot::KraberHitbox);
-								    	ImGui::Combo("Hitbox Type##KraberAdvancedHitbox", &KraberHitboxTypeIndex, KraberHitboxTypes, IM_ARRAYSIZE(KraberHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::KraberHitbox = static_cast<HitboxType>(KraberHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedKraber", &KraberSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The Kraber\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedKraber", &KraberHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Kraber Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedKraber", &KraberADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Kraber Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedKraber", &KraberHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Kraber Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedKraber", &KraberADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Kraber Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedKraber", &KraberExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &KraberDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedKraber", &KraberFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The Kraber.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedKraber", &KraberMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the Kraber.");
-						    		ImGui::SliderFloat("Max Distance", &KraberMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the Kraber.");
-							}
-						}
-					}
-			    		if (Knife) {
-			    			if (ImGui::CollapsingHeader("Throwing Knife", nullptr)) {
-					    		ImGui::Text("Throwing Knife");
-					    		ImGui::Checkbox("On Fire?##AdvancedThrowingKnife", &ThrowingKnifeFire);
-					    		ImGui::SameLine();
-					    		ImGui::Checkbox("On ADS?##AdvancedThrowingKnife", &ThrowingKnifeADS);
-					    		if (AimbotMode == 0) {
-					    			ImGui::Text("Hitbox");
-					    			ImGui::Checkbox("Closest To Crosshair##ThrowingKnifeAdvancedHitbox", &ThrowingKnifeClosestHitbox);
-					    			if (!ThrowingKnifeClosestHitbox) {
-					    				ImGui::SameLine();
-					    				const char* ThrowingKnifeHitboxTypes[] = {"Head", "Neck", "Upper Chest", "Lower Chest", "Stomach", "Hip"};
-								    	int ThrowingKnifeHitboxTypeIndex = static_cast<int>(Modules::Aimbot::ThrowingKnifeHitbox);
-								    	ImGui::Combo("Hitbox Type##ThrowingKnifeAdvancedHitbox", &ThrowingKnifeHitboxTypeIndex, ThrowingKnifeHitboxTypes, IM_ARRAYSIZE(ThrowingKnifeHitboxTypes));
-								    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-										ImGui::SetTooltip("Which bone the aimbot will aim at.");
-								    	Modules::Aimbot::ThrowingKnifeHitbox = static_cast<HitboxType>(ThrowingKnifeHitboxTypeIndex);
-					    			}
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Speed##AdvancedThrowingKnife", &ThrowingKnifeSpeed, 1, 100, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Speed Of The Aim-Assist For The ThrowingKnife\nHigher = Faster");
-						    		ImGui::SliderFloat("Hipfire Smoothing##AdvancedThrowingKnife", &ThrowingKnifeHipfireSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ThrowingKnife Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##AdvancedThrowingKnife", &ThrowingKnifeADSSmooth, 0, 0.99, "%.3f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ThrowingKnife Whilst ADS.\nHigher = Smoother");
-						    	}
-					    		if (AimbotMode == 1) {
-					    			ImGui::Text("Smoothing");
-						    		ImGui::SliderFloat("Hipfire Smoothing##1AdvancedThrowingKnife", &ThrowingKnifeHipfireSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ThrowingKnife Whilst Hipfiring.\nHigher = Smoother");
-						    		ImGui::SliderFloat("ADS Smoothing##1AdvancedThrowingKnife", &ThrowingKnifeADSSmooth1, 1, 1000, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						    			ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ThrowingKnife Whilst ADS.\nHigher = Smoother");
-						    		ImGui::SliderFloat("Extra Smoothing##1AdvancedThrowingKnife", &ThrowingKnifeExtraSmooth1, 1, 9999, "%.0f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-								ImGui::SliderFloat("Deadzone", &ThrowingKnifeDeadzone, 0, 10, "%.03f");
-								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-								ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
-							    	ImGui::Text("FOV");
-							    	ImGui::SliderFloat("FOV##1AdvancedThrowingKnife", &ThrowingKnifeFOV1, 1, 90, "%.0f");
-							    	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Field of View For The ThrowingKnife.");
-						    		ImGui::Text("Distance");
-						    		ImGui::SliderFloat("Min Distance##1AdvancedThrowingKnife", &ThrowingKnifeMinDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Minimum Distance for Aimbot to work whilst holding the ThrowingKnife.");
-						    		ImGui::SliderFloat("Max Distance", &ThrowingKnifeMaxDistance1, 1, 500, "%.0f");
-						    		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("Maximum Distance for Aimbot to work whilst holding the ThrowingKnife.");
-							}
-						}
-					}
-			    	} //End Of Entire Aimbot Tab
+				ImGui::EndChild();
+				}
+
 		    ImGui::EndTabItem();
 		    UpdateAimList();
-	    	}
     	}
     }
 
@@ -2550,8 +2594,6 @@ struct Aimbot {
             Config::Aimbot::HitBox = static_cast<int>(Modules::Aimbot::Hitbox);
             Config::Aimbot::ClosestHitbox = ClosestHitbox;
             
-            Config::Aimbot::OnFire = OnFire;
-            Config::Aimbot::OnADS = OnADS;
             Config::Aimbot::VisCheck = VisCheck;
             Config::Aimbot::TeamCheck = TeamCheck;
             
@@ -2627,84 +2669,72 @@ struct Aimbot {
             //Light
             Config::Aimbot::P2020ClosestHitbox = P2020ClosestHitbox;
             Config::Aimbot::P2020Hitbox = P2020Hitbox;
-            Config::Aimbot::P2020Fire = P2020Fire;
-            Config::Aimbot::P2020ADS = P2020ADS;
+
             Config::Aimbot::P2020Speed = P2020Speed;
             Config::Aimbot::P2020HipfireSmooth = P2020HipfireSmooth;
             Config::Aimbot::P2020ADSSmooth = P2020ADSSmooth;
             Config::Aimbot::RE45ClosestHitbox = RE45ClosestHitbox;
             Config::Aimbot::RE45Hitbox = RE45Hitbox;
-            Config::Aimbot::RE45Fire = RE45Fire;
-            Config::Aimbot::RE45ADS = RE45ADS;
+
             Config::Aimbot::RE45Speed = RE45Speed;
             Config::Aimbot::RE45HipfireSmooth = RE45HipfireSmooth;
             Config::Aimbot::RE45ADSSmooth = RE45ADSSmooth;
             Config::Aimbot::AlternatorClosestHitbox = AlternatorClosestHitbox;
             Config::Aimbot::AlternatorHitbox = AlternatorHitbox;
-            Config::Aimbot::AlternatorFire = AlternatorFire;
-            Config::Aimbot::AlternatorADS = AlternatorADS;
+
             Config::Aimbot::AlternatorSpeed = AlternatorSpeed;
             Config::Aimbot::AlternatorHipfireSmooth = AlternatorHipfireSmooth;
             Config::Aimbot::AlternatorADSSmooth = AlternatorADSSmooth;
             Config::Aimbot::R99ClosestHitbox = R99ClosestHitbox;
             Config::Aimbot::R99Hitbox = R99Hitbox;
-            Config::Aimbot::R99Fire = R99Fire;
-            Config::Aimbot::R99ADS = R99ADS;
+
             Config::Aimbot::R99Speed = R99Speed;
             Config::Aimbot::R99HipfireSmooth = R99HipfireSmooth;
             Config::Aimbot::R99ADSSmooth = R99ADSSmooth;
             Config::Aimbot::R301ClosestHitbox = R301ClosestHitbox;
             Config::Aimbot::R301Hitbox = R301Hitbox;
-            Config::Aimbot::R301Fire = R301Fire;
-            Config::Aimbot::R301ADS = R301ADS;
+
             Config::Aimbot::R301Speed = R301Speed;
             Config::Aimbot::R301HipfireSmooth = R301HipfireSmooth;
             Config::Aimbot::R301ADSSmooth = R301ADSSmooth;
             Config::Aimbot::SpitfireClosestHitbox = SpitfireClosestHitbox;
             Config::Aimbot::SpitfireHitbox = SpitfireHitbox;
-            Config::Aimbot::SpitfireFire = SpitfireFire;
-            Config::Aimbot::SpitfireADS = SpitfireADS;
+
             Config::Aimbot::SpitfireSpeed = SpitfireSpeed;
             Config::Aimbot::SpitfireHipfireSmooth = SpitfireHipfireSmooth;
             Config::Aimbot::SpitfireADSSmooth = SpitfireADSSmooth;
             Config::Aimbot::G7ClosestHitbox = G7ClosestHitbox;
             Config::Aimbot::G7Hitbox = G7Hitbox;
-            Config::Aimbot::G7Fire = G7Fire;
-            Config::Aimbot::G7ADS = G7ADS;
+
             Config::Aimbot::G7Speed = G7Speed;
             Config::Aimbot::G7HipfireSmooth = G7HipfireSmooth;
             Config::Aimbot::G7ADSSmooth = G7ADSSmooth;
             //Heavy
             Config::Aimbot::FlatlineClosestHitbox = FlatlineClosestHitbox;
             Config::Aimbot::FlatlineHitbox = FlatlineHitbox;
-            Config::Aimbot::FlatlineFire = FlatlineFire;
-            Config::Aimbot::FlatlineADS = FlatlineADS;
+
             Config::Aimbot::FlatlineSpeed = FlatlineSpeed;
             Config::Aimbot::FlatlineHipfireSmooth = FlatlineHipfireSmooth;
             Config::Aimbot::FlatlineADSSmooth = FlatlineADSSmooth;
             Config::Aimbot::HemlockClosestHitbox = HemlockClosestHitbox;
             Config::Aimbot::HemlockHitbox = HemlockHitbox;
-            Config::Aimbot::HemlockFire = HemlockFire;
-            Config::Aimbot::HemlockADS = HemlockADS;
+
             Config::Aimbot::HemlockSpeed = HemlockSpeed;
             Config::Aimbot::HemlockHipfireSmooth = HemlockHipfireSmooth;
             Config::Aimbot::HemlockADSSmooth = HemlockADSSmooth;
             Config::Aimbot::RepeaterClosestHitbox = RepeaterClosestHitbox;
             Config::Aimbot::RepeaterHitbox = RepeaterHitbox;
-            Config::Aimbot::RepeaterFire = RepeaterFire;
-            Config::Aimbot::RepeaterADS = RepeaterADS;
+
             Config::Aimbot::RepeaterSpeed = RepeaterSpeed;
             Config::Aimbot::RepeaterHipfireSmooth = RepeaterHipfireSmooth;
             Config::Aimbot::RepeaterADSSmooth = RepeaterADSSmooth;
             Config::Aimbot::RampageClosestHitbox = RampageClosestHitbox;
             Config::Aimbot::RampageHitbox = RampageHitbox;
-            Config::Aimbot::RampageFire = RampageFire;
-            Config::Aimbot::RampageADS = RampageADS;
+
             Config::Aimbot::RampageSpeed = RampageSpeed;
             Config::Aimbot::RampageHipfireSmooth = RampageHipfireSmooth;
             Config::Aimbot::RampageADSSmooth = RampageADSSmooth;
-            Config::Aimbot::CARSMGFire = CARSMGFire;
-            Config::Aimbot::CARSMGADS = CARSMGADS;
+
             Config::Aimbot::CARSMGClosestHitbox = CARSMGClosestHitbox;
             Config::Aimbot::CARSMGHitbox = CARSMGHitbox;
             Config::Aimbot::CARSMGSpeed = CARSMGSpeed;
@@ -2716,130 +2746,112 @@ struct Aimbot {
             Config::Aimbot::HavocSpeed = HavocSpeed;
             Config::Aimbot::HavocHipfireSmooth = HavocHipfireSmooth;
             Config::Aimbot::HavocADSSmooth = HavocADSSmooth;
-            Config::Aimbot::HavocFire = HavocFire;
-            Config::Aimbot::HavocADS = HavocADS;
+
             Config::Aimbot::DevotionClosestHitbox = DevotionClosestHitbox;
             Config::Aimbot::DevotionHitbox = DevotionHitbox;
             Config::Aimbot::DevotionSpeed = DevotionSpeed;
             Config::Aimbot::DevotionHipfireSmooth = DevotionHipfireSmooth;
             Config::Aimbot::DevotionADSSmooth = DevotionADSSmooth;
-            Config::Aimbot::DevotionFire = DevotionFire;
-            Config::Aimbot::DevotionADS = DevotionADS;
+
             Config::Aimbot::LSTARClosestHitbox = LSTARClosestHitbox;
             Config::Aimbot::LSTARHitbox = LSTARHitbox;
             Config::Aimbot::LSTARSpeed = LSTARSpeed;
             Config::Aimbot::LSTARHipfireSmooth = LSTARHipfireSmooth;
             Config::Aimbot::LSTARADSSmooth = LSTARADSSmooth;
-            Config::Aimbot::LSTARFire = LSTARFire;
-            Config::Aimbot::LSTARADS = LSTARADS;
+
             Config::Aimbot::TripleTakeClosestHitbox = TripleTakeClosestHitbox;
             Config::Aimbot::TripleTakeHitbox = TripleTakeHitbox;
             Config::Aimbot::TripleTakeSpeed = TripleTakeSpeed;
             Config::Aimbot::TripleTakeHipfireSmooth = TripleTakeHipfireSmooth;
             Config::Aimbot::TripleTakeADSSmooth = TripleTakeADSSmooth;
-            Config::Aimbot::TripleTakeFire = TripleTakeFire;
-            Config::Aimbot::TripleTakeADS = TripleTakeADS;
+
             Config::Aimbot::VoltClosestHitbox = VoltClosestHitbox;
             Config::Aimbot::VoltHitbox = VoltHitbox;
             Config::Aimbot::VoltSpeed = VoltSpeed;
             Config::Aimbot::VoltHipfireSmooth = VoltHipfireSmooth;
             Config::Aimbot::VoltADSSmooth = VoltADSSmooth;
-            Config::Aimbot::VoltFire = VoltFire;
-            Config::Aimbot::VoltADS = VoltADS;
+
             Config::Aimbot::NemesisClosestHitbox = NemesisClosestHitbox;
             Config::Aimbot::NemesisHitbox = NemesisHitbox;
             Config::Aimbot::NemesisSpeed = NemesisSpeed;
             Config::Aimbot::NemesisHipfireSmooth = NemesisHipfireSmooth;
             Config::Aimbot::NemesisADSSmooth = NemesisADSSmooth;
-            Config::Aimbot::NemesisFire = NemesisFire;
-            Config::Aimbot::NemesisADS = NemesisADS;
+
             //Shotguns
             Config::Aimbot::MozambiqueClosestHitbox = MozambiqueClosestHitbox;
             Config::Aimbot::MozambiqueHitbox = MozambiqueHitbox;
             Config::Aimbot::MozambiqueSpeed = MozambiqueSpeed;
             Config::Aimbot::MozambiqueHipfireSmooth = MozambiqueHipfireSmooth;
             Config::Aimbot::MozambiqueADSSmooth = MozambiqueADSSmooth;
-            Config::Aimbot::MozambiqueFire = MozambiqueFire;
-            Config::Aimbot::MozambiqueADS = MozambiqueADS;
+
             Config::Aimbot::EVA8ClosestHitbox = EVA8ClosestHitbox;
             Config::Aimbot::EVA8Hitbox = EVA8Hitbox;
             Config::Aimbot::EVA8Speed = EVA8Speed;
             Config::Aimbot::EVA8HipfireSmooth = EVA8HipfireSmooth;
             Config::Aimbot::EVA8ADSSmooth = EVA8ADSSmooth;
-            Config::Aimbot::EVA8Fire = EVA8Fire;
-            Config::Aimbot::EVA8ADS = EVA8ADS;
+
             Config::Aimbot::PeacekeeperClosestHitbox = PeacekeeperClosestHitbox;
             Config::Aimbot::PeacekeeperHitbox = PeacekeeperHitbox;
             Config::Aimbot::PeacekeeperSpeed = PeacekeeperSpeed;
             Config::Aimbot::PeacekeeperHipfireSmooth = PeacekeeperHipfireSmooth;
             Config::Aimbot::PeacekeeperADSSmooth = PeacekeeperADSSmooth;
-            Config::Aimbot::PeacekeeperFire = PeacekeeperFire;
-            Config::Aimbot::PeacekeeperADS = PeacekeeperADS;
+
             Config::Aimbot::MastiffClosestHitbox = MastiffClosestHitbox;
             Config::Aimbot::MastiffHitbox = MastiffHitbox;
             Config::Aimbot::MastiffSpeed = MastiffSpeed;
             Config::Aimbot::MastiffHipfireSmooth = MastiffHipfireSmooth;
             Config::Aimbot::MastiffADSSmooth = MastiffADSSmooth;
-            Config::Aimbot::MastiffFire = MastiffFire;
-            Config::Aimbot::MastiffADS = MastiffADS;
+
             //Snipers
             Config::Aimbot::LongbowClosestHitbox = LongbowClosestHitbox;
             Config::Aimbot::LongbowHitbox = LongbowHitbox;
             Config::Aimbot::LongbowSpeed = LongbowSpeed;
             Config::Aimbot::LongbowHipfireSmooth = LongbowHipfireSmooth;
             Config::Aimbot::LongbowADSSmooth = LongbowADSSmooth;
-            Config::Aimbot::LongbowFire = LongbowFire;
-            Config::Aimbot::LongbowADS = LongbowADS;
+
             Config::Aimbot::ChargeRifleClosestHitbox = ChargeRifleClosestHitbox;
             Config::Aimbot::ChargeRifleHitbox = ChargeRifleHitbox;
             Config::Aimbot::ChargeRifleSpeed = ChargeRifleSpeed;
             Config::Aimbot::ChargeRifleHipfireSmooth = ChargeRifleHipfireSmooth;
             Config::Aimbot::ChargeRifleADSSmooth = ChargeRifleADSSmooth;
-            Config::Aimbot::ChargeRifleFire = ChargeRifleFire;
-            Config::Aimbot::ChargeRifleADS = ChargeRifleADS;
+
             Config::Aimbot::SentinelClosestHitbox = SentinelClosestHitbox;
             Config::Aimbot::SentinelHitbox = SentinelHitbox;
             Config::Aimbot::SentinelSpeed = SentinelSpeed;
             Config::Aimbot::SentinelHipfireSmooth = SentinelHipfireSmooth;
             Config::Aimbot::SentinelADSSmooth = SentinelADSSmooth;
-            Config::Aimbot::SentinelFire = SentinelFire;
-            Config::Aimbot::SentinelADS = SentinelADS;
+
             //Legendary
             Config::Aimbot::WingmanClosestHitbox = WingmanClosestHitbox;
             Config::Aimbot::WingmanHitbox = WingmanHitbox;
             Config::Aimbot::WingmanSpeed = WingmanSpeed;
             Config::Aimbot::WingmanHipfireSmooth = WingmanHipfireSmooth;
             Config::Aimbot::WingmanADSSmooth = WingmanADSSmooth;
-            Config::Aimbot::WingmanFire = WingmanFire;
-            Config::Aimbot::WingmanADS = WingmanADS;
+
             Config::Aimbot::ProwlerClosestHitbox = ProwlerClosestHitbox;
             Config::Aimbot::ProwlerHitbox = ProwlerHitbox;
             Config::Aimbot::ProwlerSpeed = ProwlerSpeed;
             Config::Aimbot::ProwlerHipfireSmooth = ProwlerHipfireSmooth;
             Config::Aimbot::ProwlerADSSmooth = ProwlerADSSmooth;
-            Config::Aimbot::ProwlerFire = ProwlerFire;
-            Config::Aimbot::ProwlerADS = ProwlerADS;
+
             Config::Aimbot::BocekClosestHitbox = BocekClosestHitbox;
             Config::Aimbot::BocekHitbox = BocekHitbox;
             Config::Aimbot::BocekSpeed = BocekSpeed;
             Config::Aimbot::BocekHipfireSmooth = BocekHipfireSmooth;
             Config::Aimbot::BocekADSSmooth = BocekADSSmooth;
-            Config::Aimbot::BocekFire = BocekFire;
-            Config::Aimbot::BocekADS = BocekADS;
+
             Config::Aimbot::KraberClosestHitbox = KraberClosestHitbox;
             Config::Aimbot::KraberHitbox = KraberHitbox;
             Config::Aimbot::KraberSpeed = KraberSpeed;
             Config::Aimbot::KraberHipfireSmooth = KraberHipfireSmooth;
             Config::Aimbot::KraberADSSmooth = KraberADSSmooth;
-            Config::Aimbot::KraberFire = KraberFire;
-            Config::Aimbot::KraberADS = KraberADS;
+
             Config::Aimbot::ThrowingKnifeClosestHitbox = ThrowingKnifeClosestHitbox;
             Config::Aimbot::ThrowingKnifeHitbox = ThrowingKnifeHitbox;
             Config::Aimbot::ThrowingKnifeSpeed = ThrowingKnifeSpeed;
             Config::Aimbot::ThrowingKnifeHipfireSmooth = ThrowingKnifeHipfireSmooth;
             Config::Aimbot::ThrowingKnifeADSSmooth = ThrowingKnifeADSSmooth;
-            Config::Aimbot::ThrowingKnifeFire = ThrowingKnifeFire;
-            Config::Aimbot::ThrowingKnifeADS = ThrowingKnifeADS;
+
             
             //Aimbot Mode 1 - Grinder
             Config::Aimbot::P2020HipfireSmooth1 = P2020HipfireSmooth1;
@@ -3113,16 +3125,142 @@ struct Aimbot {
     		AdvancedAim = true; //For some reason with Grinder aimbot I can only get it to work if advanced settings are on. Doesnt matter too much.
     	}
     	if(!Map->IsPlayable) return;
+		if(Modules::Home::IsMenuOpened) return; //Dont aimbot whilst menu is open
         //Advanced Settings
         int weaponHeld = Myself->WeaponIndex;
+		//Keybinds
+	    if (weaponHeld == 106) { //P2020
+			Modules::Aimbot::AimBind = Modules::Aimbot::P2020AimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::P2020ExtraBind;
+	    }
+	    if (weaponHeld == 81) { //RE45
+			Modules::Aimbot::AimBind = Modules::Aimbot::RE45AimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::RE45ExtraBind;
+	    }
+	    if (weaponHeld == 80) { //Alternator
+			Modules::Aimbot::AimBind = Modules::Aimbot::AlternatorAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::AlternatorExtraBind;
+	    }
+	    if (weaponHeld == 105) { //R99
+			Modules::Aimbot::AimBind = Modules::Aimbot::R99AimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::R99ExtraBind;
+	    }
+	    if (weaponHeld == 0) { //R301
+			Modules::Aimbot::AimBind = Modules::Aimbot::R301AimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::R301ExtraBind;
+	    }
+	    if (weaponHeld == 107) { //Spitfire
+			Modules::Aimbot::AimBind = Modules::Aimbot::SpitfireAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::SpitfireExtraBind;
+	    }
+	    if (weaponHeld == 90) { //G7
+			Modules::Aimbot::AimBind = Modules::Aimbot::G7AimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::G7ExtraBind;
+	    }
+	    //Heavy Weapons
+	    if (weaponHeld == 113) { //CARSMG
+			Modules::Aimbot::AimBind = Modules::Aimbot::CARSMGAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::CARSMGExtraBind;
+	    }
+	    if (weaponHeld == 21) { //Rampage
+			Modules::Aimbot::AimBind = Modules::Aimbot::RampageAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::RampageExtraBind;
+	    }
+	    if (weaponHeld == 112) { //Repeater
+			Modules::Aimbot::AimBind = Modules::Aimbot::RepeaterAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::RepeaterExtraBind;
+	    }
+		if (weaponHeld == 102) { //Prowler
+			Modules::Aimbot::AimBind = Modules::Aimbot::ProwlerAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::ProwlerExtraBind;
+	    }
+	    if (weaponHeld == 91) { //Hemlock
+			Modules::Aimbot::AimBind = Modules::Aimbot::HemlockAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::HemlockExtraBind;
+	    }
+	    if (weaponHeld == 89) { //Flatline
+			Modules::Aimbot::AimBind = Modules::Aimbot::FlatlineAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::FlatlineExtraBind;
+	    }
+	    //Energy Weapons
+	    if (weaponHeld == 114) { //Nemesis
+			Modules::Aimbot::AimBind = Modules::Aimbot::NemesisAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::NemesisExtraBind;
+	    }
+	    if (weaponHeld == 111) { //Volt
+			Modules::Aimbot::AimBind = Modules::Aimbot::VoltAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::VoltExtraBind;
+	    }
+	    if (weaponHeld == 108) { //TripleTake
+			Modules::Aimbot::AimBind = Modules::Aimbot::TripleTakeAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::TripleTakeExtraBind;
+	    }
+	    if (weaponHeld == 94) { //LSTAR
+			Modules::Aimbot::AimBind = Modules::Aimbot::LSTARAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::LSTARExtraBind;
+	    }
+	    if (weaponHeld == 84) { //Devotion
+			Modules::Aimbot::AimBind = Modules::Aimbot::DevotionAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::DevotionExtraBind;
+	    }
+	    if (weaponHeld == 86) { //Havoc
+			Modules::Aimbot::AimBind = Modules::Aimbot::HavocAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::HavocExtraBind;
+	    }
+	    //Shotguns
+	    if (weaponHeld == 97) { //Mozambique
+			Modules::Aimbot::AimBind = Modules::Aimbot::MozambiqueAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::MozambiqueExtraBind;
+	    }
+	    if (weaponHeld == 104) { //Peacekeeper
+			Modules::Aimbot::AimBind = Modules::Aimbot::PeacekeeperAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::PeacekeeperExtraBind;
+	    }
+	    if (weaponHeld == 96) { //Mastiff
+			Modules::Aimbot::AimBind = Modules::Aimbot::MastiffAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::MastiffExtraBind;
+	    }
+	    //Snipers
+	    if (weaponHeld == 1) { //Sentinel
+			Modules::Aimbot::AimBind = Modules::Aimbot::SentinelAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::SentinelExtraBind;
+	    }
+	    if (weaponHeld == 83) { //ChargeRifle
+			Modules::Aimbot::AimBind = Modules::Aimbot::ChargeRifleAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::ChargeRifleExtraBind;
+	    }
+	    if (weaponHeld == 85) { //Longbow
+			Modules::Aimbot::AimBind = Modules::Aimbot::LongbowAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::LongbowExtraBind;
+	    }
+	    //Legendary Weapons
+	    if (weaponHeld == 110) { //Wingman
+			Modules::Aimbot::AimBind = Modules::Aimbot::WingmanAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::WingmanExtraBind;
+	    }
+	    if (weaponHeld == 88) { //EVA8
+			Modules::Aimbot::AimBind = Modules::Aimbot::EVA8AimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::EVA8ExtraBind;
+	    }
+	    if (weaponHeld == 2) { //Bocek
+			Modules::Aimbot::AimBind = Modules::Aimbot::BocekAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::BocekExtraBind;
+	    }
+	    if (weaponHeld == 93) { //Kraber
+			Modules::Aimbot::AimBind = Modules::Aimbot::KraberAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::KraberExtraBind;
+	    }
+	    if (weaponHeld == 166) { //ThrowingKnife
+			Modules::Aimbot::AimBind = Modules::Aimbot::ThrowingKnifeAimBind;
+			Modules::Aimbot::ExtraBind = Modules::Aimbot::ThrowingKnifeExtraBind;
+	    }
+		
         if (AimbotMode == 0) {
 	    	if (AdvancedAim) { //IDs from Utils/Weapons.hpp, may need updating after game update
 	    		//Light Weapons
-	    		if (weaponHeld == 105) { //P2020
+	    		if (weaponHeld == 106) { //P2020
 	    			Aimbot::ClosestHitbox = Aimbot::P2020ClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::P2020Hitbox);
-	    			Aimbot::OnFire = Aimbot::P2020Fire;
-	    			Aimbot::OnADS = Aimbot::P2020ADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::P2020Speed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::P2020HipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::P2020ADSSmooth;
@@ -3130,8 +3268,6 @@ struct Aimbot {
 	    		if (weaponHeld == 81) { //RE45
 	    			Aimbot::ClosestHitbox = Aimbot::RE45ClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::RE45Hitbox);
-	    			Aimbot::OnFire = Aimbot::RE45Fire;
-	    			Aimbot::OnADS = Aimbot::RE45ADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::RE45Speed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::RE45HipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::RE45ADSSmooth;
@@ -3139,17 +3275,13 @@ struct Aimbot {
 	    		if (weaponHeld == 80) { //Alternator
 	    			Aimbot::ClosestHitbox = Aimbot::AlternatorClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::AlternatorHitbox);
-	    			Aimbot::OnFire = Aimbot::AlternatorFire;
-	    			Aimbot::OnADS = Aimbot::AlternatorADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::AlternatorSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::AlternatorHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::AlternatorADSSmooth;
 	    		}
-	    		if (weaponHeld == 104) { //R99
+	    		if (weaponHeld == 105) { //R99
 	    			Aimbot::ClosestHitbox = Aimbot::R99ClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::R99Hitbox);
-	    			Aimbot::OnFire = Aimbot::R99Fire;
-	    			Aimbot::OnADS = Aimbot::R99ADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::R99Speed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::R99HipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::R99ADSSmooth;
@@ -3157,108 +3289,84 @@ struct Aimbot {
 	    		if (weaponHeld == 0) { //R301
 	    			Aimbot::ClosestHitbox = Aimbot::R301ClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::R301Hitbox);
-	    			Aimbot::OnFire = Aimbot::R301Fire;
-	    			Aimbot::OnADS = Aimbot::R301ADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::R301Speed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::R301HipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::R301ADSSmooth;
 	    		}
-	    		if (weaponHeld == 106) { //Spitfire
+	    		if (weaponHeld == 107) { //Spitfire
 	    			Aimbot::ClosestHitbox = Aimbot::SpitfireClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::SpitfireHitbox);
-	    			Aimbot::OnFire = Aimbot::SpitfireFire;
-	    			Aimbot::OnADS = Aimbot::SpitfireADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::SpitfireSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::SpitfireHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::SpitfireADSSmooth;
 	    		}
-	    		if (weaponHeld == 89) { //G7
+	    		if (weaponHeld == 90) { //G7
 	    			Aimbot::ClosestHitbox = Aimbot::G7ClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::G7Hitbox);
-	    			Aimbot::OnFire = Aimbot::G7Fire;
-	    			Aimbot::OnADS = Aimbot::G7ADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::G7Speed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::G7HipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::G7ADSSmooth;
 	    		}
 	    		//Heavy Weapons
-	    		if (weaponHeld == 112) { //CARSMG
+	    		if (weaponHeld == 113) { //CARSMG
 	    			Aimbot::ClosestHitbox = Aimbot::CARSMGClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::CARSMGHitbox);
-	    			Aimbot::OnFire = Aimbot::CARSMGFire;
-	    			Aimbot::OnADS = Aimbot::CARSMGADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::CARSMGSpeed;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::CARSMGADSSmooth;
 	    		}
 	    		if (weaponHeld == 21) { //Rampage
 	    			Aimbot::ClosestHitbox = Aimbot::RampageClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::RampageHitbox);
-	    			Aimbot::OnFire = Aimbot::RampageFire;
-	    			Aimbot::OnADS = Aimbot::RampageADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::RampageSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::RampageHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::RampageADSSmooth;
 	    		}
-	    		if (weaponHeld == 111) { //Repeater
+	    		if (weaponHeld == 112) { //Repeater
 	    			Aimbot::ClosestHitbox = Aimbot::RepeaterClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::RepeaterHitbox);
-	    			Aimbot::OnFire = Aimbot::RepeaterFire;
-	    			Aimbot::OnADS = Aimbot::RepeaterADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::RepeaterSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::RepeaterHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::RepeaterADSSmooth;
 	    		}
-	    		if (weaponHeld == 90) { //Hemlock
+	    		if (weaponHeld == 91) { //Hemlock
 	    			Aimbot::ClosestHitbox = Aimbot::HemlockClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::HemlockHitbox);
-	    			Aimbot::OnFire = Aimbot::HemlockFire;
-	    			Aimbot::OnADS = Aimbot::HemlockADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::HemlockSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::HemlockHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::HemlockADSSmooth;
 	    		}
-	    		if (weaponHeld == 88) { //Flatline
+	    		if (weaponHeld == 89) { //Flatline
 	    			Aimbot::ClosestHitbox = Aimbot::FlatlineClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::FlatlineHitbox);
-	    			Aimbot::OnFire = Aimbot::FlatlineFire;
-	    			Aimbot::OnADS = Aimbot::FlatlineADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::FlatlineSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::FlatlineHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::FlatlineADSSmooth;
 	    		}
 	    		//Energy Weapons
-	    		if (weaponHeld == 113) { //Nemesis
+	    		if (weaponHeld == 114) { //Nemesis
 	    			Aimbot::ClosestHitbox = Aimbot::NemesisClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::NemesisHitbox);
-	    			Aimbot::OnFire = Aimbot::NemesisFire;
-	    			Aimbot::OnADS = Aimbot::NemesisADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::NemesisSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::NemesisHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::NemesisADSSmooth;
 	    		}
-	    		if (weaponHeld == 110) { //Volt
+	    		if (weaponHeld == 111) { //Volt
 	    			Aimbot::ClosestHitbox = Aimbot::VoltClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::VoltHitbox);
-	    			Aimbot::OnFire = Aimbot::VoltFire;
-	    			Aimbot::OnADS = Aimbot::VoltADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::VoltSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::VoltHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::VoltADSSmooth;
 	    		}
-	    		if (weaponHeld == 107) { //TripleTake
+	    		if (weaponHeld == 108) { //TripleTake
 	    			Aimbot::ClosestHitbox = Aimbot::TripleTakeClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::TripleTakeHitbox);
-	    			Aimbot::OnFire = Aimbot::TripleTakeFire;
-	    			Aimbot::OnADS = Aimbot::TripleTakeADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::TripleTakeSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::TripleTakeHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::TripleTakeADSSmooth;
 	    		}
-	    		if (weaponHeld == 93) { //LSTAR
+	    		if (weaponHeld == 94) { //LSTAR
 	    			Aimbot::ClosestHitbox = Aimbot::LSTARClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::LSTARHitbox);
-	    			Aimbot::OnFire = Aimbot::LSTARFire;
-	    			Aimbot::OnADS = Aimbot::LSTARADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::LSTARSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::LSTARHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::LSTARADSSmooth;
@@ -3266,8 +3374,6 @@ struct Aimbot {
 	    		if (weaponHeld == 84) { //Devotion
 	    			Aimbot::ClosestHitbox = Aimbot::DevotionClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::DevotionHitbox);
-	    			Aimbot::OnFire = Aimbot::DevotionFire;
-	    			Aimbot::OnADS = Aimbot::DevotionADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::DevotionSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::DevotionHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::DevotionADSSmooth;
@@ -3275,45 +3381,35 @@ struct Aimbot {
 	    		if (weaponHeld == 86) { //Havoc
 	    			Aimbot::ClosestHitbox = Aimbot::HavocClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::HavocHitbox);
-	    			Aimbot::OnFire = Aimbot::HavocFire;
-	    			Aimbot::OnADS = Aimbot::HavocADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::HavocSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::HavocHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::HavocADSSmooth;
 	    		}
 	    		//Shotguns
-	    		if (weaponHeld == 96) { //Mozambique
+	    		if (weaponHeld == 91) { //Mozambique
 	    			Aimbot::ClosestHitbox = Aimbot::MozambiqueClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::MozambiqueHitbox);
-	    			Aimbot::OnFire = Aimbot::MozambiqueFire;
-	    			Aimbot::OnADS = Aimbot::MozambiqueADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::MozambiqueSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::MozambiqueHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::MozambiqueADSSmooth;
 	    		}
-	    		if (weaponHeld == 87) { //EVA8
+	    		if (weaponHeld == 88) { //EVA8
 	    			Aimbot::ClosestHitbox = Aimbot::EVA8ClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::EVA8Hitbox);
-	    			Aimbot::OnFire = Aimbot::EVA8Fire;
-	    			Aimbot::OnADS = Aimbot::EVA8ADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::EVA8Speed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::EVA8HipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::EVA8ADSSmooth;
 	    		}
-	    		if (weaponHeld == 103) { //Peacekeeper
+	    		if (weaponHeld == 104) { //Peacekeeper
 	    			Aimbot::ClosestHitbox = Aimbot::PeacekeeperClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::PeacekeeperHitbox);
-	    			Aimbot::OnFire = Aimbot::PeacekeeperFire;
-	    			Aimbot::OnADS = Aimbot::PeacekeeperADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::PeacekeeperSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::PeacekeeperHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::PeacekeeperADSSmooth;
 	    		}
-	    		if (weaponHeld == 95) { //Mastiff
+	    		if (weaponHeld == 96) { //Mastiff
 	    			Aimbot::ClosestHitbox = Aimbot::MastiffClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::MastiffHitbox);
-	    			Aimbot::OnFire = Aimbot::MastiffFire;
-	    			Aimbot::OnADS = Aimbot::MastiffADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::MastiffSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::MastiffHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::MastiffADSSmooth;
@@ -3322,8 +3418,6 @@ struct Aimbot {
 	    		if (weaponHeld == 1) { //Sentinel
 	    			Aimbot::ClosestHitbox = Aimbot::SentinelClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::SentinelHitbox);
-	    			Aimbot::OnFire = Aimbot::SentinelFire;
-	    			Aimbot::OnADS = Aimbot::SentinelADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::SentinelSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::SentinelHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::SentinelADSSmooth;
@@ -3331,8 +3425,6 @@ struct Aimbot {
 	    		if (weaponHeld == 83) { //ChargeRifle
 	    			Aimbot::ClosestHitbox = Aimbot::ChargeRifleClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::ChargeRifleHitbox);
-	    			Aimbot::OnFire = Aimbot::ChargeRifleFire;
-	    			Aimbot::OnADS = Aimbot::ChargeRifleADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::ChargeRifleSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::ChargeRifleHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::ChargeRifleADSSmooth;
@@ -3340,18 +3432,14 @@ struct Aimbot {
 	    		if (weaponHeld == 85) { //Longbow
 	    			Aimbot::ClosestHitbox = Aimbot::LongbowClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::LongbowHitbox);
-	    			Aimbot::OnFire = Aimbot::LongbowFire;
-	    			Aimbot::OnADS = Aimbot::LongbowADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::LongbowSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::LongbowHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::LongbowADSSmooth;
 	    		}
 	    		//Legendary Weapons
-	    		if (weaponHeld == 109) { //Wingman
+	    		if (weaponHeld == 110) { //Wingman
 	    			Aimbot::ClosestHitbox = Aimbot::WingmanClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::WingmanHitbox);
-	    			Aimbot::OnFire = Aimbot::WingmanFire;
-	    			Aimbot::OnADS = Aimbot::WingmanADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::WingmanSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::WingmanHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::WingmanADSSmooth;
@@ -3359,8 +3447,6 @@ struct Aimbot {
 	    		if (weaponHeld == 102) { //Prowler
 	    			Aimbot::ClosestHitbox = Aimbot::ProwlerClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::ProwlerHitbox);
-	    			Aimbot::OnFire = Aimbot::ProwlerFire;
-	    			Aimbot::OnADS = Aimbot::ProwlerADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::ProwlerSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::ProwlerHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::ProwlerADSSmooth;
@@ -3368,33 +3454,26 @@ struct Aimbot {
 	    		if (weaponHeld == 2) { //Bocek
 	    			Aimbot::ClosestHitbox = Aimbot::BocekClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::BocekHitbox);
-	    			Aimbot::OnFire = Aimbot::BocekFire;
-	    			Aimbot::OnADS = Aimbot::BocekADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::BocekSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::BocekHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::BocekADSSmooth;
 	    		}
-	    		if (weaponHeld == 92) { //Kraber
+	    		if (weaponHeld == 93) { //Kraber
 	    			Aimbot::ClosestHitbox = Aimbot::KraberClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::KraberHitbox);
-	    			Aimbot::OnFire = Aimbot::KraberFire;
-	    			Aimbot::OnADS = Aimbot::KraberADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::KraberSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::KraberHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::KraberADSSmooth;
 	    		}
-	    		if (weaponHeld == 163) { //ThrowingKnife
+	    		if (weaponHeld == 166) { //ThrowingKnife
 	    			Aimbot::ClosestHitbox = Aimbot::ThrowingKnifeClosestHitbox;
 	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::ThrowingKnifeHitbox);
-	    			Aimbot::OnFire = Aimbot::ThrowingKnifeFire;
-	    			Aimbot::OnADS = Aimbot::ThrowingKnifeADS;
 	    			Aimbot::AdvancedSpeed = Aimbot::ThrowingKnifeSpeed;
 	    			Aimbot::AdvancedHipfireSmooth = Aimbot::ThrowingKnifeHipfireSmooth;
 	    			Aimbot::AdvancedADSSmooth = Aimbot::ThrowingKnifeADSSmooth;
 	    		}
 	    	}
 
-	    	if (OnFire && OnADS) {
 			if (!AimbotEnabled) { ReleaseTarget(); return; }
 
 			if (Myself->IsZooming)
@@ -3404,23 +3483,7 @@ struct Aimbot {
 			if (Myself->IsHoldingGrenade) { ReleaseTarget(); return; }
 			
 			if (AimList.find(Myself->WeaponIndex) == AimList.end()) return;
-			
-			if (!Myself->IsInAttack) {
-				if (!Myself->IsZooming) {
-				ReleaseTarget(); 
-				TargetSelected = false; 
-				CurrentTarget = nullptr; 
-				return; 
-				}
-			}
-			if (!Myself->IsZooming) {
-				if (!Myself->IsInAttack) {
-				ReleaseTarget(); 
-				TargetSelected = false; 
-				CurrentTarget = nullptr; 
-				return; 
-				}
-			}
+			if (!InputManager::isKeyDownOrPress(Modules::Aimbot::AimBind) or !InputManager::isKeyDownOrPress(Modules::Aimbot::ExtraBind)) { ReleaseTarget(); TargetSelected = false; CurrentTarget = nullptr; return;
 
 			Player* Target = CurrentTarget;
 			if (!IsValidTarget(Target)) {
@@ -3446,90 +3509,14 @@ struct Aimbot {
 			    }
 			    return;
 			}
-		    }
-	    	if (OnFire) {
-			if (!AimbotEnabled) { ReleaseTarget(); return; }
-
-			if (Myself->IsZooming)
-			    FinalDistance = ZoomDistance;
-			else FinalDistance = HipfireDistance;
-			
-			if (AimList.find(Myself->WeaponIndex) == AimList.end()) return;
-			
-			if (!Myself->IsInAttack) { ReleaseTarget(); return; }
-
-			if (Myself->IsHoldingGrenade) { ReleaseTarget(); return; }
-
-			Player* Target = CurrentTarget;
-			if (!IsValidTarget(Target)) {
-			    if (TargetSelected)
-				return;
-
-			    Target = FindBestTarget();
-			    if (!IsValidTarget(Target)) {
-				ReleaseTarget();
-				return;
-			    }
-			    
-			    CurrentTarget = Target;
-			    CurrentTarget->IsLockedOn = true;
-			    TargetSelected = true;
-			} 
-			
-			if (TargetSelected && CurrentTarget) {
-			    std::chrono::milliseconds Now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
-			    if (Now >= LastAimTime + std::chrono::milliseconds(Delay)) {
-				StartAiming();
-				LastAimTime = Now + std::chrono::milliseconds((int)Utils::RandomRange(1, 10));
-			    }
-			    return;
-			}
-		    }
-		    
-	    	if (OnADS) {
-			if (!AimbotEnabled) { ReleaseTarget(); return; }
-
-			if (Myself->IsZooming)
-			    FinalDistance = ZoomDistance;
-			else FinalDistance = HipfireDistance;
-			
-			if (!Myself->IsZooming) { ReleaseTarget(); return; }
-
-			if (Myself->IsHoldingGrenade) { ReleaseTarget(); return; }
-
-			Player* Target = CurrentTarget;
-			if (!IsValidTarget(Target)) {
-			    if (TargetSelected)
-				return;
-
-			    Target = FindBestTarget();
-			    if (!IsValidTarget(Target)) {
-				ReleaseTarget();
-				return;
-			    }
-			    
-			    CurrentTarget = Target;
-			    CurrentTarget->IsLockedOn = true;
-			    TargetSelected = true;
-			} 
-			
-			if (TargetSelected && CurrentTarget) {
-			    std::chrono::milliseconds Now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
-			    if (Now >= LastAimTime + std::chrono::milliseconds(10)) {
-				StartAiming();
-				LastAimTime = Now + std::chrono::milliseconds((int)Utils::RandomRange(1, 10));
-			    }
-			    return;
-			}
-		    }
+		}
 		}
 		
 		if (AimbotMode == 1) {
 	    		if (AdvancedAim) { //IDs from Utils/Weapons.hpp, may need updating after game update
 		    		//Light Weapons
-		    		if (weaponHeld == 105) { //P2020
-		    			Aimbot::OnFire = Aimbot::P2020Fire;
-		    			Aimbot::OnADS = Aimbot::P2020ADS;
+		    		if (weaponHeld == 106) { //P2020
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::P2020HipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::P2020ADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::P2020ExtraSmooth1;
@@ -3539,8 +3526,7 @@ struct Aimbot {
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::P2020MaxDistance1;	
 		    		}
 		    		if (weaponHeld == 81) { //RE45
-		    			Aimbot::OnFire = Aimbot::RE45Fire;
-		    			Aimbot::OnADS = Aimbot::RE45ADS;
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::RE45HipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::RE45ADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::RE45ExtraSmooth1;
@@ -3550,8 +3536,7 @@ struct Aimbot {
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::RE45MaxDistance1;
 		    		}
 		    		if (weaponHeld == 80) { //Alternator
-		    			Aimbot::OnFire = Aimbot::AlternatorFire;
-		    			Aimbot::OnADS = Aimbot::AlternatorADS;
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::AlternatorHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::AlternatorADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::AlternatorExtraSmooth1;
@@ -3560,9 +3545,8 @@ struct Aimbot {
 		    			Aimbot::AdvancedMinDistance1 = Aimbot::AlternatorMinDistance1;
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::AlternatorMaxDistance1;
 		    		}
-		    		if (weaponHeld == 104) { //R99
-		    			Aimbot::OnFire = Aimbot::R99Fire;
-		    			Aimbot::OnADS = Aimbot::R99ADS;
+		    		if (weaponHeld == 105) { //R99
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::R99HipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::R99ADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::R99ExtraSmooth1;
@@ -3572,8 +3556,7 @@ struct Aimbot {
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::R99MaxDistance1;
 		    		}
 		    		if (weaponHeld == 0) { //R301
-		    			Aimbot::OnFire = Aimbot::R301Fire;
-		    			Aimbot::OnADS = Aimbot::R301ADS;
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::R301HipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::R301ADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::R301ExtraSmooth1;
@@ -3582,9 +3565,8 @@ struct Aimbot {
 		    			Aimbot::AdvancedMinDistance1 = Aimbot::R301MinDistance1;
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::R301MaxDistance1;
 		    		}
-		    		if (weaponHeld == 106) { //Spitfire
-		    			Aimbot::OnFire = Aimbot::SpitfireFire;
-		    			Aimbot::OnADS = Aimbot::SpitfireADS;
+		    		if (weaponHeld == 107) { //Spitfire
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::SpitfireHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::SpitfireADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::SpitfireExtraSmooth1;
@@ -3593,9 +3575,8 @@ struct Aimbot {
 		    			Aimbot::AdvancedMinDistance1 = Aimbot::SpitfireMinDistance1;
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::SpitfireMaxDistance1;
 		    		}
-		    		if (weaponHeld == 89) { //G7
-		    			Aimbot::OnFire = Aimbot::G7Fire;
-		    			Aimbot::OnADS = Aimbot::G7ADS;
+		    		if (weaponHeld == 90) { //G7
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::G7HipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::G7ADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::G7ExtraSmooth1;
@@ -3605,9 +3586,8 @@ struct Aimbot {
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::G7MaxDistance1;
 		    		}
 		    		//Heavy Weapons
-		    		if (weaponHeld == 112) { //CARSMG
-		    			Aimbot::OnFire = Aimbot::CARSMGFire;
-		    			Aimbot::OnADS = Aimbot::CARSMGADS;
+		    		if (weaponHeld == 113) { //CARSMG
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::CARSMGHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::CARSMGADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::CARSMGExtraSmooth1;
@@ -3617,8 +3597,7 @@ struct Aimbot {
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::CARSMGMaxDistance1;
 		    		}
 		    		if (weaponHeld == 21) { //Rampage
-		    			Aimbot::OnFire = Aimbot::RampageFire;
-		    			Aimbot::OnADS = Aimbot::RampageADS;
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::RampageHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::RampageADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::RampageExtraSmooth1;
@@ -3627,9 +3606,8 @@ struct Aimbot {
 		    			Aimbot::AdvancedMinDistance1 = Aimbot::RampageMinDistance1;
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::RampageMaxDistance1;
 		    		}
-		    		if (weaponHeld == 111) { //Repeater
-		    			Aimbot::OnFire = Aimbot::RepeaterFire;
-		    			Aimbot::OnADS = Aimbot::RepeaterADS;
+		    		if (weaponHeld == 112) { //Repeater
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::RepeaterHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::RepeaterADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::RepeaterExtraSmooth1;
@@ -3638,9 +3616,8 @@ struct Aimbot {
 		    			Aimbot::AdvancedMinDistance1 = Aimbot::RepeaterMinDistance1;
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::RepeaterMaxDistance1;
 		    		}
-		    		if (weaponHeld == 90) { //Hemlock
-		    			Aimbot::OnFire = Aimbot::HemlockFire;
-		    			Aimbot::OnADS = Aimbot::HemlockADS;
+		    		if (weaponHeld == 91) { //Hemlock
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::HemlockHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::HemlockADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::HemlockExtraSmooth1;
@@ -3649,15 +3626,19 @@ struct Aimbot {
 		    			Aimbot::AdvancedMinDistance1 = Aimbot::HemlockMinDistance1;
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::HemlockMaxDistance1;
 		    		}
-		    		if (weaponHeld == 88) { //Flatline
-		    			Aimbot::OnFire = Aimbot::FlatlineFire;
-		    			Aimbot::OnADS = Aimbot::FlatlineADS;
+		    		if (weaponHeld == 89) { //Flatline
+		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::FlatlineHipfireSmooth1;
+		    			Aimbot::AdvancedADSSmooth1 = Aimbot::FlatlineADSSmooth1;
+		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::FlatlineExtraSmooth1;
+		    			Aimbot::AdvancedFOV1 = Aimbot::FlatlineFOV1;
+		    			Aimbot::AdvancedDeadzone = Aimbot::FlatlineDeadzone;
+		    			Aimbot::AdvancedMinDistance1 = Aimbot::FlatlineMinDistance1;
+		    			Aimbot::AdvancedMaxDistance1 = Aimbot::FlatlineMaxDistance1;
 		    			
 		    		}
 		    		//Energy Weapons
-		    		if (weaponHeld == 113) { //Nemesis
-		    			Aimbot::OnFire = Aimbot::NemesisFire;
-		    			Aimbot::OnADS = Aimbot::NemesisADS;
+		    		if (weaponHeld == 114) { //Nemesis
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::NemesisHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::NemesisADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::NemesisExtraSmooth1;
@@ -3666,9 +3647,8 @@ struct Aimbot {
 		    			Aimbot::AdvancedMinDistance1 = Aimbot::NemesisMinDistance1;
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::NemesisMaxDistance1;
 		    		}
-		    		if (weaponHeld == 110) { //Volt
-		    			Aimbot::OnFire = Aimbot::VoltFire;
-		    			Aimbot::OnADS = Aimbot::VoltADS;
+		    		if (weaponHeld == 111) { //Volt
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::VoltHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::VoltADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::VoltExtraSmooth1;
@@ -3677,9 +3657,8 @@ struct Aimbot {
 		    			Aimbot::AdvancedMinDistance1 = Aimbot::VoltMinDistance1;
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::VoltMaxDistance1;
 		    		}
-		    		if (weaponHeld == 107) { //TripleTake
-		    			Aimbot::OnFire = Aimbot::TripleTakeFire;
-		    			Aimbot::OnADS = Aimbot::TripleTakeADS;
+		    		if (weaponHeld == 108) { //TripleTake
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::TripleTakeHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::TripleTakeADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::TripleTakeExtraSmooth1;
@@ -3688,9 +3667,8 @@ struct Aimbot {
 		    			Aimbot::AdvancedMinDistance1 = Aimbot::TripleTakeMinDistance1;
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::TripleTakeMaxDistance1;
 		    		}
-		    		if (weaponHeld == 93) { //LSTAR
-		    			Aimbot::OnFire = Aimbot::LSTARFire;
-		    			Aimbot::OnADS = Aimbot::LSTARADS;
+		    		if (weaponHeld == 94) { //LSTAR
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::LSTARHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::LSTARADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::LSTARExtraSmooth1;
@@ -3700,8 +3678,7 @@ struct Aimbot {
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::LSTARMaxDistance1;
 		    		}
 		    		if (weaponHeld == 84) { //Devotion
-		    			Aimbot::OnFire = Aimbot::DevotionFire;
-		    			Aimbot::OnADS = Aimbot::DevotionADS;
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::DevotionHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::DevotionADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::DevotionExtraSmooth1;
@@ -3711,8 +3688,7 @@ struct Aimbot {
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::DevotionMaxDistance1;
 		    		}
 		    		if (weaponHeld == 86) { //Havoc
-		    			Aimbot::OnFire = Aimbot::HavocFire;
-		    			Aimbot::OnADS = Aimbot::HavocADS;
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::HavocHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::HavocADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::HavocExtraSmooth1;
@@ -3722,9 +3698,8 @@ struct Aimbot {
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::HavocMaxDistance1;
 		    		}
 		    		//Shotguns
-		    		if (weaponHeld == 96) { //Mozambique
-		    			Aimbot::OnFire = Aimbot::MozambiqueFire;
-		    			Aimbot::OnADS = Aimbot::MozambiqueADS;
+		    		if (weaponHeld == 97) { //Mozambique
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::MozambiqueHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::MozambiqueADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::MozambiqueExtraSmooth1;
@@ -3733,10 +3708,9 @@ struct Aimbot {
 		    			Aimbot::AdvancedMinDistance1 = Aimbot::MozambiqueMinDistance1;
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::MozambiqueMaxDistance1;
 		    		}
-		    		if (weaponHeld == 87) { //EVA8
-		    			Aimbot::OnFire = Aimbot::EVA8Fire;
-		    			Aimbot::OnADS = Aimbot::EVA8ADS;
-					Aimbot::AdvancedHipfireSmooth1 = Aimbot::EVA8HipfireSmooth1;
+		    		if (weaponHeld == 88) { //EVA8
+
+						Aimbot::AdvancedHipfireSmooth1 = Aimbot::EVA8HipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::EVA8ADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::EVA8ExtraSmooth1;
 		    			Aimbot::AdvancedFOV1 = Aimbot::EVA8FOV1;
@@ -3744,10 +3718,9 @@ struct Aimbot {
 		    			Aimbot::AdvancedMinDistance1 = Aimbot::EVA8MinDistance1;
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::EVA8MaxDistance1;
 		    		}
-		    		if (weaponHeld == 103) { //Peacekeeper
-		    			Aimbot::OnFire = Aimbot::PeacekeeperFire;
-		    			Aimbot::OnADS = Aimbot::PeacekeeperADS;
-					Aimbot::AdvancedHipfireSmooth1 = Aimbot::PeacekeeperHipfireSmooth1;
+		    		if (weaponHeld == 104) { //Peacekeeper
+
+						Aimbot::AdvancedHipfireSmooth1 = Aimbot::PeacekeeperHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::PeacekeeperADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::PeacekeeperExtraSmooth1;
 		    			Aimbot::AdvancedFOV1 = Aimbot::PeacekeeperFOV1;
@@ -3755,10 +3728,9 @@ struct Aimbot {
 		    			Aimbot::AdvancedMinDistance1 = Aimbot::PeacekeeperMinDistance1;
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::PeacekeeperMaxDistance1;
 		    		}
-		    		if (weaponHeld == 95) { //Mastiff
-		    			Aimbot::OnFire = Aimbot::MastiffFire;
-		    			Aimbot::OnADS = Aimbot::MastiffADS;
-					Aimbot::AdvancedHipfireSmooth1 = Aimbot::MastiffHipfireSmooth1;
+		    		if (weaponHeld == 96) { //Mastiff
+
+						Aimbot::AdvancedHipfireSmooth1 = Aimbot::MastiffHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::MastiffADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::MastiffExtraSmooth1;
 		    			Aimbot::AdvancedFOV1 = Aimbot::MastiffFOV1;
@@ -3768,9 +3740,8 @@ struct Aimbot {
 		    		}
 		    		//Snipers
 		    		if (weaponHeld == 1) { //Sentinel
-		    			Aimbot::OnFire = Aimbot::SentinelFire;
-		    			Aimbot::OnADS = Aimbot::SentinelADS;
-					Aimbot::AdvancedHipfireSmooth1 = Aimbot::SentinelHipfireSmooth1;
+
+						Aimbot::AdvancedHipfireSmooth1 = Aimbot::SentinelHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::SentinelADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::SentinelExtraSmooth1;
 		    			Aimbot::AdvancedFOV1 = Aimbot::SentinelFOV1;
@@ -3779,9 +3750,8 @@ struct Aimbot {
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::SentinelMaxDistance1;
 		    		}
 		    		if (weaponHeld == 83) { //ChargeRifle
-		    			Aimbot::OnFire = Aimbot::ChargeRifleFire;
-		    			Aimbot::OnADS = Aimbot::ChargeRifleADS;
-					Aimbot::AdvancedHipfireSmooth1 = Aimbot::ChargeRifleHipfireSmooth1;
+
+						Aimbot::AdvancedHipfireSmooth1 = Aimbot::ChargeRifleHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::ChargeRifleADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::ChargeRifleExtraSmooth1;
 		    			Aimbot::AdvancedFOV1 = Aimbot::ChargeRifleFOV1;
@@ -3790,9 +3760,8 @@ struct Aimbot {
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::ChargeRifleMaxDistance1;
 		    		}
 		    		if (weaponHeld == 85) { //Longbow
-		    			Aimbot::OnFire = Aimbot::LongbowFire;
-		    			Aimbot::OnADS = Aimbot::LongbowADS;
-					Aimbot::AdvancedHipfireSmooth1 = Aimbot::LongbowHipfireSmooth1;
+
+						Aimbot::AdvancedHipfireSmooth1 = Aimbot::LongbowHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::LongbowADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::LongbowExtraSmooth1;
 		    			Aimbot::AdvancedFOV1 = Aimbot::LongbowFOV1;
@@ -3801,10 +3770,9 @@ struct Aimbot {
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::LongbowMaxDistance1;
 		    		}
 		    		//Legendary Weapons
-		    		if (weaponHeld == 109) { //Wingman
-		    			Aimbot::OnFire = Aimbot::WingmanFire;
-		    			Aimbot::OnADS = Aimbot::WingmanADS;
-					Aimbot::AdvancedHipfireSmooth1 = Aimbot::WingmanHipfireSmooth1;
+		    		if (weaponHeld == 110) { //Wingman
+
+						Aimbot::AdvancedHipfireSmooth1 = Aimbot::WingmanHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::WingmanADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::WingmanExtraSmooth1;
 		    			Aimbot::AdvancedFOV1 = Aimbot::WingmanFOV1;
@@ -3813,9 +3781,8 @@ struct Aimbot {
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::WingmanMaxDistance1;
 		    		}
 		    		if (weaponHeld == 102) { //Prowler
-		    			Aimbot::OnFire = Aimbot::ProwlerFire;
-		    			Aimbot::OnADS = Aimbot::ProwlerADS;
-					Aimbot::AdvancedHipfireSmooth1 = Aimbot::ProwlerHipfireSmooth1;
+
+						Aimbot::AdvancedHipfireSmooth1 = Aimbot::ProwlerHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::ProwlerADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::ProwlerExtraSmooth1;
 		    			Aimbot::AdvancedFOV1 = Aimbot::ProwlerFOV1;
@@ -3824,8 +3791,7 @@ struct Aimbot {
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::ProwlerMaxDistance1;
 		    		}
 		    		if (weaponHeld == 2) { //Bocek
-		    			Aimbot::OnFire = Aimbot::BocekFire;
-		    			Aimbot::OnADS = Aimbot::BocekADS;
+
 		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::BocekHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::BocekADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::BocekExtraSmooth1;
@@ -3834,10 +3800,9 @@ struct Aimbot {
 		    			Aimbot::AdvancedMinDistance1 = Aimbot::BocekMinDistance1;
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::BocekMaxDistance1;
 		    		}
-		    		if (weaponHeld == 92) { //Kraber
-		    			Aimbot::OnFire = Aimbot::KraberFire;
-		    			Aimbot::OnADS = Aimbot::KraberADS;
-					Aimbot::AdvancedHipfireSmooth1 = Aimbot::KraberHipfireSmooth1;
+		    		if (weaponHeld == 93) { //Kraber
+
+						Aimbot::AdvancedHipfireSmooth1 = Aimbot::KraberHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::KraberADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::KraberExtraSmooth1;
 		    			Aimbot::AdvancedFOV1 = Aimbot::KraberFOV1;
@@ -3845,10 +3810,9 @@ struct Aimbot {
 		    			Aimbot::AdvancedMinDistance1 = Aimbot::KraberMinDistance1;
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::KraberMaxDistance1;
 		    		}
-		    		if (weaponHeld == 163) { //ThrowingKnife
-		    			Aimbot::OnFire = Aimbot::ThrowingKnifeFire;
-		    			Aimbot::OnADS = Aimbot::ThrowingKnifeADS;
-					Aimbot::AdvancedHipfireSmooth1 = Aimbot::ThrowingKnifeHipfireSmooth1;
+		    		if (weaponHeld == 166) { //ThrowingKnife
+
+						Aimbot::AdvancedHipfireSmooth1 = Aimbot::ThrowingKnifeHipfireSmooth1;
 		    			Aimbot::AdvancedADSSmooth1 = Aimbot::ThrowingKnifeADSSmooth1;
 		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::ThrowingKnifeExtraSmooth1;
 		    			Aimbot::AdvancedFOV1 = Aimbot::ThrowingKnifeFOV1;
@@ -3873,6 +3837,7 @@ struct Aimbot {
 				}
 			}
 		}
+		
 	}
 
     void StartAiming() {
@@ -4050,13 +4015,13 @@ struct Aimbot {
         int weaponId = Myself->WeaponIndex;
         bool weaponDiscarded = Myself->weaponDiscarded;
 
-        bool activatedByAttackingAndIsAttacking = OnFire && Myself->IsInAttack;
-        bool activatedByADSAndIsADSing = OnADS && Myself->IsZooming;
+        bool activatedByAimBind = InputManager::isKeyDownOrPress(Modules::Aimbot::AimBind);
+        bool activatedByExtraBind = InputManager::isKeyDownOrPress(Modules::Aimbot::ExtraBind);
         bool active = aimbotIsOn
             && combatReady
             && !weaponDiscarded
-            && (activatedByAttackingAndIsAttacking
-                || activatedByADSAndIsADSing);
+            && (activatedByAimBind
+                || activatedByExtraBind);
         return active;
     }
     
