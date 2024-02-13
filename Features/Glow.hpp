@@ -5,6 +5,11 @@
 #include <iomanip>
 #include <iostream>
 #include <vector>
+#include <unistd.h>
+
+typedef unsigned long DWORD;
+typedef int* DWORD_PTR;
+
 #include "../Core/Player.hpp"
 #include "../Core/LocalPlayer.hpp"
 #include "../Core/Offsets.hpp"
@@ -21,6 +26,7 @@
 #include "../Utils/Color.hpp"
 #include "../Utils/Conversion.hpp"
 #include "../Utils/Config.hpp"
+#include "../Utils/Modules.hpp"
 #include "../Utils/HitboxType.hpp"
 
 // UI //
@@ -48,6 +54,8 @@ struct Glow {
     
     std::vector<GlowMode>* StoredGlowMode = new std::vector<GlowMode>;
     bool ItemGlow = true;
+
+    bool GlowArms = false;
     
     //Colors
     float InvisibleGlowColor[3] = {1, 0, 0};
@@ -77,76 +85,87 @@ struct Glow {
 
 
     void RenderUI() {
-    	if (Config::Home::Layout == 1 or Config::Home::Layout == 0) { //Removed the choice of having two menus. OR is for people still using old configs.
 		if (ImGui::BeginTabItem("Glow", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
-		
-		    // Glow //
-		    ImGui::Text("Glow");
-		    ImGui::Checkbox("Enable Glow##ESP", &NewGlow);
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        ImGui::SetTooltip("Toggle Glowing.");
-		    
-		    const char* GlowColorModeIndex[] = {"Shield Based", "Custom Color"};
-		    ImGui::Combo("Color Mode", &GlowColorMode, GlowColorModeIndex, IM_ARRAYSIZE(GlowColorModeIndex));
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		    	ImGui::SetTooltip("What Color The Glow Will Be.\nShield Based = What Shield The Player Has\nCustom Color = Whatever Color You Want.");
-		    
-		    if (GlowColorMode == 0) {
-			    const char* GlowShieldModeIndex[] = {"Current Shield", "Max Shield"};
-			    ImGui::Combo("Shield Mode", &GlowColorShieldMode, GlowShieldModeIndex, IM_ARRAYSIZE(GlowShieldModeIndex));
-			    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-			    	ImGui::SetTooltip("What Color The Glow Will Change To\nCurrent Shield = Player's Current Shield Points\nMax Shield = Player's Max Shield Points.");
-			    ImGui::ColorEdit3("Red Shield##GlowColor", RedShieldColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		    	    ImGui::SameLine();
-			    ImGui::ColorEdit3("Purple Shield##GlowColor", PurpleShieldColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		    	    ImGui::SameLine();
-			    ImGui::ColorEdit3("Blue Shield##GlowColor", BlueShieldColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		    	    ImGui::SameLine();
-			    ImGui::ColorEdit3("Grey Shield##GlowColor", GreyShieldColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		    	    ImGui::SameLine();
-			    	
-		    }
-		    
-		    if (GlowColorMode == 0 && GlowColorShieldMode == 0) {
-			    ImGui::ColorEdit3("Low HP Color##GlowColor", LowGlowColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		    	    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-			    	ImGui::SetTooltip("What Color The Glow Will Change To When The Player Has No Shield.");
-			    	ImGui::SameLine();
-	            }
-		    
-		    if (GlowColorMode == 1) {
-		    	ImGui::ColorEdit3("Invisible Color##GlowColor", InvisibleGlowColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		    	ImGui::SameLine();
-		    }
-		    
-		    ImGui::ColorEdit3("Visible Color##GlowColor", VisibleGlowColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
-		    
-		    
-		    ImGui::SliderInt("Border Thickness##Glow", &GlowRadius, 32, 200);
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		    	ImGui::SetTooltip("How Thick The Border Is Around A Player.");
-		    
-		    const char* GlowBodyStyleIndex[] = {"None", "Pink", "Pink Visible Only", "Pulsing 1", "Pulsing Line Invisible Only", "Dark Pulsing Line", "Sharp Pulsing Visible", "Sharp Pulsing", "Pulsing Red Line", "Fast Pulsing Invisible Only", "Pulsing Up Visible Only", "Solid Pulsing", "Solid Pulsing 2", "Bright", "Bright 2", "Light", "Light Solid", "Red Pulsing Visible Only", "Wave", "Shaded Visible", "Wireframe", "Wireframe Visible Only", "Black", "Black Visible Only"};
-		    ImGui::Combo("Body Style", &BodyStyle, GlowBodyStyleIndex, IM_ARRAYSIZE(GlowBodyStyleIndex));
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		    	ImGui::SetTooltip("Changes The Player's Body Style.");
-		    	
-		    const char* GlowOutlineStyleIndex[] = {"None", "Bright", "Bright Invisible Only", "Dark", "Pink", "White", "Gold Flashing", "Gold", "Brown", "Wave", "Red Visible Only", "Red Bright", "Heartbeat Visible Only", "Green Invisible Only", "Visible Only", "Bright Orange", "Red 2"};
-		    ImGui::Combo("Outline Style", &OutlineStyle, GlowOutlineStyleIndex, IM_ARRAYSIZE(GlowOutlineStyleIndex));
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		    	ImGui::SetTooltip("Changes The Player's Outline Style.");
-		    
-		    ImGui::Checkbox("Item Glow", &ItemGlow);
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        ImGui::SetTooltip("You will have Loba's ability to see weapons");
-		    ImGui::SliderFloat("Glow Max Distance", &GlowMaxDistance, 0, 1000, "%.0f");
-		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        ImGui::SetTooltip("Only those in range will glow");
+            ImVec2 TabSize;
+            TabSize = ImGui::GetWindowSize();
+            //Glow
+            ImGui::Text("Player Glow");
+            if (ImGui::BeginChild("Glow Tab", ImVec2(TabSize.x - TabSize.x , (TabSize.y - TabSize.y) + 270), true)) {
+                ImGui::Text("Player Glow Tab");
+                ImGui::Checkbox("Enable Glow##ESP", &NewGlow);
+                if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+                    ImGui::SetTooltip("Toggle Glowing.");
+                
+                if (NewGlow) {
+                    const char* GlowColorModeIndex[] = {"Shield Based", "Custom Color"};
+                    ImGui::Combo("Color Mode", &GlowColorMode, GlowColorModeIndex, IM_ARRAYSIZE(GlowColorModeIndex));
+                    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+                        ImGui::SetTooltip("What Color The Glow Will Be.\nShield Based = What Shield The Player Has\nCustom Color = Whatever Color You Want.");
+                    
+                    if (GlowColorMode == 0) {
+                        const char* GlowShieldModeIndex[] = {"Current Shield", "Max Shield"};
+                        ImGui::Combo("Shield Mode", &GlowColorShieldMode, GlowShieldModeIndex, IM_ARRAYSIZE(GlowShieldModeIndex));
+                        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+                            ImGui::SetTooltip("What Color The Glow Will Change To\nCurrent Shield = Player's Current Shield Points\nMax Shield = Player's Max Shield Points.");
+                        ImGui::ColorEdit3("Red Shield##GlowColor", RedShieldColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+                            ImGui::SameLine();
+                        ImGui::ColorEdit3("Purple Shield##GlowColor", PurpleShieldColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+                            ImGui::SameLine();
+                        ImGui::ColorEdit3("Blue Shield##GlowColor", BlueShieldColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+                            ImGui::SameLine();
+                        ImGui::ColorEdit3("Grey Shield##GlowColor", GreyShieldColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+                            ImGui::SameLine();
+                    }
+                    
+                    if (GlowColorMode == 0 && GlowColorShieldMode == 0) {
+                        ImGui::ColorEdit3("Low HP Color##GlowColor", LowGlowColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+                            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+                            ImGui::SetTooltip("What Color The Glow Will Change To When The Player Has No Shield.");
+                            ImGui::SameLine();
+                        }
+                    
+                    if (GlowColorMode == 1) {
+                        ImGui::ColorEdit3("Invisible Color##GlowColor", InvisibleGlowColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+                        ImGui::SameLine();
+                    }
+                    
+                    ImGui::ColorEdit3("Visible Color##GlowColor", VisibleGlowColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
+                    
+                    
+                    ImGui::SliderInt("Border Thickness##Glow", &GlowRadius, 32, 200);
+                    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+                        ImGui::SetTooltip("How Thick The Border Is Around A Player.");
+                    
+                    const char* GlowBodyStyleIndex[] = {"None", "Pink", "Pink Visible Only", "Pulsing 1", "Pulsing Line Invisible Only", "Dark Pulsing Line", "Sharp Pulsing Visible", "Sharp Pulsing", "Pulsing Red Line", "Fast Pulsing Invisible Only", "Pulsing Up Visible Only", "Solid Pulsing", "Solid Pulsing 2", "Bright", "Bright 2", "Light", "Light Solid", "Red Pulsing Visible Only", "Wave", "Shaded Visible", "Wireframe", "Wireframe Visible Only", "Black", "Black Visible Only"};
+                    ImGui::Combo("Body Style", &BodyStyle, GlowBodyStyleIndex, IM_ARRAYSIZE(GlowBodyStyleIndex));
+                    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+                        ImGui::SetTooltip("Changes The Player's Body Style.");
+                        
+                    const char* GlowOutlineStyleIndex[] = {"None", "Bright", "Bright Invisible Only", "Dark", "Pink", "White", "Gold Flashing", "Gold", "Brown", "Wave", "Red Visible Only", "Red Bright", "Heartbeat Visible Only", "Green Invisible Only", "Visible Only", "Bright Orange", "Red 2"};
+                    ImGui::Combo("Outline Style", &OutlineStyle, GlowOutlineStyleIndex, IM_ARRAYSIZE(GlowOutlineStyleIndex));
+                    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+                        ImGui::SetTooltip("Changes The Player's Outline Style.");
+                }
+                ImGui::EndChild();
+            }
+            
+            ImGui::Text("Item Glow");
+            if (ImGui::BeginChild("Item Glow", ImVec2(TabSize.x - TabSize.x , (TabSize.y - TabSize.y) + 285), true)) {
+                ImGui::Text("Item Glow Tab");
+                ImGui::Checkbox("Item Glow", &ItemGlow);
+                if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+                    ImGui::SetTooltip("You will have Loba's ability to see weapons");
+                if(ItemGlow) {
+                    ImGui::SliderFloat("Glow Max Distance", &GlowMaxDistance, 0, 1000, "%.0f");
+                    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+                        ImGui::SetTooltip("Only those in range will glow");
+                }
+                ImGui::EndChild();
+            }
 
 		    ImGui::EndTabItem();
 		}
-	}
-    }
+	} //End of RenderUI
     
     bool Save() {
         try {
@@ -486,7 +505,6 @@ struct Glow {
             }
         }
 
-
         // Player Glow //
         // -> Visible
         //const GlowMode VisibleMode = { 2, 4, 20, 127 };
@@ -517,7 +535,6 @@ struct Glow {
         //const Color LockedOnColor = { 0, 0.75, 0.75 };
         //SetGlowState(HighlightSettingsPointer, HighlightSize, 92, LockedOnMode);
         //SetColorState(HighlightSettingsPointer, HighlightSize, 92, LockedOnColor);
-
 
         for (int i = 0; i < Players->size(); i++) {
             Player* Target = Players->at(i);
