@@ -1,5 +1,5 @@
 # xap-client  [LINUX]
-**Updated to Game Version v3.0.56.43 (01.02.24)**
+**Updated to Game Version v3.0.57.21 (Season 20) (13.02.24)**
 
 By **Gerosity**
 
@@ -8,6 +8,91 @@ All credits to original owners
 Instructions & Menu Previews are down below
 
 # Current Changelog:
+    13.01.24 (Season 20) Update
+    Main Things:
+        - Offsets updated (Name ESP Missing)
+        - Slightly rushed due to massive update
+        - EVA-8 and Prowler not in correct UI sections (Will fix within the next coming days)
+        - UI Change (Will change in the future)
+        - SOME SETTINGS DO NOT SAVE (Mostly ESP features and colors) I WILL FIX THIS WITHIN THE NEXT COMING DAYS
+        - Keybinds
+        - New ESP Styles (Box & Health/Shield Bar)
+        - Radar
+    Aimbot:
+        - Replaced OnFire and OnADS with Keybind & Extra Keybind
+    Triggerbot:
+        - Same
+    RCS:
+        - Same
+    Glow:
+        - Same
+    ESP:
+        - Box Type (2D, 2D Filled)
+        - Box Style (Thin, Wide (Bad name choice, see for yourself))
+        - Bar Mode (Health Only, Shield Only, Health And Shield)
+        - Bar Style (Side, Top, Seer)
+        - Bar Background (Only For Side)
+        - More Color Choices
+        - Watermark (Shows title, spectators and processing speed)
+    Radar (NEW):
+        - MiniMap Radar
+            - You need to align it properly with the ingame minimap
+            - Not 100% accurate
+        - ALGS Map
+    Misc
+        - Removed Super Grapple (Didn't work?)
+
+    Feedback would be much apreciated!
+    Bugs/Errors will be fixed within the next coming days, be patient and enjoy!
+
+
+# Previews (28.01.24 Update)
+
+![Terminal and Home Tab](https://i.imgur.com/xfb1zPx.png)
+![Aimbot Tab](https://i.imgur.com/eZEnUd3.png)
+![RCS Tab](https://i.imgur.com/RjPRmtz.png)
+![Triggerbot Tab](https://i.imgur.com/O1HrvUd.png)
+![Glow Tab](https://i.imgur.com/3Y1ofvE.png)
+![ESP Tab](https://i.imgur.com/f0l7bIA.png)
+![Misc Tab](https://i.imgur.com/zXgkdLY.png)
+![Config Tab](https://i.imgur.com/tYDBzKY.png)
+
+# Installation
+**1.Install dependencies**
+
+    sudo apt-get install -y libudev-dev
+    sudo apt install cmake xorg-dev libglu1-mesa-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+    sudo apt-get install build-essential
+    sudo apt-get install libx11-dev
+    sudo apt-get install libxtst-dev
+
+**2.Build glfw**
+
+    git clone https://github.com/glfw/glfw.git
+    cd glfw
+    mkdir build
+    cd build
+    cmake ..
+    make
+    sudo make install
+
+**3. Clone repo**
+
+    git clone https://github.com/Gerosity/zap-client.git
+    cd zap-client
+
+**4. Build and Run**
+
+    mkdir build
+    cd build
+    cmake ..
+    make
+    sudo ./zapclient
+    
+**5. Press Insert to toggle the Menu (You can only interact with the Menu and the game when the menu is active).**
+
+
+# Old Changelogs:
     02.01.24
     Main Things:
        - Updated Offsets
@@ -105,53 +190,6 @@ Instructions & Menu Previews are down below
     Misc:
        - Removed Superglide due to breaking, may add back in the future
 
-# Previews (28.01.24 Update)
-
-![Terminal and Home Tab](https://i.imgur.com/xfb1zPx.png)
-![Aimbot Tab](https://i.imgur.com/eZEnUd3.png)
-![RCS Tab](https://i.imgur.com/RjPRmtz.png)
-![Triggerbot Tab](https://i.imgur.com/O1HrvUd.png)
-![Glow Tab](https://i.imgur.com/3Y1ofvE.png)
-![ESP Tab](https://i.imgur.com/f0l7bIA.png)
-![Misc Tab](https://i.imgur.com/zXgkdLY.png)
-![Config Tab](https://i.imgur.com/tYDBzKY.png)
-
-# Installation
-**1.Install dependencies**
-
-    sudo apt-get install -y libudev-dev
-    sudo apt install cmake xorg-dev libglu1-mesa-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
-    sudo apt-get install build-essential
-    sudo apt-get install libx11-dev
-    sudo apt-get install libxtst-dev
-
-**2.Build glfw**
-
-    git clone https://github.com/glfw/glfw.git
-    cd glfw
-    mkdir build
-    cd build
-    cmake ..
-    make
-    sudo make install
-
-**3. Clone repo**
-
-    git clone https://github.com/Gerosity/zap-client.git
-    cd zap-client
-
-**4. Build and Run**
-
-    mkdir build
-    cd build
-    cmake ..
-    make
-    sudo ./zapclient
-    
-**5. Press Insert to toggle the Menu (You can only interact with the Menu and the game when the menu is active).**
-
-
-# Old Changelogs:
     21.01.24
     Aimbot
        - Fixed Weapon selection
