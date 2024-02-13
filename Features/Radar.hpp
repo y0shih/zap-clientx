@@ -123,7 +123,7 @@ struct Radar {
                 ImGui::SetTooltip("Toggle the ALGS Style Map.");
 			if (BigMap) {
 				if (ImGui::Button("Active")) {
-					//ActivateBigMap();
+					ActivateBigMap();
 				}
 				ImGui::TextColored(ImVec4(0.99, 0, 0, 0.99), "Make sure to close out of the in-game map before activating or you will crash!");
 			}
