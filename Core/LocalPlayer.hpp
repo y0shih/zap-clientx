@@ -42,6 +42,10 @@ struct LocalPlayer {
     FloatVector2D punchAngles;
     FloatVector2D punchAnglesPrev;
     FloatVector2D punchAnglesDiff;
+    
+    int traversalProgress;
+    int traversalStartTime;
+    int worldtime;
 
     void ResetPointer() {
         BasePointer = 0;
@@ -89,6 +93,13 @@ struct LocalPlayer {
             weaponDiscarded = Memory::Read<int>(WeaponEntity + OFF_WEAPON_DISCARDED) == 1;
             WeaponProjectileSpeed = Memory::Read<float>(WeaponEntity + OFF_PROJECTILESPEED);
             WeaponProjectileScale = Memory::Read<float>(WeaponEntity + OFF_PROJECTILESCALE);
+            
+            
+            float traversalProgressTmp = 0.0;
+	 
+            worldtime = Memory::Read<float>(BasePointer + OFF_TIME_BASE); // Current time
+            traversalStartTime = Memory::Read<float>(BasePointer + OFFSET_TRAVERSAL_START_TIME); // Time to start wall climbing
+            traversalProgress = Memory::Read<float>(BasePointer + OFFSET_TRAVERSAL_PROGRESS); // Wall climbing, if > 0.87 it is almost over.
         }
     }
 
@@ -101,5 +112,10 @@ struct LocalPlayer {
         if (IsDead) return false;
         if (IsKnocked) return false;
         return true;
+    }
+    
+    void setYaw(float angle) {
+        long ptrLong = BasePointer + OFF_VIEW_ANGLES + sizeof(float);
+        Memory::Write<float>(ptrLong, angle);
     }
 };
