@@ -54,8 +54,6 @@ struct Glow {
     
     std::vector<GlowMode>* StoredGlowMode = new std::vector<GlowMode>;
     bool ItemGlow = true;
-
-    bool GlowArms = false;
     
     //Colors
     float InvisibleGlowColor[3] = {1, 0, 0};
