@@ -666,11 +666,15 @@ struct Aimbot {
 						ImGui::SetTooltip("Smoothing for the Aim-Assist whilst ADS.\nHigher = Smoother");
 						
 						ImGui::SliderFloat("Distance Smoothing", &SmoothDistance, 1, 10000, "%.0f");
-					if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.\nMay not change much.");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.\nMay not change much.");
 						ImGui::SliderInt("Delay", &Delay, 1, 50);
 						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						ImGui::SetTooltip("Delay time for the aimbot smoothing.\n");
+							ImGui::SetTooltip("Delay time for the aimbot smoothing.\n");
+						ImGui::SliderFloat("Deadzone", &Deadzone, 0, 10, "%.03f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.\n If you have very low smoothing then you might want to up this to prevent 'shaking'.");
+
 					}
 					
 					ImGui::Separator();
@@ -729,7 +733,7 @@ struct Aimbot {
 						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
 							
-					ImGui::SliderFloat("Deadzone", &Deadzone, 0, 10, "%.03f");
+						ImGui::SliderFloat("Deadzone", &Deadzone, 0, 10, "%.03f");
 						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.\n If you have very low smoothing then you might want to up this to prevent 'shaking'.");
 					}
@@ -799,6 +803,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedP2020", &P2020ADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The P2020 Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedP2020", &P2020Deadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -811,9 +818,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedP2020", &P2020ExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &Deadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedP2020", &P2020Deadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.\n If you have very low smoothing then you might want to up this to prevent 'shaking'.");
+									
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV", &P2020FOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -859,6 +867,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedRE45", &RE45ADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The RE45 Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedRE45", &RE45Deadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -871,9 +882,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedRE45", &RE45ExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &RE45Deadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedRE45", &RE45Deadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedRE45", &RE45FOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -919,6 +931,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedAlternator", &AlternatorADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Alternator Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedAlternator", &AlternatorDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -931,9 +946,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedAlternator", &AlternatorExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &AlternatorDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedAlternator", &AlternatorDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedAlternator", &AlternatorFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -979,6 +995,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedR99", &R99ADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R99 Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedR99", &R99Deadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -991,9 +1010,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedR99", &R99ExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &R99Deadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedR99", &R99Deadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedR99", &R99FOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -1039,6 +1059,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedR301", &R301ADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R301 Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedR301", &R301Deadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1051,9 +1074,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedR301", &R301ExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &R301Deadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedR301", &R301Deadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedR301", &R301FOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -1099,6 +1123,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedSpitfire", &SpitfireADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Spitfire Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedSpitfire", &SpitfireDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1111,9 +1138,7 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedSpitfire", &SpitfireExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &SpitfireDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+									
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedSpitfire", &SpitfireFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -1159,6 +1184,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedG7", &G7ADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The G7 Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedG7", &G7Deadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1171,9 +1199,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedG7", &G7ExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &G7Deadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedG7", &G7Deadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedG7", &G7FOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -1221,6 +1250,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedFlatline", &FlatlineADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Flatline Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedFlatline", &FlatlineDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1233,9 +1265,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedFlatline", &FlatlineExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &FlatlineDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedFlatline", &FlatlineDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedFlatline", &FlatlineFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -1281,6 +1314,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedHemlock", &HemlockADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Hemlock Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedHemlock", &HemlockDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1293,9 +1329,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedHemlock", &HemlockExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &HemlockDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedHemlock", &HemlockDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedHemlock", &HemlockFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -1341,6 +1378,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedRepeater", &RepeaterADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Repeater Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedRepeater", &RepeaterDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1353,9 +1393,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedRepeater", &RepeaterExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &RepeaterDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedRepeater", &RepeaterDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedRepeater", &RepeaterFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -1401,6 +1442,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedRampage", &RampageADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Rampage Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedRampage", &RampageDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1413,9 +1457,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedRampage", &RampageExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &RampageDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedRampage", &RampageDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedRampage", &RampageFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -1461,6 +1506,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedCARSMG", &CARSMGADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The CARSMG Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedRepeater", &RepeaterDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1473,9 +1521,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedCARSMG", &CARSMGExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &CARSMGDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedRepeater", &RepeaterDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedCARSMG", &CARSMGFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -1523,6 +1572,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedHavoc", &HavocADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Havoc Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedHavoc", &HavocDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1535,9 +1587,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedHavoc", &HavocExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &HavocDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedHavoc", &HavocDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedHavoc", &HavocFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -1583,6 +1636,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedDevotion", &DevotionADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Devotion Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedDevotion", &DevotionDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1595,9 +1651,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedDevotion", &DevotionExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &DevotionDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedDevotion", &DevotionDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedDevotion", &DevotionFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -1643,6 +1700,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedLSTAR", &LSTARADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The LSTAR Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedLSTAR", &LSTARDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1655,9 +1715,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedLSTAR", &LSTARExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &LSTARDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedLSTAR", &LSTARDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedLSTAR", &LSTARFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -1703,6 +1764,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedTripleTake", &TripleTakeADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The TripleTake Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedTripleTake", &TripleTakeDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1715,9 +1779,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedTripleTake", &TripleTakeExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &TripleTakeDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedTripleTake", &TripleTakeDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedTripleTake", &TripleTakeFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -1763,6 +1828,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedVolt", &VoltADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Volt Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedVolt", &VoltDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1775,9 +1843,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedVolt", &VoltExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &VoltDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedVolt", &VoltDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedVolt", &VoltFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -1823,6 +1892,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedNemesis", &NemesisADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Nemesis Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedNemesis", &NemesisDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1835,9 +1907,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedNemesis", &NemesisExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &NemesisDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedNemesis", &NemesisDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedNemesis", &NemesisFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -1885,6 +1958,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedMozambique", &MozambiqueADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mozambique Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedMozambique", &MozambiqueDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1897,9 +1973,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedMozambique", &MozambiqueExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &MozambiqueDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedMozambique", &MozambiqueDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedMozambique", &MozambiqueFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -1945,6 +2022,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedEVA8", &EVA8ADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The EVA8 Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedEVA8", &EVA8Deadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1957,9 +2037,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedEVA8", &EVA8ExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &EVA8Deadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedEVA8", &EVA8Deadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedEVA8", &EVA8FOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -2005,6 +2086,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedPeacekeeper", &PeacekeeperADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Peacekeeper Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedPeacekeeper", &PeacekeeperDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2017,9 +2101,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedPeacekeeper", &PeacekeeperExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &PeacekeeperDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedPeacekeeper", &PeacekeeperDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedPeacekeeper", &PeacekeeperFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -2065,6 +2150,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedMastiff", &MastiffADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mastiff Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedMastiff", &MastiffDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2077,9 +2165,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedMastiff", &MastiffExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &MastiffDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedMastiff", &MastiffDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedMastiff", &MastiffFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -2127,6 +2216,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedLongbow", &LongbowADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Longbow Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedLongbow", &LongbowDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2139,9 +2231,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedLongbow", &LongbowExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &LongbowDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedLongbow", &LongbowDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+									
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedLongbow", &LongbowFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -2187,6 +2280,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedChargeRifle", &ChargeRifleADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ChargeRifle Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedChargeRifle", &ChargeRifleDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2199,9 +2295,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedChargeRifle", &ChargeRifleExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &ChargeRifleDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedChargeRifle", &ChargeRifleDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedChargeRifle", &ChargeRifleFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -2247,6 +2344,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedSentinel", &SentinelADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Sentinel Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedSentinel", &SentinelDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2259,9 +2359,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedSentinel", &SentinelExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &SentinelDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedSentinel", &SentinelDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedSentinel", &SentinelFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -2309,6 +2410,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedWingman", &WingmanADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Wingman Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedWingman", &WingmanDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2321,9 +2425,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedWingman", &WingmanExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &WingmanDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedWingman", &WingmanDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedWingman", &WingmanFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -2369,6 +2474,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedProwler", &ProwlerADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Prowler Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedProwler", &ProwlerDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2381,9 +2489,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedProwler", &ProwlerExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &ProwlerDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedProwler", &ProwlerDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedProwler", &ProwlerFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -2429,6 +2538,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedBocek", &BocekADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Bocek Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedBocek", &BocekDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2441,9 +2553,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedBocek", &BocekExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &BocekDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedBocek", &BocekDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedBocek", &BocekFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -2489,6 +2602,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedKraber", &KraberADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Kraber Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedKraber", &KraberDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2501,9 +2617,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedKraber", &KraberExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &KraberDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedKraber", &KraberDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedKraber", &KraberFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -2549,6 +2666,9 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedThrowingKnife", &ThrowingKnifeADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ThrowingKnife Whilst ADS.\nHigher = Smoother");
+										ImGui::SliderFloat("Deadzone##AdvancedThrowingKnife", &ThrowingKnifeDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2561,9 +2681,10 @@ struct Aimbot {
 										ImGui::SliderFloat("Extra Smoothing##1AdvancedThrowingKnife", &ThrowingKnifeExtraSmooth1, 1, 9999, "%.0f");
 									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 										ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-									ImGui::SliderFloat("Deadzone", &ThrowingKnifeDeadzone, 0, 10, "%.03f");
-									if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-									ImGui::SetTooltip("If the aimbot is close enough, the aimbot will stop trying to get closer.\n If you experience 'shaking', increase this.");
+										ImGui::SliderFloat("Deadzone##AdvancedThrowingKnife", &ThrowingKnifeDeadzone, 0, 10, "%.03f");
+										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
+
 										ImGui::Text("FOV");
 										ImGui::SliderFloat("FOV##1AdvancedThrowingKnife", &ThrowingKnifeFOV1, 1, 90, "%.0f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -2601,6 +2722,7 @@ struct Aimbot {
             Config::Aimbot::PredictBulletDrop = PredictBulletDrop;
             Config::Aimbot::Speed = Speed;
             Config::Aimbot::Smooth = Smooth;
+			Config::Aimbot::Deadzone = Deadzone;
             Config::Aimbot::HipfireSmooth = HipfireSmooth;
             Config::Aimbot::ADSSmooth = ADSSmooth;
             Config::Aimbot::SmoothDistance = SmoothDistance;
@@ -3125,135 +3247,198 @@ struct Aimbot {
     		AdvancedAim = true; //For some reason with Grinder aimbot I can only get it to work if advanced settings are on. Doesnt matter too much.
     	}
     	if(!Map->IsPlayable) return;
+		if(Myself->IsDead) return;
 		if(Modules::Home::IsMenuOpened) return; //Dont aimbot whilst menu is open
         //Advanced Settings
         int weaponHeld = Myself->WeaponIndex;
-		//Keybinds
-	    if (weaponHeld == 106) { //P2020
-			Modules::Aimbot::AimBind = Modules::Aimbot::P2020AimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::P2020ExtraBind;
-	    }
-	    if (weaponHeld == 81) { //RE45
-			Modules::Aimbot::AimBind = Modules::Aimbot::RE45AimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::RE45ExtraBind;
-	    }
-	    if (weaponHeld == 80) { //Alternator
-			Modules::Aimbot::AimBind = Modules::Aimbot::AlternatorAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::AlternatorExtraBind;
-	    }
-	    if (weaponHeld == 105) { //R99
-			Modules::Aimbot::AimBind = Modules::Aimbot::R99AimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::R99ExtraBind;
-	    }
-	    if (weaponHeld == 0) { //R301
-			Modules::Aimbot::AimBind = Modules::Aimbot::R301AimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::R301ExtraBind;
-	    }
-	    if (weaponHeld == 107) { //Spitfire
-			Modules::Aimbot::AimBind = Modules::Aimbot::SpitfireAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::SpitfireExtraBind;
-	    }
-	    if (weaponHeld == 90) { //G7
-			Modules::Aimbot::AimBind = Modules::Aimbot::G7AimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::G7ExtraBind;
-	    }
-	    //Heavy Weapons
-	    if (weaponHeld == 113) { //CARSMG
-			Modules::Aimbot::AimBind = Modules::Aimbot::CARSMGAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::CARSMGExtraBind;
-	    }
-	    if (weaponHeld == 21) { //Rampage
-			Modules::Aimbot::AimBind = Modules::Aimbot::RampageAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::RampageExtraBind;
-	    }
-	    if (weaponHeld == 112) { //Repeater
-			Modules::Aimbot::AimBind = Modules::Aimbot::RepeaterAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::RepeaterExtraBind;
-	    }
-		if (weaponHeld == 102) { //Prowler
-			Modules::Aimbot::AimBind = Modules::Aimbot::ProwlerAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::ProwlerExtraBind;
-	    }
-	    if (weaponHeld == 91) { //Hemlock
-			Modules::Aimbot::AimBind = Modules::Aimbot::HemlockAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::HemlockExtraBind;
-	    }
-	    if (weaponHeld == 89) { //Flatline
-			Modules::Aimbot::AimBind = Modules::Aimbot::FlatlineAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::FlatlineExtraBind;
-	    }
-	    //Energy Weapons
-	    if (weaponHeld == 114) { //Nemesis
-			Modules::Aimbot::AimBind = Modules::Aimbot::NemesisAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::NemesisExtraBind;
-	    }
-	    if (weaponHeld == 111) { //Volt
-			Modules::Aimbot::AimBind = Modules::Aimbot::VoltAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::VoltExtraBind;
-	    }
-	    if (weaponHeld == 108) { //TripleTake
-			Modules::Aimbot::AimBind = Modules::Aimbot::TripleTakeAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::TripleTakeExtraBind;
-	    }
-	    if (weaponHeld == 94) { //LSTAR
-			Modules::Aimbot::AimBind = Modules::Aimbot::LSTARAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::LSTARExtraBind;
-	    }
-	    if (weaponHeld == 84) { //Devotion
-			Modules::Aimbot::AimBind = Modules::Aimbot::DevotionAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::DevotionExtraBind;
-	    }
-	    if (weaponHeld == 86) { //Havoc
-			Modules::Aimbot::AimBind = Modules::Aimbot::HavocAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::HavocExtraBind;
-	    }
-	    //Shotguns
-	    if (weaponHeld == 97) { //Mozambique
-			Modules::Aimbot::AimBind = Modules::Aimbot::MozambiqueAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::MozambiqueExtraBind;
-	    }
-	    if (weaponHeld == 104) { //Peacekeeper
-			Modules::Aimbot::AimBind = Modules::Aimbot::PeacekeeperAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::PeacekeeperExtraBind;
-	    }
-	    if (weaponHeld == 96) { //Mastiff
-			Modules::Aimbot::AimBind = Modules::Aimbot::MastiffAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::MastiffExtraBind;
-	    }
-	    //Snipers
-	    if (weaponHeld == 1) { //Sentinel
-			Modules::Aimbot::AimBind = Modules::Aimbot::SentinelAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::SentinelExtraBind;
-	    }
-	    if (weaponHeld == 83) { //ChargeRifle
-			Modules::Aimbot::AimBind = Modules::Aimbot::ChargeRifleAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::ChargeRifleExtraBind;
-	    }
-	    if (weaponHeld == 85) { //Longbow
-			Modules::Aimbot::AimBind = Modules::Aimbot::LongbowAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::LongbowExtraBind;
-	    }
-	    //Legendary Weapons
-	    if (weaponHeld == 110) { //Wingman
-			Modules::Aimbot::AimBind = Modules::Aimbot::WingmanAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::WingmanExtraBind;
-	    }
-	    if (weaponHeld == 88) { //EVA8
-			Modules::Aimbot::AimBind = Modules::Aimbot::EVA8AimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::EVA8ExtraBind;
-	    }
-	    if (weaponHeld == 2) { //Bocek
-			Modules::Aimbot::AimBind = Modules::Aimbot::BocekAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::BocekExtraBind;
-	    }
-	    if (weaponHeld == 93) { //Kraber
-			Modules::Aimbot::AimBind = Modules::Aimbot::KraberAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::KraberExtraBind;
-	    }
-	    if (weaponHeld == 166) { //ThrowingKnife
-			Modules::Aimbot::AimBind = Modules::Aimbot::ThrowingKnifeAimBind;
-			Modules::Aimbot::ExtraBind = Modules::Aimbot::ThrowingKnifeExtraBind;
-	    }
+		//Keybinds && Deadzone
+		if (AdvancedAim) {
+			if (weaponHeld == 106) { //P2020
+				Modules::Aimbot::AimBind = Modules::Aimbot::P2020AimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::P2020ExtraBind;
+				Aimbot::Deadzone = Aimbot::P2020Deadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::P2020Deadzone;
+			}
+			if (weaponHeld == 81) { //RE45
+				Modules::Aimbot::AimBind = Modules::Aimbot::RE45AimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::RE45ExtraBind;
+				Aimbot::Deadzone = Aimbot::RE45Deadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::RE45Deadzone;
+			}
+			if (weaponHeld == 80) { //Alternator
+				Modules::Aimbot::AimBind = Modules::Aimbot::AlternatorAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::AlternatorExtraBind;
+				Aimbot::Deadzone = Aimbot::AlternatorDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::AlternatorDeadzone;
+			}
+			if (weaponHeld == 105) { //R99
+				Modules::Aimbot::AimBind = Modules::Aimbot::R99AimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::R99ExtraBind;
+				Aimbot::Deadzone = Aimbot::R99Deadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::R99Deadzone;
+			}
+			if (weaponHeld == 0) { //R301
+				Modules::Aimbot::AimBind = Modules::Aimbot::R301AimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::R301ExtraBind;
+				Aimbot::Deadzone = Aimbot::R301Deadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::R301Deadzone;
+			}
+			if (weaponHeld == 107) { //Spitfire
+				Modules::Aimbot::AimBind = Modules::Aimbot::SpitfireAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::SpitfireExtraBind;
+				Aimbot::Deadzone = Aimbot::SpitfireDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::SpitfireDeadzone;
+			}
+			if (weaponHeld == 90) { //G7
+				Modules::Aimbot::AimBind = Modules::Aimbot::G7AimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::G7ExtraBind;
+				Aimbot::Deadzone = Aimbot::G7Deadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::G7Deadzone;
+			}
+			//Heavy Weapons
+			if (weaponHeld == 113) { //CARSMG
+				Modules::Aimbot::AimBind = Modules::Aimbot::CARSMGAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::CARSMGExtraBind;
+				Aimbot::Deadzone = Aimbot::CARSMGDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::CARSMGDeadzone;
+			}
+			if (weaponHeld == 21) { //Rampage
+				Modules::Aimbot::AimBind = Modules::Aimbot::RampageAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::RampageExtraBind;
+				Aimbot::Deadzone = Aimbot::RampageDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::RampageDeadzone;
+			}
+			if (weaponHeld == 112) { //Repeater
+				Modules::Aimbot::AimBind = Modules::Aimbot::RepeaterAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::RepeaterExtraBind;
+				Aimbot::Deadzone = Aimbot::RepeaterDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::RepeaterDeadzone;
+			}
+			if (weaponHeld == 102) { //Prowler
+				Modules::Aimbot::AimBind = Modules::Aimbot::ProwlerAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::ProwlerExtraBind;
+				Aimbot::Deadzone = Aimbot::ProwlerDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::ProwlerDeadzone;
+			}
+			if (weaponHeld == 91) { //Hemlock
+				Modules::Aimbot::AimBind = Modules::Aimbot::HemlockAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::HemlockExtraBind;
+				Aimbot::Deadzone = Aimbot::HemlockDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::HemlockDeadzone;
+			}
+			if (weaponHeld == 89) { //Flatline
+				Modules::Aimbot::AimBind = Modules::Aimbot::FlatlineAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::FlatlineExtraBind;
+				Aimbot::Deadzone = Aimbot::FlatlineDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::FlatlineDeadzone;
+			}
+			//Energy Weapons
+			if (weaponHeld == 114) { //Nemesis
+				Modules::Aimbot::AimBind = Modules::Aimbot::NemesisAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::NemesisExtraBind;
+				Aimbot::Deadzone = Aimbot::NemesisDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::NemesisDeadzone;
+			}
+			if (weaponHeld == 111) { //Volt
+				Modules::Aimbot::AimBind = Modules::Aimbot::VoltAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::VoltExtraBind;
+				Aimbot::Deadzone = Aimbot::VoltDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::VoltDeadzone;
+			}
+			if (weaponHeld == 108) { //TripleTake
+				Modules::Aimbot::AimBind = Modules::Aimbot::TripleTakeAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::TripleTakeExtraBind;
+				Aimbot::Deadzone = Aimbot::TripleTakeDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::TripleTakeDeadzone;
+			}
+			if (weaponHeld == 94) { //LSTAR
+				Modules::Aimbot::AimBind = Modules::Aimbot::LSTARAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::LSTARExtraBind;
+				Aimbot::Deadzone = Aimbot::LSTARDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::LSTARDeadzone;
+			}
+			if (weaponHeld == 84) { //Devotion
+				Modules::Aimbot::AimBind = Modules::Aimbot::DevotionAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::DevotionExtraBind;
+				Aimbot::Deadzone = Aimbot::DevotionDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::DevotionDeadzone;
+			}
+			if (weaponHeld == 86) { //Havoc
+				Modules::Aimbot::AimBind = Modules::Aimbot::HavocAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::HavocExtraBind;
+				Aimbot::Deadzone = Aimbot::HavocDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::HavocDeadzone;
+			}
+			//Shotguns
+			if (weaponHeld == 97) { //Mozambique
+				Modules::Aimbot::AimBind = Modules::Aimbot::MozambiqueAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::MozambiqueExtraBind;
+				Aimbot::Deadzone = Aimbot::MozambiqueDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::MozambiqueDeadzone;
+			}
+			if (weaponHeld == 104) { //Peacekeeper
+				Modules::Aimbot::AimBind = Modules::Aimbot::PeacekeeperAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::PeacekeeperExtraBind;
+				Aimbot::Deadzone = Aimbot::PeacekeeperDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::PeacekeeperDeadzone;
+			}
+			if (weaponHeld == 96) { //Mastiff
+				Modules::Aimbot::AimBind = Modules::Aimbot::MastiffAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::MastiffExtraBind;
+				Aimbot::Deadzone = Aimbot::MastiffDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::MastiffDeadzone;
+			}
+			//Snipers
+			if (weaponHeld == 1) { //Sentinel
+				Modules::Aimbot::AimBind = Modules::Aimbot::SentinelAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::SentinelExtraBind;
+				Aimbot::Deadzone = Aimbot::SentinelDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::SentinelDeadzone;
+			}
+			if (weaponHeld == 83) { //ChargeRifle
+				Modules::Aimbot::AimBind = Modules::Aimbot::ChargeRifleAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::ChargeRifleExtraBind;
+				Aimbot::Deadzone = Aimbot::ChargeRifleDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::ChargeRifleDeadzone;
+			}
+			if (weaponHeld == 85) { //Longbow
+				Modules::Aimbot::AimBind = Modules::Aimbot::LongbowAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::LongbowExtraBind;
+				Aimbot::Deadzone = Aimbot::LongbowDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::LongbowDeadzone;
+			}
+			//Legendary Weapons
+			if (weaponHeld == 110) { //Wingman
+				Modules::Aimbot::AimBind = Modules::Aimbot::WingmanAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::WingmanExtraBind;
+				Aimbot::Deadzone = Aimbot::WingmanDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::WingmanDeadzone;
+			}
+			if (weaponHeld == 88) { //EVA8
+				Modules::Aimbot::AimBind = Modules::Aimbot::EVA8AimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::EVA8ExtraBind;
+				Aimbot::Deadzone = Aimbot::EVA8Deadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::EVA8Deadzone;
+			}
+			if (weaponHeld == 2) { //Bocek
+				Modules::Aimbot::AimBind = Modules::Aimbot::BocekAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::BocekExtraBind;
+				Aimbot::Deadzone = Aimbot::BocekDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::BocekDeadzone;
+			}
+			if (weaponHeld == 93) { //Kraber
+				Modules::Aimbot::AimBind = Modules::Aimbot::KraberAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::KraberExtraBind;
+				Aimbot::Deadzone = Aimbot::KraberDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::KraberDeadzone;
+			}
+			if (weaponHeld == 166) { //ThrowingKnife
+				Modules::Aimbot::AimBind = Modules::Aimbot::ThrowingKnifeAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::ThrowingKnifeExtraBind;
+				Aimbot::Deadzone = Aimbot::ThrowingKnifeDeadzone;
+				Aimbot::AdvancedDeadzone = Aimbot::ThrowingKnifeDeadzone;
+			}
+		}
 		
         if (AimbotMode == 0) {
 	    	if (AdvancedAim) { //IDs from Utils/Weapons.hpp, may need updating after game update
@@ -3480,10 +3665,9 @@ struct Aimbot {
 			    FinalDistance = ZoomDistance;
 			else FinalDistance = HipfireDistance;
 
-			if (Myself->IsHoldingGrenade) { ReleaseTarget(); return; }
-			
 			if (AimList.find(Myself->WeaponIndex) == AimList.end()) return;
-			if (!InputManager::isKeyDownOrPress(Modules::Aimbot::AimBind) or !InputManager::isKeyDownOrPress(Modules::Aimbot::ExtraBind)) { ReleaseTarget(); TargetSelected = false; CurrentTarget = nullptr; return;
+
+			if (!isKeybindDown()) { ReleaseTarget(); TargetSelected = false; return; }
 
 			Player* Target = CurrentTarget;
 			if (!IsValidTarget(Target)) {
@@ -3509,7 +3693,6 @@ struct Aimbot {
 			    }
 			    return;
 			}
-		}
 		}
 		
 		if (AimbotMode == 1) {
@@ -3820,9 +4003,8 @@ struct Aimbot {
 		    			Aimbot::AdvancedMinDistance1 = Aimbot::ThrowingKnifeMinDistance1;
 		    			Aimbot::AdvancedMaxDistance1 = Aimbot::ThrowingKnifeMaxDistance1;
 		    		}
-		    		
+
 				if (AimList.find(Myself->WeaponIndex) == AimList.end()) return;
-				if (Myself->IsHoldingGrenade) { ReleaseTarget(); return; }
 				if (!active()) { releaseTarget2(); return; }
 				if (CurrentTarget == nullptr) assignTarget();
 				if (CurrentTarget == nullptr) return;
@@ -3840,6 +4022,13 @@ struct Aimbot {
 		
 	}
 
+	bool isKeybindDown() {
+		bool ActivatedByAimBind = InputManager::isKeyDownOrPress(Modules::Aimbot::AimBind);
+        bool ActivatedByExtraBind = InputManager::isKeyDownOrPress(Modules::Aimbot::ExtraBind);
+        bool active = (ActivatedByAimBind || ActivatedByExtraBind);
+		return active;
+	}
+
     void StartAiming() {
         // Get Target Angle
         QAngle DesiredAngles = QAngle(0, 0);
@@ -3855,6 +4044,10 @@ struct Aimbot {
         int totalYawIncrementInt = RoundHalfEven(AL1AF0(aimbotDelta.x));
         int totalPitchIncrementInt = RoundHalfEven(AL1AF0(aimbotDelta.y * -1));
 
+		//Deadzone - are we close enough yet?
+		if (fabs(totalYawIncrementInt) < Deadzone) { totalPitchIncrementInt = 0; }
+		if (fabs(totalPitchIncrementInt) < Deadzone) { totalYawIncrementInt = 0; }
+
         // Move Mouse
         if (totalPitchIncrementInt == 0 && totalYawIncrementInt == 0) return;
         X11Display->MoveMouse(totalYawIncrementInt, totalPitchIncrementInt);
@@ -3864,6 +4057,10 @@ struct Aimbot {
         Vector2D aimbotDelta = Vector2D(CalculatePitchIncrement(DesiredAngles), CalculateYawIncrement(DesiredAngles)).Multiply(Speed);
         int totalYawIncrementInt = RoundHalfEven(AL1AF0(aimbotDelta.x));
         int totalPitchIncrementInt = RoundHalfEven(AL1AF0(aimbotDelta.y * -1));
+
+		//Deadzone - are we close enough yet?
+		if (fabs(totalYawIncrementInt) < Deadzone) { totalPitchIncrementInt = 0; }
+		if (fabs(totalPitchIncrementInt) < Deadzone) { totalYawIncrementInt = 0; }
 
         // Move Mouse
         if (totalPitchIncrementInt == 0 && totalYawIncrementInt == 0) return;
@@ -4058,7 +4255,6 @@ struct Aimbot {
     	if (TeamCheck) {
 	    	if (VisCheck) {
 			if (target == nullptr ||
-			    !target->IsValid() || 
 			    !target->IsCombatReady() || 
 			    !target->IsVisible || 
 			    !target->IsHostile || 
@@ -4069,7 +4265,6 @@ struct Aimbot {
 		}
 	    	if (!VisCheck) {
 			if (target == nullptr ||
-			    !target->IsValid() || 
 			    !target->IsCombatReady() || 
 			    !target->IsHostile || 
 			    target->Distance2DToLocalPlayer < Conversion::ToGameUnits(MinDistance) || 
@@ -4081,7 +4276,6 @@ struct Aimbot {
     	if (!TeamCheck) {
 	    	if (VisCheck) {
 			if (target == nullptr ||
-			    !target->IsValid() || 
 			    !target->IsCombatReady() || 
 			    !target->IsVisible || 
 			    target->Distance2DToLocalPlayer < Conversion::ToGameUnits(MinDistance) || 
@@ -4091,7 +4285,6 @@ struct Aimbot {
 		}
 	    	if (!VisCheck) {
 			if (target == nullptr ||
-			    !target->IsValid() || 
 			    !target->IsCombatReady() || 
 			    target->Distance2DToLocalPlayer < Conversion::ToGameUnits(MinDistance) || 
 			    target->Distance2DToLocalPlayer > Conversion::ToGameUnits(FinalDistance))
@@ -4162,7 +4355,7 @@ struct Aimbot {
     }
 
     void ReleaseTarget() {
-        if (CurrentTarget != nullptr && CurrentTarget->IsValid())
+		if (CurrentTarget != nullptr && CurrentTarget->IsValid())
             CurrentTarget->IsLockedOn = false;
         
         TargetSelected = false;
