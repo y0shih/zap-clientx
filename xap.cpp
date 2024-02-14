@@ -24,7 +24,6 @@
 #include "Features/Misc.hpp"
 #include "Features/RCS.hpp"
 #include "Features/Glow.hpp"
-#include "Features/Test.hpp"
 
 #include "Overlay/Overlay.hpp"
 
@@ -56,7 +55,6 @@ Aimbot* AimAssist = new Aimbot(X11Display, Map, Myself, Players);
 RCS* Recoil = new RCS(X11Display, Map, Myself);
 Triggerbot* Trigger = new Triggerbot(X11Display, Map, Myself, Players);
 Misc* MiscTab = new Misc(X11Display, Map, Myself, Players);
-Test* Testing = new Test(X11Display, Map, Myself);
 Overlay* Home = new Overlay;
 
 // Booleans and Variables
@@ -1612,7 +1610,6 @@ void RenderUI() {
         ESP->RenderUI();
         MapRadar->RenderUI();
         MiscTab->RenderUI();
-        Testing->RenderUI();
         
     	if (ImGui::BeginTabItem("Config", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
     		ImVec2 TabSize;
