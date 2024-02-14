@@ -39,7 +39,6 @@ struct Misc {
     bool TeamGamemode = true;
     bool SkinChanger = false;
     bool AutoGrapple = false;
-    bool Superglide = false;
     bool QuickTurn = false;
     InputKeyType QuickTurnKey = InputKeyType::KEYBOARD_K;
     int QuickTurnHotkey = static_cast<int>(QuickTurnKey);
@@ -175,8 +174,7 @@ struct Misc {
 
     bool Save() {
         try {
-            Config::Misc::AutoGrapple = AutoGrapple;
-            Config::Misc::SkinChanger = SkinChanger;
+        Config::Misc::SkinChanger = SkinChanger;
 	    //Weapon IDs
 	    //Light
 	     Config::Misc::SkinP2020 = SkinP2020;
