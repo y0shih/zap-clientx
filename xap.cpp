@@ -24,6 +24,7 @@
 #include "Features/Misc.hpp"
 #include "Features/RCS.hpp"
 #include "Features/Glow.hpp"
+#include "Features/Test.hpp"
 
 #include "Overlay/Overlay.hpp"
 
@@ -48,13 +49,14 @@ std::vector<Player*>* Dummies = new std::vector<Player*>;
 std::vector<Player*>* Players = new std::vector<Player*>;
 
 // Features
-Sense* ESP = new Sense(Map, Players, GameCamera, Myself);
+Sense* ESP = new Sense(Map, Players, GameCamera, Myself, X11Display);
 Radar* MapRadar = new Radar(X11Display, Players, GameCamera, Map, Myself);
 Glow* GlowESP = new Glow(Map, Players, GameCamera, Myself);
 Aimbot* AimAssist = new Aimbot(X11Display, Map, Myself, Players);
 RCS* Recoil = new RCS(X11Display, Map, Myself);
 Triggerbot* Trigger = new Triggerbot(X11Display, Map, Myself, Players);
 Misc* MiscTab = new Misc(X11Display, Map, Myself, Players);
+Test* Testing = new Test(X11Display, Map, Myself);
 Overlay* Home = new Overlay;
 
 // Booleans and Variables
@@ -128,6 +130,7 @@ void LoadConfig() {
     AimAssist->ADSSmooth = Config::Aimbot::ADSSmooth;
     AimAssist->SmoothDistance = Config::Aimbot::SmoothDistance;
     AimAssist->Delay = Config::Aimbot::Delay;
+    AimAssist->Deadzone = Config::Aimbot::Deadzone;
     AimAssist->FOV = Config::Aimbot::FOV;
     AimAssist->ZoomScale = Config::Aimbot::ZoomScale;
     AimAssist->MinDistance = Config::Aimbot::MinDistance;
@@ -807,6 +810,14 @@ void LoadConfig() {
     Modules::Colors::VisibleDistanceColor[1] = Config::Colors::VisibleDistanceColorG;
     Modules::Colors::VisibleDistanceColor[2] = Config::Colors::VisibleDistanceColorB;
     Modules::Colors::VisibleDistanceColor[3] = Config::Colors::VisibleDistanceColorA;
+    Modules::Colors::InvisibleLegendColor[0] = Config::Colors::InvisibleLegendColorR;
+    Modules::Colors::InvisibleLegendColor[1] = Config::Colors::InvisibleLegendColorG;
+    Modules::Colors::InvisibleLegendColor[2] = Config::Colors::InvisibleLegendColorB;
+    Modules::Colors::InvisibleLegendColor[3] = Config::Colors::InvisibleLegendColorA;
+    Modules::Colors::VisibleLegendColor[0] = Config::Colors::VisibleLegendColorR;
+    Modules::Colors::VisibleLegendColor[1] = Config::Colors::VisibleLegendColorG;
+    Modules::Colors::VisibleLegendColor[2] = Config::Colors::VisibleLegendColorB;
+    Modules::Colors::VisibleLegendColor[3] = Config::Colors::VisibleLegendColorA;
     Modules::Colors::FOVColor[0] = Config::Colors::FOVColorR;
     Modules::Colors::FOVColor[1] = Config::Colors::FOVColorG;
     Modules::Colors::FOVColor[2] = Config::Colors::FOVColorB;
@@ -1601,6 +1612,7 @@ void RenderUI() {
         ESP->RenderUI();
         MapRadar->RenderUI();
         MiscTab->RenderUI();
+        Testing->RenderUI();
         
     	if (ImGui::BeginTabItem("Config", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
     		ImVec2 TabSize;
