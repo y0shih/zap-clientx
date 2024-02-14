@@ -56,6 +56,7 @@ namespace Config {
         float HipfireSmooth = 0.9;
         float ADSSmooth = 0.9;
         float SmoothDistance = 100;
+		float Deadzone = 0.5;
         int Delay = 10;
         float FOV = 10;
         float ZoomScale = 3.0;
@@ -906,6 +907,14 @@ namespace Config {
 	float VisibleDistanceColorG = 0.99;
 	float VisibleDistanceColorB = 0.99;
 	float VisibleDistanceColorA = 0.99;
+	float InvisibleLegendColorR = 0.99;
+	float InvisibleLegendColorG = 0.99;
+	float InvisibleLegendColorB = 0.99;
+	float InvisibleLegendColorA = 0.99;
+	float VisibleLegendColorR = 0.99;
+	float VisibleLegendColorG = 0.99;
+	float VisibleLegendColorB = 0.99;
+	float VisibleLegendColorA = 0.99;
 	float FOVColorR = 0.99;
 	float FOVColorG = 0.99;
 	float FOVColorB = 0.99;
@@ -992,6 +1001,7 @@ void UpdateConfig() {
         WritePair(Aimbot, ADSSmooth);
         WritePair(Aimbot, Delay);
         WritePair(Aimbot, SmoothDistance);
+		WritePair(Aimbot, Deadzone);
         WritePair(Aimbot, FOV);
         WritePair(Aimbot, ZoomScale);
         WritePair(Aimbot, MinDistance);
@@ -1694,6 +1704,14 @@ void UpdateConfig() {
         WritePair(Colors, VisibleDistanceColorG);
         WritePair(Colors, VisibleDistanceColorB);
         WritePair(Colors, VisibleDistanceColorA);
+        WritePair(Colors, InvisibleLegendColorR);
+        WritePair(Colors, InvisibleLegendColorG);
+        WritePair(Colors, InvisibleLegendColorB);
+        WritePair(Colors, InvisibleLegendColorA);
+        WritePair(Colors, VisibleLegendColorR);
+        WritePair(Colors, VisibleLegendColorG);
+        WritePair(Colors, VisibleLegendColorB);
+        WritePair(Colors, VisibleLegendColorA);
         WritePair(Colors, FOVColorR);
         WritePair(Colors, FOVColorG);
         WritePair(Colors, FOVColorB);
@@ -1892,6 +1910,7 @@ bool ReadConfig(const std::string &configFile) {
     ReadFloat(Aimbot, HipfireSmooth);
     ReadFloat(Aimbot, ADSSmooth);
     ReadFloat(Aimbot, SmoothDistance);
+	ReadBool(Aimbot, Deadzone);
     ReadInt(Aimbot, Delay);
     ReadFloat(Aimbot, FOV);
     ReadFloat(Aimbot, ZoomScale);
@@ -2559,6 +2578,14 @@ bool ReadConfig(const std::string &configFile) {
         ReadFloat(Colors, VisibleDistanceColorG);
         ReadFloat(Colors, VisibleDistanceColorB);
         ReadFloat(Colors, VisibleDistanceColorA);
+        ReadFloat(Colors, InvisibleLegendColorR);
+        ReadFloat(Colors, InvisibleLegendColorG);
+        ReadFloat(Colors, InvisibleLegendColorB);
+        ReadFloat(Colors, InvisibleLegendColorA);
+        ReadFloat(Colors, VisibleLegendColorR);
+        ReadFloat(Colors, VisibleLegendColorG);
+        ReadFloat(Colors, VisibleLegendColorB);
+        ReadFloat(Colors, VisibleLegendColorA);
         ReadFloat(Colors, FOVColorR);
         ReadFloat(Colors, FOVColorG);
         ReadFloat(Colors, FOVColorB);
