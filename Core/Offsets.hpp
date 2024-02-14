@@ -24,9 +24,9 @@ constexpr long OFFSET_TRAVERSAL_START_TIME = 0x2ad0;          //[RecvTable.DT_Lo
 constexpr long OFFSET_TRAVERSAL_PROGRESS = 0x2acc;            //[RecvTable.DT_LocalPlayerExclusive]->m_traversalProgress
 constexpr long OFFSET_WALL_RUN_START_TIME = 0x355c;           //[RecvTable.DT_LocalPlayerExclusive]->m_wallRunStartTime
 constexpr long OFFSET_WALL_RUN_CLEAR_TIME = 0x3560;           //[RecvTable.DT_LocalPlayerExclusive]->m_wallRunClearTime
-constexpr long OFF_GRAPPLE_ACTIVE = 0x1e18;		      //[RecvTable.DT_NPC_Titan]  
-constexpr long OFF_GRAPPLE = 0x1d88;		              //[RecvTable.DT_NPC_Titan]     
-constexpr long OFF_GRAPPLE_ATTACHED = 0x0048;		      // [RecvTable.DT_GrappleData]      
+constexpr long OFF_GRAPPLE_ACTIVE = 0x1e18;		      //[RecvTable.DT_NPC_Titan]       Not sure
+constexpr long OFF_GRAPPLE = 0x1d88;		              //[RecvTable.DT_NPC_Titan]        Not sure
+constexpr long OFF_GRAPPLE_ATTACHED = 0x0048;		      // [RecvTable.DT_GrappleData]       Not sure
 
 // Player
 constexpr long OFF_HEALTH = 0x0318;                           //[RecvTable.DT_Player]->m_iHealth
@@ -71,9 +71,9 @@ constexpr long OFF_VIEWMODELS = 0x2cf8;                       //m_hViewModels
 constexpr long OFF_CURFRAME_MODELINDEX = 0x00d8;              //[DataMap.CBaseViewModel]m_currentFrame.modelIndex
  
 //glow
-constexpr long OFF_HIGHLIGHT_TYPE_SIZE = 0x34;                //
-constexpr long OFF_GLOW_ENABLE = 0x28c;                       //[DT_HighlightSettings].? 
-constexpr long OFF_GLOW_THROUGH_WALL = 0x26c;                 //[DT_HighlightSettings].?       
-constexpr long OFF_GLOW_FIX = 0x268;                        //                                   
-constexpr long OFF_GLOW_HIGHLIGHT_ID = 0x28C;                 //[DT_HighlightSettings].m_highlightServerActiveStates    
+constexpr long OFF_HIGHLIGHT_TYPE_SIZE = 0x34;                //                                  ??
+constexpr long OFF_GLOW_ENABLE = 0x28c;                       //[DT_HighlightSettings].?            ??
+constexpr long OFF_GLOW_THROUGH_WALL = 0x26c;                 //[DT_HighlightSettings].?            ??
+constexpr long OFF_GLOW_FIX = 0x268;                        //                                        ??
+constexpr long OFF_GLOW_HIGHLIGHT_ID = 0x28C;                 //[DT_HighlightSettings].m_highlightServerActiveStates       ??
 constexpr long OFF_GLOW_HIGHLIGHTS = 0xB943CB0;                //                                      
