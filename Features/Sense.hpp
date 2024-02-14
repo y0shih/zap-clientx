@@ -23,6 +23,9 @@
 #include "../Utils/Config.hpp"
 #include "../Utils/Modules.hpp"
 #include "../Utils/HitboxType.hpp"
+#include "../Utils/XDisplay.hpp"
+#include "../Utils/InputManager.hpp"
+#include "../Utils/InputTypes.hpp"
 
 // UI //
 #include "../imgui/imgui.h"
@@ -83,6 +86,7 @@ struct Sense {
     bool TeamNames = false;
 
     // Variables
+	XDisplay* X11Display;
     Camera* GameCamera;
     LocalPlayer* Myself;
     std::vector<Player*>* Players;
@@ -91,11 +95,12 @@ struct Sense {
     std::vector<std::string> Spectators;
     Level* Map;
 
-    Sense(Level* Map, std::vector<Player*>* Players, Camera* GameCamera, LocalPlayer* Myself) {
+    Sense(Level* Map, std::vector<Player*>* Players, Camera* GameCamera, LocalPlayer* Myself, XDisplay* X11Display) {
         this->Players = Players;
         this->GameCamera = GameCamera;
         this->Map = Map;
         this->Myself = Myself;
+		this->X11Display = X11Display;
     }
 
     void RenderUI() {
@@ -291,9 +296,9 @@ struct Sense {
 		        }
 			}
 
-		    ImGui::Checkbox("Draw Names", &DrawNames);
+		    ImGui::Checkbox("Draw Names [!]", &DrawNames);
 		    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-			    ImGui::SetTooltip("Show enemies names");
+			    ImGui::SetTooltip("Show enemies names.\n[!] Not Currently Working.");
 			if (DrawNames) {
 				ImGui::SameLine();
 				ImGui::ColorEdit4("Name Visible Color", Modules::Colors::VisibleNameColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
@@ -339,9 +344,9 @@ struct Sense {
 			ImGui::SameLine();
 		    ImGui::ColorEdit4("Team Color", Modules::Colors::TeamColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
 			
-			ImGui::Checkbox("Show Team Names", &TeamNames);
+			ImGui::Checkbox("Show Team Names [!]", &TeamNames);
 			if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-		        ImGui::SetTooltip("Draw Name ESP on Teammates");
+		        ImGui::SetTooltip("Draw Name ESP on Teammates\n[!] Not Currently Working.");
 			ImGui::SameLine();
 			ImGui::ColorEdit4("Team Name Color", Modules::Colors::TeamNameColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs);
 
@@ -411,34 +416,169 @@ struct Sense {
     bool Save() {
         try {
             Config::Sense::VisibilityCheck = VisibilityCheck;
-            Config::Sense::DrawSeer = DrawSeer;
-            Config::Sense::DrawStatus = DrawStatus;
-            Config::Sense::ShowMaxStatusValues = ShowMaxStatusValues;
-            Config::Sense::ShowSpectators = ShowSpectators;
-            Config::Sense::DrawFOVCircle = DrawFOVCircle;
-            Config::Sense::DrawFilledFOVCircle = DrawFilledFOVCircle;
-            Config::Sense::GameFOV = GameFOV;
-            /*Config::Sense::DrawBox = DrawBox;
-            Config::Sense::DrawFilledBox = DrawFilledBox;*/
-            Config::Sense::BoxThickness = BoxThickness;
-            Config::Sense::Skeleton = Skeleton;
-            Config::Sense::SkeletonThickness = SkeletonThickness;
-            Config::Sense::ESPMaxDistance = ESPMaxDistance;
-            Config::Sense::ShowNear = ShowNear;
-            Config::Sense::DrawNames = DrawNames;
-            Config::Sense::DrawDistance = DrawDistance;
-            Config::Sense::DrawCrosshair = DrawCrosshair;
-            Config::Sense::CrosshairSize = CrosshairSize;
-            Config::Sense::CrosshairThickness = CrosshairThickness;
-            Config::Sense::ShowTeam = ShowTeam;
-            Config::Sense::ShowTeam = TeamNames;
-            Config::Sense::DrawTracers = DrawTracers;
-            Config::Sense::ShowLegend = ShowLegend;
-            Config::Sense::DrawWeapon = DrawWeapon;
-            Config::Sense::WeaponColorType = WeaponColorType;
-            Config::Sense::TracerThickness = TracerThickness;
-            Config::Sense::TracerPos = TracerPosition;
-            Config::Sense::TracerBone = TracerBone;
+
+			Config::Sense::DrawBoxes = DrawBoxes;
+			Config::Sense::BoxType = BoxType;
+			Config::Sense::BoxStyle = BoxStyle;
+			Config::Sense::BoxThickness = BoxThickness;
+
+			Config::Sense::Skeleton = Skeleton;
+			Config::Sense::SkeletonThickness = SkeletonThickness;
+
+			Config::Sense::HealthBar = HealthBar;
+			Config::Sense::ShieldBar = ShieldBar;
+			Config::Sense::BarMode = BarMode;
+			Config::Sense::BarStyle = BarStyle;
+			Config::Sense::BarColorMode = Modules::Sense::BarColorMode;
+			Config::Sense::BarBackground = Modules::Sense::BarBackground;
+			Config::Sense::BarThickness = BarThickness;
+			Config::Sense::BarThickness2 = BarThickness2;
+			Config::Sense::BarHeight = BarHeight;
+			Config::Sense::BarWidth = BarWidth;
+
+			Config::Sense::ESPMaxDistance = ESPMaxDistance;
+			Config::Sense::ShowNear = ShowNear;
+			Config::Sense::DrawSeer = DrawSeer;
+			Config::Sense::DrawStatus = DrawStatus;
+			Config::Sense::DrawWeapon = DrawWeapon;
+			Config::Sense::WeaponColorType = WeaponColorType;
+			Config::Sense::ShowLegend = ShowLegend;
+			Config::Sense::ShowMaxStatusValues = ShowMaxStatusValues;
+			Config::Sense::DrawDistance = DrawDistance;
+			Config::Sense::DrawFOVCircle = DrawFOVCircle;
+			Config::Sense::DrawFilledFOVCircle = DrawFilledFOVCircle;
+			Config::Sense::FOVThickness = FOVThickness;
+			Config::Sense::DrawNames = DrawNames;
+			Config::Sense::TracerPos = TracerPosition;
+			Config::Sense::TracerBone = TracerBone;
+			Config::Sense::DrawTracers = DrawTracers;
+			Config::Sense::TracerThickness = TracerThickness;
+			Config::Sense::ShowSpectators = ShowSpectators;
+			Config::Sense::DrawCrosshair = DrawCrosshair;
+			Config::Sense::CrosshairSize = CrosshairSize;
+			Config::Sense::CrosshairThickness = CrosshairThickness;
+			Config::Sense::GameFOV = GameFOV;
+			Config::Sense::ShowTeam = ShowTeam;
+			Config::Sense::TeamNames = TeamNames;
+
+//Colors
+	    //Config::Sense::WeaponColorType = WeaponColorType;
+	    Config::Colors::InvisibleBoxColorR = Modules::Colors::InvisibleBoxColor[0];
+	    Config::Colors::InvisibleBoxColorG = Modules::Colors::InvisibleBoxColor[1];
+	    Config::Colors::InvisibleBoxColorB = Modules::Colors::InvisibleBoxColor[2];
+	    Config::Colors::InvisibleBoxColorA = Modules::Colors::InvisibleBoxColor[3];
+	    Config::Colors::VisibleBoxColorR = Modules::Colors::VisibleBoxColor[0];
+	    Config::Colors::VisibleBoxColorG = Modules::Colors::VisibleBoxColor[1];
+	    Config::Colors::VisibleBoxColorB = Modules::Colors::VisibleBoxColor[2];
+	    Config::Colors::VisibleBoxColorA = Modules::Colors::VisibleBoxColor[3];
+	    Config::Colors::InvisibleFilledBoxColorR = Modules::Colors::InvisibleFilledBoxColor[0];
+	    Config::Colors::InvisibleFilledBoxColorG = Modules::Colors::InvisibleFilledBoxColor[1];
+	    Config::Colors::InvisibleFilledBoxColorB = Modules::Colors::InvisibleFilledBoxColor[2];
+	    Config::Colors::InvisibleFilledBoxColorA = Modules::Colors::InvisibleFilledBoxColor[3];
+	    Config::Colors::VisibleFilledBoxColorR = Modules::Colors::VisibleFilledBoxColor[0];
+	    Config::Colors::VisibleFilledBoxColorG = Modules::Colors::VisibleFilledBoxColor[1];
+	    Config::Colors::VisibleFilledBoxColorB = Modules::Colors::VisibleFilledBoxColor[2];
+	    Config::Colors::VisibleFilledBoxColorA = Modules::Colors::VisibleFilledBoxColor[3];
+	    Config::Colors::InvisibleTracerColorR = Modules::Colors::InvisibleTracerColor[0];
+	    Config::Colors::InvisibleTracerColorG = Modules::Colors::InvisibleTracerColor[1];
+	    Config::Colors::InvisibleTracerColorB = Modules::Colors::InvisibleTracerColor[2];
+	    Config::Colors::InvisibleTracerColorA = Modules::Colors::InvisibleTracerColor[3];
+	    Config::Colors::VisibleTracerColorR = Modules::Colors::VisibleTracerColor[0];
+	    Config::Colors::VisibleTracerColorG = Modules::Colors::VisibleTracerColor[1];
+	    Config::Colors::VisibleTracerColorB = Modules::Colors::VisibleTracerColor[2];
+	    Config::Colors::VisibleTracerColorA = Modules::Colors::VisibleTracerColor[3];
+	    Config::Colors::InvisibleSkeletonColorR = Modules::Colors::InvisibleSkeletonColor[0];
+	    Config::Colors::InvisibleSkeletonColorG = Modules::Colors::InvisibleSkeletonColor[1];
+	    Config::Colors::InvisibleSkeletonColorB = Modules::Colors::InvisibleSkeletonColor[2];
+	    Config::Colors::InvisibleSkeletonColorA = Modules::Colors::InvisibleSkeletonColor[3];
+	    Config::Colors::VisibleSkeletonColorR = Modules::Colors::VisibleSkeletonColor[0];
+	    Config::Colors::VisibleSkeletonColorG = Modules::Colors::VisibleSkeletonColor[1];
+	    Config::Colors::VisibleSkeletonColorB = Modules::Colors::VisibleSkeletonColor[2];
+	    Config::Colors::VisibleSkeletonColorA = Modules::Colors::VisibleSkeletonColor[3];
+	    Config::Colors::InvisibleNameColorR = Modules::Colors::InvisibleNameColor[0];
+	    Config::Colors::InvisibleNameColorG = Modules::Colors::InvisibleNameColor[1];
+	    Config::Colors::InvisibleNameColorB = Modules::Colors::InvisibleNameColor[2];
+	    Config::Colors::InvisibleNameColorA = Modules::Colors::InvisibleNameColor[3];
+	    Config::Colors::VisibleNameColorR = Modules::Colors::VisibleNameColor[0];
+	    Config::Colors::VisibleNameColorG = Modules::Colors::VisibleNameColor[1];
+	    Config::Colors::VisibleNameColorB = Modules::Colors::VisibleNameColor[2];
+	    Config::Colors::VisibleNameColorA = Modules::Colors::VisibleNameColor[3];
+	    Config::Colors::InvisibleDistanceColorR = Modules::Colors::InvisibleDistanceColor[0];
+	    Config::Colors::InvisibleDistanceColorG = Modules::Colors::InvisibleDistanceColor[1];
+	    Config::Colors::InvisibleDistanceColorB = Modules::Colors::InvisibleDistanceColor[2];
+	    Config::Colors::InvisibleDistanceColorA = Modules::Colors::InvisibleDistanceColor[3];
+	    Config::Colors::VisibleDistanceColorR = Modules::Colors::VisibleDistanceColor[0];
+	    Config::Colors::VisibleDistanceColorG = Modules::Colors::VisibleDistanceColor[1];
+	    Config::Colors::VisibleDistanceColorB = Modules::Colors::VisibleDistanceColor[2];
+	    Config::Colors::VisibleDistanceColorA = Modules::Colors::VisibleDistanceColor[3];
+	    Config::Colors::InvisibleWeaponColorR = Modules::Colors::InvisibleWeaponColor[0];
+	    Config::Colors::InvisibleWeaponColorG = Modules::Colors::InvisibleWeaponColor[1];
+	    Config::Colors::InvisibleWeaponColorB = Modules::Colors::InvisibleWeaponColor[2];
+	    Config::Colors::InvisibleWeaponColorA = Modules::Colors::InvisibleWeaponColor[3];
+	    Config::Colors::VisibleWeaponColorR = Modules::Colors::VisibleWeaponColor[0];
+	    Config::Colors::VisibleWeaponColorG = Modules::Colors::VisibleWeaponColor[1];
+	    Config::Colors::VisibleWeaponColorB = Modules::Colors::VisibleWeaponColor[2];
+	    Config::Colors::VisibleWeaponColorA = Modules::Colors::VisibleWeaponColor[3];
+	    Config::Colors::FOVColorR = Modules::Colors::FOVColor[0];
+	    Config::Colors::FOVColorG = Modules::Colors::FOVColor[1];
+	    Config::Colors::FOVColorB = Modules::Colors::FOVColor[2];
+	    Config::Colors::FOVColorA = Modules::Colors::FOVColor[3];
+	    Config::Colors::FilledFOVColorR = Modules::Colors::FilledFOVColor[0];
+	    Config::Colors::FilledFOVColorG = Modules::Colors::FilledFOVColor[1];
+	    Config::Colors::FilledFOVColorB = Modules::Colors::FilledFOVColor[2];
+	    Config::Colors::FilledFOVColorA = Modules::Colors::FilledFOVColor[3];
+	    Config::Colors::NearColorR = Modules::Colors::NearColor[0];
+	    Config::Colors::NearColorG = Modules::Colors::NearColor[1];
+	    Config::Colors::NearColorB = Modules::Colors::NearColor[2];
+	    Config::Colors::NearColorA = Modules::Colors::NearColor[3];
+	    Config::Colors::TeamColorR = Modules::Colors::TeamColor[0];
+	    Config::Colors::TeamColorG = Modules::Colors::TeamColor[1];
+	    Config::Colors::TeamColorB = Modules::Colors::TeamColor[2];
+	    Config::Colors::TeamColorA = Modules::Colors::TeamColor[3];
+	    Config::Colors::TeamNameColorR = Modules::Colors::TeamNameColor[0];
+	    Config::Colors::TeamNameColorG = Modules::Colors::TeamNameColor[1];
+	    Config::Colors::TeamNameColorB = Modules::Colors::TeamNameColor[2];
+	    Config::Colors::TeamNameColorA = Modules::Colors::TeamNameColor[3];
+	    Config::Colors::CrosshairColorR = Modules::Colors::CrosshairColor[0];
+	    Config::Colors::CrosshairColorG = Modules::Colors::CrosshairColor[1];
+	    Config::Colors::CrosshairColorB = Modules::Colors::CrosshairColor[2];
+	    Config::Colors::CrosshairColorA = Modules::Colors::CrosshairColor[3];
+	    //Weapon Colors
+	    Config::Colors::LightWeaponColorR = Modules::Colors::LightWeaponColor[0];
+	    Config::Colors::LightWeaponColorG = Modules::Colors::LightWeaponColor[1];
+	    Config::Colors::LightWeaponColorB = Modules::Colors::LightWeaponColor[2];
+	    Config::Colors::LightWeaponColorA = Modules::Colors::LightWeaponColor[3];
+	    Config::Colors::HeavyWeaponColorR = Modules::Colors::HeavyWeaponColor[0];
+	    Config::Colors::HeavyWeaponColorG = Modules::Colors::HeavyWeaponColor[1];
+	    Config::Colors::HeavyWeaponColorB = Modules::Colors::HeavyWeaponColor[2];
+	    Config::Colors::HeavyWeaponColorA = Modules::Colors::HeavyWeaponColor[3];
+	    Config::Colors::EnergyWeaponColorR = Modules::Colors::EnergyWeaponColor[0];
+	    Config::Colors::EnergyWeaponColorG = Modules::Colors::EnergyWeaponColor[1];
+	    Config::Colors::EnergyWeaponColorB = Modules::Colors::EnergyWeaponColor[2];
+	    Config::Colors::EnergyWeaponColorA = Modules::Colors::EnergyWeaponColor[3];
+	    Config::Colors::ShotgunWeaponColorR = Modules::Colors::ShotgunWeaponColor[0];
+	    Config::Colors::ShotgunWeaponColorG = Modules::Colors::ShotgunWeaponColor[1];
+	    Config::Colors::ShotgunWeaponColorB = Modules::Colors::ShotgunWeaponColor[2];
+	    Config::Colors::ShotgunWeaponColorA = Modules::Colors::ShotgunWeaponColor[3];
+	    Config::Colors::SniperWeaponColorR = Modules::Colors::SniperWeaponColor[0];
+	    Config::Colors::SniperWeaponColorG = Modules::Colors::SniperWeaponColor[1];
+	    Config::Colors::SniperWeaponColorB = Modules::Colors::SniperWeaponColor[2];
+	    Config::Colors::SniperWeaponColorA = Modules::Colors::SniperWeaponColor[3];
+	    Config::Colors::LegendaryWeaponColorR = Modules::Colors::LegendaryWeaponColor[0];
+	    Config::Colors::LegendaryWeaponColorG = Modules::Colors::LegendaryWeaponColor[1];
+	    Config::Colors::LegendaryWeaponColorB = Modules::Colors::LegendaryWeaponColor[2];
+	    Config::Colors::LegendaryWeaponColorA = Modules::Colors::LegendaryWeaponColor[3];
+	    Config::Colors::MeleeWeaponColorR = Modules::Colors::MeleeWeaponColor[0];
+	    Config::Colors::MeleeWeaponColorG = Modules::Colors::MeleeWeaponColor[1];
+	    Config::Colors::MeleeWeaponColorB = Modules::Colors::MeleeWeaponColor[2];
+	    Config::Colors::MeleeWeaponColorA = Modules::Colors::MeleeWeaponColor[3];
+	    Config::Colors::ThrowableWeaponColorR = Modules::Colors::ThrowableWeaponColor[0];
+	    Config::Colors::ThrowableWeaponColorG = Modules::Colors::ThrowableWeaponColor[1];
+	    Config::Colors::ThrowableWeaponColorB = Modules::Colors::ThrowableWeaponColor[2];
+	    Config::Colors::ThrowableWeaponColorA = Modules::Colors::ThrowableWeaponColor[3];
+
+
+
             return true;
         } catch (...) {
             return false;
@@ -537,6 +677,7 @@ struct Sense {
 	}*/
 
         if(!Map->IsPlayable) return;
+		if(Myself->IsDead) return;
         if (ShowSpectators)
         {
             ImVec2 Center = ImGui::GetMainViewport()->GetCenter();
