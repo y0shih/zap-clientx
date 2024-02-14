@@ -8,6 +8,29 @@ All credits to original owners
 Instructions & Menu Previews are down below
 
 # Current Changelog:
+    14.01.24 Update
+    Main Things:
+        - Fixed Aimbot (Hopefully, play around with settings)
+        - Fixed (most) config saving & loading
+        - IGNORE the errors/numbers that show up in the terminal. To my experience, they dont interfere with the cheat (Something to do with weapons)
+    Aimbot:
+        - Fixed Cubic Bezier (xap-client) Aimbot mode
+        - Fixed Hotkeys
+        - Added Deadzone to Cubic Bezier (Recommended: Less than 0.750)
+    Sense:
+        - Fixed Saving issues
+        - Name & TeamName ESP does not work
+
+    Plans for the next update:
+        - Triggerbot Delay
+        - Triggerbot Hitbox Selection (?)
+        - Better Player Info Display Positions (Distance, Name, Weapon, Status ESP)
+        - Name ESP Fix (?)
+        - View Angles (See where players are aiming) (?)
+        - UI Change & More Themes
+
+    ------------------------------------------------------------------------------------------------------------
+
     13.01.24 (Season 20) Update
     Main Things:
         - Offsets updated (Name ESP Missing)
@@ -38,7 +61,7 @@ Instructions & Menu Previews are down below
         - MiniMap Radar
             - You need to align it properly with the ingame minimap
             - Not 100% accurate
-        - ALGS Map
+        - ALGS Map is there, however will not work due to update, will fix in the future
     Misc
         - Removed Super Grapple (Didn't work?)
 
