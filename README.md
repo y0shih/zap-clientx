@@ -1,4 +1,4 @@
-# xap-client  [LINUX]
+# xap-client [Apex Legends Cheat] [LINUX]
 **Updated to Game Version v3.0.57.21 (Season 20) (13.02.24)**
 
 By **Gerosity**
@@ -8,6 +8,29 @@ All credits to original owners
 Instructions & Menu Previews are down below
 
 # Current Changelog:
+    15.01.24 (0.3.1) Update
+    Main Things:
+        - ACTUALLY fixed aimbot this time (i hope)
+        - ADDED SUPERGLIDE FINALLY
+        - ESP Optimizations
+        - Optimizations
+    Note:
+        - Crash Issues? I'm not too sure please report to me if you get this: https://imgur.com/a/Dcz8nIY
+        - Somethings may be missing from the save/load conifg section
+        - ESP Text like name, distance and legend esp are slightly off, will fix later on
+    Aimbot:
+        - Fixed (I hope so)
+        - Aimbot Bind Method (NEW)
+            - Memory (OnFire, OnADS) or Keybinds
+        - Removed Deadzone from Cubic Beizer mode due to it just not working
+    ESP:
+        - Optimizations
+    Misc:
+        - Added SuperGlide (FINALLY)
+            - May crash the cheat? I think I fixed it though
+
+    ------------------------------------------------------------------------------------------------------------
+    
     14.01.24 Update
     Main Things:
         - Fixed Aimbot (Hopefully, play around with settings)
@@ -21,7 +44,7 @@ Instructions & Menu Previews are down below
         - Fixed Saving issues
         - Name & TeamName ESP does not work
 
-    Plans for the next update:
+    Plans for the next few update:
         - Triggerbot Delay
         - Triggerbot Hitbox Selection (?)
         - Better Player Info Display Positions (Distance, Name, Weapon, Status ESP)
@@ -64,10 +87,6 @@ Instructions & Menu Previews are down below
         - ALGS Map is there, however will not work due to update, will fix in the future
     Misc
         - Removed Super Grapple (Didn't work?)
-
-    Feedback would be much apreciated!
-    Bugs/Errors will be fixed within the next coming days, be patient and enjoy!
-
 
 # Previews (28.01.24 Update)
 
