@@ -222,14 +222,14 @@ struct Player {
     }
 
     bool IsValid() {
-        return BasePointer != 0 && Health >= 0 && (IsPlayer() || IsDummy());
+        return BasePointer != 0 && Health > 0 && (IsPlayer() || IsDummy());
     }
 
     bool IsCombatReady() {
         if (!IsValid())return false;
         if (IsDummy()) return true;
         if (IsDead) return false;
-        //if (IsKnocked) return false;
+        if (IsKnocked) return false;
         return true;
     }
 
