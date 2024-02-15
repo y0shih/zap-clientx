@@ -20,6 +20,7 @@ namespace Modules {
     namespace Aimbot {
         bool Enabled = true;
         HitboxType Hitbox = HitboxType::UpperChest;
+        int BindMethod = 0;
         InputKeyType AimBind = InputKeyType::MOUSE_Left;
         InputKeyType ExtraBind = InputKeyType::MOUSE_Right;
         
