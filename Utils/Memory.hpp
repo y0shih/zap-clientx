@@ -1,143 +1,246 @@
 #pragma once
-#include <iostream>
-#include <sstream>
+#include <string>
 #include <fstream>
-#include <filesystem>
-#include <sys/uio.h>
-#include <math.h>
-#include "Config.hpp"
-namespace fs = std::filesystem;
+#include <iostream>
+#include "../imgui/imgui.h"
+#include "../imgui/imgui_impl_glfw.h"
+#include "../imgui/imgui_impl_opengl3.h"
+#include "../Utils/HitboxType.hpp"
+#include "../Utils/InputTypes.hpp"
 
-namespace Memory {
-    pid_t PID = 0;
 
-    pid_t GetPID() {
-        if (PID > 0)
-            return PID;
-
-        for (const auto& Entry : fs::directory_iterator("/proc")) {
-            if (!Entry.is_directory())
-                continue;
-
-              std::ifstream CommandFile(std::string(Entry.path()) + "/cmdline");
-              std::string CommandLine;
-              std::getline(CommandFile, CommandLine);
-
-              if (CommandLine.find("r5apex.exe") != std::string::npos) {
-                  PID = std::stoi(Entry.path().filename());
-                  break;
-              }
-
-        }
-        return PID;
-    }
-
-    bool IsValidPointer(long Pointer) {
-        return Pointer > 0x00010000 && Pointer < 0x7FFFFFFEFFFF;
-    }
-
-    bool Read(long address, void *pBuff, size_t size) {
-        if (size == 0)
-            return false;
-        void *pAddress = (void *)address;
-        pid_t pid = GetPID();
-        struct iovec iovLocalAddressSpace[1]{0};
-        struct iovec iovRemoteAddressSpace[1]{0};
-        iovLocalAddressSpace[0].iov_base = pBuff;     // Store data in this buffer
-        iovLocalAddressSpace[0].iov_len = size;       // which has this size.
-        iovRemoteAddressSpace[0].iov_base = pAddress; // The data comes from here
-        iovRemoteAddressSpace[0].iov_len = size;      // and has this size.
-        ssize_t sSize = process_vm_readv(
-            pid,                   // Remote process id
-            iovLocalAddressSpace,  // Local iovec array
-            1,                     // Size of the local iovec array
-            iovRemoteAddressSpace, // Remote iovec array
-            1,                     // Size of the remote iovec array
-            0);                    // Flags, unused
-        if (sSize == (ssize_t)size)
-            return true;
-        else if (sSize == 0)
-            return false;
-        return false;
-    }
-
-    bool Write(long address, void *pBuff, size_t size) {
-        if (size == 0)
-            return false;
-        void *pAddress = (void *)address;
-        pid_t pid = GetPID();
-        struct iovec iovLocalAddressSpace[1]{0};
-        struct iovec iovRemoteAddressSpace[1]{0};
-        iovLocalAddressSpace[0].iov_base = pBuff;     // Store data in this buffer
-        iovLocalAddressSpace[0].iov_len = size;       // which has this size.
-        iovRemoteAddressSpace[0].iov_base = pAddress; // The data will be writted here
-        iovRemoteAddressSpace[0].iov_len = size;      // and has this size.
-        ssize_t sSize = process_vm_writev(
-            pid,                   // Remote process id
-            iovLocalAddressSpace,  // Local iovec array
-            1,                     // Size of the local iovec array
-            iovRemoteAddressSpace, // Remote iovec array
-            1,                     // Size of the remote iovec array
-            0);                    // Flags, unused
-        if (sSize == (ssize_t)size)
-            return true;
-        else if (sSize == 0)
-            return false;
-        return false;
-    }
-
-    template <class T>
-    T Read(long Address) {
-        T buffer;
-        bool success = Read(Address, &buffer, sizeof(T));
-        if (!success && Config::Home::ErrorLogging)
-        {
-            PID = 0;
-            /*throw std::invalid_argument(
-                "Failed to get " + std::to_string(sizeof(T)) + "at: " + std::to_string(Address));*/
-        }
-        return buffer;
-    }
-
-    template <class T>
-    void Write(long Address, T Value) {
-        bool success = Write(Address, &Value, sizeof(T));
-        if (!success && Config::Home::ErrorLogging) {
-            PID = 0;
-            /*throw std::invalid_argument(
-                "Failed to set " + std::to_string(sizeof(T)) + " at: " + std::to_string(Address));*/
-        }
-    }
-
-    std::string ReadString(long address) {
-        int size = sizeof(std::string);
-        char buffer[size] = {0};
-        bool success = Read(address, &buffer, size);
-        /*if (!success && Config::Home::ErrorLogging)
-            throw new std::invalid_argument("Failed to read string at address: " + address);*/
-        return std::string(buffer);
-    }
+namespace Modules {
+    namespace Home {
+    	bool TeamGamemode = true;
+        int MenuX = 1050;
+        int MenuY = 655;
+        bool IsMenuOpened = true;
+    };
     
-    std::string ReadLegend(long address, int size) {
-        char buffer[size] = { 0 };
-        bool success = Read(address, &buffer, size);
-        /*if (!success && Config::Home::ErrorLogging)
-            throw std::invalid_argument("Failed to read Legend String at address: " + address);*/
-        return std::string(buffer);
-    }
+    namespace Aimbot {
+        bool Enabled = true;
+        HitboxType Hitbox = HitboxType::UpperChest;
+        int BindMethod = 0;
+        InputKeyType AimBind = InputKeyType::MOUSE_Left;
+        InputKeyType ExtraBind = InputKeyType::MOUSE_Right;
+        
+        bool PredictMovement = true;
+        bool PredictBulletDrop = true;
+        float Speed = 20;
+        float Smooth = 0.9;
+        float FOV = 10;
+        float ZoomScale = 3.0;
+        float MinDistance = 1;
+        float HipfireDistance = 200;
+        float ZoomDistance = 200;
+        
+        //AdvancedHitbox
+        HitboxType P2020Hitbox = HitboxType::UpperChest;
+        HitboxType RE45Hitbox = HitboxType::UpperChest;
+        HitboxType AlternatorHitbox = HitboxType::UpperChest;
+        HitboxType R99Hitbox = HitboxType::UpperChest;
+        HitboxType R301Hitbox = HitboxType::UpperChest;
+        HitboxType SpitfireHitbox = HitboxType::UpperChest;
+        HitboxType G7Hitbox = HitboxType::UpperChest;
+        HitboxType FlatlineHitbox = HitboxType::UpperChest;
+        HitboxType HemlockHitbox = HitboxType::UpperChest;
+        HitboxType RepeaterHitbox = HitboxType::UpperChest;
+        HitboxType RampageHitbox = HitboxType::UpperChest;
+        HitboxType CARSMGHitbox = HitboxType::UpperChest;
+        HitboxType HavocHitbox = HitboxType::UpperChest;
+        HitboxType DevotionHitbox = HitboxType::UpperChest;
+        HitboxType LSTARHitbox = HitboxType::UpperChest;
+        HitboxType TripleTakeHitbox = HitboxType::UpperChest;
+        HitboxType VoltHitbox = HitboxType::UpperChest;
+        HitboxType NemesisHitbox = HitboxType::UpperChest;
+        HitboxType MozambiqueHitbox = HitboxType::UpperChest;
+        HitboxType EVA8Hitbox = HitboxType::UpperChest;
+        HitboxType PeacekeeperHitbox = HitboxType::UpperChest;
+        HitboxType MastiffHitbox = HitboxType::UpperChest;
+        HitboxType LongbowHitbox = HitboxType::UpperChest;
+        HitboxType ChargeRifleHitbox = HitboxType::UpperChest;
+        HitboxType SentinelHitbox = HitboxType::UpperChest;
+        HitboxType WingmanHitbox = HitboxType::UpperChest;
+        HitboxType ProwlerHitbox = HitboxType::UpperChest;
+        HitboxType BocekHitbox = HitboxType::UpperChest;
+        HitboxType KraberHitbox = HitboxType::UpperChest;
+        HitboxType ThrowingKnifeHitbox = HitboxType::UpperChest;
 
-    std::string ReadPlayerName(long address, int size) {
-        char buffer[size] = { 0 };
-        bool success = Read(address, &buffer, size);
-        /*if (!success && Config::Home::ErrorLogging)
-            throw new std::invalid_argument("Failed to read Player Name at address: " + address);*/
-        return std::string(buffer);
-    }
+        //AdvancedBinds
+        InputKeyType P2020AimBind = InputKeyType::MOUSE_Left;
+        InputKeyType P2020ExtraBind = InputKeyType::INPUT_NONE;
+        InputKeyType RE45AimBind = InputKeyType::MOUSE_Left;
+        InputKeyType RE45ExtraBind = InputKeyType::INPUT_NONE;
+        InputKeyType AlternatorAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType AlternatorExtraBind = InputKeyType::INPUT_NONE;
+        InputKeyType R99AimBind = InputKeyType::MOUSE_Left;
+        InputKeyType R99ExtraBind = InputKeyType::INPUT_NONE;
+        InputKeyType R301AimBind = InputKeyType::MOUSE_Left;
+        InputKeyType R301ExtraBind = InputKeyType::INPUT_NONE;
+        InputKeyType SpitfireAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType SpitfireExtraBind = InputKeyType::INPUT_NONE;
+        InputKeyType G7AimBind = InputKeyType::MOUSE_Left;
+        InputKeyType G7ExtraBind = InputKeyType::MOUSE_Right;
 
-    std::string ConvertPointerToHexString(long pointer) {
-        std::stringstream stream;
-        stream << "0x" << std::hex << pointer;
-        std::string result(stream.str());
-        return result;
-    }
-}
+        InputKeyType FlatlineAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType FlatlineExtraBind = InputKeyType::INPUT_NONE;
+        InputKeyType HemlockAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType HemlockExtraBind = InputKeyType::INPUT_NONE;
+        InputKeyType RepeaterAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType RepeaterExtraBind = InputKeyType::MOUSE_Right;
+        InputKeyType RampageAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType RampageExtraBind = InputKeyType::INPUT_NONE;
+        InputKeyType CARSMGAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType CARSMGExtraBind = InputKeyType::INPUT_NONE;
+        
+        InputKeyType HavocAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType HavocExtraBind = InputKeyType::INPUT_NONE;
+        InputKeyType DevotionAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType DevotionExtraBind = InputKeyType::INPUT_NONE;
+        InputKeyType LSTARAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType LSTARExtraBind = InputKeyType::INPUT_NONE;
+        InputKeyType TripleTakeAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType TripleTakeExtraBind = InputKeyType::MOUSE_Right;
+        InputKeyType VoltAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType VoltExtraBind = InputKeyType::INPUT_NONE;
+        InputKeyType NemesisAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType NemesisExtraBind = InputKeyType::INPUT_NONE;
+
+        InputKeyType MozambiqueAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType MozambiqueExtraBind = InputKeyType::MOUSE_Right;
+        InputKeyType EVA8AimBind = InputKeyType::MOUSE_Left;
+        InputKeyType EVA8ExtraBind = InputKeyType::MOUSE_Right;
+        InputKeyType PeacekeeperAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType PeacekeeperExtraBind = InputKeyType::MOUSE_Right;
+        InputKeyType MastiffAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType MastiffExtraBind = InputKeyType::MOUSE_Right;
+
+        InputKeyType LongbowAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType LongbowExtraBind = InputKeyType::MOUSE_Right;
+        InputKeyType ChargeRifleAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType ChargeRifleExtraBind = InputKeyType::MOUSE_Right;
+        InputKeyType SentinelAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType SentinelExtraBind = InputKeyType::MOUSE_Right;
+
+        InputKeyType WingmanAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType WingmanExtraBind = InputKeyType::INPUT_NONE;
+        InputKeyType ProwlerAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType ProwlerExtraBind = InputKeyType::INPUT_NONE;
+        InputKeyType BocekAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType BocekExtraBind = InputKeyType::MOUSE_Right;
+        InputKeyType KraberAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType KraberExtraBind = InputKeyType::MOUSE_Right;
+        InputKeyType ThrowingKnifeAimBind = InputKeyType::MOUSE_Left;
+        InputKeyType ThrowingKnifeExtraBind = InputKeyType::INPUT_NONE;
+    };
+    
+    namespace RCS {
+    
+    };
+    
+    namespace Triggerbot {
+        bool Enabled = true;
+        bool OnADS = true;
+        bool HipfireShotguns = false;
+        float Range = 200;
+    };
+    
+    namespace Glow {
+    
+    };
+
+    namespace Sense {
+        //Drawings
+        bool DrawBox = true;
+        float BoxThickness = 2;
+
+        bool DrawTracers = true;
+        int TracerPos = 0;
+        int TracerBone = 0;
+        
+        bool Skeleton = true;
+        float SkeletonThickness = 1.5f;
+        
+        int BarMode = 2;
+        int BarColorMode = 0;
+        bool BarBackground = false;
+
+        int WeaponColorType = 1;
+        
+        bool DrawSeer = false;
+        bool ShowNear = true;
+        bool DrawNames = true; 
+        
+        float ESPMaxDistance = 200;
+        
+        //Misc
+        bool ShowSpectators = true;
+        
+        //FOV
+        bool DrawFOVCircle = true;
+        float GameFOV = 120;
+        
+        //Settings
+        bool AimedAtOnly = false;
+        bool ShowTeam = false;
+        bool TeamNames = false;
+    };
+
+    namespace Radar {
+        float CircleColor[4] = { 0.999, 0, 0, 0.999 };
+    };
+    
+    namespace Misc {
+
+    };
+    
+    namespace Colors {
+    	int WeaponColorMode = 0;
+	//Advanced
+    	float InvisibleBoxColor[4] = { 0.99, 0, 0, 0.99 };
+    	float VisibleBoxColor[4] = { 0, 0.99, 0, 0.99 };
+    	float InvisibleFilledBoxColor[4] = { 0, 0, 0, 0.11 };
+    	float VisibleFilledBoxColor[4] = { 0, 0, 0, 0.11 };
+    	float InvisibleTracerColor[4] = { 0.99, 0, 0, 0.99 };
+    	float VisibleTracerColor[4] = { 0, 0.99, 0, 0.99 };
+    	float InvisibleSkeletonColor[4] = { 0.99, 0.99, 0.99, 0.99 };
+    	float VisibleSkeletonColor[4] = { 0.99, 0.99, 0.99, 0.99 };
+    	float InvisibleNameColor[4] = { 0.99, 0.99, 0.99, 0.99 };
+    	float VisibleNameColor[4] = { 0.99, 0.99, 0.99, 0.99 };
+    	float InvisibleDistanceColor[4] = { 0.99, 0.99, 0.99, 0.99 };
+    	float VisibleDistanceColor[4] = { 0.99, 0.99, 0.99, 0.99 };
+    	float InvisibleLegendColor[4] = { 0.99, 0.99, 0.99, 0.99 };
+    	float VisibleLegendColor[4] = { 0.99, 0.99, 0.99, 0.99 };
+    	float FOVColor[4] = { 0.99, 0.99, 0.99, 0.99 };
+    	float FilledFOVColor[4] = { 0, 0, 0, 0.11 };
+    	float NearColor[4] = { 0.99, 0.99, 0.99, 0.99 };
+    	float TeamColor[4] = { 0, 0.99, 0.99, 0.99 };
+    	float TeamNameColor[4] = { 0.99, 0.99, 0.99, 0.99 };
+    	float CrosshairColor[4] = { 0.99, 0.99, 0.99, 0.99 };
+    	
+    	//Bar
+    	int BarColorMode = 2;
+    	float BarBGColor[4] = { 0, 0, 0, 0.28 };
+    	
+    	//WeaponESP Colors
+    	float InvisibleWeaponColor[4] = { 0.99, 0.99, 0.99, 0.99 };
+    	float VisibleWeaponColor[4] = { 0.99, 0.99, 0.99, 0.99 };
+    	//Multiple
+    	float LightWeaponColor[4] = { 0.990, 0.768, 0.039, 0.99 };
+    	float HeavyWeaponColor[4] = { 0.00990, 0.990, 0.761 };
+    	float EnergyWeaponColor[4] = { 0, 0.99, 0, 0.99 };
+    	float ShotgunWeaponColor[4] = { 0.99, 0, 0, 0.99 };
+    	float SniperWeaponColor[4] = { 0.00990, 0.337, 0.990, 0.99 };
+    	float LegendaryWeaponColor[4] = { 0.99, 0.530, 0.945 };
+    	float MeleeWeaponColor[4] = { 0.99, 0.99, 0.99, 0.99 };
+    	float ThrowableWeaponColor[4] = { 0.990, 0.974, 0.0495, 0.99 };
+    };
+    
+    namespace Watermark {
+        bool Watermark = true;
+	    int WatermarkPosition = 0;
+	    bool Name = true;
+	    bool ProcessingSpeed = true;
+	    bool Spectators = true;
+    };
+}; //End of namespace Modules
