@@ -24,6 +24,7 @@
 #include "Features/Misc.hpp"
 #include "Features/RCS.hpp"
 #include "Features/Glow.hpp"
+//#include "Features/Test.hpp"
 
 #include "Overlay/Overlay.hpp"
 
@@ -55,6 +56,7 @@ Aimbot* AimAssist = new Aimbot(X11Display, Map, Myself, Players);
 RCS* Recoil = new RCS(X11Display, Map, Myself);
 Triggerbot* Trigger = new Triggerbot(X11Display, Map, Myself, Players);
 Misc* MiscTab = new Misc(X11Display, Map, Myself, Players);
+//Test* Testing = new Test(X11Display, Map, Myself);
 Overlay* Home = new Overlay;
 
 // Booleans and Variables
@@ -116,6 +118,9 @@ void LoadConfig() {
     // Aimbot //
     AimAssist->AimbotEnabled = Config::Aimbot::Enabled;
     AimAssist->AimbotMode = Config::Aimbot::AimbotMode;
+    Modules::Aimbot::BindMethod = Config::Aimbot::BindMethod;
+    Modules::Aimbot::AimBind = static_cast<InputKeyType>(Config::Aimbot::AimBind);
+    Modules::Aimbot::ExtraBind = static_cast<InputKeyType>(Config::Aimbot::ExtraBind);
     AimAssist->ClosestHitbox = Config::Aimbot::ClosestHitbox;
     Modules::Aimbot::Hitbox = static_cast<HitboxType>(Config::Aimbot::HitBox);
     AimAssist->TeamCheck = Config::Aimbot::TeamCheck;
@@ -185,7 +190,125 @@ void LoadConfig() {
     AimAssist->AdvancedMinDistance1 = Config::Aimbot::AdvancedMinDistance1;
     AimAssist->AdvancedMaxDistance1 = Config::Aimbot::AdvancedMaxDistance1;
     
-    //Advanced OnFire & OnADS - Aimbot Mode 0 & 1 - xap-client & grinder
+    //Advanced OnFire & OnADS
+    AimAssist->P2020Fire = Config::Aimbot::P2020Fire;
+    AimAssist->P2020ADS = Config::Aimbot::P2020ADS;
+    AimAssist->RE45Fire = Config::Aimbot::RE45Fire;
+    AimAssist->RE45ADS = Config::Aimbot::RE45ADS;
+    AimAssist->AlternatorFire = Config::Aimbot::AlternatorFire;
+    AimAssist->AlternatorADS = Config::Aimbot::AlternatorADS;
+    AimAssist->R99Fire = Config::Aimbot::R99Fire;
+    AimAssist->R99ADS = Config::Aimbot::R99ADS;
+    AimAssist->R301Fire = Config::Aimbot::R301Fire;
+    AimAssist->R301ADS = Config::Aimbot::R301ADS;
+    AimAssist->SpitfireFire = Config::Aimbot::SpitfireFire;
+    AimAssist->SpitfireADS = Config::Aimbot::SpitfireADS;
+    AimAssist->G7Fire = Config::Aimbot::G7Fire;
+    AimAssist->G7ADS = Config::Aimbot::G7ADS;
+    AimAssist->FlatlineFire = Config::Aimbot::FlatlineFire;
+    AimAssist->FlatlineADS = Config::Aimbot::FlatlineADS;
+    AimAssist->HemlockFire = Config::Aimbot::HemlockFire;
+    AimAssist->HemlockADS = Config::Aimbot::HemlockADS;
+    AimAssist->RepeaterFire = Config::Aimbot::RepeaterFire;
+    AimAssist->RepeaterADS = Config::Aimbot::RepeaterADS;
+    AimAssist->RampageFire = Config::Aimbot::RampageFire;
+    AimAssist->RampageADS = Config::Aimbot::RampageADS;
+    AimAssist->CARSMGFire = Config::Aimbot::CARSMGFire;
+    AimAssist->CARSMGADS = Config::Aimbot::CARSMGADS;
+    AimAssist->HavocFire = Config::Aimbot::HavocFire;
+    AimAssist->HavocADS = Config::Aimbot::HavocADS;
+    AimAssist->DevotionFire = Config::Aimbot::DevotionFire;
+    AimAssist->DevotionADS = Config::Aimbot::DevotionADS;
+    AimAssist->LSTARFire = Config::Aimbot::LSTARFire;
+    AimAssist->LSTARADS = Config::Aimbot::LSTARADS;
+    AimAssist->TripleTakeFire = Config::Aimbot::TripleTakeFire;
+    AimAssist->TripleTakeADS = Config::Aimbot::TripleTakeADS;
+    AimAssist->VoltFire = Config::Aimbot::VoltFire;
+    AimAssist->VoltADS = Config::Aimbot::VoltADS;
+    AimAssist->NemesisFire = Config::Aimbot::NemesisFire;
+    AimAssist->NemesisADS = Config::Aimbot::NemesisADS;
+    AimAssist->MozambiqueFire = Config::Aimbot::MozambiqueFire;
+    AimAssist->MozambiqueADS = Config::Aimbot::MozambiqueADS;
+    AimAssist->EVA8Fire = Config::Aimbot::EVA8Fire;
+    AimAssist->EVA8ADS = Config::Aimbot::EVA8ADS;
+    AimAssist->PeacekeeperFire = Config::Aimbot::PeacekeeperFire;
+    AimAssist->PeacekeeperADS = Config::Aimbot::PeacekeeperADS;
+    AimAssist->MastiffFire = Config::Aimbot::MastiffFire;
+    AimAssist->MastiffADS = Config::Aimbot::MastiffADS;
+    AimAssist->LongbowFire = Config::Aimbot::LongbowFire;
+    AimAssist->LongbowADS = Config::Aimbot::LongbowADS;
+    AimAssist->ChargeRifleFire = Config::Aimbot::ChargeRifleFire;
+    AimAssist->ChargeRifleADS = Config::Aimbot::ChargeRifleADS;
+    AimAssist->SentinelFire = Config::Aimbot::SentinelFire;
+    AimAssist->SentinelADS = Config::Aimbot::SentinelADS;
+    AimAssist->WingmanFire = Config::Aimbot::WingmanFire;
+    AimAssist->WingmanADS = Config::Aimbot::WingmanADS;
+    AimAssist->ProwlerFire = Config::Aimbot::ProwlerFire;
+    AimAssist->ProwlerADS = Config::Aimbot::ProwlerADS;
+    AimAssist->KraberFire = Config::Aimbot::KraberFire;
+    AimAssist->KraberADS = Config::Aimbot::KraberADS;
+    AimAssist->BocekFire = Config::Aimbot::BocekFire;
+    AimAssist->BocekADS = Config::Aimbot::BocekADS;
+    AimAssist->ThrowingKnifeFire = Config::Aimbot::ThrowingKnifeFire;
+    AimAssist->ThrowingKnifeADS = Config::Aimbot::ThrowingKnifeADS;
+
+    //Keybinds
+    Modules::Aimbot::P2020AimBind = static_cast<InputKeyType>(Config::Aimbot::P2020AimBind);
+    Modules::Aimbot::P2020ExtraBind = static_cast<InputKeyType>(Config::Aimbot::P2020ExtraBind);
+    Modules::Aimbot::RE45AimBind = static_cast<InputKeyType>(Config::Aimbot::RE45AimBind);
+    Modules::Aimbot::RE45ExtraBind = static_cast<InputKeyType>(Config::Aimbot::RE45ExtraBind);
+    Modules::Aimbot::AlternatorAimBind = static_cast<InputKeyType>(Config::Aimbot::AlternatorAimBind);
+    Modules::Aimbot::AlternatorExtraBind = static_cast<InputKeyType>(Config::Aimbot::AlternatorExtraBind);
+    Modules::Aimbot::R99AimBind = static_cast<InputKeyType>(Config::Aimbot::R99AimBind);
+    Modules::Aimbot::R99ExtraBind = static_cast<InputKeyType>(Config::Aimbot::R99ExtraBind);
+    Modules::Aimbot::R301AimBind = static_cast<InputKeyType>(Config::Aimbot::R301AimBind);
+    Modules::Aimbot::R301ExtraBind = static_cast<InputKeyType>(Config::Aimbot::R301ExtraBind);
+    Modules::Aimbot::SpitfireAimBind = static_cast<InputKeyType>(Config::Aimbot::SpitfireAimBind);
+    Modules::Aimbot::SpitfireExtraBind = static_cast<InputKeyType>(Config::Aimbot::SpitfireExtraBind);
+    Modules::Aimbot::G7AimBind = static_cast<InputKeyType>(Config::Aimbot::G7AimBind);
+    Modules::Aimbot::G7ExtraBind = static_cast<InputKeyType>(Config::Aimbot::G7ExtraBind);
+    Modules::Aimbot::FlatlineAimBind = static_cast<InputKeyType>(Config::Aimbot::FlatlineAimBind);
+    Modules::Aimbot::FlatlineExtraBind = static_cast<InputKeyType>(Config::Aimbot::FlatlineExtraBind);
+    Modules::Aimbot::HemlockAimBind = static_cast<InputKeyType>(Config::Aimbot::HemlockAimBind);
+    Modules::Aimbot::HemlockExtraBind = static_cast<InputKeyType>(Config::Aimbot::HemlockExtraBind);
+    Modules::Aimbot::RepeaterAimBind = static_cast<InputKeyType>(Config::Aimbot::RepeaterAimBind);
+    Modules::Aimbot::RepeaterExtraBind = static_cast<InputKeyType>(Config::Aimbot::RepeaterExtraBind);
+    Modules::Aimbot::RampageAimBind = static_cast<InputKeyType>(Config::Aimbot::RampageAimBind);
+    Modules::Aimbot::RampageExtraBind = static_cast<InputKeyType>(Config::Aimbot::RampageExtraBind);
+    Modules::Aimbot::CARSMGAimBind = static_cast<InputKeyType>(Config::Aimbot::CARSMGAimBind);
+    Modules::Aimbot::CARSMGExtraBind = static_cast<InputKeyType>(Config::Aimbot::CARSMGExtraBind);
+    Modules::Aimbot::HavocAimBind = static_cast<InputKeyType>(Config::Aimbot::HavocAimBind);
+    Modules::Aimbot::HavocExtraBind = static_cast<InputKeyType>(Config::Aimbot::HavocExtraBind);
+    Modules::Aimbot::DevotionAimBind = static_cast<InputKeyType>(Config::Aimbot::DevotionAimBind);
+    Modules::Aimbot::DevotionExtraBind = static_cast<InputKeyType>(Config::Aimbot::DevotionExtraBind);
+    Modules::Aimbot::LSTARAimBind = static_cast<InputKeyType>(Config::Aimbot::LSTARAimBind);
+    Modules::Aimbot::LSTARExtraBind = static_cast<InputKeyType>(Config::Aimbot::LSTARExtraBind);
+    Modules::Aimbot::TripleTakeAimBind = static_cast<InputKeyType>(Config::Aimbot::TripleTakeAimBind);
+    Modules::Aimbot::TripleTakeExtraBind = static_cast<InputKeyType>(Config::Aimbot::TripleTakeExtraBind);
+    Modules::Aimbot::VoltAimBind = static_cast<InputKeyType>(Config::Aimbot::VoltAimBind);
+    Modules::Aimbot::VoltExtraBind = static_cast<InputKeyType>(Config::Aimbot::VoltExtraBind);
+    Modules::Aimbot::NemesisAimBind = static_cast<InputKeyType>(Config::Aimbot::NemesisAimBind);
+    Modules::Aimbot::NemesisExtraBind = static_cast<InputKeyType>(Config::Aimbot::NemesisExtraBind);
+    Modules::Aimbot::MozambiqueAimBind = static_cast<InputKeyType>(Config::Aimbot::MozambiqueAimBind);
+    Modules::Aimbot::MozambiqueExtraBind = static_cast<InputKeyType>(Config::Aimbot::MozambiqueExtraBind);
+    Modules::Aimbot::EVA8AimBind = static_cast<InputKeyType>(Config::Aimbot::EVA8AimBind);
+    Modules::Aimbot::EVA8ExtraBind = static_cast<InputKeyType>(Config::Aimbot::EVA8ExtraBind);
+    Modules::Aimbot::PeacekeeperAimBind = static_cast<InputKeyType>(Config::Aimbot::PeacekeeperAimBind);
+    Modules::Aimbot::PeacekeeperExtraBind = static_cast<InputKeyType>(Config::Aimbot::PeacekeeperExtraBind);
+    Modules::Aimbot::MastiffAimBind = static_cast<InputKeyType>(Config::Aimbot::MastiffAimBind);
+    Modules::Aimbot::MastiffExtraBind = static_cast<InputKeyType>(Config::Aimbot::MastiffExtraBind);
+    Modules::Aimbot::WingmanAimBind = static_cast<InputKeyType>(Config::Aimbot::WingmanAimBind);
+    Modules::Aimbot::WingmanExtraBind = static_cast<InputKeyType>(Config::Aimbot::WingmanExtraBind);
+    Modules::Aimbot::BocekAimBind = static_cast<InputKeyType>(Config::Aimbot::BocekAimBind);
+    Modules::Aimbot::BocekExtraBind = static_cast<InputKeyType>(Config::Aimbot::BocekExtraBind);
+    Modules::Aimbot::ProwlerAimBind = static_cast<InputKeyType>(Config::Aimbot::ProwlerAimBind);
+    Modules::Aimbot::ProwlerExtraBind = static_cast<InputKeyType>(Config::Aimbot::ProwlerExtraBind);
+    Modules::Aimbot::KraberAimBind = static_cast<InputKeyType>(Config::Aimbot::KraberAimBind);
+    Modules::Aimbot::KraberExtraBind = static_cast<InputKeyType>(Config::Aimbot::KraberExtraBind);
+    Modules::Aimbot::ThrowingKnifeAimBind = static_cast<InputKeyType>(Config::Aimbot::ThrowingKnifeAimBind);
+    Modules::Aimbot::ThrowingKnifeExtraBind = static_cast<InputKeyType>(Config::Aimbot::ThrowingKnifeExtraBind);
+
+    //Aimbot Mode 0 & 1 - xap-client & grinder
     AimAssist->P2020ClosestHitbox = Config::Aimbot::P2020ClosestHitbox;
     AimAssist->P2020Hitbox = Config::Aimbot::P2020Hitbox;
     AimAssist->P2020Speed = Config::Aimbot::P2020Speed;
@@ -922,6 +1045,7 @@ void LoadConfig() {
     // Misc //
     MiscTab->SkinChanger = Config::Misc::SkinChanger;
     MiscTab->AutoGrapple = Config::Misc::AutoGrapple;
+    MiscTab->SuperGlide = Config::Misc::SuperGlide;
     // Weapons //
     MiscTab->SkinP2020 = Config::Misc::SkinP2020;
     MiscTab->SkinRE45 = Config::Misc::SkinRE45;
@@ -1610,6 +1734,7 @@ void RenderUI() {
         ESP->RenderUI();
         MapRadar->RenderUI();
         MiscTab->RenderUI();
+        //Testing->RenderUI();
         
     	if (ImGui::BeginTabItem("Config", nullptr, ImGuiTabItemFlags_NoCloseWithMiddleMouseButton | ImGuiTabItemFlags_NoReorder)) {
     		ImVec2 TabSize;
@@ -1707,6 +1832,69 @@ bool UpdateCore() {
     return false;
 }
 
+void SuperGlideThreadRun()
+{
+    while(!StopThread)
+    {
+        if (!Map->IsPlayable)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            continue;
+        }
+
+        if (!Myself->IsValid())
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            continue;
+        }
+
+        if(!MiscTab->SuperGlide)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            continue;
+        }
+
+        if(!InputManager::isKeyDownOrPress(InputKeyType::KEYBOARD_SPACE))
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            continue;
+        }
+
+        static float startjumpTime = 0;
+        static bool startSg = false;
+        static float traversalProgressTmp = 0.0;
+
+        float worldtime = Memory::Read<float>(Myself->BasePointer + OFF_TIME_BASE); // Current time
+        float traversalStartTime = Memory::Read<float>(Myself->BasePointer + OFFSET_TRAVERSAL_START_TIME); // Time to start wall climbing
+        float traversalProgress = Memory::Read<float>(Myself->BasePointer + OFFSET_TRAVERSAL_PROGRESS); // Wall climbing, if > 0.87 it is almost over.
+        float HangOnWall = -(traversalStartTime - worldtime);
+
+        if (HangOnWall > 0.1 && HangOnWall < 0.12)
+        {
+            Memory::Write<int>(OFF_REGION + OFF_IN_JUMP + 0x8, 4);
+        }
+        if (traversalProgress > 0.87f && !startSg && HangOnWall > 0.1f && HangOnWall < 1.5f)
+        {
+            //start SG
+            startjumpTime = worldtime;
+            startSg = true;
+        }
+        if (startSg)
+        {
+            //printf ("sg Press jump\n");
+            Memory::Write<int>(OFF_REGION + OFF_IN_JUMP + 0x8, 5);
+            while (Memory::Read<float>(Myself->BasePointer + OFF_TIME_BASE) - startjumpTime < 0.011);
+            {
+                Memory::Write<int>(OFF_REGION + OFF_IN_DUCK + 0x8, 6);
+                std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                Memory::Write<int>(OFF_REGION + OFF_IN_JUMP + 0x8, 4);
+                std::this_thread::sleep_for(std::chrono::milliseconds(600));
+            }
+            startSg = false;
+        }
+    }
+}
+
 // Main
 int main(int argc, char *argv[]) {
     if (getuid()) { 
@@ -1721,7 +1909,7 @@ int main(int argc, char *argv[]) {
         std::this_thread::sleep_for(std::chrono::seconds(3));
     }
 
-    std::system("clear"); //Ignore These Warnings
+    std::system("clear");
     std::cout << " " << std::endl; //Spacing
 
     LoadASCIIConfig();
@@ -1896,7 +2084,7 @@ int main(int argc, char *argv[]) {
     }
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    std::cout << "zap client - ver 0.3.0" << std::endl;
+    std::cout << "zap client - ver 0.3.1" << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(1));
     std::cout << "By Gerosity" << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -1911,6 +2099,10 @@ int main(int argc, char *argv[]) {
     X11Thread.detach();
     std::thread InputManagerThread(InputManager::run);
     InputManagerThread.detach();
+
+
+    std::thread SuperGlideThread(SuperGlideThreadRun);
+    SuperGlideThread.detach();
 
     // Initialize the whole process //
     try {
@@ -1936,6 +2128,6 @@ int main(int argc, char *argv[]) {
     InputManager::StopThread = true;
     X11Thread.join();
     InputManagerThread.join();
-
+    SuperGlideThread.join();
     return 0;
 };
