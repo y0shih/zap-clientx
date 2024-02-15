@@ -108,7 +108,7 @@ struct Aimbot {
     bool Knife = true;
     
     //---------------Advanced---------------//
-    bool AdvancedAim = false;
+    bool AdvancedAim = true;
     bool AdvancedFire = true;
     bool AdvancedADS = false;
     //Aimbot Mode 0 - xap-client
@@ -126,6 +126,68 @@ struct Aimbot {
     float AdvancedDeadzone = 0.5;
     float AdvancedMinDistance1 = 1;
     float AdvancedMaxDistance1 = 200;
+
+	//Advanced OnFire & OnADS - Aimbot Mode 0 & 1 - xap-client & grinder
+    bool P2020Fire = true;
+    bool P2020ADS = false;
+    bool RE45Fire = true;
+    bool RE45ADS = false;
+    bool AlternatorFire = true;
+    bool AlternatorADS = false;
+    bool R99Fire = true;
+    bool R99ADS = false;
+    bool R301Fire = true;
+    bool R301ADS = false;
+    bool SpitfireFire = true;
+    bool SpitfireADS = false;
+    bool G7Fire = true;
+    bool G7ADS = false;
+    bool FlatlineFire = true;
+    bool FlatlineADS = false;
+    bool HemlockFire = true;
+    bool HemlockADS = false;
+    bool RepeaterFire = true;
+    bool RepeaterADS = false;
+    bool RampageFire = true;
+    bool RampageADS = false;
+    bool CARSMGFire = true;
+    bool CARSMGADS = false;
+    bool HavocFire = true;
+    bool HavocADS = false;
+    bool DevotionFire = true;
+    bool DevotionADS = false;
+    bool LSTARFire = true;
+    bool LSTARADS = false;
+    bool TripleTakeFire = true;
+    bool TripleTakeADS = false;
+    bool VoltFire = true;
+    bool VoltADS = false;
+    bool NemesisFire = true;
+    bool NemesisADS = false;
+    bool MozambiqueFire = true;
+    bool MozambiqueADS = false;
+    bool EVA8Fire = true;
+    bool EVA8ADS = false;
+    bool PeacekeeperFire = true;
+    bool PeacekeeperADS = false;
+    bool MastiffFire = true;
+    bool MastiffADS = false;
+    bool LongbowFire = true;
+    bool LongbowADS = false;
+    bool ChargeRifleFire = true;
+    bool ChargeRifleADS = false;
+    bool SentinelFire = true;
+    bool SentinelADS = false;
+    bool WingmanFire = true;
+    bool WingmanADS = false;
+    bool ProwlerFire = true;
+    bool ProwlerADS = false;
+    bool KraberFire = true;
+    bool KraberADS = false;
+    bool BocekFire = true;
+    bool BocekADS = false;
+    bool ThrowingKnifeFire = true;
+    bool ThrowingKnifeADS = false;
     
     //Advanced Speed, Smooth + Hitbox - Aimbot Mode 0 - xap-client
     bool P2020ClosestHitbox = true;
@@ -533,15 +595,14 @@ struct Aimbot {
 					ImGui::SetTooltip("Toggle the Aimbot.");
 
 				ImGui::SameLine();
-				const char* AimbotModeIndex[] = {"Cubic Bezier (xap-client)", "Grinder"};
+				const char* AimbotModeIndex[] = {"Cubic Bezier (xap-client)", "Grinder (Advanced)"};
 				ImGui::Combo("Aimbot Method", &AimbotMode, AimbotModeIndex, IM_ARRAYSIZE(AimbotModeIndex));
 				if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 					ImGui::SetTooltip("What Aimbot Method You Would Like.\nYou may find Grinder To Be More Legit/Smooth.");
 
-				ImGui::Separator();
-				
 				//Select Hitbox
 				if (AimbotMode == 0 && !AdvancedAim) {
+					ImGui::Separator();
 					ImGui::Text("Hitbox");
 					ImGui::Checkbox("Closest To Crosshair", &ClosestHitbox);
 					if (!ClosestHitbox) {
@@ -557,13 +618,24 @@ struct Aimbot {
 				ImGui::Separator();
 
 				ImGui::Text("Aim Conditions");
+				const char* BindMethodIndex[] = {"Memory", "Keybinds"};
+				ImGui::Combo("Aim Bind Method", &Modules::Aimbot::BindMethod, BindMethodIndex, IM_ARRAYSIZE(BindMethodIndex));
+
 				if (!AdvancedAim) {
-					int AimBind = static_cast<int>(Modules::Aimbot::AimBind);
-					ImGui::Combo("Aim Bind##Aimbot", &AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-					Modules::Aimbot::AimBind = static_cast<InputKeyType>(AimBind);
-					int ExtraBind = static_cast<int>(Modules::Aimbot::ExtraBind);
-					ImGui::Combo("Extra Bind##Aimbot", &ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-					Modules::Aimbot::ExtraBind = static_cast<InputKeyType>(ExtraBind);
+					if (Modules::Aimbot::BindMethod == 0) { //OnFire and OnADS
+						ImGui::Checkbox("On Fire", &OnFire);
+						ImGui::SameLine();
+						ImGui::Checkbox("On ADS", &OnADS);
+					}
+
+					if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+						int AimBind = static_cast<int>(Modules::Aimbot::AimBind);
+						ImGui::Combo("Aim Bind##Aimbot", &AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+						Modules::Aimbot::AimBind = static_cast<InputKeyType>(AimBind);
+						int ExtraBind = static_cast<int>(Modules::Aimbot::ExtraBind);
+						ImGui::Combo("Extra Bind##Aimbot", &ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+						Modules::Aimbot::ExtraBind = static_cast<InputKeyType>(ExtraBind);
+					}
 				}
 				
 				ImGui::Checkbox("Team Check##Aimbot", &TeamCheck);
@@ -598,6 +670,8 @@ struct Aimbot {
 					ImGui::Text("Heavy");
 					ImGui::Checkbox("VK-47 Flatline", &Flatline);
 					ImGui::SameLine();
+					ImGui::Checkbox("Prowler Burst SMG", &Prowler);
+					ImGui::SameLine();
 					ImGui::Checkbox("Hemlock Burst AR", &Hemlock);
 					ImGui::SameLine();
 					ImGui::Checkbox("30-30 Repeater", &Repeater);
@@ -620,8 +694,6 @@ struct Aimbot {
 					ImGui::Text("Shotguns");
 					ImGui::Checkbox("Mozambique", &Mozambique);
 					ImGui::SameLine();
-					ImGui::Checkbox("EVA-8 Auto", &EVA8);
-					ImGui::SameLine();
 					ImGui::Checkbox("Peacekeeper", &Peacekeeper);
 					ImGui::SameLine();
 					ImGui::Checkbox("Mastiff", &Mastiff);
@@ -636,7 +708,7 @@ struct Aimbot {
 					ImGui::Text("Legendary");
 					ImGui::Checkbox("Wingman", &Wingman);
 					ImGui::SameLine();
-					ImGui::Checkbox("Prowler Burst SMG", &Prowler);
+					ImGui::Checkbox("EVA-8 Auto", &EVA8);
 					ImGui::SameLine();
 					ImGui::Checkbox("Bocek Compound Bow", &Bocek);
 					ImGui::Checkbox("Kraber .50-CAL Sniper", &Kraber);
@@ -671,10 +743,6 @@ struct Aimbot {
 						ImGui::SliderInt("Delay", &Delay, 1, 50);
 						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Delay time for the aimbot smoothing.\n");
-						ImGui::SliderFloat("Deadzone", &Deadzone, 0, 10, "%.03f");
-						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.\n If you have very low smoothing then you might want to up this to prevent 'shaking'.");
-
 					}
 					
 					ImGui::Separator();
@@ -718,69 +786,33 @@ struct Aimbot {
 				
 				if (AimbotMode == 1 && !AdvancedAim) {
 					ImGui::Separator();
-					ImGui::Text("Smoothness");
-					if (ImGui::CollapsingHeader("Smoothness Settings", nullptr)) {
-
-						ImGui::SliderFloat("Hipfire Smoothing", &HipfireSmooth1, 1, 1000, "%.0f");
-						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing for the Aim-Assist Whilst Hipfiring\nHigher = Smoother");
-							
-						ImGui::SliderFloat("ADS Smoothing", &ADSSmooth1, 1, 1000, "%.0f");
-						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing for the Aim-Assist Whilst ADS\nHigher = Smoother");
-						
-						ImGui::SliderFloat("Extra Smoothing", &ExtraSmoothing, 1, 9999, "%.0f");
-						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
-							
-						ImGui::SliderFloat("Deadzone", &Deadzone, 0, 10, "%.03f");
-						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.\n If you have very low smoothing then you might want to up this to prevent 'shaking'.");
-					}
-				
-					ImGui::Separator();
-
-					//FOV Settings
-					ImGui::Text("FOV");
-					if (ImGui::CollapsingHeader("FOV Settings", nullptr)) {
-						ImGui::SliderFloat("FOV", &FOV1, 1, 90, "%.0f");
-						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Field of View");
-					}
-				
-					ImGui::Separator();
-
-					//Distance Settings
-					ImGui::Text("Distance");
-					if (ImGui::CollapsingHeader("Distance Settings", nullptr)) {
-						ImGui::SliderFloat("Min Distance", &MinDistance2, 1, 500, "%.0f");
-						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Minimum Distance for Aim-Assist to work");
-						ImGui::SliderFloat("Max Distance", &MaxDistance2, 1, 500, "%.0f");
-						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
-					}
+					ImGui::Text("Enable Advanced Aimbot To Configure The Aimbot.");
 				}
-				
 				ImGui::EndChild();
 			}
 
 			ImGui::Text("Advanced Aimbot");
 			if (ImGui::BeginChild("Aimbot Advanced", ImVec2(TabSize.x - TabSize.x , (TabSize.y - TabSize.y) + 285), true)) {
 				ImGui::Text("Advanced Aimbot Tab");
-				ImGui::Checkbox("Enabled Advanced Aimbot", &AdvancedAim);
+				ImGui::Checkbox("Enable Advanced Aimbot", &AdvancedAim);
 				if (AdvancedAim) {
 						ImGui::Separator();
 						ImGui::Text("Light Weapons");
 							if (P2020) {
 								if (ImGui::CollapsingHeader("P2020", nullptr)) {
 									ImGui::Text("P2020");
-									int P2020AimBind = static_cast<int>(Modules::Aimbot::P2020AimBind);
-									ImGui::Combo("Aim Bind##P2020Aimbot", &P2020AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::P2020AimBind = static_cast<InputKeyType>(P2020AimBind);
-									int P2020ExtraBind = static_cast<int>(Modules::Aimbot::P2020ExtraBind);
-									ImGui::Combo("Extra Bind##P2020Aimbot", &P2020ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::P2020ExtraBind = static_cast<InputKeyType>(P2020ExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##P2020Aimbot", &P2020Fire);
+										ImGui::Checkbox("On ADS##P2020Aimbot", &P2020ADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int P2020AimBind = static_cast<int>(Modules::Aimbot::P2020AimBind);
+										ImGui::Combo("Aim Bind##P2020Aimbot", &P2020AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::P2020AimBind = static_cast<InputKeyType>(P2020AimBind);
+										int P2020ExtraBind = static_cast<int>(Modules::Aimbot::P2020ExtraBind);
+										ImGui::Combo("Extra Bind##P2020Aimbot", &P2020ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::P2020ExtraBind = static_cast<InputKeyType>(P2020ExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##P2020AdvancedHitbox", &P2020ClosestHitbox);
@@ -803,9 +835,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedP2020", &P2020ADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The P2020 Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedP2020", &P2020Deadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -839,12 +868,18 @@ struct Aimbot {
 							if (RE45) {
 								if (ImGui::CollapsingHeader("RE-45", nullptr)) {
 									ImGui::Text("RE-45");
-									int RE45AimBind = static_cast<int>(Modules::Aimbot::RE45AimBind);
-									ImGui::Combo("Aim Bind##RE45Aimbot", &RE45AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::RE45AimBind = static_cast<InputKeyType>(RE45AimBind);
-									int RE45ExtraBind = static_cast<int>(Modules::Aimbot::RE45ExtraBind);
-									ImGui::Combo("Extra Bind##RE45Aimbot", &RE45ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::RE45ExtraBind = static_cast<InputKeyType>(RE45ExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##RE45Aimbot", &RE45Fire);
+										ImGui::Checkbox("On ADS##RE45Aimbot", &RE45ADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int RE45AimBind = static_cast<int>(Modules::Aimbot::RE45AimBind);
+										ImGui::Combo("Aim Bind##RE45Aimbot", &RE45AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::RE45AimBind = static_cast<InputKeyType>(RE45AimBind);
+										int RE45ExtraBind = static_cast<int>(Modules::Aimbot::RE45ExtraBind);
+										ImGui::Combo("Extra Bind##RE45Aimbot", &RE45ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::RE45ExtraBind = static_cast<InputKeyType>(RE45ExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##RE45AdvancedHitbox", &RE45ClosestHitbox);
@@ -867,9 +902,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedRE45", &RE45ADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The RE45 Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedRE45", &RE45Deadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -903,12 +935,18 @@ struct Aimbot {
 							if (Alternator) {
 								if (ImGui::CollapsingHeader("Alternator", nullptr)) {
 									ImGui::Text("Alternator");
-									int AlternatorAimBind = static_cast<int>(Modules::Aimbot::AlternatorAimBind);
-									ImGui::Combo("Aim Bind##AlternatorAimbot", &AlternatorAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::AlternatorAimBind = static_cast<InputKeyType>(AlternatorAimBind);
-									int AlternatorExtraBind = static_cast<int>(Modules::Aimbot::AlternatorExtraBind);
-									ImGui::Combo("Extra Bind##AlternatorAimbot", &AlternatorExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::AlternatorExtraBind = static_cast<InputKeyType>(AlternatorExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##AlternatorAimbot", &AlternatorFire);
+										ImGui::Checkbox("On ADS##AlternatorAimbot", &AlternatorADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int AlternatorAimBind = static_cast<int>(Modules::Aimbot::AlternatorAimBind);
+										ImGui::Combo("Aim Bind##AlternatorAimbot", &AlternatorAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::AlternatorAimBind = static_cast<InputKeyType>(AlternatorAimBind);
+										int AlternatorExtraBind = static_cast<int>(Modules::Aimbot::AlternatorExtraBind);
+										ImGui::Combo("Extra Bind##AlternatorAimbot", &AlternatorExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::AlternatorExtraBind = static_cast<InputKeyType>(AlternatorExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##AlternatorAdvancedHitbox", &AlternatorClosestHitbox);
@@ -931,9 +969,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedAlternator", &AlternatorADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Alternator Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedAlternator", &AlternatorDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -967,12 +1002,18 @@ struct Aimbot {
 							if (R99) {
 								if (ImGui::CollapsingHeader("R-99", nullptr)) {
 									ImGui::Text("R-99");
-									int R99AimBind = static_cast<int>(Modules::Aimbot::R99AimBind);
-									ImGui::Combo("Aim Bind##R99Aimbot", &R99AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::R99AimBind = static_cast<InputKeyType>(R99AimBind);
-									int R99ExtraBind = static_cast<int>(Modules::Aimbot::R99ExtraBind);
-									ImGui::Combo("Extra Bind##R99Aimbot", &R99ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::R99ExtraBind = static_cast<InputKeyType>(R99ExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##R99Aimbot", &R99Fire);
+										ImGui::Checkbox("On ADS##R99Aimbot", &R99ADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int R99AimBind = static_cast<int>(Modules::Aimbot::R99AimBind);
+										ImGui::Combo("Aim Bind##R99Aimbot", &R99AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::R99AimBind = static_cast<InputKeyType>(R99AimBind);
+										int R99ExtraBind = static_cast<int>(Modules::Aimbot::R99ExtraBind);
+										ImGui::Combo("Extra Bind##R99Aimbot", &R99ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::R99ExtraBind = static_cast<InputKeyType>(R99ExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##R99AdvancedHitbox", &R99ClosestHitbox);
@@ -995,9 +1036,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedR99", &R99ADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R99 Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedR99", &R99Deadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1031,12 +1069,18 @@ struct Aimbot {
 							if (R301) {
 								if (ImGui::CollapsingHeader("R-301", nullptr)) {
 									ImGui::Text("R-301");
-									int R301AimBind = static_cast<int>(Modules::Aimbot::R301AimBind);
-									ImGui::Combo("Aim Bind##R301Aimbot", &R301AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::R301AimBind = static_cast<InputKeyType>(R301AimBind);
-									int R301ExtraBind = static_cast<int>(Modules::Aimbot::R301ExtraBind);
-									ImGui::Combo("Extra Bind##R301Aimbot", &R301ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::R301ExtraBind = static_cast<InputKeyType>(R301ExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##R301Aimbot", &R301Fire);
+										ImGui::Checkbox("On ADS##R301Aimbot", &R301ADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int R301AimBind = static_cast<int>(Modules::Aimbot::R301AimBind);
+										ImGui::Combo("Aim Bind##R301Aimbot", &R301AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::R301AimBind = static_cast<InputKeyType>(R301AimBind);
+										int R301ExtraBind = static_cast<int>(Modules::Aimbot::R301ExtraBind);
+										ImGui::Combo("Extra Bind##R301Aimbot", &R301ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::R301ExtraBind = static_cast<InputKeyType>(R301ExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##R301AdvancedHitbox", &R301ClosestHitbox);
@@ -1059,9 +1103,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedR301", &R301ADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The R301 Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedR301", &R301Deadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1095,12 +1136,18 @@ struct Aimbot {
 							if (Spitfire) {
 								if (ImGui::CollapsingHeader("Spitfire", nullptr)) {
 									ImGui::Text("Spitfire");
-									int SpitfireAimBind = static_cast<int>(Modules::Aimbot::SpitfireAimBind);
-									ImGui::Combo("Aim Bind##SpitfireAimbot", &SpitfireAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::SpitfireAimBind = static_cast<InputKeyType>(SpitfireAimBind);
-									int SpitfireExtraBind = static_cast<int>(Modules::Aimbot::SpitfireExtraBind);
-									ImGui::Combo("Extra Bind##SpitfireAimbot", &SpitfireExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::SpitfireExtraBind = static_cast<InputKeyType>(SpitfireExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##SpitfireAimbot", &SpitfireFire);
+										ImGui::Checkbox("On ADS##SpitfireAimbot", &SpitfireADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int SpitfireAimBind = static_cast<int>(Modules::Aimbot::SpitfireAimBind);
+										ImGui::Combo("Aim Bind##SpitfireAimbot", &SpitfireAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::SpitfireAimBind = static_cast<InputKeyType>(SpitfireAimBind);
+										int SpitfireExtraBind = static_cast<int>(Modules::Aimbot::SpitfireExtraBind);
+										ImGui::Combo("Extra Bind##SpitfireAimbot", &SpitfireExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::SpitfireExtraBind = static_cast<InputKeyType>(SpitfireExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##SpitfireAdvancedHitbox", &SpitfireClosestHitbox);
@@ -1123,9 +1170,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedSpitfire", &SpitfireADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Spitfire Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedSpitfire", &SpitfireDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1156,12 +1200,18 @@ struct Aimbot {
 							if (G7) {
 								if (ImGui::CollapsingHeader("G7 Scout", nullptr)) {
 									ImGui::Text("G7 Scout");
-									int G7AimBind = static_cast<int>(Modules::Aimbot::G7AimBind);
-									ImGui::Combo("Aim Bind##G7Aimbot", &G7AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::G7AimBind = static_cast<InputKeyType>(G7AimBind);
-									int G7ExtraBind = static_cast<int>(Modules::Aimbot::G7ExtraBind);
-									ImGui::Combo("Extra Bind##G7Aimbot", &G7ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::G7ExtraBind = static_cast<InputKeyType>(G7ExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##G7Aimbot", &G7Fire);
+										ImGui::Checkbox("On ADS##G7Aimbot", &G7ADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int G7AimBind = static_cast<int>(Modules::Aimbot::G7AimBind);
+										ImGui::Combo("Aim Bind##G7Aimbot", &G7AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::G7AimBind = static_cast<InputKeyType>(G7AimBind);
+										int G7ExtraBind = static_cast<int>(Modules::Aimbot::G7ExtraBind);
+										ImGui::Combo("Extra Bind##G7Aimbot", &G7ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::G7ExtraBind = static_cast<InputKeyType>(G7ExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##G7AdvancedHitbox", &G7ClosestHitbox);
@@ -1184,9 +1234,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedG7", &G7ADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The G7 Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedG7", &G7Deadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1222,12 +1269,18 @@ struct Aimbot {
 							if (Flatline) {
 								if (ImGui::CollapsingHeader("Flatline", nullptr)) {
 									ImGui::Text("Flatline");
-									int FlatlineAimBind = static_cast<int>(Modules::Aimbot::FlatlineAimBind);
-									ImGui::Combo("Aim Bind##FlatlineAimbot", &FlatlineAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::FlatlineAimBind = static_cast<InputKeyType>(FlatlineAimBind);
-									int FlatlineExtraBind = static_cast<int>(Modules::Aimbot::FlatlineExtraBind);
-									ImGui::Combo("Extra Bind##FlatlineAimbot", &FlatlineExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::FlatlineExtraBind = static_cast<InputKeyType>(FlatlineExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##FlatlineAimbot", &FlatlineFire);
+										ImGui::Checkbox("On ADS##FlatlineAimbot", &FlatlineADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int FlatlineAimBind = static_cast<int>(Modules::Aimbot::FlatlineAimBind);
+										ImGui::Combo("Aim Bind##FlatlineAimbot", &FlatlineAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::FlatlineAimBind = static_cast<InputKeyType>(FlatlineAimBind);
+										int FlatlineExtraBind = static_cast<int>(Modules::Aimbot::FlatlineExtraBind);
+										ImGui::Combo("Extra Bind##FlatlineAimbot", &FlatlineExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::FlatlineExtraBind = static_cast<InputKeyType>(FlatlineExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##FlatlineAdvancedHitbox", &FlatlineClosestHitbox);
@@ -1250,9 +1303,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedFlatline", &FlatlineADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Flatline Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedFlatline", &FlatlineDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1286,12 +1336,18 @@ struct Aimbot {
 							if (Hemlock) {
 								if (ImGui::CollapsingHeader("Hemlock", nullptr)) {
 									ImGui::Text("Hemlock");
-									int HemlockAimBind = static_cast<int>(Modules::Aimbot::HemlockAimBind);
-									ImGui::Combo("Aim Bind##HemlockAimbot", &HemlockAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::HemlockAimBind = static_cast<InputKeyType>(HemlockAimBind);
-									int HemlockExtraBind = static_cast<int>(Modules::Aimbot::HemlockExtraBind);
-									ImGui::Combo("Extra Bind##HemlockAimbot", &HemlockExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::HemlockExtraBind = static_cast<InputKeyType>(HemlockExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##HemlockAimbot", &HemlockFire);
+										ImGui::Checkbox("On ADS##HemlockAimbot", &HemlockADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int HemlockAimBind = static_cast<int>(Modules::Aimbot::HemlockAimBind);
+										ImGui::Combo("Aim Bind##HemlockAimbot", &HemlockAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::HemlockAimBind = static_cast<InputKeyType>(HemlockAimBind);
+										int HemlockExtraBind = static_cast<int>(Modules::Aimbot::HemlockExtraBind);
+										ImGui::Combo("Extra Bind##HemlockAimbot", &HemlockExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::HemlockExtraBind = static_cast<InputKeyType>(HemlockExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##HemlockAdvancedHitbox", &HemlockClosestHitbox);
@@ -1314,9 +1370,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedHemlock", &HemlockADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Hemlock Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedHemlock", &HemlockDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1350,12 +1403,18 @@ struct Aimbot {
 							if (Repeater) {
 								if (ImGui::CollapsingHeader("30-30 Repeater", nullptr)) {
 									ImGui::Text("30-30 Repeater");
-									int RepeaterAimBind = static_cast<int>(Modules::Aimbot::RepeaterAimBind);
-									ImGui::Combo("Aim Bind##RepeaterAimbot", &RepeaterAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::RepeaterAimBind = static_cast<InputKeyType>(RepeaterAimBind);
-									int RepeaterExtraBind = static_cast<int>(Modules::Aimbot::RepeaterExtraBind);
-									ImGui::Combo("Extra Bind##RepeaterAimbot", &RepeaterExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::RepeaterExtraBind = static_cast<InputKeyType>(RepeaterExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##RepeaterAimbot", &RepeaterFire);
+										ImGui::Checkbox("On ADS##RepeaterAimbot", &RepeaterADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int RepeaterAimBind = static_cast<int>(Modules::Aimbot::RepeaterAimBind);
+										ImGui::Combo("Aim Bind##RepeaterAimbot", &RepeaterAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::RepeaterAimBind = static_cast<InputKeyType>(RepeaterAimBind);
+										int RepeaterExtraBind = static_cast<int>(Modules::Aimbot::RepeaterExtraBind);
+										ImGui::Combo("Extra Bind##RepeaterAimbot", &RepeaterExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::RepeaterExtraBind = static_cast<InputKeyType>(RepeaterExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##RepeaterAdvancedHitbox", &RepeaterClosestHitbox);
@@ -1378,9 +1437,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedRepeater", &RepeaterADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Repeater Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedRepeater", &RepeaterDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1414,12 +1470,18 @@ struct Aimbot {
 							if (Rampage) {
 								if (ImGui::CollapsingHeader("Rampage", nullptr)) {
 									ImGui::Text("Rampage");
-									int RampageAimBind = static_cast<int>(Modules::Aimbot::RampageAimBind);
-									ImGui::Combo("Aim Bind##RampageAimbot", &RampageAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::RampageAimBind = static_cast<InputKeyType>(RampageAimBind);
-									int RampageExtraBind = static_cast<int>(Modules::Aimbot::RampageExtraBind);
-									ImGui::Combo("Extra Bind##RampageAimbot", &RampageExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::RampageExtraBind = static_cast<InputKeyType>(RampageExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##RampageAimbot", &RampageFire);
+										ImGui::Checkbox("On ADS##RampageAimbot", &RampageADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int RampageAimBind = static_cast<int>(Modules::Aimbot::RampageAimBind);
+										ImGui::Combo("Aim Bind##RampageAimbot", &RampageAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::RampageAimBind = static_cast<InputKeyType>(RampageAimBind);
+										int RampageExtraBind = static_cast<int>(Modules::Aimbot::RampageExtraBind);
+										ImGui::Combo("Extra Bind##RampageAimbot", &RampageExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::RampageExtraBind = static_cast<InputKeyType>(RampageExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##RampageAdvancedHitbox", &RampageClosestHitbox);
@@ -1442,9 +1504,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedRampage", &RampageADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Rampage Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedRampage", &RampageDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1478,12 +1537,18 @@ struct Aimbot {
 							if (CARSMG) {
 								if (ImGui::CollapsingHeader("CAR SMG", nullptr)) {
 									ImGui::Text("CAR SMG");
-									int CARSMGAimBind = static_cast<int>(Modules::Aimbot::CARSMGAimBind);
-									ImGui::Combo("Aim Bind##CARSMGAimbot", &CARSMGAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::CARSMGAimBind = static_cast<InputKeyType>(CARSMGAimBind);
-									int CARSMGExtraBind = static_cast<int>(Modules::Aimbot::CARSMGExtraBind);
-									ImGui::Combo("Extra Bind##CARSMGAimbot", &CARSMGExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::CARSMGExtraBind = static_cast<InputKeyType>(CARSMGExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##CARSMGAimbot", &CARSMGFire);
+										ImGui::Checkbox("On ADS##CARSMGAimbot", &CARSMGADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int CARSMGAimBind = static_cast<int>(Modules::Aimbot::CARSMGAimBind);
+										ImGui::Combo("Aim Bind##CARSMGAimbot", &CARSMGAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::CARSMGAimBind = static_cast<InputKeyType>(CARSMGAimBind);
+										int CARSMGExtraBind = static_cast<int>(Modules::Aimbot::CARSMGExtraBind);
+										ImGui::Combo("Extra Bind##CARSMGAimbot", &CARSMGExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::CARSMGExtraBind = static_cast<InputKeyType>(CARSMGExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##CARSMGAdvancedHitbox", &CARSMGClosestHitbox);
@@ -1506,9 +1571,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedCARSMG", &CARSMGADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The CARSMG Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedRepeater", &RepeaterDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1544,12 +1606,18 @@ struct Aimbot {
 							if (Havoc) {
 								if (ImGui::CollapsingHeader("Havoc", nullptr)) {
 									ImGui::Text("Havoc");
-									int HavocAimBind = static_cast<int>(Modules::Aimbot::HavocAimBind);
-									ImGui::Combo("Aim Bind##HavocAimbot", &HavocAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::HavocAimBind = static_cast<InputKeyType>(HavocAimBind);
-									int HavocExtraBind = static_cast<int>(Modules::Aimbot::HavocExtraBind);
-									ImGui::Combo("Extra Bind##HavocAimbot", &HavocExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::HavocExtraBind = static_cast<InputKeyType>(HavocExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##HavocAimbot", &HavocFire);
+										ImGui::Checkbox("On ADS##HavocAimbot", &HavocADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int HavocAimBind = static_cast<int>(Modules::Aimbot::HavocAimBind);
+										ImGui::Combo("Aim Bind##HavocAimbot", &HavocAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::HavocAimBind = static_cast<InputKeyType>(HavocAimBind);
+										int HavocExtraBind = static_cast<int>(Modules::Aimbot::HavocExtraBind);
+										ImGui::Combo("Extra Bind##HavocAimbot", &HavocExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::HavocExtraBind = static_cast<InputKeyType>(HavocExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##HavocAdvancedHitbox", &HavocClosestHitbox);
@@ -1572,9 +1640,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedHavoc", &HavocADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Havoc Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedHavoc", &HavocDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1608,12 +1673,18 @@ struct Aimbot {
 							if (Devotion) {
 								if (ImGui::CollapsingHeader("Devotion", nullptr)) {
 									ImGui::Text("Devotion");
-									int DevotionAimBind = static_cast<int>(Modules::Aimbot::DevotionAimBind);
-									ImGui::Combo("Aim Bind##DevotionAimbot", &DevotionAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::DevotionAimBind = static_cast<InputKeyType>(DevotionAimBind);
-									int DevotionExtraBind = static_cast<int>(Modules::Aimbot::DevotionExtraBind);
-									ImGui::Combo("Extra Bind##DevotionAimbot", &DevotionExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::DevotionExtraBind = static_cast<InputKeyType>(DevotionExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##DevotionAimbot", &DevotionFire);
+										ImGui::Checkbox("On ADS##DevotionAimbot", &DevotionADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int DevotionAimBind = static_cast<int>(Modules::Aimbot::DevotionAimBind);
+										ImGui::Combo("Aim Bind##DevotionAimbot", &DevotionAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::DevotionAimBind = static_cast<InputKeyType>(DevotionAimBind);
+										int DevotionExtraBind = static_cast<int>(Modules::Aimbot::DevotionExtraBind);
+										ImGui::Combo("Extra Bind##DevotionAimbot", &DevotionExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::DevotionExtraBind = static_cast<InputKeyType>(DevotionExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##DevotionAdvancedHitbox", &DevotionClosestHitbox);
@@ -1636,9 +1707,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedDevotion", &DevotionADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Devotion Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedDevotion", &DevotionDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1672,12 +1740,18 @@ struct Aimbot {
 							if (LSTAR) {
 								if (ImGui::CollapsingHeader("LSTAR", nullptr)) {
 									ImGui::Text("LSTAR");
-									int LSTARAimBind = static_cast<int>(Modules::Aimbot::LSTARAimBind);
-									ImGui::Combo("Aim Bind##LSTARAimbot", &LSTARAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::LSTARAimBind = static_cast<InputKeyType>(LSTARAimBind);
-									int LSTARExtraBind = static_cast<int>(Modules::Aimbot::LSTARExtraBind);
-									ImGui::Combo("Extra Bind##LSTARAimbot", &LSTARExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::LSTARExtraBind = static_cast<InputKeyType>(LSTARExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##LSTARAimbot", &LSTARFire);
+										ImGui::Checkbox("On ADS##LSTARAimbot", &LSTARADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int LSTARAimBind = static_cast<int>(Modules::Aimbot::LSTARAimBind);
+										ImGui::Combo("Aim Bind##LSTARAimbot", &LSTARAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::LSTARAimBind = static_cast<InputKeyType>(LSTARAimBind);
+										int LSTARExtraBind = static_cast<int>(Modules::Aimbot::LSTARExtraBind);
+										ImGui::Combo("Extra Bind##LSTARAimbot", &LSTARExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::LSTARExtraBind = static_cast<InputKeyType>(LSTARExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##LSTARAdvancedHitbox", &LSTARClosestHitbox);
@@ -1700,9 +1774,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedLSTAR", &LSTARADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The LSTAR Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedLSTAR", &LSTARDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1736,12 +1807,18 @@ struct Aimbot {
 							if (TripleTake) {
 								if (ImGui::CollapsingHeader("Triple Take", nullptr)) {
 									ImGui::Text("Triple Take");
-									int TripleTakeAimBind = static_cast<int>(Modules::Aimbot::TripleTakeAimBind);
-									ImGui::Combo("Aim Bind##TripleTakeAimbot", &TripleTakeAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::TripleTakeAimBind = static_cast<InputKeyType>(TripleTakeAimBind);
-									int TripleTakeExtraBind = static_cast<int>(Modules::Aimbot::TripleTakeExtraBind);
-									ImGui::Combo("Extra Bind##TripleTakeAimbot", &TripleTakeExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::TripleTakeExtraBind = static_cast<InputKeyType>(TripleTakeExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##TripleTakeAimbot", &TripleTakeFire);
+										ImGui::Checkbox("On ADS##TripleTakeAimbot", &TripleTakeADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int TripleTakeAimBind = static_cast<int>(Modules::Aimbot::TripleTakeAimBind);
+										ImGui::Combo("Aim Bind##TripleTakeAimbot", &TripleTakeAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::TripleTakeAimBind = static_cast<InputKeyType>(TripleTakeAimBind);
+										int TripleTakeExtraBind = static_cast<int>(Modules::Aimbot::TripleTakeExtraBind);
+										ImGui::Combo("Extra Bind##TripleTakeAimbot", &TripleTakeExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::TripleTakeExtraBind = static_cast<InputKeyType>(TripleTakeExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##TripleTakeAdvancedHitbox", &TripleTakeClosestHitbox);
@@ -1764,9 +1841,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedTripleTake", &TripleTakeADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The TripleTake Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedTripleTake", &TripleTakeDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1800,12 +1874,18 @@ struct Aimbot {
 							if (Volt) {
 								if (ImGui::CollapsingHeader("Volt", nullptr)) {
 									ImGui::Text("Volt");
-									int VoltAimBind = static_cast<int>(Modules::Aimbot::VoltAimBind);
-									ImGui::Combo("Aim Bind##VoltAimbot", &VoltAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::VoltAimBind = static_cast<InputKeyType>(VoltAimBind);
-									int VoltExtraBind = static_cast<int>(Modules::Aimbot::VoltExtraBind);
-									ImGui::Combo("Extra Bind##VoltAimbot", &VoltExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::VoltExtraBind = static_cast<InputKeyType>(VoltExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##VoltAimbot", &VoltFire);
+										ImGui::Checkbox("On ADS##VoltAimbot", &VoltADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int VoltAimBind = static_cast<int>(Modules::Aimbot::VoltAimBind);
+										ImGui::Combo("Aim Bind##VoltAimbot", &VoltAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::VoltAimBind = static_cast<InputKeyType>(VoltAimBind);
+										int VoltExtraBind = static_cast<int>(Modules::Aimbot::VoltExtraBind);
+										ImGui::Combo("Extra Bind##VoltAimbot", &VoltExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::VoltExtraBind = static_cast<InputKeyType>(VoltExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##VoltAdvancedHitbox", &VoltClosestHitbox);
@@ -1828,9 +1908,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedVolt", &VoltADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Volt Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedVolt", &VoltDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1864,12 +1941,18 @@ struct Aimbot {
 							if (Nemesis) {
 								if (ImGui::CollapsingHeader("Nemesis", nullptr)) {
 									ImGui::Text("Nemesis");
-									int NemesisAimBind = static_cast<int>(Modules::Aimbot::NemesisAimBind);
-									ImGui::Combo("Aim Bind##NemesisAimbot", &NemesisAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::NemesisAimBind = static_cast<InputKeyType>(NemesisAimBind);
-									int NemesisExtraBind = static_cast<int>(Modules::Aimbot::NemesisExtraBind);
-									ImGui::Combo("Extra Bind##NemesisAimbot", &NemesisExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::NemesisExtraBind = static_cast<InputKeyType>(NemesisExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##NemesisAimbot", &NemesisFire);
+										ImGui::Checkbox("On ADS##NemesisAimbot", &NemesisADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int NemesisAimBind = static_cast<int>(Modules::Aimbot::NemesisAimBind);
+										ImGui::Combo("Aim Bind##NemesisAimbot", &NemesisAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::NemesisAimBind = static_cast<InputKeyType>(NemesisAimBind);
+										int NemesisExtraBind = static_cast<int>(Modules::Aimbot::NemesisExtraBind);
+										ImGui::Combo("Extra Bind##NemesisAimbot", &NemesisExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::NemesisExtraBind = static_cast<InputKeyType>(NemesisExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##NemesisAdvancedHitbox", &NemesisClosestHitbox);
@@ -1892,9 +1975,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedNemesis", &NemesisADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Nemesis Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedNemesis", &NemesisDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1930,12 +2010,18 @@ struct Aimbot {
 							if (Mozambique) {
 								if (ImGui::CollapsingHeader("Mozambique", nullptr)) {
 									ImGui::Text("Mozambique");
-									int MozambiqueAimBind = static_cast<int>(Modules::Aimbot::MozambiqueAimBind);
-									ImGui::Combo("Aim Bind##MozambiqueAimbot", &MozambiqueAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::MozambiqueAimBind = static_cast<InputKeyType>(MozambiqueAimBind);
-									int MozambiqueExtraBind = static_cast<int>(Modules::Aimbot::MozambiqueExtraBind);
-									ImGui::Combo("Extra Bind##MozambiqueAimbot", &MozambiqueExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::MozambiqueExtraBind = static_cast<InputKeyType>(MozambiqueExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##MozambiqueAimbot", &MozambiqueFire);
+										ImGui::Checkbox("On ADS##MozambiqueAimbot", &MozambiqueADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int MozambiqueAimBind = static_cast<int>(Modules::Aimbot::MozambiqueAimBind);
+										ImGui::Combo("Aim Bind##MozambiqueAimbot", &MozambiqueAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::MozambiqueAimBind = static_cast<InputKeyType>(MozambiqueAimBind);
+										int MozambiqueExtraBind = static_cast<int>(Modules::Aimbot::MozambiqueExtraBind);
+										ImGui::Combo("Extra Bind##MozambiqueAimbot", &MozambiqueExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::MozambiqueExtraBind = static_cast<InputKeyType>(MozambiqueExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##MozambiqueAdvancedHitbox", &MozambiqueClosestHitbox);
@@ -1958,9 +2044,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedMozambique", &MozambiqueADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mozambique Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedMozambique", &MozambiqueDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -1994,12 +2077,18 @@ struct Aimbot {
 							if (EVA8) {
 								if (ImGui::CollapsingHeader("EVA8", nullptr)) {
 									ImGui::Text("EVA8");
-									int EVA8AimBind = static_cast<int>(Modules::Aimbot::EVA8AimBind);
-									ImGui::Combo("Aim Bind##EVA8Aimbot", &EVA8AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::EVA8AimBind = static_cast<InputKeyType>(EVA8AimBind);
-									int EVA8ExtraBind = static_cast<int>(Modules::Aimbot::EVA8ExtraBind);
-									ImGui::Combo("Extra Bind##EVA8Aimbot", &EVA8ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::EVA8ExtraBind = static_cast<InputKeyType>(EVA8ExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##EVA8Aimbot", &EVA8Fire);
+										ImGui::Checkbox("On ADS##EVA8Aimbot", &EVA8ADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int EVA8AimBind = static_cast<int>(Modules::Aimbot::EVA8AimBind);
+										ImGui::Combo("Aim Bind##EVA8Aimbot", &EVA8AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::EVA8AimBind = static_cast<InputKeyType>(EVA8AimBind);
+										int EVA8ExtraBind = static_cast<int>(Modules::Aimbot::EVA8ExtraBind);
+										ImGui::Combo("Extra Bind##EVA8Aimbot", &EVA8ExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::EVA8ExtraBind = static_cast<InputKeyType>(EVA8ExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##EVA8AdvancedHitbox", &EVA8ClosestHitbox);
@@ -2022,9 +2111,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedEVA8", &EVA8ADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The EVA8 Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedEVA8", &EVA8Deadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2058,12 +2144,18 @@ struct Aimbot {
 							if (Peacekeeper) {
 								if (ImGui::CollapsingHeader("Peacekeeper", nullptr)) {
 									ImGui::Text("Peacekeeper");
-									int PeacekeeperAimBind = static_cast<int>(Modules::Aimbot::PeacekeeperAimBind);
-									ImGui::Combo("Aim Bind##PeacekeeperAimbot", &PeacekeeperAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::PeacekeeperAimBind = static_cast<InputKeyType>(PeacekeeperAimBind);
-									int PeacekeeperExtraBind = static_cast<int>(Modules::Aimbot::PeacekeeperExtraBind);
-									ImGui::Combo("Extra Bind##PeacekeeperAimbot", &PeacekeeperExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::PeacekeeperExtraBind = static_cast<InputKeyType>(PeacekeeperExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##PeacekeeperAimbot", &PeacekeeperFire);
+										ImGui::Checkbox("On ADS##PeacekeeperAimbot", &PeacekeeperADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int PeacekeeperAimBind = static_cast<int>(Modules::Aimbot::PeacekeeperAimBind);
+										ImGui::Combo("Aim Bind##PeacekeeperAimbot", &PeacekeeperAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::PeacekeeperAimBind = static_cast<InputKeyType>(PeacekeeperAimBind);
+										int PeacekeeperExtraBind = static_cast<int>(Modules::Aimbot::PeacekeeperExtraBind);
+										ImGui::Combo("Extra Bind##PeacekeeperAimbot", &PeacekeeperExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::PeacekeeperExtraBind = static_cast<InputKeyType>(PeacekeeperExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##PeacekeeperAdvancedHitbox", &PeacekeeperClosestHitbox);
@@ -2086,9 +2178,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedPeacekeeper", &PeacekeeperADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Peacekeeper Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedPeacekeeper", &PeacekeeperDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2122,12 +2211,18 @@ struct Aimbot {
 							if (Mastiff) {
 								if (ImGui::CollapsingHeader("Mastiff", nullptr)) {
 									ImGui::Text("Mastiff");
-									int MastiffAimBind = static_cast<int>(Modules::Aimbot::MastiffAimBind);
-									ImGui::Combo("Aim Bind##MastiffAimbot", &MastiffAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::MastiffAimBind = static_cast<InputKeyType>(MastiffAimBind);
-									int MastiffExtraBind = static_cast<int>(Modules::Aimbot::MastiffExtraBind);
-									ImGui::Combo("Extra Bind##MastiffAimbot", &MastiffExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::MastiffExtraBind = static_cast<InputKeyType>(MastiffExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##MastiffAimbot", &MastiffFire);
+										ImGui::Checkbox("On ADS##MastiffAimbot", &MastiffADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int MastiffAimBind = static_cast<int>(Modules::Aimbot::MastiffAimBind);
+										ImGui::Combo("Aim Bind##MastiffAimbot", &MastiffAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::MastiffAimBind = static_cast<InputKeyType>(MastiffAimBind);
+										int MastiffExtraBind = static_cast<int>(Modules::Aimbot::MastiffExtraBind);
+										ImGui::Combo("Extra Bind##MastiffAimbot", &MastiffExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::MastiffExtraBind = static_cast<InputKeyType>(MastiffExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##MastiffAdvancedHitbox", &MastiffClosestHitbox);
@@ -2150,9 +2245,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedMastiff", &MastiffADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Mastiff Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedMastiff", &MastiffDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2188,12 +2280,18 @@ struct Aimbot {
 							if (Longbow) {
 								if (ImGui::CollapsingHeader("Longbow", nullptr)) {
 									ImGui::Text("Longbow");
-									int LongbowAimBind = static_cast<int>(Modules::Aimbot::LongbowAimBind);
-									ImGui::Combo("Aim Bind##LongbowAimbot", &LongbowAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::LongbowAimBind = static_cast<InputKeyType>(LongbowAimBind);
-									int LongbowExtraBind = static_cast<int>(Modules::Aimbot::LongbowExtraBind);
-									ImGui::Combo("Extra Bind##LongbowAimbot", &LongbowExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::LongbowExtraBind = static_cast<InputKeyType>(LongbowExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##LongbowAimbot", &LongbowFire);
+										ImGui::Checkbox("On ADS##LongbowAimbot", &LongbowADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int LongbowAimBind = static_cast<int>(Modules::Aimbot::LongbowAimBind);
+										ImGui::Combo("Aim Bind##LongbowAimbot", &LongbowAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::LongbowAimBind = static_cast<InputKeyType>(LongbowAimBind);
+										int LongbowExtraBind = static_cast<int>(Modules::Aimbot::LongbowExtraBind);
+										ImGui::Combo("Extra Bind##LongbowAimbot", &LongbowExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::LongbowExtraBind = static_cast<InputKeyType>(LongbowExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##LongbowAdvancedHitbox", &LongbowClosestHitbox);
@@ -2216,9 +2314,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedLongbow", &LongbowADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Longbow Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedLongbow", &LongbowDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2252,12 +2347,18 @@ struct Aimbot {
 							if (ChargeRifle) {
 								if (ImGui::CollapsingHeader("Charge Rifle", nullptr)) {
 									ImGui::Text("Charge Rifle");
-									int ChargeRifleAimBind = static_cast<int>(Modules::Aimbot::ChargeRifleAimBind);
-									ImGui::Combo("Aim Bind##ChargeRifleAimbot", &ChargeRifleAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::ChargeRifleAimBind = static_cast<InputKeyType>(ChargeRifleAimBind);
-									int ChargeRifleExtraBind = static_cast<int>(Modules::Aimbot::ChargeRifleExtraBind);
-									ImGui::Combo("Extra Bind##ChargeRifleAimbot", &ChargeRifleExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::ChargeRifleExtraBind = static_cast<InputKeyType>(ChargeRifleExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##ChargeRifleAimbot", &ChargeRifleFire);
+										ImGui::Checkbox("On ADS##ChargeRifleAimbot", &ChargeRifleADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int ChargeRifleAimBind = static_cast<int>(Modules::Aimbot::ChargeRifleAimBind);
+										ImGui::Combo("Aim Bind##ChargeRifleAimbot", &ChargeRifleAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::ChargeRifleAimBind = static_cast<InputKeyType>(ChargeRifleAimBind);
+										int ChargeRifleExtraBind = static_cast<int>(Modules::Aimbot::ChargeRifleExtraBind);
+										ImGui::Combo("Extra Bind##ChargeRifleAimbot", &ChargeRifleExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::ChargeRifleExtraBind = static_cast<InputKeyType>(ChargeRifleExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##ChargeRifleAdvancedHitbox", &ChargeRifleClosestHitbox);
@@ -2280,9 +2381,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedChargeRifle", &ChargeRifleADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ChargeRifle Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedChargeRifle", &ChargeRifleDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2316,12 +2414,18 @@ struct Aimbot {
 							if (Sentinel) {
 								if (ImGui::CollapsingHeader("Sentinel", nullptr)) {
 									ImGui::Text("Sentinel");
-									int SentinelAimBind = static_cast<int>(Modules::Aimbot::SentinelAimBind);
-									ImGui::Combo("Aim Bind##SentinelAimbot", &SentinelAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::SentinelAimBind = static_cast<InputKeyType>(SentinelAimBind);
-									int SentinelExtraBind = static_cast<int>(Modules::Aimbot::SentinelExtraBind);
-									ImGui::Combo("Extra Bind##SentinelAimbot", &SentinelExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::SentinelExtraBind = static_cast<InputKeyType>(SentinelExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##SentinelAimbot", &SentinelFire);
+										ImGui::Checkbox("On ADS##SentinelAimbot", &SentinelADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int SentinelAimBind = static_cast<int>(Modules::Aimbot::SentinelAimBind);
+										ImGui::Combo("Aim Bind##SentinelAimbot", &SentinelAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::SentinelAimBind = static_cast<InputKeyType>(SentinelAimBind);
+										int SentinelExtraBind = static_cast<int>(Modules::Aimbot::SentinelExtraBind);
+										ImGui::Combo("Extra Bind##SentinelAimbot", &SentinelExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::SentinelExtraBind = static_cast<InputKeyType>(SentinelExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##SentinelAdvancedHitbox", &SentinelClosestHitbox);
@@ -2344,9 +2448,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedSentinel", &SentinelADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Sentinel Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedSentinel", &SentinelDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2382,12 +2483,18 @@ struct Aimbot {
 							if (Wingman) {
 								if (ImGui::CollapsingHeader("Wingman", nullptr)) {
 									ImGui::Text("Wingman");
-									int WingmanAimBind = static_cast<int>(Modules::Aimbot::WingmanAimBind);
-									ImGui::Combo("Aim Bind##WingmanAimbot", &WingmanAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::WingmanAimBind = static_cast<InputKeyType>(WingmanAimBind);
-									int WingmanExtraBind = static_cast<int>(Modules::Aimbot::WingmanExtraBind);
-									ImGui::Combo("Extra Bind##WingmanAimbot", &WingmanExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::WingmanExtraBind = static_cast<InputKeyType>(WingmanExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##WingmanAimbot", &WingmanFire);
+										ImGui::Checkbox("On ADS##WingmanAimbot", &WingmanADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int WingmanAimBind = static_cast<int>(Modules::Aimbot::WingmanAimBind);
+										ImGui::Combo("Aim Bind##WingmanAimbot", &WingmanAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::WingmanAimBind = static_cast<InputKeyType>(WingmanAimBind);
+										int WingmanExtraBind = static_cast<int>(Modules::Aimbot::WingmanExtraBind);
+										ImGui::Combo("Extra Bind##WingmanAimbot", &WingmanExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::WingmanExtraBind = static_cast<InputKeyType>(WingmanExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##WingmanAdvancedHitbox", &WingmanClosestHitbox);
@@ -2410,9 +2517,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedWingman", &WingmanADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Wingman Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedWingman", &WingmanDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2446,12 +2550,18 @@ struct Aimbot {
 							if (Prowler) {
 								if (ImGui::CollapsingHeader("Prowler", nullptr)) {
 									ImGui::Text("Prowler");
-									int ProwlerAimBind = static_cast<int>(Modules::Aimbot::ProwlerAimBind);
-									ImGui::Combo("Aim Bind##ProwlerAimbot", &ProwlerAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::ProwlerAimBind = static_cast<InputKeyType>(ProwlerAimBind);
-									int ProwlerExtraBind = static_cast<int>(Modules::Aimbot::ProwlerExtraBind);
-									ImGui::Combo("Extra Bind##ProwlerAimbot", &ProwlerExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::ProwlerExtraBind = static_cast<InputKeyType>(ProwlerExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##ProwlerAimbot", &ProwlerFire);
+										ImGui::Checkbox("On ADS##ProwlerAimbot", &ProwlerADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int ProwlerAimBind = static_cast<int>(Modules::Aimbot::ProwlerAimBind);
+										ImGui::Combo("Aim Bind##ProwlerAimbot", &ProwlerAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::ProwlerAimBind = static_cast<InputKeyType>(ProwlerAimBind);
+										int ProwlerExtraBind = static_cast<int>(Modules::Aimbot::ProwlerExtraBind);
+										ImGui::Combo("Extra Bind##ProwlerAimbot", &ProwlerExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::ProwlerExtraBind = static_cast<InputKeyType>(ProwlerExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##ProwlerAdvancedHitbox", &ProwlerClosestHitbox);
@@ -2474,9 +2584,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedProwler", &ProwlerADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Prowler Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedProwler", &ProwlerDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2510,12 +2617,18 @@ struct Aimbot {
 							if (Bocek) {
 								if (ImGui::CollapsingHeader("Bocek", nullptr)) {
 									ImGui::Text("Bocek");
-									int BocekAimBind = static_cast<int>(Modules::Aimbot::BocekAimBind);
-									ImGui::Combo("Aim Bind##BocekAimbot", &BocekAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::BocekAimBind = static_cast<InputKeyType>(BocekAimBind);
-									int BocekExtraBind = static_cast<int>(Modules::Aimbot::BocekExtraBind);
-									ImGui::Combo("Extra Bind##BocekAimbot", &BocekExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::BocekExtraBind = static_cast<InputKeyType>(BocekExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##BocekAimbot", &BocekFire);
+										ImGui::Checkbox("On ADS##BocekAimbot", &BocekADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int BocekAimBind = static_cast<int>(Modules::Aimbot::BocekAimBind);
+										ImGui::Combo("Aim Bind##BocekAimbot", &BocekAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::BocekAimBind = static_cast<InputKeyType>(BocekAimBind);
+										int BocekExtraBind = static_cast<int>(Modules::Aimbot::BocekExtraBind);
+										ImGui::Combo("Extra Bind##BocekAimbot", &BocekExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::BocekExtraBind = static_cast<InputKeyType>(BocekExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##BocekAdvancedHitbox", &BocekClosestHitbox);
@@ -2538,9 +2651,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedBocek", &BocekADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Bocek Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedBocek", &BocekDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2574,12 +2684,18 @@ struct Aimbot {
 							if (Kraber) {
 								if (ImGui::CollapsingHeader("Kraber", nullptr)) {
 									ImGui::Text("Kraber");
-									int KraberAimBind = static_cast<int>(Modules::Aimbot::KraberAimBind);
-									ImGui::Combo("Aim Bind##KraberAimbot", &KraberAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::KraberAimBind = static_cast<InputKeyType>(KraberAimBind);
-									int KraberExtraBind = static_cast<int>(Modules::Aimbot::KraberExtraBind);
-									ImGui::Combo("Extra Bind##KraberAimbot", &KraberExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::KraberExtraBind = static_cast<InputKeyType>(KraberExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##KraberAimbot", &KraberFire);
+										ImGui::Checkbox("On ADS##KraberAimbot", &KraberADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int KraberAimBind = static_cast<int>(Modules::Aimbot::KraberAimBind);
+										ImGui::Combo("Aim Bind##KraberAimbot", &KraberAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::KraberAimBind = static_cast<InputKeyType>(KraberAimBind);
+										int KraberExtraBind = static_cast<int>(Modules::Aimbot::KraberExtraBind);
+										ImGui::Combo("Extra Bind##KraberAimbot", &KraberExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::KraberExtraBind = static_cast<InputKeyType>(KraberExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##KraberAdvancedHitbox", &KraberClosestHitbox);
@@ -2602,9 +2718,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedKraber", &KraberADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The Kraber Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedKraber", &KraberDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2638,12 +2751,18 @@ struct Aimbot {
 							if (Knife) {
 								if (ImGui::CollapsingHeader("Throwing Knife", nullptr)) {
 									ImGui::Text("Throwing Knife");
-									int ThrowingKnifeAimBind = static_cast<int>(Modules::Aimbot::ThrowingKnifeAimBind);
-									ImGui::Combo("Aim Bind##ThrowingKnifeAimbot", &ThrowingKnifeAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::ThrowingKnifeAimBind = static_cast<InputKeyType>(ThrowingKnifeAimBind);
-									int ThrowingKnifeExtraBind = static_cast<int>(Modules::Aimbot::ThrowingKnifeExtraBind);
-									ImGui::Combo("Extra Bind##ThrowingKnifeAimbot", &ThrowingKnifeExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
-									Modules::Aimbot::ThrowingKnifeExtraBind = static_cast<InputKeyType>(ThrowingKnifeExtraBind);
+									if (Modules::Aimbot::BindMethod == 0) { //OnFire & OnADS
+										ImGui::Checkbox("On Fire##ThrowingKnifeAimbot", &ThrowingKnifeFire);
+										ImGui::Checkbox("On ADS##ThrowingKnifeAimbot", &ThrowingKnifeADS);
+									}
+									if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+										int ThrowingKnifeAimBind = static_cast<int>(Modules::Aimbot::ThrowingKnifeAimBind);
+										ImGui::Combo("Aim Bind##ThrowingKnifeAimbot", &ThrowingKnifeAimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::ThrowingKnifeAimBind = static_cast<InputKeyType>(ThrowingKnifeAimBind);
+										int ThrowingKnifeExtraBind = static_cast<int>(Modules::Aimbot::ThrowingKnifeExtraBind);
+										ImGui::Combo("Extra Bind##ThrowingKnifeAimbot", &ThrowingKnifeExtraBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
+										Modules::Aimbot::ThrowingKnifeExtraBind = static_cast<InputKeyType>(ThrowingKnifeExtraBind);
+									}
 									if (AimbotMode == 0) {
 										ImGui::Text("Hitbox");
 										ImGui::Checkbox("Closest To Crosshair##ThrowingKnifeAdvancedHitbox", &ThrowingKnifeClosestHitbox);
@@ -2666,9 +2785,6 @@ struct Aimbot {
 										ImGui::SliderFloat("ADS Smoothing##AdvancedThrowingKnife", &ThrowingKnifeADSSmooth, 0, 0.99, "%.3f");
 										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 											ImGui::SetTooltip("Smoothing Of The Aim-Assist For The ThrowingKnife Whilst ADS.\nHigher = Smoother");
-										ImGui::SliderFloat("Deadzone##AdvancedThrowingKnife", &ThrowingKnifeDeadzone, 0, 10, "%.03f");
-										if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-											ImGui::SetTooltip("If the aimbot is close enough then the aimbot will stop trying to get any closer.");
 									}
 									if (AimbotMode == 1) {
 										ImGui::Text("Smoothing");
@@ -2714,6 +2830,11 @@ struct Aimbot {
             Config::Aimbot::AimbotMode = AimbotMode;
             Config::Aimbot::HitBox = static_cast<int>(Modules::Aimbot::Hitbox);
             Config::Aimbot::ClosestHitbox = ClosestHitbox;
+			Config::Aimbot::BindMethod = Modules::Aimbot::BindMethod;
+			Config::Aimbot::AimBind = static_cast<int>(Modules::Aimbot::AimBind);
+			Config::Aimbot::ExtraBind = static_cast<int>(Modules::Aimbot::ExtraBind);
+			Config::Aimbot::OnFire = OnFire;
+			Config::Aimbot::OnADS = OnADS;
             
             Config::Aimbot::VisCheck = VisCheck;
             Config::Aimbot::TeamCheck = TeamCheck;
@@ -2787,7 +2908,114 @@ struct Aimbot {
             Config::Aimbot::AdvancedMinDistance1 = AdvancedMinDistance1;
             Config::Aimbot::AdvancedMaxDistance1 = AdvancedMaxDistance1;
             
-            //Advanced - Aimbot Mode 0 - Weapons && OnADS && OnFire
+			//OnFire and OnADS
+			Config::Aimbot::P2020Fire = P2020Fire;
+			Config::Aimbot::P2020ADS = P2020ADS;
+			Config::Aimbot::RE45Fire = RE45Fire;
+			Config::Aimbot::RE45ADS = RE45ADS;
+			Config::Aimbot::AlternatorFire = AlternatorFire;
+			Config::Aimbot::AlternatorADS = AlternatorADS;
+			Config::Aimbot::R99Fire = R99Fire;
+			Config::Aimbot::R99ADS = R99ADS;
+			Config::Aimbot::R301Fire = R301Fire;
+			Config::Aimbot::R301ADS = R301ADS;
+			Config::Aimbot::SpitfireFire = SpitfireFire;
+			Config::Aimbot::SpitfireADS = SpitfireADS;
+			Config::Aimbot::G7Fire = G7Fire;
+			Config::Aimbot::G7ADS = G7ADS;
+			Config::Aimbot::FlatlineFire = FlatlineFire;
+			Config::Aimbot::FlatlineADS = FlatlineADS;
+			Config::Aimbot::HemlockFire = HemlockFire;
+			Config::Aimbot::HemlockADS = HemlockADS;
+			Config::Aimbot::RepeaterFire = RepeaterFire;
+			Config::Aimbot::RepeaterADS = RepeaterADS;
+			Config::Aimbot::RampageFire = RampageFire;
+			Config::Aimbot::RampageADS = RampageADS;
+			Config::Aimbot::CARSMGFire = CARSMGFire;
+			Config::Aimbot::CARSMGADS = CARSMGADS;
+			Config::Aimbot::HavocFire = HavocFire;
+			Config::Aimbot::HavocADS = HavocADS;
+			Config::Aimbot::DevotionFire = DevotionFire;
+			Config::Aimbot::DevotionADS = DevotionADS;
+			Config::Aimbot::LSTARFire = LSTARFire;
+			Config::Aimbot::LSTARADS = LSTARADS;
+			Config::Aimbot::TripleTakeFire = TripleTakeFire;
+			Config::Aimbot::TripleTakeADS = TripleTakeADS;
+			Config::Aimbot::VoltFire = VoltFire;
+			Config::Aimbot::VoltADS = VoltADS;
+			Config::Aimbot::NemesisFire = NemesisFire;
+			Config::Aimbot::NemesisADS = NemesisADS;
+			Config::Aimbot::MozambiqueFire = MozambiqueFire;
+			Config::Aimbot::MozambiqueADS = MozambiqueADS;
+			Config::Aimbot::EVA8Fire = EVA8Fire;
+			Config::Aimbot::EVA8ADS = EVA8ADS;
+			Config::Aimbot::PeacekeeperFire = PeacekeeperFire;
+			Config::Aimbot::PeacekeeperADS = PeacekeeperADS;
+			Config::Aimbot::MastiffFire = MastiffFire;
+			Config::Aimbot::MastiffADS = MastiffADS;
+			Config::Aimbot::WingmanFire = WingmanFire;
+			Config::Aimbot::WingmanADS = WingmanADS;
+			Config::Aimbot::ProwlerFire = ProwlerFire;
+			Config::Aimbot::ProwlerADS = ProwlerADS;
+			Config::Aimbot::BocekFire = BocekFire;
+			Config::Aimbot::BocekADS = BocekADS;
+			Config::Aimbot::KraberFire = KraberFire;
+			Config::Aimbot::KraberADS = KraberADS;
+			Config::Aimbot::ThrowingKnifeFire = ThrowingKnifeFire;
+			Config::Aimbot::ThrowingKnifeADS = ThrowingKnifeADS;
+
+			//Keybinds
+			Config::Aimbot::P2020AimBind = static_cast<int>(Modules::Aimbot::P2020AimBind);
+			Config::Aimbot::P2020ExtraBind = static_cast<int>(Modules::Aimbot::P2020ExtraBind);
+			Config::Aimbot::RE45AimBind = static_cast<int>(Modules::Aimbot::RE45AimBind);
+			Config::Aimbot::RE45ExtraBind = static_cast<int>(Modules::Aimbot::RE45ExtraBind);
+			Config::Aimbot::AlternatorAimBind = static_cast<int>(Modules::Aimbot::AlternatorAimBind);
+			Config::Aimbot::AlternatorExtraBind = static_cast<int>(Modules::Aimbot::AlternatorExtraBind);
+			Config::Aimbot::R99AimBind = static_cast<int>(Modules::Aimbot::R99AimBind);
+			Config::Aimbot::R99ExtraBind = static_cast<int>(Modules::Aimbot::R99ExtraBind);
+			Config::Aimbot::R301AimBind = static_cast<int>(Modules::Aimbot::R301AimBind);
+			Config::Aimbot::R301ExtraBind = static_cast<int>(Modules::Aimbot::R301ExtraBind);
+			Config::Aimbot::SpitfireAimBind = static_cast<int>(Modules::Aimbot::SpitfireAimBind);
+			Config::Aimbot::SpitfireExtraBind = static_cast<int>(Modules::Aimbot::SpitfireExtraBind);
+			Config::Aimbot::G7AimBind = static_cast<int>(Modules::Aimbot::G7AimBind);
+			Config::Aimbot::G7ExtraBind = static_cast<int>(Modules::Aimbot::G7ExtraBind);
+			Config::Aimbot::FlatlineAimBind = static_cast<int>(Modules::Aimbot::FlatlineAimBind);
+			Config::Aimbot::FlatlineExtraBind = static_cast<int>(Modules::Aimbot::FlatlineExtraBind);
+			Config::Aimbot::HemlockAimBind = static_cast<int>(Modules::Aimbot::HemlockAimBind);
+			Config::Aimbot::HemlockExtraBind = static_cast<int>(Modules::Aimbot::HemlockExtraBind);
+			Config::Aimbot::RepeaterAimBind = static_cast<int>(Modules::Aimbot::RepeaterAimBind);
+			Config::Aimbot::RepeaterExtraBind = static_cast<int>(Modules::Aimbot::RepeaterExtraBind);
+			Config::Aimbot::RampageAimBind = static_cast<int>(Modules::Aimbot::RampageAimBind);
+			Config::Aimbot::RampageExtraBind = static_cast<int>(Modules::Aimbot::RampageExtraBind);
+			Config::Aimbot::CARSMGAimBind = static_cast<int>(Modules::Aimbot::CARSMGAimBind);
+			Config::Aimbot::CARSMGExtraBind = static_cast<int>(Modules::Aimbot::CARSMGExtraBind);
+			Config::Aimbot::HavocAimBind = static_cast<int>(Modules::Aimbot::HavocAimBind);
+			Config::Aimbot::HavocExtraBind = static_cast<int>(Modules::Aimbot::HavocExtraBind);
+			Config::Aimbot::DevotionAimBind = static_cast<int>(Modules::Aimbot::DevotionAimBind);
+			Config::Aimbot::DevotionExtraBind = static_cast<int>(Modules::Aimbot::DevotionExtraBind);
+			Config::Aimbot::LSTARAimBind = static_cast<int>(Modules::Aimbot::LSTARAimBind);
+			Config::Aimbot::LSTARExtraBind = static_cast<int>(Modules::Aimbot::LSTARExtraBind);
+			Config::Aimbot::TripleTakeAimBind = static_cast<int>(Modules::Aimbot::TripleTakeAimBind);
+			Config::Aimbot::TripleTakeExtraBind = static_cast<int>(Modules::Aimbot::TripleTakeExtraBind);
+			Config::Aimbot::VoltAimBind = static_cast<int>(Modules::Aimbot::VoltAimBind);
+			Config::Aimbot::VoltExtraBind = static_cast<int>(Modules::Aimbot::VoltExtraBind);
+			Config::Aimbot::NemesisAimBind = static_cast<int>(Modules::Aimbot::NemesisAimBind);
+			Config::Aimbot::NemesisExtraBind = static_cast<int>(Modules::Aimbot::NemesisExtraBind);
+			Config::Aimbot::MozambiqueAimBind = static_cast<int>(Modules::Aimbot::MozambiqueAimBind);
+			Config::Aimbot::MozambiqueExtraBind = static_cast<int>(Modules::Aimbot::MozambiqueExtraBind);
+			Config::Aimbot::WingmanAimBind = static_cast<int>(Modules::Aimbot::WingmanAimBind);
+			Config::Aimbot::WingmanExtraBind = static_cast<int>(Modules::Aimbot::WingmanExtraBind);
+			Config::Aimbot::BocekAimBind = static_cast<int>(Modules::Aimbot::BocekAimBind);
+			Config::Aimbot::BocekExtraBind = static_cast<int>(Modules::Aimbot::BocekExtraBind);
+			Config::Aimbot::ProwlerAimBind = static_cast<int>(Modules::Aimbot::ProwlerAimBind);
+			Config::Aimbot::ProwlerExtraBind = static_cast<int>(Modules::Aimbot::ProwlerExtraBind);
+			Config::Aimbot::KraberAimBind = static_cast<int>(Modules::Aimbot::KraberAimBind);
+			Config::Aimbot::KraberExtraBind = static_cast<int>(Modules::Aimbot::KraberExtraBind);
+			Config::Aimbot::ThrowingKnifeAimBind = static_cast<int>(Modules::Aimbot::ThrowingKnifeAimBind);
+			Config::Aimbot::ThrowingKnifeExtraBind = static_cast<int>(Modules::Aimbot::ThrowingKnifeExtraBind);
+
+
+            //Advanced - Aimbot Mode 0 
             //Light
             Config::Aimbot::P2020ClosestHitbox = P2020ClosestHitbox;
             Config::Aimbot::P2020Hitbox = P2020Hitbox;
@@ -3243,783 +3471,164 @@ struct Aimbot {
     }
 
     void Update() {
-    	if (AimbotMode == 1 && !AdvancedAim) {
-    		AdvancedAim = true; //For some reason with Grinder aimbot I can only get it to work if advanced settings are on. Doesnt matter too much.
-    	}
     	if(!Map->IsPlayable) return;
 		if(Myself->IsDead) return;
 		if(Modules::Home::IsMenuOpened) return; //Dont aimbot whilst menu is open
-        //Advanced Settings
-        int weaponHeld = Myself->WeaponIndex;
-		//Keybinds && Deadzone
-		if (AdvancedAim) {
-			if (weaponHeld == 106) { //P2020
-				Modules::Aimbot::AimBind = Modules::Aimbot::P2020AimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::P2020ExtraBind;
-				Aimbot::Deadzone = Aimbot::P2020Deadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::P2020Deadzone;
-			}
-			if (weaponHeld == 81) { //RE45
-				Modules::Aimbot::AimBind = Modules::Aimbot::RE45AimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::RE45ExtraBind;
-				Aimbot::Deadzone = Aimbot::RE45Deadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::RE45Deadzone;
-			}
-			if (weaponHeld == 80) { //Alternator
-				Modules::Aimbot::AimBind = Modules::Aimbot::AlternatorAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::AlternatorExtraBind;
-				Aimbot::Deadzone = Aimbot::AlternatorDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::AlternatorDeadzone;
-			}
-			if (weaponHeld == 105) { //R99
-				Modules::Aimbot::AimBind = Modules::Aimbot::R99AimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::R99ExtraBind;
-				Aimbot::Deadzone = Aimbot::R99Deadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::R99Deadzone;
-			}
-			if (weaponHeld == 0) { //R301
-				Modules::Aimbot::AimBind = Modules::Aimbot::R301AimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::R301ExtraBind;
-				Aimbot::Deadzone = Aimbot::R301Deadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::R301Deadzone;
-			}
-			if (weaponHeld == 107) { //Spitfire
-				Modules::Aimbot::AimBind = Modules::Aimbot::SpitfireAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::SpitfireExtraBind;
-				Aimbot::Deadzone = Aimbot::SpitfireDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::SpitfireDeadzone;
-			}
-			if (weaponHeld == 90) { //G7
-				Modules::Aimbot::AimBind = Modules::Aimbot::G7AimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::G7ExtraBind;
-				Aimbot::Deadzone = Aimbot::G7Deadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::G7Deadzone;
-			}
-			//Heavy Weapons
-			if (weaponHeld == 113) { //CARSMG
-				Modules::Aimbot::AimBind = Modules::Aimbot::CARSMGAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::CARSMGExtraBind;
-				Aimbot::Deadzone = Aimbot::CARSMGDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::CARSMGDeadzone;
-			}
-			if (weaponHeld == 21) { //Rampage
-				Modules::Aimbot::AimBind = Modules::Aimbot::RampageAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::RampageExtraBind;
-				Aimbot::Deadzone = Aimbot::RampageDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::RampageDeadzone;
-			}
-			if (weaponHeld == 112) { //Repeater
-				Modules::Aimbot::AimBind = Modules::Aimbot::RepeaterAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::RepeaterExtraBind;
-				Aimbot::Deadzone = Aimbot::RepeaterDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::RepeaterDeadzone;
-			}
-			if (weaponHeld == 102) { //Prowler
-				Modules::Aimbot::AimBind = Modules::Aimbot::ProwlerAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::ProwlerExtraBind;
-				Aimbot::Deadzone = Aimbot::ProwlerDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::ProwlerDeadzone;
-			}
-			if (weaponHeld == 91) { //Hemlock
-				Modules::Aimbot::AimBind = Modules::Aimbot::HemlockAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::HemlockExtraBind;
-				Aimbot::Deadzone = Aimbot::HemlockDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::HemlockDeadzone;
-			}
-			if (weaponHeld == 89) { //Flatline
-				Modules::Aimbot::AimBind = Modules::Aimbot::FlatlineAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::FlatlineExtraBind;
-				Aimbot::Deadzone = Aimbot::FlatlineDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::FlatlineDeadzone;
-			}
-			//Energy Weapons
-			if (weaponHeld == 114) { //Nemesis
-				Modules::Aimbot::AimBind = Modules::Aimbot::NemesisAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::NemesisExtraBind;
-				Aimbot::Deadzone = Aimbot::NemesisDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::NemesisDeadzone;
-			}
-			if (weaponHeld == 111) { //Volt
-				Modules::Aimbot::AimBind = Modules::Aimbot::VoltAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::VoltExtraBind;
-				Aimbot::Deadzone = Aimbot::VoltDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::VoltDeadzone;
-			}
-			if (weaponHeld == 108) { //TripleTake
-				Modules::Aimbot::AimBind = Modules::Aimbot::TripleTakeAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::TripleTakeExtraBind;
-				Aimbot::Deadzone = Aimbot::TripleTakeDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::TripleTakeDeadzone;
-			}
-			if (weaponHeld == 94) { //LSTAR
-				Modules::Aimbot::AimBind = Modules::Aimbot::LSTARAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::LSTARExtraBind;
-				Aimbot::Deadzone = Aimbot::LSTARDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::LSTARDeadzone;
-			}
-			if (weaponHeld == 84) { //Devotion
-				Modules::Aimbot::AimBind = Modules::Aimbot::DevotionAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::DevotionExtraBind;
-				Aimbot::Deadzone = Aimbot::DevotionDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::DevotionDeadzone;
-			}
-			if (weaponHeld == 86) { //Havoc
-				Modules::Aimbot::AimBind = Modules::Aimbot::HavocAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::HavocExtraBind;
-				Aimbot::Deadzone = Aimbot::HavocDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::HavocDeadzone;
-			}
-			//Shotguns
-			if (weaponHeld == 97) { //Mozambique
-				Modules::Aimbot::AimBind = Modules::Aimbot::MozambiqueAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::MozambiqueExtraBind;
-				Aimbot::Deadzone = Aimbot::MozambiqueDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::MozambiqueDeadzone;
-			}
-			if (weaponHeld == 104) { //Peacekeeper
-				Modules::Aimbot::AimBind = Modules::Aimbot::PeacekeeperAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::PeacekeeperExtraBind;
-				Aimbot::Deadzone = Aimbot::PeacekeeperDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::PeacekeeperDeadzone;
-			}
-			if (weaponHeld == 96) { //Mastiff
-				Modules::Aimbot::AimBind = Modules::Aimbot::MastiffAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::MastiffExtraBind;
-				Aimbot::Deadzone = Aimbot::MastiffDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::MastiffDeadzone;
-			}
-			//Snipers
-			if (weaponHeld == 1) { //Sentinel
-				Modules::Aimbot::AimBind = Modules::Aimbot::SentinelAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::SentinelExtraBind;
-				Aimbot::Deadzone = Aimbot::SentinelDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::SentinelDeadzone;
-			}
-			if (weaponHeld == 83) { //ChargeRifle
-				Modules::Aimbot::AimBind = Modules::Aimbot::ChargeRifleAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::ChargeRifleExtraBind;
-				Aimbot::Deadzone = Aimbot::ChargeRifleDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::ChargeRifleDeadzone;
-			}
-			if (weaponHeld == 85) { //Longbow
-				Modules::Aimbot::AimBind = Modules::Aimbot::LongbowAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::LongbowExtraBind;
-				Aimbot::Deadzone = Aimbot::LongbowDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::LongbowDeadzone;
-			}
-			//Legendary Weapons
-			if (weaponHeld == 110) { //Wingman
-				Modules::Aimbot::AimBind = Modules::Aimbot::WingmanAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::WingmanExtraBind;
-				Aimbot::Deadzone = Aimbot::WingmanDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::WingmanDeadzone;
-			}
-			if (weaponHeld == 88) { //EVA8
-				Modules::Aimbot::AimBind = Modules::Aimbot::EVA8AimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::EVA8ExtraBind;
-				Aimbot::Deadzone = Aimbot::EVA8Deadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::EVA8Deadzone;
-			}
-			if (weaponHeld == 2) { //Bocek
-				Modules::Aimbot::AimBind = Modules::Aimbot::BocekAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::BocekExtraBind;
-				Aimbot::Deadzone = Aimbot::BocekDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::BocekDeadzone;
-			}
-			if (weaponHeld == 93) { //Kraber
-				Modules::Aimbot::AimBind = Modules::Aimbot::KraberAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::KraberExtraBind;
-				Aimbot::Deadzone = Aimbot::KraberDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::KraberDeadzone;
-			}
-			if (weaponHeld == 166) { //ThrowingKnife
-				Modules::Aimbot::AimBind = Modules::Aimbot::ThrowingKnifeAimBind;
-				Modules::Aimbot::ExtraBind = Modules::Aimbot::ThrowingKnifeExtraBind;
-				Aimbot::Deadzone = Aimbot::ThrowingKnifeDeadzone;
-				Aimbot::AdvancedDeadzone = Aimbot::ThrowingKnifeDeadzone;
-			}
-		}
-		
-        if (AimbotMode == 0) {
-	    	if (AdvancedAim) { //IDs from Utils/Weapons.hpp, may need updating after game update
-	    		//Light Weapons
-	    		if (weaponHeld == 106) { //P2020
-	    			Aimbot::ClosestHitbox = Aimbot::P2020ClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::P2020Hitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::P2020Speed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::P2020HipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::P2020ADSSmooth;
-	    		}
-	    		if (weaponHeld == 81) { //RE45
-	    			Aimbot::ClosestHitbox = Aimbot::RE45ClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::RE45Hitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::RE45Speed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::RE45HipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::RE45ADSSmooth;
-	    		}
-	    		if (weaponHeld == 80) { //Alternator
-	    			Aimbot::ClosestHitbox = Aimbot::AlternatorClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::AlternatorHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::AlternatorSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::AlternatorHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::AlternatorADSSmooth;
-	    		}
-	    		if (weaponHeld == 105) { //R99
-	    			Aimbot::ClosestHitbox = Aimbot::R99ClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::R99Hitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::R99Speed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::R99HipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::R99ADSSmooth;
-	    		}
-	    		if (weaponHeld == 0) { //R301
-	    			Aimbot::ClosestHitbox = Aimbot::R301ClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::R301Hitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::R301Speed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::R301HipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::R301ADSSmooth;
-	    		}
-	    		if (weaponHeld == 107) { //Spitfire
-	    			Aimbot::ClosestHitbox = Aimbot::SpitfireClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::SpitfireHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::SpitfireSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::SpitfireHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::SpitfireADSSmooth;
-	    		}
-	    		if (weaponHeld == 90) { //G7
-	    			Aimbot::ClosestHitbox = Aimbot::G7ClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::G7Hitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::G7Speed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::G7HipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::G7ADSSmooth;
-	    		}
-	    		//Heavy Weapons
-	    		if (weaponHeld == 113) { //CARSMG
-	    			Aimbot::ClosestHitbox = Aimbot::CARSMGClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::CARSMGHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::CARSMGSpeed;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::CARSMGADSSmooth;
-	    		}
-	    		if (weaponHeld == 21) { //Rampage
-	    			Aimbot::ClosestHitbox = Aimbot::RampageClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::RampageHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::RampageSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::RampageHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::RampageADSSmooth;
-	    		}
-	    		if (weaponHeld == 112) { //Repeater
-	    			Aimbot::ClosestHitbox = Aimbot::RepeaterClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::RepeaterHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::RepeaterSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::RepeaterHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::RepeaterADSSmooth;
-	    		}
-	    		if (weaponHeld == 91) { //Hemlock
-	    			Aimbot::ClosestHitbox = Aimbot::HemlockClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::HemlockHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::HemlockSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::HemlockHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::HemlockADSSmooth;
-	    		}
-	    		if (weaponHeld == 89) { //Flatline
-	    			Aimbot::ClosestHitbox = Aimbot::FlatlineClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::FlatlineHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::FlatlineSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::FlatlineHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::FlatlineADSSmooth;
-	    		}
-	    		//Energy Weapons
-	    		if (weaponHeld == 114) { //Nemesis
-	    			Aimbot::ClosestHitbox = Aimbot::NemesisClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::NemesisHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::NemesisSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::NemesisHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::NemesisADSSmooth;
-	    		}
-	    		if (weaponHeld == 111) { //Volt
-	    			Aimbot::ClosestHitbox = Aimbot::VoltClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::VoltHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::VoltSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::VoltHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::VoltADSSmooth;
-	    		}
-	    		if (weaponHeld == 108) { //TripleTake
-	    			Aimbot::ClosestHitbox = Aimbot::TripleTakeClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::TripleTakeHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::TripleTakeSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::TripleTakeHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::TripleTakeADSSmooth;
-	    		}
-	    		if (weaponHeld == 94) { //LSTAR
-	    			Aimbot::ClosestHitbox = Aimbot::LSTARClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::LSTARHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::LSTARSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::LSTARHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::LSTARADSSmooth;
-	    		}
-	    		if (weaponHeld == 84) { //Devotion
-	    			Aimbot::ClosestHitbox = Aimbot::DevotionClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::DevotionHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::DevotionSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::DevotionHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::DevotionADSSmooth;
-	    		}
-	    		if (weaponHeld == 86) { //Havoc
-	    			Aimbot::ClosestHitbox = Aimbot::HavocClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::HavocHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::HavocSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::HavocHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::HavocADSSmooth;
-	    		}
-	    		//Shotguns
-	    		if (weaponHeld == 91) { //Mozambique
-	    			Aimbot::ClosestHitbox = Aimbot::MozambiqueClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::MozambiqueHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::MozambiqueSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::MozambiqueHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::MozambiqueADSSmooth;
-	    		}
-	    		if (weaponHeld == 88) { //EVA8
-	    			Aimbot::ClosestHitbox = Aimbot::EVA8ClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::EVA8Hitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::EVA8Speed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::EVA8HipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::EVA8ADSSmooth;
-	    		}
-	    		if (weaponHeld == 104) { //Peacekeeper
-	    			Aimbot::ClosestHitbox = Aimbot::PeacekeeperClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::PeacekeeperHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::PeacekeeperSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::PeacekeeperHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::PeacekeeperADSSmooth;
-	    		}
-	    		if (weaponHeld == 96) { //Mastiff
-	    			Aimbot::ClosestHitbox = Aimbot::MastiffClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::MastiffHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::MastiffSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::MastiffHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::MastiffADSSmooth;
-	    		}
-	    		//Snipers
-	    		if (weaponHeld == 1) { //Sentinel
-	    			Aimbot::ClosestHitbox = Aimbot::SentinelClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::SentinelHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::SentinelSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::SentinelHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::SentinelADSSmooth;
-	    		}
-	    		if (weaponHeld == 83) { //ChargeRifle
-	    			Aimbot::ClosestHitbox = Aimbot::ChargeRifleClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::ChargeRifleHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::ChargeRifleSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::ChargeRifleHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::ChargeRifleADSSmooth;
-	    		}
-	    		if (weaponHeld == 85) { //Longbow
-	    			Aimbot::ClosestHitbox = Aimbot::LongbowClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::LongbowHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::LongbowSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::LongbowHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::LongbowADSSmooth;
-	    		}
-	    		//Legendary Weapons
-	    		if (weaponHeld == 110) { //Wingman
-	    			Aimbot::ClosestHitbox = Aimbot::WingmanClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::WingmanHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::WingmanSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::WingmanHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::WingmanADSSmooth;
-	    		}
-	    		if (weaponHeld == 102) { //Prowler
-	    			Aimbot::ClosestHitbox = Aimbot::ProwlerClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::ProwlerHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::ProwlerSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::ProwlerHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::ProwlerADSSmooth;
-	    		}
-	    		if (weaponHeld == 2) { //Bocek
-	    			Aimbot::ClosestHitbox = Aimbot::BocekClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::BocekHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::BocekSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::BocekHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::BocekADSSmooth;
-	    		}
-	    		if (weaponHeld == 93) { //Kraber
-	    			Aimbot::ClosestHitbox = Aimbot::KraberClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::KraberHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::KraberSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::KraberHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::KraberADSSmooth;
-	    		}
-	    		if (weaponHeld == 166) { //ThrowingKnife
-	    			Aimbot::ClosestHitbox = Aimbot::ThrowingKnifeClosestHitbox;
-	    			Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::ThrowingKnifeHitbox);
-	    			Aimbot::AdvancedSpeed = Aimbot::ThrowingKnifeSpeed;
-	    			Aimbot::AdvancedHipfireSmooth = Aimbot::ThrowingKnifeHipfireSmooth;
-	    			Aimbot::AdvancedADSSmooth = Aimbot::ThrowingKnifeADSSmooth;
-	    		}
-	    	}
+        UpdateSettings(); //Updates Aimbot Settings Based On What Aimbot Mode is enabled and if advanced aim is on
 
+		if (AimbotMode == 0) { //Cubic Beizer (xap-client)
 			if (!AimbotEnabled) { ReleaseTarget(); return; }
 
 			if (Myself->IsZooming)
-			    FinalDistance = ZoomDistance;
+				FinalDistance = ZoomDistance;
 			else FinalDistance = HipfireDistance;
 
 			if (AimList.find(Myself->WeaponIndex) == AimList.end()) return;
 
-			if (!isKeybindDown()) { ReleaseTarget(); TargetSelected = false; return; }
+			if (Modules::Aimbot::BindMethod == 0) { //OnFire and OnADS
+				if (OnFire && OnADS) {
+					if (!Myself->IsInAttack) {
+						if (!Myself->IsZooming) {
+							ReleaseTarget(); 
+							TargetSelected = false; 
+							CurrentTarget = nullptr; 
+							return; 
+						}
+					}
+					if (!Myself->IsZooming) {
+						if (!Myself->IsInAttack) {
+							ReleaseTarget(); 
+							TargetSelected = false; 
+							CurrentTarget = nullptr; 
+							return; 
+						}
+					}
 
-			Player* Target = CurrentTarget;
-			if (!IsValidTarget(Target)) {
-			    if (TargetSelected)
-				return;
+					Player* Target = CurrentTarget;
+					if (!IsValidTarget(Target)) {
+						if (TargetSelected)
+						return;
 
-			    Target = FindBestTarget();
-			    if (!IsValidTarget(Target)) {
-				ReleaseTarget();
-				return;
-			    }
-			    
-			    CurrentTarget = Target;
-			    CurrentTarget->IsLockedOn = true;
-			    TargetSelected = true;
-			} 
-			
-			if (TargetSelected && CurrentTarget) {
-			    std::chrono::milliseconds Now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
-			    if (Now >= LastAimTime + std::chrono::milliseconds(Delay)) {
-				StartAiming();
-				LastAimTime = Now + std::chrono::milliseconds((int)Utils::RandomRange(1, 10));
-			    }
-			    return;
+						Target = FindBestTarget();
+						if (!IsValidTarget(Target)) {
+						ReleaseTarget();
+						return;
+						}
+							
+						CurrentTarget = Target;
+						CurrentTarget->IsLockedOn = true;
+						TargetSelected = true;
+					} 
+						
+					if (TargetSelected && CurrentTarget) {
+						std::chrono::milliseconds Now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+						if (Now >= LastAimTime + std::chrono::milliseconds(Delay)) {
+						StartAiming();
+						LastAimTime = Now + std::chrono::milliseconds((int)Utils::RandomRange(1, 10));
+						}
+						return;
+					}
+				}
+
+				if (OnFire) {
+					if (!Myself->IsInAttack) { ReleaseTarget(); TargetSelected = false; CurrentTarget = nullptr; return; }
+
+					Player* Target = CurrentTarget;
+					if (!IsValidTarget(Target)) {
+						if (TargetSelected)
+						return;
+
+						Target = FindBestTarget();
+						if (!IsValidTarget(Target)) {
+						ReleaseTarget();
+						return;
+						}
+							
+						CurrentTarget = Target;
+						CurrentTarget->IsLockedOn = true;
+						TargetSelected = true;
+					} 
+						
+					if (TargetSelected && CurrentTarget) {
+						std::chrono::milliseconds Now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+						if (Now >= LastAimTime + std::chrono::milliseconds(Delay)) {
+						StartAiming();
+						LastAimTime = Now + std::chrono::milliseconds((int)Utils::RandomRange(1, 10));
+						}
+						return;
+					}
+				}
+
+				if (OnADS) {
+					if (!Myself->IsZooming) { ReleaseTarget(); TargetSelected = false; CurrentTarget = nullptr; return; }
+
+					Player* Target = CurrentTarget;
+					if (!IsValidTarget(Target)) {
+						if (TargetSelected)
+						return;
+
+						Target = FindBestTarget();
+						if (!IsValidTarget(Target)) {
+						ReleaseTarget();
+						return;
+						}
+							
+						CurrentTarget = Target;
+						CurrentTarget->IsLockedOn = true;
+						TargetSelected = true;
+					} 
+						
+					if (TargetSelected && CurrentTarget) {
+						std::chrono::milliseconds Now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+						if (Now >= LastAimTime + std::chrono::milliseconds(Delay)) {
+						StartAiming();
+						LastAimTime = Now + std::chrono::milliseconds((int)Utils::RandomRange(1, 10));
+						}
+						return;
+					}
+				}
+			}
+
+			else if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+				if (!isKeybindDown()) { ReleaseTarget(); TargetSelected = false; CurrentTarget = nullptr; return; }
+
+				Player* Target = CurrentTarget;
+				if (!IsValidTarget(Target)) {
+					if (TargetSelected)
+					return;
+
+					Target = FindBestTarget();
+					if (!IsValidTarget(Target)) {
+					ReleaseTarget();
+					return;
+					}
+						
+					CurrentTarget = Target;
+					CurrentTarget->IsLockedOn = true;
+					TargetSelected = true;
+				} 
+					
+				if (TargetSelected && CurrentTarget) {
+					std::chrono::milliseconds Now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+					if (Now >= LastAimTime + std::chrono::milliseconds(Delay)) {
+					StartAiming();
+					LastAimTime = Now + std::chrono::milliseconds((int)Utils::RandomRange(1, 10));
+					}
+					return;
+				}
 			}
 		}
 		
 		if (AimbotMode == 1) {
-	    		if (AdvancedAim) { //IDs from Utils/Weapons.hpp, may need updating after game update
-		    		//Light Weapons
-		    		if (weaponHeld == 106) { //P2020
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::P2020HipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::P2020ADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::P2020ExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::P2020FOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::P2020Deadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::P2020MinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::P2020MaxDistance1;	
-		    		}
-		    		if (weaponHeld == 81) { //RE45
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::RE45HipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::RE45ADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::RE45ExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::RE45FOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::RE45Deadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::RE45MinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::RE45MaxDistance1;
-		    		}
-		    		if (weaponHeld == 80) { //Alternator
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::AlternatorHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::AlternatorADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::AlternatorExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::AlternatorFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::AlternatorDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::AlternatorMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::AlternatorMaxDistance1;
-		    		}
-		    		if (weaponHeld == 105) { //R99
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::R99HipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::R99ADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::R99ExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::R99FOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::R99Deadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::R99MinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::R99MaxDistance1;
-		    		}
-		    		if (weaponHeld == 0) { //R301
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::R301HipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::R301ADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::R301ExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::R301FOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::R301Deadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::R301MinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::R301MaxDistance1;
-		    		}
-		    		if (weaponHeld == 107) { //Spitfire
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::SpitfireHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::SpitfireADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::SpitfireExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::SpitfireFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::SpitfireDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::SpitfireMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::SpitfireMaxDistance1;
-		    		}
-		    		if (weaponHeld == 90) { //G7
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::G7HipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::G7ADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::G7ExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::G7FOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::G7Deadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::G7MinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::G7MaxDistance1;
-		    		}
-		    		//Heavy Weapons
-		    		if (weaponHeld == 113) { //CARSMG
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::CARSMGHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::CARSMGADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::CARSMGExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::CARSMGFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::CARSMGDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::CARSMGMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::CARSMGMaxDistance1;
-		    		}
-		    		if (weaponHeld == 21) { //Rampage
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::RampageHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::RampageADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::RampageExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::RampageFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::RampageDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::RampageMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::RampageMaxDistance1;
-		    		}
-		    		if (weaponHeld == 112) { //Repeater
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::RepeaterHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::RepeaterADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::RepeaterExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::RepeaterFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::RepeaterDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::RepeaterMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::RepeaterMaxDistance1;
-		    		}
-		    		if (weaponHeld == 91) { //Hemlock
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::HemlockHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::HemlockADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::HemlockExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::HemlockFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::HemlockDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::HemlockMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::HemlockMaxDistance1;
-		    		}
-		    		if (weaponHeld == 89) { //Flatline
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::FlatlineHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::FlatlineADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::FlatlineExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::FlatlineFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::FlatlineDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::FlatlineMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::FlatlineMaxDistance1;
-		    			
-		    		}
-		    		//Energy Weapons
-		    		if (weaponHeld == 114) { //Nemesis
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::NemesisHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::NemesisADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::NemesisExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::NemesisFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::NemesisDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::NemesisMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::NemesisMaxDistance1;
-		    		}
-		    		if (weaponHeld == 111) { //Volt
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::VoltHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::VoltADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::VoltExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::VoltFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::VoltDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::VoltMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::VoltMaxDistance1;
-		    		}
-		    		if (weaponHeld == 108) { //TripleTake
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::TripleTakeHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::TripleTakeADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::TripleTakeExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::TripleTakeFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::TripleTakeDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::TripleTakeMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::TripleTakeMaxDistance1;
-		    		}
-		    		if (weaponHeld == 94) { //LSTAR
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::LSTARHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::LSTARADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::LSTARExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::LSTARFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::LSTARDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::LSTARMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::LSTARMaxDistance1;
-		    		}
-		    		if (weaponHeld == 84) { //Devotion
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::DevotionHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::DevotionADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::DevotionExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::DevotionFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::DevotionDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::DevotionMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::DevotionMaxDistance1;
-		    		}
-		    		if (weaponHeld == 86) { //Havoc
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::HavocHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::HavocADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::HavocExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::HavocFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::HavocDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::HavocMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::HavocMaxDistance1;
-		    		}
-		    		//Shotguns
-		    		if (weaponHeld == 97) { //Mozambique
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::MozambiqueHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::MozambiqueADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::MozambiqueExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::MozambiqueFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::MozambiqueDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::MozambiqueMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::MozambiqueMaxDistance1;
-		    		}
-		    		if (weaponHeld == 88) { //EVA8
-
-						Aimbot::AdvancedHipfireSmooth1 = Aimbot::EVA8HipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::EVA8ADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::EVA8ExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::EVA8FOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::EVA8Deadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::EVA8MinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::EVA8MaxDistance1;
-		    		}
-		    		if (weaponHeld == 104) { //Peacekeeper
-
-						Aimbot::AdvancedHipfireSmooth1 = Aimbot::PeacekeeperHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::PeacekeeperADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::PeacekeeperExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::PeacekeeperFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::PeacekeeperDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::PeacekeeperMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::PeacekeeperMaxDistance1;
-		    		}
-		    		if (weaponHeld == 96) { //Mastiff
-
-						Aimbot::AdvancedHipfireSmooth1 = Aimbot::MastiffHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::MastiffADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::MastiffExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::MastiffFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::MastiffDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::MastiffMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::MastiffMaxDistance1;
-		    		}
-		    		//Snipers
-		    		if (weaponHeld == 1) { //Sentinel
-
-						Aimbot::AdvancedHipfireSmooth1 = Aimbot::SentinelHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::SentinelADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::SentinelExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::SentinelFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::SentinelDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::SentinelMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::SentinelMaxDistance1;
-		    		}
-		    		if (weaponHeld == 83) { //ChargeRifle
-
-						Aimbot::AdvancedHipfireSmooth1 = Aimbot::ChargeRifleHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::ChargeRifleADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::ChargeRifleExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::ChargeRifleFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::ChargeRifleDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::ChargeRifleMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::ChargeRifleMaxDistance1;
-		    		}
-		    		if (weaponHeld == 85) { //Longbow
-
-						Aimbot::AdvancedHipfireSmooth1 = Aimbot::LongbowHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::LongbowADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::LongbowExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::LongbowFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::LongbowDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::LongbowMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::LongbowMaxDistance1;
-		    		}
-		    		//Legendary Weapons
-		    		if (weaponHeld == 110) { //Wingman
-
-						Aimbot::AdvancedHipfireSmooth1 = Aimbot::WingmanHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::WingmanADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::WingmanExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::WingmanFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::WingmanDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::WingmanMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::WingmanMaxDistance1;
-		    		}
-		    		if (weaponHeld == 102) { //Prowler
-
-						Aimbot::AdvancedHipfireSmooth1 = Aimbot::ProwlerHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::ProwlerADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::ProwlerExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::ProwlerFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::ProwlerDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::ProwlerMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::ProwlerMaxDistance1;
-		    		}
-		    		if (weaponHeld == 2) { //Bocek
-
-		    			Aimbot::AdvancedHipfireSmooth1 = Aimbot::BocekHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::BocekADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::BocekExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::BocekFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::BocekDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::BocekMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::BocekMaxDistance1;
-		    		}
-		    		if (weaponHeld == 93) { //Kraber
-
-						Aimbot::AdvancedHipfireSmooth1 = Aimbot::KraberHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::KraberADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::KraberExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::KraberFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::KraberDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::KraberMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::KraberMaxDistance1;
-		    		}
-		    		if (weaponHeld == 166) { //ThrowingKnife
-
-						Aimbot::AdvancedHipfireSmooth1 = Aimbot::ThrowingKnifeHipfireSmooth1;
-		    			Aimbot::AdvancedADSSmooth1 = Aimbot::ThrowingKnifeADSSmooth1;
-		    			Aimbot::AdvancedExtraSmooth1 = Aimbot::ThrowingKnifeExtraSmooth1;
-		    			Aimbot::AdvancedFOV1 = Aimbot::ThrowingKnifeFOV1;
-		    			Aimbot::AdvancedDeadzone = Aimbot::ThrowingKnifeDeadzone;
-		    			Aimbot::AdvancedMinDistance1 = Aimbot::ThrowingKnifeMinDistance1;
-		    			Aimbot::AdvancedMaxDistance1 = Aimbot::ThrowingKnifeMaxDistance1;
-		    		}
-
-				if (AimList.find(Myself->WeaponIndex) == AimList.end()) return;
-				if (!active()) { releaseTarget2(); return; }
-				if (CurrentTarget == nullptr) assignTarget();
-				if (CurrentTarget == nullptr) return;
-				if (!CurrentTarget->IsVisible) return;
-				if (CurrentTarget->Distance2DToLocalPlayer < Conversion::ToGameUnits(MinDistance2)) return;
-				if (CurrentTarget->Distance2DToLocalPlayer > Conversion::ToGameUnits(MaxDistance2)) return;
-				if (AdvancedAim) {
-					moveMouseAdvanced();
-				}
-				else if (!AdvancedAim) {
-					moveMouse();
-				}
-			}
+			if (!active()) { releaseTarget2(); return; }
+			if (AimList.find(Myself->WeaponIndex) == AimList.end()) return;
+			if (CurrentTarget == nullptr) assignTarget();
+			if (CurrentTarget == nullptr) return;
+			if (!CurrentTarget->IsVisible) return;
+			if (CurrentTarget->Distance2DToLocalPlayer < Conversion::ToGameUnits(MinDistance2)) return;
+			if (CurrentTarget->Distance2DToLocalPlayer > Conversion::ToGameUnits(MaxDistance2)) return;
+			moveMouse();
 		}
-		
 	}
 
 	bool isKeybindDown() {
@@ -4044,10 +3653,6 @@ struct Aimbot {
         int totalYawIncrementInt = RoundHalfEven(AL1AF0(aimbotDelta.x));
         int totalPitchIncrementInt = RoundHalfEven(AL1AF0(aimbotDelta.y * -1));
 
-		//Deadzone - are we close enough yet?
-		if (fabs(totalYawIncrementInt) < Deadzone) { totalPitchIncrementInt = 0; }
-		if (fabs(totalPitchIncrementInt) < Deadzone) { totalYawIncrementInt = 0; }
-
         // Move Mouse
         if (totalPitchIncrementInt == 0 && totalYawIncrementInt == 0) return;
         X11Display->MoveMouse(totalYawIncrementInt, totalPitchIncrementInt);
@@ -4058,10 +3663,6 @@ struct Aimbot {
         int totalYawIncrementInt = RoundHalfEven(AL1AF0(aimbotDelta.x));
         int totalPitchIncrementInt = RoundHalfEven(AL1AF0(aimbotDelta.y * -1));
 
-		//Deadzone - are we close enough yet?
-		if (fabs(totalYawIncrementInt) < Deadzone) { totalPitchIncrementInt = 0; }
-		if (fabs(totalPitchIncrementInt) < Deadzone) { totalYawIncrementInt = 0; }
-
         // Move Mouse
         if (totalPitchIncrementInt == 0 && totalYawIncrementInt == 0) return;
         X11Display->MoveMouse(totalYawIncrementInt, totalPitchIncrementInt);
@@ -4069,36 +3670,6 @@ struct Aimbot {
     }
     
     void moveMouse() {
-    	float TOTAL_SMOOTH;
-	if (Myself->IsZooming) {
-		float ExtraSmooth = ExtraSmooth / CurrentTarget->DistanceToLocalPlayer;
-		TOTAL_SMOOTH = (ADSSmooth1 + ExtraSmooth);
-	}
-	else if (!Myself->IsZooming) {
-		float ExtraSmooth = ExtraSmooth / CurrentTarget->DistanceToLocalPlayer;
-		TOTAL_SMOOTH = (HipfireSmooth1 + ExtraSmooth);
-	}
-	//Aimbot calcs
-	const FloatVector2D aimbotDelta = CurrentTarget->aimbotDesiredAnglesIncrement
-		.multiply(100)
-		.divide(TOTAL_SMOOTH);
-	const double aimYawIncrement = aimbotDelta.y * -1;
-	const double aimPitchIncrement = aimbotDelta.x;
-	//Combine
-	const double totalPitchIncrement = aimPitchIncrement;
-	const double totalYawIncrement = aimYawIncrement;
-	//Turn into integers
-	int totalPitchIncrementInt = roundHalfEven2(atLeast_1_AwayFromZero(totalPitchIncrement));
-	int totalYawIncrementInt = roundHalfEven2(atLeast_1_AwayFromZero(totalYawIncrement));
-	//Deadzone - are we close enough yet?
-	if (fabs(CurrentTarget->aimbotDesiredAnglesIncrement.x) < Deadzone) totalPitchIncrementInt = 0;
-	if (fabs(CurrentTarget->aimbotDesiredAnglesIncrement.y) < Deadzone) totalYawIncrementInt = 0;
-	if (totalPitchIncrementInt == 0 && totalYawIncrementInt == 0) return;
-	//move mouse
-	X11Display->MoveMouse(totalPitchIncrementInt, totalYawIncrementInt);
-    }
-    
-    void moveMouseAdvanced() {
 	float TOTAL_SMOOTH;
 	if (Myself->IsZooming) {
 		float ExtraSmooth = AdvancedExtraSmooth1 / CurrentTarget->DistanceToLocalPlayer;
@@ -4214,12 +3785,24 @@ struct Aimbot {
 
         bool activatedByAimBind = InputManager::isKeyDownOrPress(Modules::Aimbot::AimBind);
         bool activatedByExtraBind = InputManager::isKeyDownOrPress(Modules::Aimbot::ExtraBind);
-        bool active = aimbotIsOn
+		bool activatedByAttackingAndIsAttacking = OnFire && Myself->IsInAttack;
+        bool activatedByADSAndIsADSing = OnADS && Myself->IsZooming;
+		if (Modules::Aimbot::BindMethod == 0) { //OnFire and OnADS
+			bool active = aimbotIsOn
             && combatReady
             && !weaponDiscarded
-            && (activatedByAimBind
-                || activatedByExtraBind);
-        return active;
+            && (activatedByAttackingAndIsAttacking
+                || activatedByADSAndIsADSing);
+			return active;
+		}
+		else if (Modules::Aimbot::BindMethod == 1) { //Keybinds
+			bool active = aimbotIsOn
+				&& combatReady
+				&& !weaponDiscarded
+				&& (activatedByAimBind
+					|| activatedByExtraBind);
+			return active;
+		}
     }
     
     void assignTarget() {
@@ -4422,4 +4005,620 @@ struct Aimbot {
         }
         return NearestTarget;
     }
+
+	void UpdateSettings() {
+		if (!AdvancedAim) {
+			return;
+		}
+		int weaponHeld = Myself->WeaponIndex;
+		//Keybinds && Deadzone
+		if (AdvancedAim) {
+			if (weaponHeld == 106) { //P2020
+				Modules::Aimbot::AimBind = Modules::Aimbot::P2020AimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::P2020ExtraBind;
+	    		Aimbot::OnFire = Aimbot::P2020Fire;
+	    		Aimbot::OnADS = Aimbot::P2020ADS;
+				Aimbot::AdvancedDeadzone = Aimbot::P2020Deadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::P2020ClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::P2020Hitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::P2020Speed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::P2020HipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::P2020ADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::P2020HipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::P2020ADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::P2020ExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::P2020FOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::P2020MinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::P2020MaxDistance1;
+
+			}
+			if (weaponHeld == 81) { //RE45
+				Modules::Aimbot::AimBind = Modules::Aimbot::RE45AimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::RE45ExtraBind;
+	    		Aimbot::OnFire = Aimbot::RE45Fire;
+	    		Aimbot::OnADS = Aimbot::RE45ADS;
+				Aimbot::AdvancedDeadzone = Aimbot::RE45Deadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::RE45ClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::RE45Hitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::RE45Speed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::RE45HipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::RE45ADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::RE45HipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::RE45ADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::RE45ExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::RE45FOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::RE45MinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::RE45MaxDistance1;
+			}
+			if (weaponHeld == 80) { //Alternator
+				Modules::Aimbot::AimBind = Modules::Aimbot::AlternatorAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::AlternatorExtraBind;
+	    		Aimbot::OnFire = Aimbot::AlternatorFire;
+	    		Aimbot::OnADS = Aimbot::AlternatorADS;
+				Aimbot::AdvancedDeadzone = Aimbot::AlternatorDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::AlternatorClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::AlternatorHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::AlternatorSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::AlternatorHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::AlternatorADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::AlternatorHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::AlternatorADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::AlternatorExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::AlternatorFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::AlternatorMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::AlternatorMaxDistance1;
+			}
+			if (weaponHeld == 105) { //R99
+				Modules::Aimbot::AimBind = Modules::Aimbot::R99AimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::R99ExtraBind;
+	    		Aimbot::OnFire = Aimbot::R99Fire;
+	    		Aimbot::OnADS = Aimbot::R99ADS;
+				Aimbot::AdvancedDeadzone = Aimbot::R99Deadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::R99ClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::R99Hitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::R99Speed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::R99HipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::R99ADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::R99HipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::R99ADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::R99ExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::R99FOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::R99MinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::R99MaxDistance1;
+			}
+			if (weaponHeld == 0) { //R301
+				Modules::Aimbot::AimBind = Modules::Aimbot::R301AimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::R301ExtraBind;
+	    		Aimbot::OnFire = Aimbot::R301Fire;
+	    		Aimbot::OnADS = Aimbot::R301ADS;
+				Aimbot::AdvancedDeadzone = Aimbot::R301Deadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::R301ClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::R301Hitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::R301Speed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::R301HipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::R301ADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::R301HipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::R301ADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::R301ExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::R301FOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::R301MinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::R301MaxDistance1;
+			}
+			if (weaponHeld == 107) { //Spitfire
+				Modules::Aimbot::AimBind = Modules::Aimbot::SpitfireAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::SpitfireExtraBind;
+	    		Aimbot::OnFire = Aimbot::SpitfireFire;
+	    		Aimbot::OnADS = Aimbot::SpitfireADS;
+				Aimbot::AdvancedDeadzone = Aimbot::SpitfireDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::SpitfireClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::SpitfireHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::SpitfireSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::SpitfireHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::SpitfireADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::SpitfireHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::SpitfireADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::SpitfireExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::SpitfireFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::SpitfireMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::SpitfireMaxDistance1;
+			}
+			if (weaponHeld == 90) { //G7
+				Modules::Aimbot::AimBind = Modules::Aimbot::G7AimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::G7ExtraBind;
+	    		Aimbot::OnFire = Aimbot::G7Fire;
+	    		Aimbot::OnADS = Aimbot::G7ADS;
+				Aimbot::AdvancedDeadzone = Aimbot::G7Deadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::G7ClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::G7Hitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::G7Speed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::G7HipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::G7ADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::G7HipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::G7ADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::G7ExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::G7FOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::G7MinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::G7MaxDistance1;
+			}
+			//Heavy Weapons
+			if (weaponHeld == 113) { //CARSMG
+				Modules::Aimbot::AimBind = Modules::Aimbot::CARSMGAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::CARSMGExtraBind;
+	    		Aimbot::OnFire = Aimbot::CARSMGFire;
+	    		Aimbot::OnADS = Aimbot::CARSMGADS;
+				Aimbot::AdvancedDeadzone = Aimbot::CARSMGDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::CARSMGClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::CARSMGHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::CARSMGSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::CARSMGHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::CARSMGADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::CARSMGHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::CARSMGADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::CARSMGExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::CARSMGFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::CARSMGMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::CARSMGMaxDistance1;
+			}
+			if (weaponHeld == 21) { //Rampage
+				Modules::Aimbot::AimBind = Modules::Aimbot::RampageAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::RampageExtraBind;
+	    		Aimbot::OnFire = Aimbot::RampageFire;
+	    		Aimbot::OnADS = Aimbot::RampageADS;
+				Aimbot::AdvancedDeadzone = Aimbot::RampageDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::RampageClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::RampageHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::RampageSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::RampageHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::RampageADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::RampageHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::RampageADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::RampageExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::RampageFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::RampageMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::RampageMaxDistance1;
+			}
+			if (weaponHeld == 112) { //Repeater
+				Modules::Aimbot::AimBind = Modules::Aimbot::RepeaterAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::RepeaterExtraBind;
+	    		Aimbot::OnFire = Aimbot::RepeaterFire;
+	    		Aimbot::OnADS = Aimbot::RepeaterADS;
+				Aimbot::AdvancedDeadzone = Aimbot::RepeaterDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::RepeaterClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::RepeaterHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::RepeaterSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::RepeaterHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::RepeaterADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::RepeaterHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::RepeaterADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::RepeaterExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::RepeaterFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::RepeaterMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::RepeaterMaxDistance1;
+			}
+			if (weaponHeld == 102) { //Prowler
+				Modules::Aimbot::AimBind = Modules::Aimbot::ProwlerAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::ProwlerExtraBind;
+	    		Aimbot::OnFire = Aimbot::ProwlerFire;
+	    		Aimbot::OnADS = Aimbot::ProwlerADS;
+				Aimbot::AdvancedDeadzone = Aimbot::ProwlerDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::ProwlerClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::ProwlerHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::ProwlerSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::ProwlerHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::ProwlerADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::ProwlerHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::ProwlerADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::ProwlerExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::ProwlerFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::ProwlerMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::ProwlerMaxDistance1;
+			}
+			if (weaponHeld == 91) { //Hemlock
+				Modules::Aimbot::AimBind = Modules::Aimbot::HemlockAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::HemlockExtraBind;
+	    		Aimbot::OnFire = Aimbot::HemlockFire;
+	    		Aimbot::OnADS = Aimbot::HemlockADS;
+				Aimbot::AdvancedDeadzone = Aimbot::HemlockDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::HemlockClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::HemlockHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::HemlockSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::HemlockHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::HemlockADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::HemlockHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::HemlockADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::HemlockExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::HemlockFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::HemlockMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::HemlockMaxDistance1;
+			}
+			if (weaponHeld == 89) { //Flatline
+				Modules::Aimbot::AimBind = Modules::Aimbot::FlatlineAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::FlatlineExtraBind;
+	    		Aimbot::OnFire = Aimbot::FlatlineFire;
+	    		Aimbot::OnADS = Aimbot::FlatlineADS;
+				Aimbot::AdvancedDeadzone = Aimbot::FlatlineDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::FlatlineClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::FlatlineHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::FlatlineSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::FlatlineHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::FlatlineADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::FlatlineHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::FlatlineADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::FlatlineExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::FlatlineFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::FlatlineMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::FlatlineMaxDistance1;
+			}
+			//Energy Weapons
+			if (weaponHeld == 114) { //Nemesis
+				Modules::Aimbot::AimBind = Modules::Aimbot::NemesisAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::NemesisExtraBind;
+	    		Aimbot::OnFire = Aimbot::NemesisFire;
+	    		Aimbot::OnADS = Aimbot::NemesisADS;
+				Aimbot::AdvancedDeadzone = Aimbot::NemesisDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::NemesisClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::NemesisHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::NemesisSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::NemesisHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::NemesisADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::NemesisHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::NemesisADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::NemesisExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::NemesisFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::NemesisMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::NemesisMaxDistance1;
+			}
+			if (weaponHeld == 111) { //Volt
+				Modules::Aimbot::AimBind = Modules::Aimbot::VoltAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::VoltExtraBind;
+	    		Aimbot::OnFire = Aimbot::VoltFire;
+	    		Aimbot::OnADS = Aimbot::VoltADS;
+				Aimbot::AdvancedDeadzone = Aimbot::VoltDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::VoltClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::VoltHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::VoltSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::VoltHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::VoltADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::VoltHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::VoltADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::VoltExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::VoltFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::VoltMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::VoltMaxDistance1;
+			}
+			if (weaponHeld == 108) { //TripleTake
+				Modules::Aimbot::AimBind = Modules::Aimbot::TripleTakeAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::TripleTakeExtraBind;
+	    		Aimbot::OnFire = Aimbot::TripleTakeFire;
+	    		Aimbot::OnADS = Aimbot::TripleTakeADS;
+				Aimbot::AdvancedDeadzone = Aimbot::TripleTakeDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::TripleTakeClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::TripleTakeHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::TripleTakeSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::TripleTakeHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::TripleTakeADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::TripleTakeHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::TripleTakeADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::TripleTakeExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::TripleTakeFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::TripleTakeMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::TripleTakeMaxDistance1;
+			}
+			if (weaponHeld == 94) { //LSTAR
+				Modules::Aimbot::AimBind = Modules::Aimbot::LSTARAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::LSTARExtraBind;
+	    		Aimbot::OnFire = Aimbot::LSTARFire;
+	    		Aimbot::OnADS = Aimbot::LSTARADS;
+				Aimbot::AdvancedDeadzone = Aimbot::LSTARDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::LSTARClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::LSTARHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::LSTARSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::LSTARHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::LSTARADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::LSTARHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::LSTARADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::LSTARExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::LSTARFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::LSTARMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::LSTARMaxDistance1;
+			}
+			if (weaponHeld == 84) { //Devotion
+				Modules::Aimbot::AimBind = Modules::Aimbot::DevotionAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::DevotionExtraBind;
+	    		Aimbot::OnFire = Aimbot::DevotionFire;
+	    		Aimbot::OnADS = Aimbot::DevotionADS;
+				Aimbot::AdvancedDeadzone = Aimbot::DevotionDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::DevotionClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::DevotionHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::DevotionSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::DevotionHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::DevotionADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::DevotionHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::DevotionADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::DevotionExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::DevotionFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::DevotionMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::DevotionMaxDistance1;
+			}
+			if (weaponHeld == 86) { //Havoc
+				Modules::Aimbot::AimBind = Modules::Aimbot::HavocAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::HavocExtraBind;
+	    		Aimbot::OnFire = Aimbot::HavocFire;
+	    		Aimbot::OnADS = Aimbot::HavocADS;
+				Aimbot::AdvancedDeadzone = Aimbot::HavocDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::HavocClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::HavocHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::HavocSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::HavocHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::HavocADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::HavocHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::HavocADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::HavocExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::HavocFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::HavocMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::HavocMaxDistance1;
+			}
+			//Shotguns
+			if (weaponHeld == 97) { //Mozambique
+				Modules::Aimbot::AimBind = Modules::Aimbot::MozambiqueAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::MozambiqueExtraBind;
+	    		Aimbot::OnFire = Aimbot::MozambiqueFire;
+	    		Aimbot::OnADS = Aimbot::MozambiqueADS;
+				Aimbot::AdvancedDeadzone = Aimbot::MozambiqueDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::MozambiqueClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::MozambiqueHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::MozambiqueSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::MozambiqueHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::MozambiqueADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::MozambiqueHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::MozambiqueADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::MozambiqueExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::MozambiqueFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::MozambiqueMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::MozambiqueMaxDistance1;
+			}
+			if (weaponHeld == 104) { //Peacekeeper
+				Modules::Aimbot::AimBind = Modules::Aimbot::PeacekeeperAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::PeacekeeperExtraBind;
+	    		Aimbot::OnFire = Aimbot::PeacekeeperFire;
+	    		Aimbot::OnADS = Aimbot::PeacekeeperADS;
+				Aimbot::AdvancedDeadzone = Aimbot::PeacekeeperDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::PeacekeeperClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::PeacekeeperHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::PeacekeeperSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::PeacekeeperHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::PeacekeeperADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::PeacekeeperHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::PeacekeeperADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::PeacekeeperExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::PeacekeeperFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::PeacekeeperMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::PeacekeeperMaxDistance1;
+			}
+			if (weaponHeld == 96) { //Mastiff
+				Modules::Aimbot::AimBind = Modules::Aimbot::MastiffAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::MastiffExtraBind;
+	    		Aimbot::OnFire = Aimbot::MastiffFire;
+	    		Aimbot::OnADS = Aimbot::MastiffADS;
+				Aimbot::AdvancedDeadzone = Aimbot::MastiffDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::MastiffClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::MastiffHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::MastiffSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::MastiffHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::MastiffADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::MastiffHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::MastiffADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::MastiffExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::MastiffFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::MastiffMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::MastiffMaxDistance1;
+			}
+			//Snipers
+			if (weaponHeld == 1) { //Sentinel
+				Modules::Aimbot::AimBind = Modules::Aimbot::SentinelAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::SentinelExtraBind;
+	    		Aimbot::OnFire = Aimbot::SentinelFire;
+	    		Aimbot::OnADS = Aimbot::SentinelADS;
+				Aimbot::AdvancedDeadzone = Aimbot::SentinelDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::SentinelClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::SentinelHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::SentinelSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::SentinelHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::SentinelADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::SentinelHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::SentinelADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::SentinelExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::SentinelFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::SentinelMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::SentinelMaxDistance1;
+			}
+			if (weaponHeld == 83) { //ChargeRifle
+				Modules::Aimbot::AimBind = Modules::Aimbot::ChargeRifleAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::ChargeRifleExtraBind;
+	    		Aimbot::OnFire = Aimbot::ChargeRifleFire;
+	    		Aimbot::OnADS = Aimbot::ChargeRifleADS;
+				Aimbot::AdvancedDeadzone = Aimbot::ChargeRifleDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::ChargeRifleClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::ChargeRifleHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::ChargeRifleSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::ChargeRifleHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::ChargeRifleADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::ChargeRifleHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::ChargeRifleADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::ChargeRifleExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::ChargeRifleFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::ChargeRifleMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::ChargeRifleMaxDistance1;
+			}
+			if (weaponHeld == 85) { //Longbow
+				Modules::Aimbot::AimBind = Modules::Aimbot::LongbowAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::LongbowExtraBind;
+	    		Aimbot::OnFire = Aimbot::LongbowFire;
+	    		Aimbot::OnADS = Aimbot::LongbowADS;
+				Aimbot::AdvancedDeadzone = Aimbot::LongbowDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::LongbowClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::LongbowHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::LongbowSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::LongbowHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::LongbowADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::LongbowHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::LongbowADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::LongbowExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::LongbowFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::LongbowMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::LongbowMaxDistance1;
+			}
+			//Legendary Weapons
+			if (weaponHeld == 110) { //Wingman
+				Modules::Aimbot::AimBind = Modules::Aimbot::WingmanAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::WingmanExtraBind;
+	    		Aimbot::OnFire = Aimbot::WingmanFire;
+	    		Aimbot::OnADS = Aimbot::WingmanADS;
+				Aimbot::AdvancedDeadzone = Aimbot::WingmanDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::WingmanClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::WingmanHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::WingmanSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::WingmanHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::WingmanADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::WingmanHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::WingmanADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::WingmanExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::WingmanFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::WingmanMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::WingmanMaxDistance1;
+			}
+			if (weaponHeld == 88) { //EVA8
+				Modules::Aimbot::AimBind = Modules::Aimbot::EVA8AimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::EVA8ExtraBind;
+	    		Aimbot::OnFire = Aimbot::EVA8Fire;
+	    		Aimbot::OnADS = Aimbot::EVA8ADS;
+				Aimbot::AdvancedDeadzone = Aimbot::EVA8Deadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::EVA8ClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::EVA8Hitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::EVA8Speed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::EVA8HipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::EVA8ADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::EVA8HipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::EVA8ADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::EVA8ExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::EVA8FOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::EVA8MinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::EVA8MaxDistance1;
+			}
+			if (weaponHeld == 2) { //Bocek
+				Modules::Aimbot::AimBind = Modules::Aimbot::BocekAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::BocekExtraBind;
+	    		Aimbot::OnFire = Aimbot::BocekFire;
+	    		Aimbot::OnADS = Aimbot::BocekADS;
+				Aimbot::AdvancedDeadzone = Aimbot::BocekDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::BocekClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::BocekHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::BocekSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::BocekHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::BocekADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::BocekHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::BocekADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::BocekExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::BocekFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::BocekMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::BocekMaxDistance1;
+			}
+			if (weaponHeld == 93) { //Kraber
+				Modules::Aimbot::AimBind = Modules::Aimbot::KraberAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::KraberExtraBind;
+	    		Aimbot::OnFire = Aimbot::KraberFire;
+	    		Aimbot::OnADS = Aimbot::KraberADS;
+				Aimbot::AdvancedDeadzone = Aimbot::KraberDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::KraberClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::KraberHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::KraberSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::KraberHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::KraberADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::KraberHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::KraberADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::KraberExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::KraberFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::KraberMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::KraberMaxDistance1;
+			}
+			if (weaponHeld == 166) { //ThrowingKnife
+				Modules::Aimbot::AimBind = Modules::Aimbot::ThrowingKnifeAimBind;
+				Modules::Aimbot::ExtraBind = Modules::Aimbot::ThrowingKnifeExtraBind;
+	    		Aimbot::OnFire = Aimbot::ThrowingKnifeFire;
+	    		Aimbot::OnADS = Aimbot::ThrowingKnifeADS;
+				Aimbot::AdvancedDeadzone = Aimbot::ThrowingKnifeDeadzone;
+				//Cubic Bezier (xap-client)
+				Aimbot::ClosestHitbox = Aimbot::ThrowingKnifeClosestHitbox;
+	    		Modules::Aimbot::Hitbox = static_cast<HitboxType>(Modules::Aimbot::ThrowingKnifeHitbox);
+	    		Aimbot::AdvancedSpeed = Aimbot::ThrowingKnifeSpeed;
+	    		Aimbot::AdvancedHipfireSmooth = Aimbot::ThrowingKnifeHipfireSmooth;
+	    		Aimbot::AdvancedADSSmooth = Aimbot::ThrowingKnifeADSSmooth;
+				//Grinder
+				Aimbot::AdvancedHipfireSmooth1 = Aimbot::ThrowingKnifeHipfireSmooth1;
+		    	Aimbot::AdvancedADSSmooth1 = Aimbot::ThrowingKnifeADSSmooth1;
+		    	Aimbot::AdvancedExtraSmooth1 = Aimbot::ThrowingKnifeExtraSmooth1;
+		    	Aimbot::AdvancedFOV1 = Aimbot::ThrowingKnifeFOV1;
+		    	Aimbot::AdvancedMinDistance1 = Aimbot::ThrowingKnifeMinDistance1;
+		    	Aimbot::AdvancedMaxDistance1 = Aimbot::ThrowingKnifeMaxDistance1;
+			}
+		}
+	}
 };
