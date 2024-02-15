@@ -43,6 +43,7 @@ struct Misc {
     InputKeyType QuickTurnKey = InputKeyType::KEYBOARD_K;
     int QuickTurnHotkey = static_cast<int>(QuickTurnKey);
     int QuickTurnAngle = 180;
+	bool SuperGlide = true;
 
     //Weapon IDs
     //Light
@@ -106,7 +107,9 @@ struct Misc {
 			ImGui::Text("Movement");
 			if (ImGui::BeginChild("Movement", ImVec2(TabSize.x - TabSize.x , (TabSize.y - TabSize.y) + 270), true, ImGuiWindowFlags_NoScrollbar)) {
 				ImGui::Text("Movement Tab");
-				ImGui::TextColored(ImVec4(0, 0.99, 0.99, 0.99), "Soon");
+				ImGui::Checkbox("SuperGlide", &SuperGlide);
+				if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+					ImGui::SetTooltip("Hold spacebar whilst climbing over a wall/object to gain extra speed.");
 				ImGui::EndChild();
 			}
 
