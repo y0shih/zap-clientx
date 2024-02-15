@@ -40,8 +40,11 @@ namespace Config {
 
     namespace Aimbot {
         bool Enabled = true;
-        //int AimBind = 56;
-        //int ExtraBind = 57;
+		int BindMethod = 0;
+        int AimBind = 56;
+        int ExtraBind = 57;
+		bool OnFire = true;
+		bool OnADS = false;
         bool ClosestHitbox = false;
         int HitBox = 2;
         int AimbotMode = 0;
@@ -103,7 +106,7 @@ namespace Config {
 	bool Knife = true;
 	
     //---------------Advanced---------------//
-    bool AdvancedAim = false;
+    bool AdvancedAim = true;
     //Aimbot Mode 0 - xap-client
     bool AdvancedClosestHitbox = true;
     float AdvancedHitbox = 2;
@@ -119,6 +122,130 @@ namespace Config {
     float AdvancedDeadzone = 0.5;
     float AdvancedMinDistance1 = 1;
     float AdvancedMaxDistance1 = 200;
+
+	//Advanced OnFire & OnADS - Aimbot Mode 0 & 1 - xap-client & grinder
+    bool P2020Fire = true;
+    bool P2020ADS = false;
+    bool RE45Fire = true;
+    bool RE45ADS = false;
+    bool AlternatorFire = true;
+    bool AlternatorADS = false;
+    bool R99Fire = true;
+    bool R99ADS = false;
+    bool R301Fire = true;
+    bool R301ADS = false;
+    bool SpitfireFire = true;
+    bool SpitfireADS = false;
+    bool G7Fire = true;
+    bool G7ADS = false;
+    bool FlatlineFire = true;
+    bool FlatlineADS = false;
+    bool HemlockFire = true;
+    bool HemlockADS = false;
+    bool RepeaterFire = true;
+    bool RepeaterADS = false;
+    bool RampageFire = true;
+    bool RampageADS = false;
+    bool CARSMGFire = true;
+    bool CARSMGADS = false;
+    bool HavocFire = true;
+    bool HavocADS = false;
+    bool DevotionFire = true;
+    bool DevotionADS = false;
+    bool LSTARFire = true;
+    bool LSTARADS = false;
+    bool TripleTakeFire = true;
+    bool TripleTakeADS = false;
+    bool VoltFire = true;
+    bool VoltADS = false;
+    bool NemesisFire = true;
+    bool NemesisADS = false;
+    bool MozambiqueFire = true;
+    bool MozambiqueADS = false;
+    bool EVA8Fire = true;
+    bool EVA8ADS = false;
+    bool PeacekeeperFire = true;
+    bool PeacekeeperADS = false;
+    bool MastiffFire = true;
+    bool MastiffADS = false;
+    bool LongbowFire = true;
+    bool LongbowADS = false;
+    bool ChargeRifleFire = true;
+    bool ChargeRifleADS = false;
+    bool SentinelFire = true;
+    bool SentinelADS = false;
+    bool WingmanFire = true;
+    bool WingmanADS = false;
+    bool ProwlerFire = true;
+    bool ProwlerADS = false;
+    bool KraberFire = true;
+    bool KraberADS = false;
+    bool BocekFire = true;
+    bool BocekADS = false;
+    bool ThrowingKnifeFire = true;
+    bool ThrowingKnifeADS = false;
+
+	//Advanced Keybinds
+    int P2020AimBind = 56;
+    int P2020ExtraBind = 0;
+    int RE45AimBind = 56;
+    int RE45ExtraBind = 0;
+	int AlternatorAimBind = 56;
+    int AlternatorExtraBind = 0;
+	int R99AimBind = 56;
+    int R99ExtraBind = 0;
+	int R301AimBind = 56;
+    int R301ExtraBind = 0;
+	int SpitfireAimBind = 56;
+    int SpitfireExtraBind = 0;
+	int G7AimBind = 56;
+    int G7ExtraBind = 57;
+	int FlatlineAimBind = 56;
+    int FlatlineExtraBind = 0;
+	int HemlockAimBind = 56;
+    int HemlockExtraBind = 0;
+	int RepeaterAimBind = 56;
+    int RepeaterExtraBind = 57;
+	int RampageAimBind = 56;
+    int RampageExtraBind = 0;
+	int CARSMGAimBind = 56;
+    int CARSMGExtraBind = 0;
+	int HavocAimBind = 56;
+    int HavocExtraBind = 0;
+	int DevotionAimBind = 56;
+    int DevotionExtraBind = 0;
+	int LSTARAimBind = 56;
+    int LSTARExtraBind = 0;
+	int TripleTakeAimBind = 56;
+    int TripleTakeExtraBind = 57;
+	int VoltAimBind = 56;
+    int VoltExtraBind = 0;
+	int NemesisAimBind = 56;
+    int NemesisExtraBind = 0;
+	int MozambiqueAimBind = 56;
+    int MozambiqueExtraBind = 57;
+	int EVA8AimBind = 56;
+    int EVA8ExtraBind = 57;
+	int PeacekeeperAimBind = 56;
+    int PeacekeeperExtraBind = 57;
+	int MastiffAimBind = 56;
+    int MastiffExtraBind = 57;
+	int LongbowAimBind = 56;
+    int LongbowExtraBind = 57;
+	int ChargeRifleAimBind = 56;
+    int ChargeRifleExtraBind = 57;
+	int SentinelAimBind = 56;
+    int SentinelExtraBind = 57;
+	int WingmanAimBind = 56;
+    int WingmanExtraBind = 0;
+	int ProwlerAimBind = 56;
+    int ProwlerExtraBind = 0;
+	int BocekAimBind = 56;
+    int BocekExtraBind = 57;
+	int KraberAimBind = 56;
+    int KraberExtraBind = 57;
+	int ThrowingKnifeAimBind = 56;
+    int ThrowingKnifeExtraBind = 0;
     
     //AdvancedHitbox
     int P2020HitBox = 2;
@@ -746,8 +873,8 @@ namespace Config {
     float BarWidth = 60.0f;
 	
     float ESPMaxDistance = 200;
-    bool ShowNear = true;
-    bool DrawSeer = true;
+    bool ShowNear = false;
+    bool DrawSeer = false;
     bool DrawStatus = true;
     bool DrawWeapon = false;
     int WeaponColorType = 1;
@@ -804,6 +931,7 @@ namespace Config {
     namespace Misc {
 	bool SkinChanger = false;
 	bool AutoGrapple = false;
+	bool SuperGlide = true;
 	    //Weapon IDs
 	    //Light
 	    int SkinP2020 = 1;
@@ -990,6 +1118,11 @@ void UpdateConfig() {
         WritePair(Aimbot, Enabled);
         WritePair(Aimbot, AimbotMode);
         WritePair(Aimbot, ClosestHitbox);
+		WritePair(Aimbot, BindMethod);
+		WritePair(Aimbot, OnFire);
+		WritePair(Aimbot, OnADS);
+		WritePair(Aimbot, AimBind);
+		WritePair(Aimbot, ExtraBind);
         WritePair(Aimbot, HitBox);
         WritePair(Aimbot, VisCheck);
         WritePair(Aimbot, TeamCheck);
@@ -1062,7 +1195,125 @@ void UpdateConfig() {
 	WritePair(Aimbot, AdvancedDeadzone);
 	WritePair(Aimbot, AdvancedMinDistance1);
 	WritePair(Aimbot, AdvancedMaxDistance1);
-        //Aimbot Mode 0 - Weapons && OnADS && OnFire
+
+    //Aimbot Advanced - Weapons && OnADS && OnFire
+	WritePair(Aimbot, P2020Fire);
+	WritePair(Aimbot, P2020ADS);
+	WritePair(Aimbot, RE45Fire);
+	WritePair(Aimbot, RE45ADS);
+	WritePair(Aimbot, AlternatorFire);
+	WritePair(Aimbot, AlternatorADS);
+	WritePair(Aimbot, R99Fire);
+	WritePair(Aimbot, R99ADS);
+	WritePair(Aimbot, R301Fire);
+	WritePair(Aimbot, R301ADS);
+	WritePair(Aimbot, SpitfireFire);
+	WritePair(Aimbot, SpitfireADS);
+	WritePair(Aimbot, G7Fire);
+	WritePair(Aimbot, G7ADS);
+	WritePair(Aimbot, FlatlineFire);
+	WritePair(Aimbot, FlatlineADS);
+	WritePair(Aimbot, HemlockFire);
+	WritePair(Aimbot, HemlockADS);
+	WritePair(Aimbot, RepeaterFire);
+	WritePair(Aimbot, RepeaterADS);
+	WritePair(Aimbot, RampageFire);
+	WritePair(Aimbot, RampageADS);
+	WritePair(Aimbot, CARSMGFire);
+	WritePair(Aimbot, CARSMGADS);
+	WritePair(Aimbot, HavocFire);
+	WritePair(Aimbot, HavocADS);
+	WritePair(Aimbot, DevotionFire);
+	WritePair(Aimbot, DevotionADS);
+	WritePair(Aimbot, LSTARFire);
+	WritePair(Aimbot, LSTARADS);
+	WritePair(Aimbot, TripleTakeFire);
+	WritePair(Aimbot, TripleTakeADS);
+	WritePair(Aimbot, VoltFire);
+	WritePair(Aimbot, VoltADS);
+	WritePair(Aimbot, NemesisFire);
+	WritePair(Aimbot, NemesisADS);
+	WritePair(Aimbot, MozambiqueFire);
+	WritePair(Aimbot, MozambiqueADS);
+	WritePair(Aimbot, EVA8Fire);
+	WritePair(Aimbot, EVA8ADS);
+	WritePair(Aimbot, PeacekeeperFire);
+	WritePair(Aimbot, PeacekeeperADS);
+	WritePair(Aimbot, MastiffFire);
+	WritePair(Aimbot, MastiffADS);
+	WritePair(Aimbot, WingmanFire);
+	WritePair(Aimbot, WingmanADS);
+	WritePair(Aimbot, BocekFire);
+	WritePair(Aimbot, BocekADS);
+	WritePair(Aimbot, ProwlerFire);
+	WritePair(Aimbot, ProwlerADS);
+	WritePair(Aimbot, KraberFire);
+	WritePair(Aimbot, KraberADS);
+	WritePair(Aimbot, ThrowingKnifeFire);
+	WritePair(Aimbot, ThrowingKnifeADS);
+
+	//Advanced Keybinds
+	WritePair(Aimbot, P2020AimBind);
+	WritePair(Aimbot, P2020ExtraBind);
+	WritePair(Aimbot, RE45AimBind);
+	WritePair(Aimbot, RE45ExtraBind);
+	WritePair(Aimbot, AlternatorAimBind);
+	WritePair(Aimbot, AlternatorExtraBind);
+	WritePair(Aimbot, R99AimBind);
+	WritePair(Aimbot, R99ExtraBind);
+	WritePair(Aimbot, R301AimBind);
+	WritePair(Aimbot, R301ExtraBind);
+	WritePair(Aimbot, SpitfireAimBind);
+	WritePair(Aimbot, SpitfireExtraBind);
+	WritePair(Aimbot, G7AimBind);
+	WritePair(Aimbot, G7ExtraBind);
+	WritePair(Aimbot, FlatlineAimBind);
+	WritePair(Aimbot, FlatlineExtraBind);
+	WritePair(Aimbot, HemlockAimBind);
+	WritePair(Aimbot, HemlockExtraBind);
+	WritePair(Aimbot, RepeaterAimBind);
+	WritePair(Aimbot, RepeaterExtraBind);
+	WritePair(Aimbot, RampageAimBind);
+	WritePair(Aimbot, RampageExtraBind);
+	WritePair(Aimbot, CARSMGAimBind);
+	WritePair(Aimbot, CARSMGExtraBind);
+	WritePair(Aimbot, HavocAimBind);
+	WritePair(Aimbot, HavocExtraBind);
+	WritePair(Aimbot, DevotionAimBind);
+	WritePair(Aimbot, DevotionExtraBind);
+	WritePair(Aimbot, LSTARAimBind);
+	WritePair(Aimbot, LSTARExtraBind);
+	WritePair(Aimbot, TripleTakeAimBind);
+	WritePair(Aimbot, TripleTakeExtraBind);
+	WritePair(Aimbot, VoltAimBind);
+	WritePair(Aimbot, VoltExtraBind);
+	WritePair(Aimbot, NemesisAimBind);
+	WritePair(Aimbot, NemesisExtraBind);
+	WritePair(Aimbot, MozambiqueAimBind);
+	WritePair(Aimbot, MozambiqueExtraBind);
+	WritePair(Aimbot, EVA8AimBind);
+	WritePair(Aimbot, EVA8ExtraBind);
+	WritePair(Aimbot, PeacekeeperAimBind);
+	WritePair(Aimbot, PeacekeeperExtraBind);
+	WritePair(Aimbot, MastiffAimBind);
+	WritePair(Aimbot, MastiffExtraBind);
+	WritePair(Aimbot, LongbowAimBind);
+	WritePair(Aimbot, LongbowExtraBind);
+	WritePair(Aimbot, ChargeRifleAimBind);
+	WritePair(Aimbot, ChargeRifleExtraBind);
+	WritePair(Aimbot, SentinelAimBind);
+	WritePair(Aimbot, SentinelExtraBind);
+	WritePair(Aimbot, WingmanAimBind);
+	WritePair(Aimbot, WingmanExtraBind);
+	WritePair(Aimbot, ProwlerAimBind);
+	WritePair(Aimbot, ProwlerExtraBind);
+	WritePair(Aimbot, BocekAimBind);
+	WritePair(Aimbot, BocekExtraBind);
+	WritePair(Aimbot, KraberAimBind);
+	WritePair(Aimbot, KraberExtraBind);
+	WritePair(Aimbot, ThrowingKnifeAimBind);
+	WritePair(Aimbot, ThrowingKnifeExtraBind);
+
 	//Light
 	WritePair(Aimbot, P2020ClosestHitbox);
 	WritePair(Aimbot, P2020Hitbox);
@@ -1837,6 +2088,7 @@ void UpdateConfig() {
     WriteSection(Misc);
     WritePair(Misc, SkinChanger);
     WritePair(Misc, AutoGrapple);
+	WritePair(Misc, SuperGlide);
         //Weapons
 	//Light
 	WritePair(Misc, SkinP2020);
@@ -1900,6 +2152,11 @@ bool ReadConfig(const std::string &configFile) {
     ReadInt(Aimbot, AimbotMode);
     ReadBool(Aimbot, ClosestHitbox);
     ReadInt(Aimbot, HitBox);
+	ReadBool(Aimbot, BindMethod);
+	ReadBool(Aimbot, OnFire);
+	ReadBool(Aimbot, OnADS);
+	ReadInt(Aimbot, AimBind);
+	ReadInt(Aimbot, ExtraBind);
 
     ReadBool(Aimbot, VisCheck);
     ReadBool(Aimbot, TeamCheck);
@@ -1972,7 +2229,124 @@ bool ReadConfig(const std::string &configFile) {
         ReadFloat(Aimbot, AdvancedMinDistance1);
         ReadFloat(Aimbot, AdvancedMaxDistance1);
         
-        //Aimbot Mode 0 - Weapons && OnADS && OnFire
+    //Aimbot Mode 0 - Weapons && OnADS && OnFire
+	ReadBool(Aimbot, P2020Fire);
+	ReadBool(Aimbot, P2020ADS);
+	ReadBool(Aimbot, RE45Fire);
+	ReadBool(Aimbot, RE45ADS);
+	ReadBool(Aimbot, AlternatorFire);
+	ReadBool(Aimbot, AlternatorADS);
+	ReadBool(Aimbot, R99Fire);
+	ReadBool(Aimbot, R99ADS);
+	ReadBool(Aimbot, R301Fire);
+	ReadBool(Aimbot, R301ADS);
+	ReadBool(Aimbot, SpitfireFire);
+	ReadBool(Aimbot, SpitfireADS);
+	ReadBool(Aimbot, G7Fire);
+	ReadBool(Aimbot, G7ADS);
+	ReadBool(Aimbot, FlatlineFire);
+	ReadBool(Aimbot, FlatlineADS);
+	ReadBool(Aimbot, HemlockFire);
+	ReadBool(Aimbot, HemlockADS);
+	ReadBool(Aimbot, RepeaterFire);
+	ReadBool(Aimbot, RepeaterADS);
+	ReadBool(Aimbot, RampageFire);
+	ReadBool(Aimbot, RampageADS);
+	ReadBool(Aimbot, CARSMGFire);
+	ReadBool(Aimbot, CARSMGADS);
+	ReadBool(Aimbot, HavocFire);
+	ReadBool(Aimbot, HavocADS);
+	ReadBool(Aimbot, DevotionFire);
+	ReadBool(Aimbot, DevotionADS);
+	ReadBool(Aimbot, LSTARFire);
+	ReadBool(Aimbot, LSTARADS);
+	ReadBool(Aimbot, TripleTakeFire);
+	ReadBool(Aimbot, TripleTakeADS);
+	ReadBool(Aimbot, VoltFire);
+	ReadBool(Aimbot, VoltADS);
+	ReadBool(Aimbot, NemesisFire);
+	ReadBool(Aimbot, NemesisADS);
+	ReadBool(Aimbot, MozambiqueFire);
+	ReadBool(Aimbot, MozambiqueADS);
+	ReadBool(Aimbot, EVA8Fire);
+	ReadBool(Aimbot, EVA8ADS);
+	ReadBool(Aimbot, PeacekeeperFire);
+	ReadBool(Aimbot, PeacekeeperADS);
+	ReadBool(Aimbot, MastiffFire);
+	ReadBool(Aimbot, MastiffADS);
+	ReadBool(Aimbot, WingmanFire);
+	ReadBool(Aimbot, WingmanADS);
+	ReadBool(Aimbot, BocekFire);
+	ReadBool(Aimbot, BocekADS);
+	ReadBool(Aimbot, ProwlerFire);
+	ReadBool(Aimbot, ProwlerADS);
+	ReadBool(Aimbot, KraberFire);
+	ReadBool(Aimbot, KraberADS);
+	ReadBool(Aimbot, ThrowingKnifeFire);
+	ReadBool(Aimbot, ThrowingKnifeADS);
+
+	//Advanced Keybinds
+	ReadInt(Aimbot, P2020AimBind);
+	ReadInt(Aimbot, P2020ExtraBind);
+	ReadInt(Aimbot, RE45AimBind);
+	ReadInt(Aimbot, RE45ExtraBind);
+	ReadInt(Aimbot, AlternatorAimBind);
+	ReadInt(Aimbot, AlternatorExtraBind);
+	ReadInt(Aimbot, R99AimBind);
+	ReadInt(Aimbot, R99ExtraBind);
+	ReadInt(Aimbot, R301AimBind);
+	ReadInt(Aimbot, R301ExtraBind);
+	ReadInt(Aimbot, SpitfireAimBind);
+	ReadInt(Aimbot, SpitfireExtraBind);
+	ReadInt(Aimbot, G7AimBind);
+	ReadInt(Aimbot, G7ExtraBind);
+	ReadInt(Aimbot, FlatlineAimBind);
+	ReadInt(Aimbot, FlatlineExtraBind);
+	ReadInt(Aimbot, HemlockAimBind);
+	ReadInt(Aimbot, HemlockExtraBind);
+	ReadInt(Aimbot, RepeaterAimBind);
+	ReadInt(Aimbot, RepeaterExtraBind);
+	ReadInt(Aimbot, RampageAimBind);
+	ReadInt(Aimbot, RampageExtraBind);
+	ReadInt(Aimbot, CARSMGAimBind);
+	ReadInt(Aimbot, CARSMGExtraBind);
+	ReadInt(Aimbot, HavocAimBind);
+	ReadInt(Aimbot, HavocExtraBind);
+	ReadInt(Aimbot, DevotionAimBind);
+	ReadInt(Aimbot, DevotionExtraBind);
+	ReadInt(Aimbot, LSTARAimBind);
+	ReadInt(Aimbot, LSTARExtraBind);
+	ReadInt(Aimbot, TripleTakeAimBind);
+	ReadInt(Aimbot, TripleTakeExtraBind);
+	ReadInt(Aimbot, VoltAimBind);
+	ReadInt(Aimbot, VoltExtraBind);
+	ReadInt(Aimbot, NemesisAimBind);
+	ReadInt(Aimbot, NemesisExtraBind);
+	ReadInt(Aimbot, MozambiqueAimBind);
+	ReadInt(Aimbot, MozambiqueExtraBind);
+	ReadInt(Aimbot, EVA8AimBind);
+	ReadInt(Aimbot, EVA8ExtraBind);
+	ReadInt(Aimbot, PeacekeeperAimBind);
+	ReadInt(Aimbot, PeacekeeperExtraBind);
+	ReadInt(Aimbot, MastiffAimBind);
+	ReadInt(Aimbot, MastiffExtraBind);
+	ReadInt(Aimbot, LongbowAimBind);
+	ReadInt(Aimbot, LongbowExtraBind);
+	ReadInt(Aimbot, ChargeRifleAimBind);
+	ReadInt(Aimbot, ChargeRifleExtraBind);
+	ReadInt(Aimbot, SentinelAimBind);
+	ReadInt(Aimbot, SentinelExtraBind);
+	ReadInt(Aimbot, WingmanAimBind);
+	ReadInt(Aimbot, WingmanExtraBind);
+	ReadInt(Aimbot, ProwlerAimBind);
+	ReadInt(Aimbot, ProwlerExtraBind);
+	ReadInt(Aimbot, BocekAimBind);
+	ReadInt(Aimbot, BocekExtraBind);
+	ReadInt(Aimbot, KraberAimBind);
+	ReadInt(Aimbot, KraberExtraBind);
+	ReadInt(Aimbot, ThrowingKnifeAimBind);
+	ReadInt(Aimbot, ThrowingKnifeExtraBind);
+
 	//Light
 	ReadBool(Aimbot, P2020ClosestHitbox);
 	ReadInt(Aimbot, P2020Hitbox);
@@ -2704,6 +3078,7 @@ bool ReadConfig(const std::string &configFile) {
 
     ReadBool(Misc, SkinChanger);
     ReadBool(Misc, AutoGrapple);
+	ReadBool(Misc, SuperGlide);
 	//Weapons
 	//Light
 	ReadInt(Misc, SkinP2020);
