@@ -1,4 +1,4 @@
-# xap-client [Apex Legends Cheat] [LINUX]
+# zap-client [Apex Cheat] [Linux]
 **Updated to Game Version v3.0.57.21 (Season 20) (13.02.24)**
 
 By **Gerosity**
