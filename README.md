@@ -1,5 +1,5 @@
 # zap-client [Apex Cheat] [Linux]
-**Updated to Game Version v3.0.57.21 (Season 20) (13.02.24)**
+**Updated to Game Version v3.0.59.33 (Season 20) (13.02.24)**
 
 By **Gerosity**
 
@@ -8,6 +8,12 @@ All credits to original owners
 Instructions & Menu Previews are down below
 
 # Current Changelog:
+    6.03.24
+    Updated Offsets
+    Big Update soon
+
+    ------------------------------------------------------------------------------------------------------------
+
     15.01.24 (0.3.1) Update
     Main Things:
         - ACTUALLY fixed aimbot this time (i hope)
@@ -66,12 +72,6 @@ Instructions & Menu Previews are down below
         - Radar
     Aimbot:
         - Replaced OnFire and OnADS with Keybind & Extra Keybind
-    Triggerbot:
-        - Same
-    RCS:
-        - Same
-    Glow:
-        - Same
     ESP:
         - Box Type (2D, 2D Filled)
         - Box Style (Thin, Wide (Bad name choice, see for yourself))
@@ -87,17 +87,6 @@ Instructions & Menu Previews are down below
         - ALGS Map is there, however will not work due to update, will fix in the future
     Misc
         - Removed Super Grapple (Didn't work?)
-
-# Previews (28.01.24 Update)
-
-![Terminal and Home Tab](https://i.imgur.com/xfb1zPx.png)
-![Aimbot Tab](https://i.imgur.com/eZEnUd3.png)
-![RCS Tab](https://i.imgur.com/RjPRmtz.png)
-![Triggerbot Tab](https://i.imgur.com/O1HrvUd.png)
-![Glow Tab](https://i.imgur.com/3Y1ofvE.png)
-![ESP Tab](https://i.imgur.com/f0l7bIA.png)
-![Misc Tab](https://i.imgur.com/zXgkdLY.png)
-![Config Tab](https://i.imgur.com/tYDBzKY.png)
 
 # Installation
 **1.Install dependencies**
