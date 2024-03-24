@@ -853,7 +853,6 @@ struct Menu
 					ImGui::Checkbox("Enabled##RageRCS", &Features::Ragebot::RageRCS);
 					if (Features::Ragebot::RageRCS)
 					{
-						ImGui::Checkbox("On ADS Only", &Features::Ragebot::RCSOnADS);
 						ImGui::MainSliderFloat("Recoil Reduction##RageRCS", &Features::Ragebot::RecoilRate, 1, 100, "%.1f");
 					}
 
