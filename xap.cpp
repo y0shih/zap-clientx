@@ -480,6 +480,7 @@ void RenderUI()
             ImGui::EndChild();
             Legit->UpdateAimList();
             Legit->UpdateRCSList();
+            Rage->UpdateRageList();
             Flick->UpdateFlickList();
             Trigger->UpdateWeaponList();
         }
