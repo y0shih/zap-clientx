@@ -483,6 +483,7 @@ void RenderUI()
             Rage->UpdateRageList();
             Flick->UpdateFlickList();
             Trigger->UpdateWeaponList();
+            MiscTab->UpdateRapidFireList();
         }
 
         // Add Vertical Separator Line
