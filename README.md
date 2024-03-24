@@ -109,8 +109,8 @@ Instructions & Menu Previews are down below
     sudo make install
 
 **3. Clone repo**
-    (EXIT TERMINAL AND OPEN IT AGAIN, OR YOU WILL BE BUILDING THE CHEAT DIRECTLY IN THE GLFW BUILD FOLDER, WONT WORK OTHERWISE)
-    
+
+    Exit the terminal and open a new one (So that you dont build the cheat directly into the GLFW build folder, wont work otherwise)
     git clone https://github.com/Gerosity/zap-client.git
     cd zap-client
 
