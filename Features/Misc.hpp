@@ -39,50 +39,6 @@ typedef void *PVOID;
 
 struct Misc
 {
-	/*bool TeamGamemode = true;
-	bool SkinChanger = false;
-
-	// Weapon IDs
-	// Light
-	int SkinP2020 = 1;
-	int SkinRE45 = 1;
-	int SkinALTERNATOR = 1;
-	int SkinR99 = 1;
-	int SkinR301 = 1;
-	int SkinSPITFIRE = 1;
-	int SkinG7 = 1;
-
-	// Heavy
-	int SkinFLATLINE = 1;
-	int SkinHEMLOCK = 1;
-	int SkinREPEATER = 1;
-	int SkinRAMPAGE = 1;
-	int SkinCAR = 1;
-
-	// Energy
-	int SkinHAVOC = 1;
-	int SkinDEVOTION = 1;
-	int SkinLSTAR = 1;
-	int SkinTRIPLETAKE = 1;
-	int SkinVOLT = 1;
-	int SkinNEMESIS = 1;
-
-	// Shotgun
-	int SkinMOZAMBIQUE = 1;
-	int SkinEVA8 = 1;
-	int SkinPEACEKEEPER = 1;
-	int SkinMASTIFF = 1;
-
-	// Snipers
-	int SkinLONGBOW = 1;
-	int SkinCHARGE_RIFLE = 1;
-	int SkinSENTINEL = 1;
-
-	// Legendary
-	int SkinWINGMAN = 1;
-	int SkinPROWLER = 1;
-	int SkinBOCEK = 1;
-	int SkinKRABER = 1;*/
 
 	std::set<int> RapidFireList = {};
 
