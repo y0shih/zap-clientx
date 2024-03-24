@@ -207,7 +207,7 @@ struct Menu
 					ImGui::ComboBox("Aimbot Method", &Features::Aimbot::AimbotMode, AimbotModeIndex, IM_ARRAYSIZE(AimbotModeIndex));
 					if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 						ImGui::SetTooltip("What Aimbot Method You Would Like.\nYou may find Grinder To Be More Legit/Smooth.");
-					const char *InputMethodIndex[] = {"Mouse", "Controller"};
+					const char *InputMethodIndex[] = {"Mouse", "Memory (Controller Supported)"};
 					ImGui::ComboBox("Input Method", &Features::Aimbot::InputMethod, InputMethodIndex, IM_ARRAYSIZE(InputMethodIndex));
 					if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 						ImGui::SetTooltip("What Input Method The Aimbot Will Use.\nYou Can Use Controller Method With KBM, But I Recommend Mouse.\nNote: Controller Input Method Requires Low Processing Speed To Work Well (Below 10-15ms).");
