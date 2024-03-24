@@ -810,7 +810,6 @@ namespace Features {
         bool Knife = true;
 
         bool RageRCS = true;
-        bool RCSOnADS = true;
         float RecoilRate = 100.0f;
     };
 
