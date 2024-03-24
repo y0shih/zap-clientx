@@ -58,7 +58,7 @@ struct Legitbot
 	{
 		try
 		{
-			
+
 			Config::Aimbot::AimbotEnabled = Features::Aimbot::AimbotEnabled;
 			Config::Aimbot::BindMethod = Features::Aimbot::BindMethod;
 			Config::Aimbot::AimbotMode = Features::Aimbot::AimbotMode;
@@ -84,7 +84,7 @@ struct Legitbot
 			Config::Aimbot::MinDistance = Features::Aimbot::MinDistance;
 			Config::Aimbot::HipfireDistance = Features::Aimbot::HipfireDistance;
 			Config::Aimbot::ZoomDistance = Features::Aimbot::ZoomDistance;
-			//AimMode 2
+			// AimMode 2
 			Config::Aimbot::HipfireSmooth1 = Features::Aimbot::HipfireSmooth1;
 			Config::Aimbot::ADSSmooth1 = Features::Aimbot::ADSSmooth1;
 			Config::Aimbot::ExtraSmoothing = Features::Aimbot::ExtraSmoothing;
@@ -92,8 +92,8 @@ struct Legitbot
 			Config::Aimbot::FOV1 = Features::Aimbot::FOV1;
 			Config::Aimbot::MinDistance2 = Features::Aimbot::MinDistance2;
 			Config::Aimbot::MaxDistance2 = Features::Aimbot::MaxDistance2;
-			//Weapon Toggles
-			//Light
+			// Weapon Toggles
+			// Light
 			Config::Aimbot::P2020 = Features::Aimbot::P2020;
 			Config::Aimbot::RE45 = Features::Aimbot::RE45;
 			Config::Aimbot::Alternator = Features::Aimbot::Alternator;
@@ -101,29 +101,29 @@ struct Legitbot
 			Config::Aimbot::R301 = Features::Aimbot::R301;
 			Config::Aimbot::Spitfire = Features::Aimbot::Spitfire;
 			Config::Aimbot::G7 = Features::Aimbot::G7;
-			//Heavy
+			// Heavy
 			Config::Aimbot::Flatline = Features::Aimbot::Flatline;
 			Config::Aimbot::Hemlock = Features::Aimbot::Hemlock;
 			Config::Aimbot::Repeater = Features::Aimbot::Repeater;
 			Config::Aimbot::Rampage = Features::Aimbot::Rampage;
 			Config::Aimbot::CARSMG = Features::Aimbot::CARSMG;
-			//Energy
+			// Energy
 			Config::Aimbot::Havoc = Features::Aimbot::Havoc;
 			Config::Aimbot::Devotion = Features::Aimbot::Devotion;
 			Config::Aimbot::LSTAR = Features::Aimbot::LSTAR;
 			Config::Aimbot::TripleTake = Features::Aimbot::TripleTake;
 			Config::Aimbot::Volt = Features::Aimbot::Volt;
 			Config::Aimbot::Nemesis = Features::Aimbot::Nemesis;
-			//Shotgun
+			// Shotgun
 			Config::Aimbot::Mozambique = Features::Aimbot::Mozambique;
 			Config::Aimbot::EVA8 = Features::Aimbot::EVA8;
 			Config::Aimbot::Peacekeeper = Features::Aimbot::Peacekeeper;
 			Config::Aimbot::Mastiff = Features::Aimbot::Mastiff;
-			//Snipers
+			// Snipers
 			Config::Aimbot::Longbow = Features::Aimbot::Longbow;
 			Config::Aimbot::ChargeRifle = Features::Aimbot::ChargeRifle;
 			Config::Aimbot::Sentinel = Features::Aimbot::Sentinel;
-			//Legendary
+			// Legendary
 			Config::Aimbot::Wingman = Features::Aimbot::Wingman;
 			Config::Aimbot::Prowler = Features::Aimbot::Prowler;
 			Config::Aimbot::Bocek = Features::Aimbot::Bocek;
@@ -133,14 +133,14 @@ struct Legitbot
 			Config::Aimbot::AdvancedAim = Features::Aimbot::AdvancedAim;
 			Config::Aimbot::AdvancedFire = Features::Aimbot::AdvancedFire;
 			Config::Aimbot::AdvancedADS = Features::Aimbot::AdvancedADS;
-			//Aimbot Mode 0 - xap-client
+			// Aimbot Mode 0 - xap-client
 			Config::Aimbot::AdvancedClosestHitbox = Features::Aimbot::AdvancedClosestHitbox;
 			Config::Aimbot::AdvancedHitbox = Features::Aimbot::AdvancedHitbox;
 			Config::Aimbot::AdvancedSpeed = Features::Aimbot::AdvancedSpeed;
 			Config::Aimbot::AdvancedSmooth = Features::Aimbot::AdvancedSmooth;
 			Config::Aimbot::AdvancedHipfireSmooth = Features::Aimbot::AdvancedHipfireSmooth;
 			Config::Aimbot::AdvancedADSSmooth = Features::Aimbot::AdvancedADSSmooth;
-			//Aimbot Mode 1 - Grinder
+			// Aimbot Mode 1 - Grinder
 			Config::Aimbot::AdvancedHipfireSmooth1 = Features::Aimbot::AdvancedHipfireSmooth1;
 			Config::Aimbot::AdvancedADSSmooth1 = Features::Aimbot::AdvancedADSSmooth1;
 			Config::Aimbot::AdvancedExtraSmooth1 = Features::Aimbot::AdvancedExtraSmooth1;
@@ -148,7 +148,7 @@ struct Legitbot
 			Config::Aimbot::AdvancedDeadzone = Features::Aimbot::AdvancedDeadzone;
 			Config::Aimbot::AdvancedMinDistance1 = Features::Aimbot::AdvancedMinDistance1;
 			Config::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::AdvancedMaxDistance1;
-			//Advanced Aimbot Settings
+			// Advanced Aimbot Settings
 			Config::Aimbot::P2020Fire = Features::Aimbot::P2020Fire;
 			Config::Aimbot::P2020ADS = Features::Aimbot::P2020ADS;
 			Config::Aimbot::P2020ClosestHitbox = Features::Aimbot::P2020ClosestHitbox;
@@ -632,7 +632,7 @@ struct Legitbot
 
 			Config::AimbotBinds::AimBind = static_cast<int>(Features::AimbotBinds::AimBind);
 			Config::AimbotBinds::ExtraBind = static_cast<int>(Features::AimbotBinds::ExtraBind);
-			//Advanced
+			// Advanced
 			Config::AimbotBinds::P2020AimBind = static_cast<int>(Features::AimbotBinds::P2020AimBind);
 			Config::AimbotBinds::P2020ExtraBind = static_cast<int>(Features::AimbotBinds::P2020ExtraBind);
 			Config::AimbotBinds::RE45AimBind = static_cast<int>(Features::AimbotBinds::RE45AimBind);
@@ -695,7 +695,7 @@ struct Legitbot
 			Config::AimbotBinds::ThrowingKnifeExtraBind = static_cast<int>(Features::AimbotBinds::ThrowingKnifeExtraBind);
 
 			Config::AimbotHitboxes::Hitbox = static_cast<int>(Features::AimbotHitboxes::Hitbox);
-			//Advanced
+			// Advanced
 			Config::AimbotHitboxes::P2020Hitbox = static_cast<int>(Features::AimbotHitboxes::P2020Hitbox);
 			Config::AimbotHitboxes::RE45Hitbox = static_cast<int>(Features::AimbotHitboxes::RE45Hitbox);
 			Config::AimbotHitboxes::AlternatorHitbox = static_cast<int>(Features::AimbotHitboxes::AlternatorHitbox);
@@ -734,8 +734,8 @@ struct Legitbot
 			Config::RCS::YawPower = Features::RCS::YawPower;
 			Config::RCS::PitchReduction = Features::RCS::PitchReduction;
 			Config::RCS::YawReduction = Features::RCS::YawReduction;
-			//Weapon Toggles
-			//Light
+			// Weapon Toggles
+			// Light
 			Config::RCS::P2020 = Features::RCS::P2020;
 			Config::RCS::RE45 = Features::RCS::RE45;
 			Config::RCS::Alternator = Features::RCS::Alternator;
@@ -743,33 +743,33 @@ struct Legitbot
 			Config::RCS::R301 = Features::RCS::R301;
 			Config::RCS::Spitfire = Features::RCS::Spitfire;
 			Config::RCS::G7 = Features::RCS::G7;
-			//Heavy
+			// Heavy
 			Config::RCS::Flatline = Features::RCS::Flatline;
 			Config::RCS::Hemlock = Features::RCS::Hemlock;
 			Config::RCS::Repeater = Features::RCS::Repeater;
 			Config::RCS::Rampage = Features::RCS::Rampage;
 			Config::RCS::CARSMG = Features::RCS::CARSMG;
-			//Energy
+			// Energy
 			Config::RCS::Havoc = Features::RCS::Havoc;
 			Config::RCS::Devotion = Features::RCS::Devotion;
 			Config::RCS::LSTAR = Features::RCS::LSTAR;
 			Config::RCS::TripleTake = Features::RCS::TripleTake;
 			Config::RCS::Volt = Features::RCS::Volt;
 			Config::RCS::Nemesis = Features::RCS::Nemesis;
-			//Shotgun
+			// Shotgun
 			Config::RCS::Mozambique = Features::RCS::Mozambique;
 			Config::RCS::EVA8 = Features::RCS::EVA8;
 			Config::RCS::Peacekeeper = Features::RCS::Peacekeeper;
 			Config::RCS::Mastiff = Features::RCS::Mastiff;
-			//Snipers
+			// Snipers
 			Config::RCS::Longbow = Features::RCS::Longbow;
 			Config::RCS::ChargeRifle = Features::RCS::ChargeRifle;
 			Config::RCS::Sentinel = Features::RCS::Sentinel;
-			//Legendary
+			// Legendary
 			Config::RCS::Wingman = Features::RCS::Wingman;
 			Config::RCS::Prowler = Features::RCS::Prowler;
 			Config::RCS::Kraber = Features::RCS::Kraber;
-			//Advanced
+			// Advanced
 			Config::RCS::AdvancedRCS = Features::RCS::AdvancedRCS;
 			Config::RCS::AdvancedPitchPower = Features::RCS::AdvancedPitchPower;
 			Config::RCS::AdvancedYawPower = Features::RCS::AdvancedYawPower;
@@ -887,7 +887,6 @@ struct Legitbot
 			Config::RCS::KraberYaw = Features::RCS::KraberYaw;
 			Config::RCS::KraberPitchReduction = Features::RCS::KraberPitchReduction;
 			Config::RCS::KraberYawReduction = Features::RCS::KraberYawReduction;
-			
 
 			return true;
 		}
@@ -1157,13 +1156,13 @@ struct Legitbot
 				}
 			}
 		}
-	
+
 		// Grinder Aimbot Mode
 		if (Features::Aimbot::InputMethod == 1) // Memory / Controller - Does not work
 		{
 			return;
 		}
-		
+
 		if (!active())
 		{
 			releaseTarget();
@@ -1275,38 +1274,37 @@ struct Legitbot
 
 	void StartAiming()
 	{
-		// Get Target Angle
-		QAngle DesiredAngles = QAngle(0, 0);
-		if (!GetAngle(CurrentTarget, DesiredAngles))
-			return;
-
-		if (Features::RCS::RCSEnabled && Features::RCS::RCSMode == 1)
-		{
-			QAngle PunchAngles = Memory::Read<QAngle>(Myself->BasePointer + OFF_PUNCH_ANGLES);
-			if (Features::RCS::AdvancedRCS)
-			{
-				PunchAngles.x *= (Features::RCS::AdvancedPitchReduction / 100.f);
-				PunchAngles.y *= (Features::RCS::AdvancedYawReduction / 100.f);
-			}
-
-			else if (!Features::RCS::AdvancedRCS)
-			{
-				PunchAngles.x *= (Features::RCS::PitchReduction / 100.f);
-				PunchAngles.y *= (Features::RCS::YawReduction / 100.f);
-			}
-
-			DesiredAngles -= PunchAngles;
-		}
-
-		if (DesiredAngles == QAngle(0, 0))
-			return;
-		DesiredAngles.NormalizeAngles();
-
-		// Smoothing
-		SmoothAngle(CurrentTarget, DesiredAngles);
-
 		if (Features::Aimbot::InputMethod == 0) // MoveMouse
 		{
+			// Get Target Angle
+			QAngle DesiredAngles = QAngle(0, 0);
+			if (!GetAngle(CurrentTarget, DesiredAngles))
+				return;
+
+			if (Features::RCS::RCSEnabled && Features::RCS::RCSMode == 1)
+			{
+				QAngle PunchAngles = Memory::Read<QAngle>(Myself->BasePointer + OFF_PUNCH_ANGLES);
+				if (Features::RCS::AdvancedRCS)
+				{
+					PunchAngles.x *= (Features::RCS::AdvancedPitchReduction / 100.f);
+					PunchAngles.y *= (Features::RCS::AdvancedYawReduction / 100.f);
+				}
+
+				else if (!Features::RCS::AdvancedRCS)
+				{
+					PunchAngles.x *= (Features::RCS::PitchReduction / 100.f);
+					PunchAngles.y *= (Features::RCS::YawReduction / 100.f);
+				}
+
+				DesiredAngles -= PunchAngles;
+			}
+
+			if (DesiredAngles == QAngle(0, 0))
+				return;
+			DesiredAngles.NormalizeAngles();
+
+			// Smoothing
+			SmoothAngle(CurrentTarget, DesiredAngles);
 
 			Vector2D aimbotDelta;
 			if (Features::Aimbot::AdvancedAim) // Advanced Aimbot
@@ -1328,10 +1326,33 @@ struct Legitbot
 			X11Display->MoveMouse(totalYawIncrementInt, totalPitchIncrementInt);
 		}
 
-		if (Features::Aimbot::InputMethod == 1) // Write ViewAngles / Controller
+		else if (Features::Aimbot::InputMethod == 1) // Write ViewAngles / Controller
 		{
-			Vector2D DesiredViewAngles = Vector2D(DesiredAngles.x, DesiredAngles.y);
-			Myself->SetViewAngle(DesiredViewAngles);
+
+			// Get Target Angle
+			QAngle DesiredAngles = QAngle(0, 0);
+			if (!GetAngle(CurrentTarget, DesiredAngles)) // Get Angle to target + prediction
+				return;
+
+			SmoothAngle(CurrentTarget, DesiredAngles); // Apply Smoothing
+
+			// Recoil Control
+			if (Features::RCS::RCSEnabled)
+			{
+				Vector2D PunchAngles = Memory::Read<Vector2D>(Myself->BasePointer + OFF_PUNCH_ANGLES); // Get punch angles
+				PunchAngles.x *= (Features::RCS::PitchReduction / 100.f);
+				PunchAngles.y *= (Features::RCS::YawReduction / 100.f);
+
+				DesiredAngles -= QAngle(PunchAngles.x, PunchAngles.y);
+			}
+
+			if (DesiredAngles == QAngle(0, 0))
+				return;
+			DesiredAngles.NormalizeAngles();
+
+			// Memory Aimbot
+			Vector2D VectorDesiredAngles = Vector2D(DesiredAngles.x, DesiredAngles.y);
+			Myself->SetViewAngle(VectorDesiredAngles);
 		}
 	}
 
