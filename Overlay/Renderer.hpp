@@ -3,7 +3,6 @@
 #include <cstring>
 #include <string>
 #include <GLFW/glfw3.h>
-#include <SOIL/SOIL.h>
 #include <vector>
 #include <cmath>
 #include <algorithm>
@@ -851,25 +850,5 @@ public:
             ImVec2 endpoint(center.x + radius * cos(angle), center.y + radius * sin(angle));
             ImGui::GetWindowDrawList()->AddLine(center, endpoint, colOutline);
         }
-    }
-
-    static GLuint LoadTextureFromFile(const char *filename, int &width, int &height)
-    {
-        int channels;
-        unsigned char *image = SOIL_load_image(filename, &width, &height, &channels, SOIL_LOAD_RGBA);
-
-        GLuint textureID;
-        glGenTextures(1, &textureID);
-        glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        SOIL_free_image_data(image);
-
-        return textureID;
     }
 };
