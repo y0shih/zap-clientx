@@ -493,11 +493,7 @@ struct Glow
         {
             if (Features::Glow::GlowColorShieldMode == 0)
             {
-                if (isSameTeam)
-                {
-                    settingIndex = 20;
-                }
-                else if (!isVisible)
+                if (!isVisible)
                 {
                     settingIndex = 65;
                     glowColorRGB = {Features::Colors::Enemy::VisibleGlowColor[0], Features::Colors::Enemy::VisibleGlowColor[1], Features::Colors::Enemy::VisibleGlowColor[2]}; // Visible Enemies
@@ -531,11 +527,7 @@ struct Glow
 
             if (Features::Glow::GlowColorShieldMode == 1)
             {
-                if (isSameTeam)
-                {
-                    settingIndex = 20;
-                }
-                else if (!isVisible)
+                if (!isVisible)
                 {
                     settingIndex = 65;
                     glowColorRGB = {Features::Colors::Enemy::VisibleGlowColor[0], Features::Colors::Enemy::VisibleGlowColor[1], Features::Colors::Enemy::VisibleGlowColor[2]}; // Visible Enemies
@@ -570,11 +562,7 @@ struct Glow
 
         if (Features::Glow::GlowColorMode == 1)
         {
-            if (isSameTeam)
-            {
-                settingIndex = 20;
-            }
-            else if (!isVisible)
+            if (!isVisible)
             {
                 settingIndex = 65;
                 glowColorRGB = {Features::Colors::Enemy::VisibleGlowColor[0], Features::Colors::Enemy::VisibleGlowColor[1], Features::Colors::Enemy::VisibleGlowColor[2]}; // Visible Enemies
@@ -857,7 +845,7 @@ struct Glow
                             setGlowEnable(Target, 1);
                             setGlowThroughWall(Target, 1);
                             int healthShield = Target->MaxShield;
-                            setCustomGlow(Target, healthShield, true, false);
+                            setCustomGlow(Target, healthShield, false, false);
                         }
                         // If player is out of max distance
                         else if (Target->Distance2DToLocalPlayer > Conversion::ToGameUnits(Features::Glow::GlowMaxDistance))
@@ -881,7 +869,7 @@ struct Glow
                         setGlowEnable(Target, 1);
                         setGlowThroughWall(Target, 1);
                         int healthShield = Target->MaxShield;
-                        setCustomGlow(Target, healthShield, true, false);
+                        setCustomGlow(Target, healthShield, false, false);
                     }
                     if (!Target->IsVisible && !Target->IsKnocked && Target->Distance2DToLocalPlayer < Conversion::ToGameUnits(Features::Glow::GlowMaxDistance))
                     {
@@ -890,6 +878,7 @@ struct Glow
                         int healthShield = Target->MaxShield;
                         setCustomGlow(Target, healthShield, true, false);
                     }
+
                     // If player is out of max distance
                     else if (Target->Distance2DToLocalPlayer > Conversion::ToGameUnits(Features::Glow::GlowMaxDistance))
                     {
