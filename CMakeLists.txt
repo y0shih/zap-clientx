@@ -42,7 +42,6 @@ target_link_libraries(zapclient
   Xinerama
   Xi
   udev
-  SOIL
   ${X11_LIBRARIES}
   ${X11_XTest_LIB}
 )
