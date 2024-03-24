@@ -92,7 +92,6 @@ struct Ragebot
 			Config::Ragebot::HipfireDistance = Features::Ragebot::HipfireDistance;
 			Config::Ragebot::ZoomDistance = Features::Ragebot::ZoomDistance;
 			Config::Ragebot::RageRCS = Features::Ragebot::RageRCS;
-			Config::Ragebot::RCSOnADS = Features::Ragebot::RCSOnADS;
 			Config::Ragebot::RecoilRate = Features::Ragebot::RecoilRate;
 			//Weapon Toggles
 			//Light
@@ -140,6 +139,77 @@ struct Ragebot
 		}
 	}
 
+		void UpdateRageList()
+	{
+		Features::Ragebot::RageList.clear();
+		// Light
+		if (Features::Ragebot::P2020)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_P2020);
+		if (Features::Ragebot::RE45)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_RE45);
+		if (Features::Ragebot::Alternator)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_ALTERNATOR);
+		if (Features::Ragebot::R99)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_R99);
+		if (Features::Ragebot::R301)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_R301);
+		if (Features::Ragebot::Spitfire)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_SPITFIRE);
+		if (Features::Ragebot::G7)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_G7);
+		// Heavy
+		if (Features::Ragebot::Flatline)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_FLATLINE);
+		if (Features::Ragebot::Hemlock)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_HEMLOCK);
+		if (Features::Ragebot::Repeater)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_REPEATER);
+		if (Features::Ragebot::Rampage)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_RAMPAGE);
+		if (Features::Ragebot::CARSMG)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_CAR);
+		// Energy
+		if (Features::Ragebot::Havoc)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_HAVOC);
+		if (Features::Ragebot::Devotion)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_DEVOTION);
+		if (Features::Ragebot::LSTAR)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_LSTAR);
+		if (Features::Ragebot::TripleTake)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_TRIPLETAKE);
+		if (Features::Ragebot::Volt)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_VOLT);
+		if (Features::Ragebot::Nemesis)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_NEMESIS);
+		// Shotguns
+		if (Features::Ragebot::Mozambique)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_MOZAMBIQUE);
+		if (Features::Ragebot::EVA8)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_EVA8);
+		if (Features::Ragebot::Peacekeeper)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_PEACEKEEPER);
+		if (Features::Ragebot::Mastiff)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_MASTIFF);
+		// Snipers
+		if (Features::Ragebot::Longbow)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_LONGBOW);
+		if (Features::Ragebot::ChargeRifle)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_CHARGE_RIFLE);
+		if (Features::Ragebot::Sentinel)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_SENTINEL);
+		// Legendary
+		if (Features::Ragebot::Wingman)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_WINGMAN);
+		if (Features::Ragebot::Prowler)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_PROWLER);
+		if (Features::Ragebot::Bocek)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_BOCEK);
+		if (Features::Ragebot::Kraber)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_KRABER);
+		if (Features::Ragebot::Knife)
+			Features::Ragebot::RageList.insert(WeaponIDs::WEAPON_KNIFE);
+	}
+
 	void Update()
 	{
 		if (!Features::Ragebot::RageAimbot)
@@ -173,6 +243,7 @@ struct Ragebot
 				ReleaseTarget();
 				return;
 			}
+
 
 			if (Features::Ragebot::BindMethod == 0)
 			{
@@ -408,17 +479,7 @@ struct Ragebot
 			PunchAngles.x *= (Features::Ragebot::RecoilRate / 100.f);
 			PunchAngles.y *= (Features::Ragebot::RecoilRate / 100.f);
 
-			if (Features::Ragebot::RageRCS)
-			{
-				if (Features::Ragebot::RCSOnADS && Myself->IsZooming)
-				{
-					DesiredAngles -= QAngle(PunchAngles.x, PunchAngles.y);
-				}
-				else
-				{
-					DesiredAngles -= QAngle(PunchAngles.x, PunchAngles.y);
-				}
-			}
+			DesiredAngles -= QAngle(PunchAngles.x, PunchAngles.y);
 		}
 
 		if (DesiredAngles == QAngle(0, 0))
