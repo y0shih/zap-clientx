@@ -1225,7 +1225,7 @@ struct Sense
 				}
 
 				// VisibilityCheck = true
-				if (Features::Sense::VisibilityCheck && !p->IsLocal && p->IsCombatReady() && p->IsVisible && p->DistanceToLocalPlayer < (Conversion::ToGameUnits(Features::Sense::ESPMaxDistance)))
+				if (Features::Sense::VisibilityCheck && !p->IsLocal && p->IsHostile && p->IsCombatReady() && p->IsVisible && p->DistanceToLocalPlayer < (Conversion::ToGameUnits(Features::Sense::ESPMaxDistance)))
 				{
 					// Draw Warning Text - Spectators
 					if (Features::Sense::DrawSpectatorWarning && TotalSpectators >= 1)
