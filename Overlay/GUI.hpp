@@ -778,7 +778,7 @@ struct Menu
 						ImGui::SameLine();
 						ImGui::Checkbox("On ADS##RageAimbot", &Features::Ragebot::OnADS);
 					}
-					if (Features::Aimbot::BindMethod == 1)
+					if (Features::Ragebot::BindMethod == 1)
 					{ // Keybinds
 						int AimBind = static_cast<int>(Features::Ragebot::AimBind);
 						ImGui::ComboBox("Aim Bind##RageAimbot", &AimBind, InputKeyTypeNames, IM_ARRAYSIZE(InputKeyTypeNames));
