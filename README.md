@@ -19,6 +19,9 @@ Instructions are down below
     Configs - Custom Configs
 
 # Changelog:
+    26.03.24 - Version 1.0.3
+    Updated to latest game version (Game Version v3.0.62.29)
+
     24.03.24 - Version 1.0.2
     
     Complete GUI Overhaul
