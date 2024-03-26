@@ -182,7 +182,7 @@ struct AdvancedGUI
 			ImGui::BeginChildFrame(13, ImVec2({WindowWidth - 220, 322}), true);
 			{
 				ImGui::Spacing();
-				if (Features::Aimbot::P2020 && WeaponID == AimbotId::WEAPON_P2020)
+				if (Features::Aimbot::P2020 && WeaponID == WeaponIDs::WEAPON_P2020)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -263,7 +263,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::RE45 && WeaponID == AimbotId::WEAPON_RE45)
+				if (Features::Aimbot::RE45 && WeaponID == WeaponIDs::WEAPON_RE45)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -342,7 +342,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Alternator && WeaponID == AimbotId::WEAPON_ALTERNATOR)
+				if (Features::Aimbot::Alternator && WeaponID == WeaponIDs::WEAPON_ALTERNATOR)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -421,7 +421,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::R99 && WeaponID == AimbotId::WEAPON_R99)
+				if (Features::Aimbot::R99 && WeaponID == WeaponIDs::WEAPON_R99)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -500,7 +500,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::R301 && WeaponID == AimbotId::WEAPON_R301)
+				if (Features::Aimbot::R301 && WeaponID == WeaponIDs::WEAPON_R301)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -579,7 +579,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Spitfire && WeaponID == AimbotId::WEAPON_SPITFIRE)
+				if (Features::Aimbot::Spitfire && WeaponID == WeaponIDs::WEAPON_SPITFIRE)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -658,7 +658,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::G7 && WeaponID == AimbotId::WEAPON_G7)
+				if (Features::Aimbot::G7 && WeaponID == WeaponIDs::WEAPON_G7)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -737,7 +737,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Flatline && WeaponID == AimbotId::WEAPON_FLATLINE)
+				if (Features::Aimbot::Flatline && WeaponID == WeaponIDs::WEAPON_FLATLINE)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -816,7 +816,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Hemlock && WeaponID == AimbotId::WEAPON_HEMLOCK)
+				if (Features::Aimbot::Hemlock && WeaponID == WeaponIDs::WEAPON_HEMLOCK)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -895,7 +895,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Prowler && WeaponID == AimbotId::WEAPON_PROWLER)
+				if (Features::Aimbot::Prowler && WeaponID == WeaponIDs::WEAPON_PROWLER)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -974,7 +974,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Repeater && WeaponID == AimbotId::WEAPON_REPEATER)
+				if (Features::Aimbot::Repeater && WeaponID == WeaponIDs::WEAPON_REPEATER)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -1053,7 +1053,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Rampage && WeaponID == AimbotId::WEAPON_RAMPAGE)
+				if (Features::Aimbot::Rampage && WeaponID == WeaponIDs::WEAPON_RAMPAGE)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -1132,7 +1132,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::CARSMG && WeaponID == AimbotId::WEAPON_CAR)
+				if (Features::Aimbot::CARSMG && WeaponID == WeaponIDs::WEAPON_CAR)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -1211,7 +1211,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Havoc && WeaponID == AimbotId::WEAPON_HAVOC)
+				if (Features::Aimbot::Havoc && WeaponID == WeaponIDs::WEAPON_HAVOC)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -1290,7 +1290,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Devotion && WeaponID == AimbotId::WEAPON_DEVOTION)
+				if (Features::Aimbot::Devotion && WeaponID == WeaponIDs::WEAPON_DEVOTION)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -1369,7 +1369,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::LSTAR && WeaponID == AimbotId::WEAPON_LSTAR)
+				if (Features::Aimbot::LSTAR && WeaponID == WeaponIDs::WEAPON_LSTAR)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -1448,7 +1448,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::TripleTake && WeaponID == AimbotId::WEAPON_TRIPLETAKE)
+				if (Features::Aimbot::TripleTake && WeaponID == WeaponIDs::WEAPON_TRIPLETAKE)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -1527,7 +1527,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Volt && WeaponID == AimbotId::WEAPON_VOLT)
+				if (Features::Aimbot::Volt && WeaponID == WeaponIDs::WEAPON_VOLT)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -1606,7 +1606,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Nemesis && WeaponID == AimbotId::WEAPON_NEMESIS)
+				if (Features::Aimbot::Nemesis && WeaponID == WeaponIDs::WEAPON_NEMESIS)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -1685,7 +1685,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Mozambique && WeaponID == AimbotId::WEAPON_MOZAMBIQUE)
+				if (Features::Aimbot::Mozambique && WeaponID == WeaponIDs::WEAPON_MOZAMBIQUE)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -1764,7 +1764,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Peacekeeper && WeaponID == AimbotId::WEAPON_PEACEKEEPER)
+				if (Features::Aimbot::Peacekeeper && WeaponID == WeaponIDs::WEAPON_PEACEKEEPER)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -1843,7 +1843,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Mastiff && WeaponID == AimbotId::WEAPON_MASTIFF)
+				if (Features::Aimbot::Mastiff && WeaponID == WeaponIDs::WEAPON_MASTIFF)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -1922,7 +1922,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Longbow && WeaponID == AimbotId::WEAPON_LONGBOW)
+				if (Features::Aimbot::Longbow && WeaponID == WeaponIDs::WEAPON_LONGBOW)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -2001,7 +2001,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::ChargeRifle && WeaponID == AimbotId::WEAPON_CHARGE_RIFLE)
+				if (Features::Aimbot::ChargeRifle && WeaponID == WeaponIDs::WEAPON_CHARGE_RIFLE)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -2080,7 +2080,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Sentinel && WeaponID == AimbotId::WEAPON_SENTINEL)
+				if (Features::Aimbot::Sentinel && WeaponID == WeaponIDs::WEAPON_SENTINEL)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -2159,7 +2159,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Wingman && WeaponID == AimbotId::WEAPON_WINGMAN)
+				if (Features::Aimbot::Wingman && WeaponID == WeaponIDs::WEAPON_WINGMAN)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -2238,7 +2238,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::EVA8 && WeaponID == AimbotId::WEAPON_EVA8)
+				if (Features::Aimbot::EVA8 && WeaponID == WeaponIDs::WEAPON_EVA8)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -2317,7 +2317,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Bocek && WeaponID == AimbotId::WEAPON_BOCEK)
+				if (Features::Aimbot::Bocek && WeaponID == WeaponIDs::WEAPON_BOCEK)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -2396,7 +2396,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Kraber && WeaponID == AimbotId::WEAPON_KRABER)
+				if (Features::Aimbot::Kraber && WeaponID == WeaponIDs::WEAPON_KRABER)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -2475,7 +2475,7 @@ struct AdvancedGUI
 						ImGui::SetTooltip("Maximum Distance for Aim-Assist to work");
 				}
 
-				if (Features::Aimbot::Knife && WeaponID == AimbotId::WEAPON_KNIFE)
+				if (Features::Aimbot::Knife && WeaponID == WeaponIDs::WEAPON_KNIFE)
 				{
 					ImGui::Text("Current Held Weapon: ");
 					ImGui::SameLine();
@@ -2599,7 +2599,7 @@ struct AdvancedGUI
 			{
 				ImGui::Spacing();
 				ImGui::Text("Current Held Weapon: ");
-				if (Features::RCS::P2020 && WeaponID == RCSId::WEAPON_P2020)
+				if (Features::RCS::P2020 && WeaponID == WeaponIDs::WEAPON_P2020)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.990, 0.768, 0.039, 1.00f), "P2020");
@@ -2623,7 +2623,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::RE45 && WeaponID == RCSId::WEAPON_RE45)
+				if (Features::RCS::RE45 && WeaponID == WeaponIDs::WEAPON_RE45)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.990, 0.768, 0.039, 1.00f), "RE45");
@@ -2647,7 +2647,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Alternator && WeaponID == RCSId::WEAPON_ALTERNATOR)
+				if (Features::RCS::Alternator && WeaponID == WeaponIDs::WEAPON_ALTERNATOR)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.990, 0.768, 0.039, 1.00f), "Alternator");
@@ -2671,7 +2671,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::R99 && WeaponID == RCSId::WEAPON_R99)
+				if (Features::RCS::R99 && WeaponID == WeaponIDs::WEAPON_R99)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.990, 0.768, 0.039, 1.00f), "R99");
@@ -2695,7 +2695,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::R301 && WeaponID == RCSId::WEAPON_R301)
+				if (Features::RCS::R301 && WeaponID == WeaponIDs::WEAPON_R301)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.990, 0.768, 0.039, 1.00f), "R301");
@@ -2719,7 +2719,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Spitfire && WeaponID == RCSId::WEAPON_SPITFIRE)
+				if (Features::RCS::Spitfire && WeaponID == WeaponIDs::WEAPON_SPITFIRE)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.990, 0.768, 0.039, 1.00f), "Spitfire");
@@ -2743,7 +2743,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::G7 && WeaponID == RCSId::WEAPON_G7)
+				if (Features::RCS::G7 && WeaponID == WeaponIDs::WEAPON_G7)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.990, 0.768, 0.039, 1.00f), "G7");
@@ -2767,7 +2767,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Flatline && WeaponID == RCSId::WEAPON_FLATLINE)
+				if (Features::RCS::Flatline && WeaponID == WeaponIDs::WEAPON_FLATLINE)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.00990, 0.990, 0.761, 1.00f), "Flatline");
@@ -2791,7 +2791,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Hemlock && WeaponID == RCSId::WEAPON_HEMLOCK)
+				if (Features::RCS::Hemlock && WeaponID == WeaponIDs::WEAPON_HEMLOCK)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.00990, 0.990, 0.761, 1.00f), "Hemlock");
@@ -2815,7 +2815,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Prowler && WeaponID == RCSId::WEAPON_PROWLER)
+				if (Features::RCS::Prowler && WeaponID == WeaponIDs::WEAPON_PROWLER)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.00990, 0.990, 0.761, 1.00f), "Prowler");
@@ -2839,7 +2839,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Repeater && WeaponID == RCSId::WEAPON_REPEATER)
+				if (Features::RCS::Repeater && WeaponID == WeaponIDs::WEAPON_REPEATER)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.00990, 0.990, 0.761, 1.00f), "Repeater");
@@ -2863,7 +2863,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Rampage && WeaponID == RCSId::WEAPON_RAMPAGE)
+				if (Features::RCS::Rampage && WeaponID == WeaponIDs::WEAPON_RAMPAGE)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.00990, 0.990, 0.761, 1.00f), "Rampage");
@@ -2887,7 +2887,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::CARSMG && WeaponID == RCSId::WEAPON_CAR)
+				if (Features::RCS::CARSMG && WeaponID == WeaponIDs::WEAPON_CAR)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.00990, 0.990, 0.761, 1.00f), "CARSMG");
@@ -2911,7 +2911,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Havoc && WeaponID == RCSId::WEAPON_HAVOC)
+				if (Features::RCS::Havoc && WeaponID == WeaponIDs::WEAPON_HAVOC)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0, 0.99, 0, 1.00f), "Havoc");
@@ -2935,7 +2935,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Devotion && WeaponID == RCSId::WEAPON_DEVOTION)
+				if (Features::RCS::Devotion && WeaponID == WeaponIDs::WEAPON_DEVOTION)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0, 0.99, 0, 1.00f), "Devotion");
@@ -2959,7 +2959,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::LSTAR && WeaponID == RCSId::WEAPON_LSTAR)
+				if (Features::RCS::LSTAR && WeaponID == WeaponIDs::WEAPON_LSTAR)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0, 0.99, 0, 1.00f), "LSTAR");
@@ -2983,7 +2983,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::TripleTake && WeaponID == RCSId::WEAPON_TRIPLETAKE)
+				if (Features::RCS::TripleTake && WeaponID == WeaponIDs::WEAPON_TRIPLETAKE)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0, 0.99, 0, 1.00f), "TripleTake");
@@ -3007,7 +3007,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Volt && WeaponID == RCSId::WEAPON_VOLT)
+				if (Features::RCS::Volt && WeaponID == WeaponIDs::WEAPON_VOLT)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0, 0.99, 0, 1.00f), "Volt");
@@ -3031,7 +3031,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Nemesis && WeaponID == RCSId::WEAPON_NEMESIS)
+				if (Features::RCS::Nemesis && WeaponID == WeaponIDs::WEAPON_NEMESIS)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0, 0.99, 0, 1.00f), "Nemesis");
@@ -3055,7 +3055,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Mozambique && WeaponID == RCSId::WEAPON_MOZAMBIQUE)
+				if (Features::RCS::Mozambique && WeaponID == WeaponIDs::WEAPON_MOZAMBIQUE)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.99, 0, 0, 1.00f), "Mozambique");
@@ -3079,7 +3079,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Peacekeeper && WeaponID == RCSId::WEAPON_PEACEKEEPER)
+				if (Features::RCS::Peacekeeper && WeaponID == WeaponIDs::WEAPON_PEACEKEEPER)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.99, 0, 0, 1.00f), "Peacekeeper");
@@ -3103,7 +3103,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Mastiff && WeaponID == RCSId::WEAPON_MASTIFF)
+				if (Features::RCS::Mastiff && WeaponID == WeaponIDs::WEAPON_MASTIFF)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.99, 0, 0, 1.00f), "Mastiff");
@@ -3127,7 +3127,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Longbow && WeaponID == RCSId::WEAPON_LONGBOW)
+				if (Features::RCS::Longbow && WeaponID == WeaponIDs::WEAPON_LONGBOW)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.00990, 0.337, 0.990, 1.00f), "Longbow");
@@ -3151,7 +3151,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::ChargeRifle && WeaponID == RCSId::WEAPON_CHARGE_RIFLE)
+				if (Features::RCS::ChargeRifle && WeaponID == WeaponIDs::WEAPON_CHARGE_RIFLE)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.00990, 0.337, 0.990, 1.00f), "ChargeRifle");
@@ -3175,7 +3175,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Sentinel && WeaponID == RCSId::WEAPON_SENTINEL)
+				if (Features::RCS::Sentinel && WeaponID == WeaponIDs::WEAPON_SENTINEL)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.00990, 0.337, 0.990, 1.00f), "Sentinel");
@@ -3199,7 +3199,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Wingman && WeaponID == RCSId::WEAPON_WINGMAN)
+				if (Features::RCS::Wingman && WeaponID == WeaponIDs::WEAPON_WINGMAN)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.99, 0.530, 0.945, 1.00f), "Wingman");
@@ -3223,7 +3223,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::EVA8 && WeaponID == RCSId::WEAPON_EVA8)
+				if (Features::RCS::EVA8 && WeaponID == WeaponIDs::WEAPON_EVA8)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.99, 0.530, 0.945, 1.00f), "EVA8");
@@ -3247,7 +3247,7 @@ struct AdvancedGUI
 					}
 				}
 
-				if (Features::RCS::Kraber && WeaponID == RCSId::WEAPON_KRABER)
+				if (Features::RCS::Kraber && WeaponID == WeaponIDs::WEAPON_KRABER)
 				{
 					ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0.99, 0.530, 0.945, 1.00f), "Kraber");
@@ -3331,210 +3331,210 @@ struct AdvancedGUI
 					ImGui::Spacing();
 					ImGui::Text("Current Held Weapon: ");
 
-					if (Features::Triggerbot::P2020 && WeaponID == TriggerbotId::WEAPON_P2020)
+					if (Features::Triggerbot::P2020 && WeaponID == WeaponIDs::WEAPON_P2020)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.990, 0.768, 0.039, 1.00f), "P2020");
 						ImGui::MainSliderFloat("Range##P2020Triggerbot", &Features::Triggerbot::P2020Range, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::RE45 && WeaponID == TriggerbotId::WEAPON_RE45)
+					if (Features::Triggerbot::RE45 && WeaponID == WeaponIDs::WEAPON_RE45)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.990, 0.768, 0.039, 1.00f), "RE45");
 						ImGui::MainSliderFloat("Range##RE45Triggerbot", &Features::Triggerbot::RE45Range, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Alternator && WeaponID == TriggerbotId::WEAPON_ALTERNATOR)
+					if (Features::Triggerbot::Alternator && WeaponID == WeaponIDs::WEAPON_ALTERNATOR)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.990, 0.768, 0.039, 1.00f), "Alternator");
 						ImGui::MainSliderFloat("Range##AlternatorTriggerbot", &Features::Triggerbot::AlternatorRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::R99 && WeaponID == TriggerbotId::WEAPON_R99)
+					if (Features::Triggerbot::R99 && WeaponID == WeaponIDs::WEAPON_R99)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.990, 0.768, 0.039, 1.00f), "R99");
 						ImGui::MainSliderFloat("Range##R99Triggerbot", &Features::Triggerbot::R99Range, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::R301 && WeaponID == TriggerbotId::WEAPON_R301)
+					if (Features::Triggerbot::R301 && WeaponID == WeaponIDs::WEAPON_R301)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.990, 0.768, 0.039, 1.00f), "R301");
 						ImGui::MainSliderFloat("Range##R301Triggerbot", &Features::Triggerbot::R301Range, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Spitfire && WeaponID == TriggerbotId::WEAPON_SPITFIRE)
+					if (Features::Triggerbot::Spitfire && WeaponID == WeaponIDs::WEAPON_SPITFIRE)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.990, 0.768, 0.039, 1.00f), "Spitfire");
 						ImGui::MainSliderFloat("Range##SpitfireTriggerbot", &Features::Triggerbot::SpitfireRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::G7 && WeaponID == TriggerbotId::WEAPON_G7)
+					if (Features::Triggerbot::G7 && WeaponID == WeaponIDs::WEAPON_G7)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.990, 0.768, 0.039, 1.00f), "G7");
 						ImGui::MainSliderFloat("Range##G7Triggerbot", &Features::Triggerbot::G7Range, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Flatline && WeaponID == TriggerbotId::WEAPON_FLATLINE)
+					if (Features::Triggerbot::Flatline && WeaponID == WeaponIDs::WEAPON_FLATLINE)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.00990, 0.990, 0.761, 1.00f), "Flatline");
 						ImGui::MainSliderFloat("Range##FlatlineTriggerbot", &Features::Triggerbot::FlatlineRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Prowler && WeaponID == TriggerbotId::WEAPON_PROWLER)
+					if (Features::Triggerbot::Prowler && WeaponID == WeaponIDs::WEAPON_PROWLER)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.00990, 0.990, 0.761, 1.00f), "Prowler");
 						ImGui::MainSliderFloat("Range##ProwlerTriggerbot", &Features::Triggerbot::ProwlerRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Hemlock && WeaponID == TriggerbotId::WEAPON_HEMLOCK)
+					if (Features::Triggerbot::Hemlock && WeaponID == WeaponIDs::WEAPON_HEMLOCK)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.00990, 0.990, 0.761, 1.00f), "Hemlock");
 						ImGui::MainSliderFloat("Range##HemlockTriggerbot", &Features::Triggerbot::HemlockRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Repeater && WeaponID == TriggerbotId::WEAPON_REPEATER)
+					if (Features::Triggerbot::Repeater && WeaponID == WeaponIDs::WEAPON_REPEATER)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.00990, 0.990, 0.761, 1.00f), "Repeater");
 						ImGui::MainSliderFloat("Range##RepeaterTriggerbot", &Features::Triggerbot::RepeaterRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Rampage && WeaponID == TriggerbotId::WEAPON_RAMPAGE)
+					if (Features::Triggerbot::Rampage && WeaponID == WeaponIDs::WEAPON_RAMPAGE)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.00990, 0.990, 0.761, 1.00f), "Rampage");
 						ImGui::MainSliderFloat("Range##RampageTriggerbot", &Features::Triggerbot::RampageRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::CARSMG && WeaponID == TriggerbotId::WEAPON_CAR)
+					if (Features::Triggerbot::CARSMG && WeaponID == WeaponIDs::WEAPON_CAR)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.00990, 0.990, 0.761, 1.00f), "CARSMG");
 						ImGui::MainSliderFloat("Range##CARSMGTriggerbot", &Features::Triggerbot::CARSMGRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Havoc && WeaponID == TriggerbotId::WEAPON_HAVOC)
+					if (Features::Triggerbot::Havoc && WeaponID == WeaponIDs::WEAPON_HAVOC)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0, 0.99, 0, 1.00f), "Havoc");
 						ImGui::MainSliderFloat("Range##HavocTriggerbot", &Features::Triggerbot::HavocRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Devotion && WeaponID == TriggerbotId::WEAPON_DEVOTION)
+					if (Features::Triggerbot::Devotion && WeaponID == WeaponIDs::WEAPON_DEVOTION)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0, 0.99, 0, 1.00f), "Devotion");
 						ImGui::MainSliderFloat("Range##DevotionTriggerbot", &Features::Triggerbot::DevotionRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::LSTAR && WeaponID == TriggerbotId::WEAPON_LSTAR)
+					if (Features::Triggerbot::LSTAR && WeaponID == WeaponIDs::WEAPON_LSTAR)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0, 0.99, 0, 1.00f), "LSTAR");
 						ImGui::MainSliderFloat("Range##LSTARTriggerbot", &Features::Triggerbot::LSTARRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::TripleTake && WeaponID == TriggerbotId::WEAPON_TRIPLETAKE)
+					if (Features::Triggerbot::TripleTake && WeaponID == WeaponIDs::WEAPON_TRIPLETAKE)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0, 0.99, 0, 1.00f), "TripleTake");
 						ImGui::MainSliderFloat("Range##TripleTakeTriggerbot", &Features::Triggerbot::TripleTakeRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Volt && WeaponID == TriggerbotId::WEAPON_VOLT)
+					if (Features::Triggerbot::Volt && WeaponID == WeaponIDs::WEAPON_VOLT)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0, 0.99, 0, 1.00f), "Volt");
 						ImGui::MainSliderFloat("Range##VoltTriggerbot", &Features::Triggerbot::VoltRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Nemesis && WeaponID == TriggerbotId::WEAPON_NEMESIS)
+					if (Features::Triggerbot::Nemesis && WeaponID == WeaponIDs::WEAPON_NEMESIS)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0, 0.99, 0, 1.00f), "Nemesis");
 						ImGui::MainSliderFloat("Range##NemesisTriggerbot", &Features::Triggerbot::NemesisRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Mozambique && WeaponID == TriggerbotId::WEAPON_MOZAMBIQUE)
+					if (Features::Triggerbot::Mozambique && WeaponID == WeaponIDs::WEAPON_MOZAMBIQUE)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(1.00f, 0, 0, 1.00f), "Mozambique");
 						ImGui::MainSliderFloat("Range##MozambiqueTriggerbot", &Features::Triggerbot::MozambiqueRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Peacekeeper && WeaponID == TriggerbotId::WEAPON_PEACEKEEPER)
+					if (Features::Triggerbot::Peacekeeper && WeaponID == WeaponIDs::WEAPON_PEACEKEEPER)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(1.00f, 0, 0, 1.00f), "Peacekeeper");
 						ImGui::MainSliderFloat("Range##PeacekeeperTriggerbot", &Features::Triggerbot::PeacekeeperRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Mastiff && WeaponID == TriggerbotId::WEAPON_MASTIFF)
+					if (Features::Triggerbot::Mastiff && WeaponID == WeaponIDs::WEAPON_MASTIFF)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(1.00f, 0, 0, 1.00f), "Mastiff");
 						ImGui::MainSliderFloat("Range##MastiffTriggerbot", &Features::Triggerbot::MastiffRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Longbow && WeaponID == TriggerbotId::WEAPON_LONGBOW)
+					if (Features::Triggerbot::Longbow && WeaponID == WeaponIDs::WEAPON_LONGBOW)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.00990, 0.337, 0.990, 1.00f), "Longbow");
 						ImGui::MainSliderFloat("Range##LongbowTriggerbot", &Features::Triggerbot::LongbowRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::ChargeRifle && WeaponID == TriggerbotId::WEAPON_CHARGE_RIFLE)
+					if (Features::Triggerbot::ChargeRifle && WeaponID == WeaponIDs::WEAPON_CHARGE_RIFLE)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.00990, 0.337, 0.990, 1.00f), "ChargeRifle");
 						ImGui::MainSliderFloat("Range##ChargeRifleTriggerbot", &Features::Triggerbot::ChargeRifleRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Sentinel && WeaponID == TriggerbotId::WEAPON_SENTINEL)
+					if (Features::Triggerbot::Sentinel && WeaponID == WeaponIDs::WEAPON_SENTINEL)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.00990, 0.337, 0.990, 1.00f), "Sentinel");
 						ImGui::MainSliderFloat("Range##SentinelTriggerbot", &Features::Triggerbot::SentinelRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Wingman && WeaponID == TriggerbotId::WEAPON_WINGMAN)
+					if (Features::Triggerbot::Wingman && WeaponID == WeaponIDs::WEAPON_WINGMAN)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.99, 0.530, 0.945, 1.00f), "Wingman");
 						ImGui::MainSliderFloat("Range##WingmanTriggerbot", &Features::Triggerbot::WingmanRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::EVA8 && WeaponID == TriggerbotId::WEAPON_EVA8)
+					if (Features::Triggerbot::EVA8 && WeaponID == WeaponIDs::WEAPON_EVA8)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.99, 0.530, 0.945, 1.00f), "EVA8");
 						ImGui::MainSliderFloat("Range##EVA8Triggerbot", &Features::Triggerbot::EVA8Range, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Bocek && WeaponID == TriggerbotId::WEAPON_BOCEK)
+					if (Features::Triggerbot::Bocek && WeaponID == WeaponIDs::WEAPON_BOCEK)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.99, 0.530, 0.945, 1.00f), "Bocek");
 						ImGui::MainSliderFloat("Range##BocekTriggerbot", &Features::Triggerbot::BocekRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Kraber && WeaponID == TriggerbotId::WEAPON_KRABER)
+					if (Features::Triggerbot::Kraber && WeaponID == WeaponIDs::WEAPON_KRABER)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.99, 0.530, 0.945, 1.00f), "Kraber");
 						ImGui::MainSliderFloat("Range##KraberTriggerbot", &Features::Triggerbot::KraberRange, 0, 1000, "%.0f");
 					}
 
-					if (Features::Triggerbot::Knife && WeaponID == TriggerbotId::WEAPON_KNIFE)
+					if (Features::Triggerbot::Knife && WeaponID == WeaponIDs::WEAPON_KNIFE)
 					{
 						ImGui::SameLine();
 						ImGui::TextColored(ImVec4(0.99, 0.530, 0.945, 1.00f), "ThrowingKnife");
