@@ -1217,13 +1217,28 @@ struct Legitbot
 					return;
 				if (!Myself->IsInAttack)
 					return;
+
+				int PitchPower;
+				int YawPower;
+				if (Features::RCS::AdvancedRCS)
+				{
+					PitchPower = Features::RCS::AdvancedPitchPower;
+					YawPower = Features::RCS::AdvancedYawPower;
+				}
+
+				else if (!Features::RCS::AdvancedRCS)
+				{
+					PitchPower = Features::RCS::PitchPower;
+					YawPower = Features::RCS::YawPower;
+				}
+
 				FloatVector2D punchAnglesDiff = Myself->punchAnglesDiff;
 				if (punchAnglesDiff.isZeroVector())
 					return;
 				int pitch = (punchAnglesDiff.x > 0)
-								? RoundHalfEven(punchAnglesDiff.x * Features::RCS::PitchPower)
+								? RoundHalfEven(punchAnglesDiff.x * PitchPower)
 								: 0;
-				int yaw = RoundHalfEven(-punchAnglesDiff.y * Features::RCS::YawPower);
+				int yaw = RoundHalfEven(-punchAnglesDiff.y * YawPower);
 				X11Display->MoveMouse(pitch, yaw);
 			}
 
@@ -1245,7 +1260,7 @@ struct Legitbot
 					YawPower = Features::RCS::AdvancedYawPower;
 				}
 
-				else
+				else if (!Features::RCS::AdvancedRCS)
 				{
 					PitchPower = Features::RCS::PitchPower;
 					YawPower = Features::RCS::YawPower;
@@ -1797,6 +1812,7 @@ struct Legitbot
 	}
 
 	// Updating Settings For Advanced Options
+	// Updating Settings For Advanced Options
 	void UpdateAimbotSettings()
 	{
 		if (!Features::Aimbot::AdvancedAim)
@@ -1807,7 +1823,7 @@ struct Legitbot
 		// Keybinds && Deadzone
 		if (Features::Aimbot::AdvancedAim)
 		{
-			if (weaponHeld == 106)
+			if (weaponHeld == 107)
 			{ // P2020
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::P2020AimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::P2020ExtraBind;
@@ -1828,7 +1844,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::P2020MinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::P2020MaxDistance1;
 			}
-			if (weaponHeld == 81)
+			if (weaponHeld == 82)
 			{ // RE45
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::RE45AimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::RE45ExtraBind;
@@ -1849,7 +1865,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::RE45MinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::RE45MaxDistance1;
 			}
-			if (weaponHeld == 80)
+			if (weaponHeld == 81)
 			{ // Alternator
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::AlternatorAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::AlternatorExtraBind;
@@ -1870,7 +1886,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::AlternatorMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::AlternatorMaxDistance1;
 			}
-			if (weaponHeld == 105)
+			if (weaponHeld == 106)
 			{ // R99
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::R99AimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::R99ExtraBind;
@@ -1912,7 +1928,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::R301MinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::R301MaxDistance1;
 			}
-			if (weaponHeld == 107)
+			if (weaponHeld == 108)
 			{ // Spitfire
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::SpitfireAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::SpitfireExtraBind;
@@ -1933,7 +1949,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::SpitfireMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::SpitfireMaxDistance1;
 			}
-			if (weaponHeld == 90)
+			if (weaponHeld == 91)
 			{ // G7
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::G7AimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::G7ExtraBind;
@@ -1955,7 +1971,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::G7MaxDistance1;
 			}
 			// Heavy Weapons
-			if (weaponHeld == 113)
+			if (weaponHeld == 114)
 			{ // CARSMG
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::CARSMGAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::CARSMGExtraBind;
@@ -1976,7 +1992,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::CARSMGMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::CARSMGMaxDistance1;
 			}
-			if (weaponHeld == 21)
+			if (weaponHeld == 6)
 			{ // Rampage
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::RampageAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::RampageExtraBind;
@@ -1997,7 +2013,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::RampageMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::RampageMaxDistance1;
 			}
-			if (weaponHeld == 112)
+			if (weaponHeld == 113)
 			{ // Repeater
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::RepeaterAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::RepeaterExtraBind;
@@ -2018,7 +2034,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::RepeaterMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::RepeaterMaxDistance1;
 			}
-			if (weaponHeld == 102)
+			if (weaponHeld == 103)
 			{ // Prowler
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::ProwlerAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::ProwlerExtraBind;
@@ -2039,7 +2055,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::ProwlerMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::ProwlerMaxDistance1;
 			}
-			if (weaponHeld == 91)
+			if (weaponHeld == 92)
 			{ // Hemlock
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::HemlockAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::HemlockExtraBind;
@@ -2060,7 +2076,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::HemlockMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::HemlockMaxDistance1;
 			}
-			if (weaponHeld == 89)
+			if (weaponHeld == 90)
 			{ // Flatline
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::FlatlineAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::FlatlineExtraBind;
@@ -2082,7 +2098,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::FlatlineMaxDistance1;
 			}
 			// Energy Weapons
-			if (weaponHeld == 114)
+			if (weaponHeld == 115)
 			{ // Nemesis
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::NemesisAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::NemesisExtraBind;
@@ -2103,7 +2119,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::NemesisMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::NemesisMaxDistance1;
 			}
-			if (weaponHeld == 111)
+			if (weaponHeld == 112)
 			{ // Volt
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::VoltAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::VoltExtraBind;
@@ -2124,7 +2140,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::VoltMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::VoltMaxDistance1;
 			}
-			if (weaponHeld == 108)
+			if (weaponHeld == 109)
 			{ // TripleTake
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::TripleTakeAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::TripleTakeExtraBind;
@@ -2145,7 +2161,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::TripleTakeMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::TripleTakeMaxDistance1;
 			}
-			if (weaponHeld == 94)
+			if (weaponHeld == 95)
 			{ // LSTAR
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::LSTARAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::LSTARExtraBind;
@@ -2166,7 +2182,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::LSTARMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::LSTARMaxDistance1;
 			}
-			if (weaponHeld == 84)
+			if (weaponHeld == 85)
 			{ // Devotion
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::DevotionAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::DevotionExtraBind;
@@ -2187,7 +2203,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::DevotionMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::DevotionMaxDistance1;
 			}
-			if (weaponHeld == 86)
+			if (weaponHeld == 87)
 			{ // Havoc
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::HavocAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::HavocExtraBind;
@@ -2209,7 +2225,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::HavocMaxDistance1;
 			}
 			// Shotguns
-			if (weaponHeld == 97)
+			if (weaponHeld == 98)
 			{ // Mozambique
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::MozambiqueAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::MozambiqueExtraBind;
@@ -2230,7 +2246,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::MozambiqueMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::MozambiqueMaxDistance1;
 			}
-			if (weaponHeld == 104)
+			if (weaponHeld == 105)
 			{ // Peacekeeper
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::PeacekeeperAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::PeacekeeperExtraBind;
@@ -2251,7 +2267,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::PeacekeeperMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::PeacekeeperMaxDistance1;
 			}
-			if (weaponHeld == 96)
+			if (weaponHeld == 97)
 			{ // Mastiff
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::MastiffAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::MastiffExtraBind;
@@ -2294,7 +2310,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::SentinelMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::SentinelMaxDistance1;
 			}
-			if (weaponHeld == 83)
+			if (weaponHeld == 84)
 			{ // ChargeRifle
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::ChargeRifleAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::ChargeRifleExtraBind;
@@ -2315,7 +2331,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::ChargeRifleMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::ChargeRifleMaxDistance1;
 			}
-			if (weaponHeld == 85)
+			if (weaponHeld == 86)
 			{ // Longbow
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::LongbowAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::LongbowExtraBind;
@@ -2337,7 +2353,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::LongbowMaxDistance1;
 			}
 			// Legendary Weapons
-			if (weaponHeld == 110)
+			if (weaponHeld == 111)
 			{ // Wingman
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::WingmanAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::WingmanExtraBind;
@@ -2358,7 +2374,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::WingmanMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::WingmanMaxDistance1;
 			}
-			if (weaponHeld == 88)
+			if (weaponHeld == 89)
 			{ // EVA8
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::EVA8AimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::EVA8ExtraBind;
@@ -2400,7 +2416,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::BocekMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::BocekMaxDistance1;
 			}
-			if (weaponHeld == 93)
+			if (weaponHeld == 94)
 			{ // Kraber
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::KraberAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::KraberExtraBind;
@@ -2421,7 +2437,7 @@ struct Legitbot
 				Features::Aimbot::AdvancedMinDistance1 = Features::Aimbot::KraberMinDistance1;
 				Features::Aimbot::AdvancedMaxDistance1 = Features::Aimbot::KraberMaxDistance1;
 			}
-			if (weaponHeld == 166)
+			if (weaponHeld == 169)
 			{ // ThrowingKnife
 				Features::AimbotBinds::AimBind = Features::AimbotBinds::ThrowingKnifeAimBind;
 				Features::AimbotBinds::ExtraBind = Features::AimbotBinds::ThrowingKnifeExtraBind;
@@ -2456,28 +2472,28 @@ struct Legitbot
 
 		if (Features::RCS::AdvancedRCS)
 		{
-			if (weaponHeld == 106)
+			if (weaponHeld == 107)
 			{ // P2020
 				Features::RCS::AdvancedPitchPower = Features::RCS::P2020Pitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::P2020Yaw;
 				Features::RCS::AdvancedPitchReduction = Features::RCS::P2020PitchReduction;
 				Features::RCS::AdvancedYawReduction = Features::RCS::P2020YawReduction;
 			}
-			if (weaponHeld == 81)
+			if (weaponHeld == 82)
 			{ // RE-45
 				Features::RCS::AdvancedPitchPower = Features::RCS::RE45Pitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::RE45Yaw;
 				Features::RCS::AdvancedPitchReduction = Features::RCS::RE45PitchReduction;
 				Features::RCS::AdvancedYawReduction = Features::RCS::RE45YawReduction;
 			}
-			if (weaponHeld == 80)
+			if (weaponHeld == 81)
 			{ // Alternator
 				Features::RCS::AdvancedPitchPower = Features::RCS::AlternatorPitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::AlternatorYaw;
 				Features::RCS::AdvancedPitchReduction = Features::RCS::AlternatorPitchReduction;
 				Features::RCS::AdvancedYawReduction = Features::RCS::AlternatorYawReduction;
 			}
-			if (weaponHeld == 105)
+			if (weaponHeld == 106)
 			{ // R-99
 				Features::RCS::AdvancedPitchPower = Features::RCS::R99Pitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::R99Yaw;
@@ -2491,14 +2507,14 @@ struct Legitbot
 				Features::RCS::AdvancedPitchReduction = Features::RCS::R301PitchReduction;
 				Features::RCS::AdvancedYawReduction = Features::RCS::R301YawReduction;
 			}
-			if (weaponHeld == 107)
+			if (weaponHeld == 108)
 			{ // Spitfire
 				Features::RCS::AdvancedPitchPower = Features::RCS::SpitfirePitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::SpitfireYaw;
 				Features::RCS::AdvancedPitchReduction = Features::RCS::SpitfirePitchReduction;
 				Features::RCS::AdvancedYawReduction = Features::RCS::SpitfireYawReduction;
 			}
-			if (weaponHeld == 90)
+			if (weaponHeld == 91)
 			{ // G7
 				Features::RCS::AdvancedPitchPower = Features::RCS::G7Pitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::G7Yaw;
@@ -2506,28 +2522,28 @@ struct Legitbot
 				Features::RCS::AdvancedYawReduction = Features::RCS::G7YawReduction;
 			}
 			// Heavy Weapons
-			if (weaponHeld == 113)
+			if (weaponHeld == 114)
 			{ // CARSMG
 				Features::RCS::AdvancedPitchPower = Features::RCS::CARSMGPitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::CARSMGYaw;
 				Features::RCS::AdvancedPitchReduction = Features::RCS::CARSMGPitchReduction;
 				Features::RCS::AdvancedYawReduction = Features::RCS::CARSMGYawReduction;
 			}
-			if (weaponHeld == 21)
+			if (weaponHeld == 6)
 			{ // Rampage
 				Features::RCS::AdvancedPitchPower = Features::RCS::RampagePitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::RampageYaw;
 				Features::RCS::AdvancedPitchReduction = Features::RCS::RampagePitchReduction;
 				Features::RCS::AdvancedYawReduction = Features::RCS::RampageYawReduction;
 			}
-			if (weaponHeld == 112)
+			if (weaponHeld == 113)
 			{ // Repeater
 				Features::RCS::AdvancedPitchPower = Features::RCS::RepeaterPitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::RepeaterYaw;
 				Features::RCS::AdvancedPitchReduction = Features::RCS::RepeaterPitchReduction;
 				Features::RCS::AdvancedYawReduction = Features::RCS::RepeaterYawReduction;
 			}
-			if (weaponHeld == 91)
+			if (weaponHeld == 92)
 			{ // Hemlock
 				Features::RCS::AdvancedPitchPower = Features::RCS::HemlockPitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::HemlockYaw;
@@ -2577,7 +2593,7 @@ struct Legitbot
 				Features::RCS::AdvancedPitchReduction = Features::RCS::DevotionPitchReduction;
 				Features::RCS::AdvancedYawReduction = Features::RCS::DevotionYawReduction;
 			}
-			if (weaponHeld == 86)
+			if (weaponHeld == 90)
 			{ // Havoc
 				Features::RCS::AdvancedPitchPower = Features::RCS::HavocPitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::HavocYaw;
@@ -2585,28 +2601,28 @@ struct Legitbot
 				Features::RCS::AdvancedYawReduction = Features::RCS::HavocYawReduction;
 			}
 			// Shotguns
-			if (weaponHeld == 97)
+			if (weaponHeld == 98)
 			{ // Mozambique
 				Features::RCS::AdvancedPitchPower = Features::RCS::MozambiquePitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::MozambiqueYaw;
 				Features::RCS::AdvancedPitchReduction = Features::RCS::MozambiquePitchReduction;
 				Features::RCS::AdvancedYawReduction = Features::RCS::MozambiqueYawReduction;
 			}
-			if (weaponHeld == 88)
+			if (weaponHeld == 89)
 			{ // EVA8
 				Features::RCS::AdvancedPitchPower = Features::RCS::EVA8Pitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::EVA8Yaw;
 				Features::RCS::AdvancedPitchReduction = Features::RCS::EVA8PitchReduction;
 				Features::RCS::AdvancedYawReduction = Features::RCS::EVA8YawReduction;
 			}
-			if (weaponHeld == 104)
+			if (weaponHeld == 105)
 			{ // Peacekeeper
 				Features::RCS::AdvancedPitchPower = Features::RCS::PeacekeeperPitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::PeacekeeperYaw;
 				Features::RCS::AdvancedPitchReduction = Features::RCS::PeacekeeperPitchReduction;
 				Features::RCS::AdvancedYawReduction = Features::RCS::PeacekeeperYawReduction;
 			}
-			if (weaponHeld == 96)
+			if (weaponHeld == 97)
 			{ // Mastiff
 				Features::RCS::AdvancedPitchPower = Features::RCS::MastiffPitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::MastiffYaw;
@@ -2621,14 +2637,14 @@ struct Legitbot
 				Features::RCS::AdvancedPitchReduction = Features::RCS::SentinelPitchReduction;
 				Features::RCS::AdvancedYawReduction = Features::RCS::SentinelYawReduction;
 			}
-			if (weaponHeld == 83)
+			if (weaponHeld == 84)
 			{ // ChargeRifle
 				Features::RCS::AdvancedPitchPower = Features::RCS::ChargeRiflePitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::ChargeRifleYaw;
 				Features::RCS::AdvancedPitchReduction = Features::RCS::ChargeRiflePitchReduction;
 				Features::RCS::AdvancedYawReduction = Features::RCS::ChargeRifleYawReduction;
 			}
-			if (weaponHeld == 85)
+			if (weaponHeld == 86)
 			{ // Longbow
 				Features::RCS::AdvancedPitchPower = Features::RCS::LongbowPitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::LongbowYaw;
@@ -2636,21 +2652,21 @@ struct Legitbot
 				Features::RCS::AdvancedYawReduction = Features::RCS::LongbowYawReduction;
 			}
 			// Legendary Weapons
-			if (weaponHeld == 109)
+			if (weaponHeld == 111)
 			{ // Wingman
 				Features::RCS::AdvancedPitchPower = Features::RCS::WingmanPitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::WingmanYaw;
 				Features::RCS::AdvancedPitchReduction = Features::RCS::WingmanPitchReduction;
 				Features::RCS::AdvancedYawReduction = Features::RCS::WingmanYawReduction;
 			}
-			if (weaponHeld == 102)
+			if (weaponHeld == 103)
 			{ // Prowler
 				Features::RCS::AdvancedPitchPower = Features::RCS::ProwlerPitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::ProwlerYaw;
 				Features::RCS::AdvancedPitchReduction = Features::RCS::ProwlerPitchReduction;
 				Features::RCS::AdvancedYawReduction = Features::RCS::ProwlerYawReduction;
 			}
-			if (weaponHeld == 93)
+			if (weaponHeld == 94)
 			{ // Kraber
 				Features::RCS::AdvancedPitchPower = Features::RCS::KraberPitch;
 				Features::RCS::AdvancedYawPower = Features::RCS::KraberYaw;
