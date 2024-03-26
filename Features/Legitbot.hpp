@@ -1369,11 +1369,11 @@ struct Legitbot
 		{
 			if (Myself->IsZooming)
 			{
-				SmoothValue = powf(Features::Aimbot::AdvancedADSSmooth + ExtraSmooth, 0.4f);
+				SmoothValue = powf(Features::Aimbot::AdvancedADSSmooth, 0.4f);
 			}
 			else
 			{ // Hipfire
-				SmoothValue = powf(Features::Aimbot::AdvancedHipfireSmooth + ExtraSmooth, 0.4f);
+				SmoothValue = powf(Features::Aimbot::AdvancedHipfireSmooth, 0.4f);
 			}
 			SmoothValue = std::min(0.99f, SmoothValue);
 		}
@@ -1382,11 +1382,11 @@ struct Legitbot
 		{
 			if (Myself->IsZooming)
 			{
-				SmoothValue = powf(Features::Aimbot::ADSSmooth + ExtraSmooth, 0.4f);
+				SmoothValue = powf(Features::Aimbot::ADSSmooth, 0.4f);
 			}
 			else
 			{ // Hipfire
-				SmoothValue = powf(Features::Aimbot::HipfireSmooth + ExtraSmooth, 0.4f);
+				SmoothValue = powf(Features::Aimbot::HipfireSmooth, 0.4f);
 			}
 			SmoothValue = std::min(0.99f, SmoothValue);
 		}
