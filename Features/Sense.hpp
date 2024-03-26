@@ -955,22 +955,22 @@ struct Sense
 					{
 
 						// Light Weapons
-						if (weaponHeldID == 106)
+						if (weaponHeldID == 107)
 						{ // P2020
 							weaponHeldText = "P2020";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
 						}
-						if (weaponHeldID == 81)
+						if (weaponHeldID == 82)
 						{ // RE-45
 							weaponHeldText = "RE-45";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
 						}
-						if (weaponHeldID == 80)
+						if (weaponHeldID == 81)
 						{ // Alternator
 							weaponHeldText = "Alternator";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
 						}
-						if (weaponHeldID == 105)
+						if (weaponHeldID == 106)
 						{ // R-99
 							weaponHeldText = "R-99";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
@@ -980,90 +980,90 @@ struct Sense
 							weaponHeldText = "R-301";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
 						}
-						if (weaponHeldID == 107)
+						if (weaponHeldID == 108)
 						{ // Spitfire
 							weaponHeldText = "Spitfire";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
 						}
-						if (weaponHeldID == 90)
+						if (weaponHeldID == 91)
 						{ // G7
 							weaponHeldText = "G7 Scout";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
 						}
 						// Heavy Weapons
-						if (weaponHeldID == 113)
+						if (weaponHeldID == 114)
 						{ // CARSMG
 							weaponHeldText = "CAR SMG";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::HeavyWeaponColor[0], Features::Colors::Enemy::HeavyWeaponColor[1], Features::Colors::Enemy::HeavyWeaponColor[2], Features::Colors::Enemy::HeavyWeaponColor[3]);
 						}
-						if (weaponHeldID == 21)
+						if (weaponHeldID == 6)
 						{ // Rampage
 							weaponHeldText = "Rampage";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::HeavyWeaponColor[0], Features::Colors::Enemy::HeavyWeaponColor[1], Features::Colors::Enemy::HeavyWeaponColor[2], Features::Colors::Enemy::HeavyWeaponColor[3]);
 						}
-						if (weaponHeldID == 112)
+						if (weaponHeldID == 113)
 						{ // Repeater
 							weaponHeldText = "Repeater";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::HeavyWeaponColor[0], Features::Colors::Enemy::HeavyWeaponColor[1], Features::Colors::Enemy::HeavyWeaponColor[2], Features::Colors::Enemy::HeavyWeaponColor[3]);
 						}
-						if (weaponHeldID == 91)
+						if (weaponHeldID == 92)
 						{ // Hemlock
 							weaponHeldText = "Hemlock";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::HeavyWeaponColor[0], Features::Colors::Enemy::HeavyWeaponColor[1], Features::Colors::Enemy::HeavyWeaponColor[2], Features::Colors::Enemy::HeavyWeaponColor[3]);
 						}
-						if (weaponHeldID == 89)
+						if (weaponHeldID == 90)
 						{ // Flatline
 							weaponHeldText = "Flatline";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::HeavyWeaponColor[0], Features::Colors::Enemy::HeavyWeaponColor[1], Features::Colors::Enemy::HeavyWeaponColor[2], Features::Colors::Enemy::HeavyWeaponColor[3]);
 						}
 						// Energy Weapons
-						if (weaponHeldID == 114)
+						if (weaponHeldID == 115)
 						{ // Nemesis
 							weaponHeldText = "Nemesis";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
 						}
-						if (weaponHeldID == 111)
+						if (weaponHeldID == 112)
 						{ // Volt
 							weaponHeldText = "Volt";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
 						}
-						if (weaponHeldID == 108)
+						if (weaponHeldID == 109)
 						{ // TripleTake
 							weaponHeldText = "Triple Take";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
 						}
-						if (weaponHeldID == 94)
+						if (weaponHeldID == 95)
 						{ // LSTAR
 							weaponHeldText = "L-STAR";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
 						}
-						if (weaponHeldID == 84)
+						if (weaponHeldID == 85)
 						{ // Devotion
 							weaponHeldText = "Devotion";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
 						}
-						if (weaponHeldID == 86)
+						if (weaponHeldID == 87)
 						{ // Havoc
 							weaponHeldText = "Havoc";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
 						}
 						// Shotguns
-						if (weaponHeldID == 97)
+						if (weaponHeldID == 98)
 						{ // Mozambique
 							weaponHeldText = "Mozambique";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::ShotgunWeaponColor[0], Features::Colors::Enemy::ShotgunWeaponColor[1], Features::Colors::Enemy::ShotgunWeaponColor[2], Features::Colors::Enemy::ShotgunWeaponColor[3]);
 						}
-						if (weaponHeldID == 88)
+						if (weaponHeldID == 89)
 						{ // EVA8
 							weaponHeldText = "EVA-8 Auto";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::ShotgunWeaponColor[0], Features::Colors::Enemy::ShotgunWeaponColor[1], Features::Colors::Enemy::ShotgunWeaponColor[2], Features::Colors::Enemy::ShotgunWeaponColor[3]);
 						}
-						if (weaponHeldID == 104)
+						if (weaponHeldID == 105)
 						{ // Peacekeeper
 							weaponHeldText = "Peacekeeper";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::ShotgunWeaponColor[0], Features::Colors::Enemy::ShotgunWeaponColor[1], Features::Colors::Enemy::ShotgunWeaponColor[2], Features::Colors::Enemy::ShotgunWeaponColor[3]);
 						}
-						if (weaponHeldID == 96)
+						if (weaponHeldID == 97)
 						{ // Mastiff
 							weaponHeldText = "Mastiff";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::ShotgunWeaponColor[0], Features::Colors::Enemy::ShotgunWeaponColor[1], Features::Colors::Enemy::ShotgunWeaponColor[2], Features::Colors::Enemy::ShotgunWeaponColor[3]);
@@ -1074,23 +1074,23 @@ struct Sense
 							weaponHeldText = "Sentinel";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::SniperWeaponColor[0], Features::Colors::Enemy::SniperWeaponColor[1], Features::Colors::Enemy::SniperWeaponColor[2], Features::Colors::Enemy::SniperWeaponColor[3]);
 						}
-						if (weaponHeldID == 83)
+						if (weaponHeldID == 84)
 						{ // ChargeRifle
 							weaponHeldText = "Charge Rifle";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::SniperWeaponColor[0], Features::Colors::Enemy::SniperWeaponColor[1], Features::Colors::Enemy::SniperWeaponColor[2], Features::Colors::Enemy::SniperWeaponColor[3]);
 						}
-						if (weaponHeldID == 85)
+						if (weaponHeldID == 86)
 						{ // Longbow
 							weaponHeldText = "Longbow";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::SniperWeaponColor[0], Features::Colors::Enemy::SniperWeaponColor[1], Features::Colors::Enemy::SniperWeaponColor[2], Features::Colors::Enemy::SniperWeaponColor[3]);
 						}
 						// Legendary Weapons
-						if (weaponHeldID == 110)
+						if (weaponHeldID == 111)
 						{ // Wingman
 							weaponHeldText = "Wingman";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LegendaryWeaponColor[0], Features::Colors::Enemy::LegendaryWeaponColor[1], Features::Colors::Enemy::LegendaryWeaponColor[2], Features::Colors::Enemy::LegendaryWeaponColor[3]);
 						}
-						if (weaponHeldID == 102)
+						if (weaponHeldID == 103)
 						{ // Prowler
 							weaponHeldText = "Prowler";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LegendaryWeaponColor[0], Features::Colors::Enemy::LegendaryWeaponColor[1], Features::Colors::Enemy::LegendaryWeaponColor[2], Features::Colors::Enemy::LegendaryWeaponColor[3]);
@@ -1100,12 +1100,12 @@ struct Sense
 							weaponHeldText = "Bocek";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LegendaryWeaponColor[0], Features::Colors::Enemy::LegendaryWeaponColor[1], Features::Colors::Enemy::LegendaryWeaponColor[2], Features::Colors::Enemy::LegendaryWeaponColor[3]);
 						}
-						if (weaponHeldID == 92)
+						if (weaponHeldID == 94)
 						{ // Kraber
 							weaponHeldText = "Kraber";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LegendaryWeaponColor[0], Features::Colors::Enemy::LegendaryWeaponColor[1], Features::Colors::Enemy::LegendaryWeaponColor[2], Features::Colors::Enemy::LegendaryWeaponColor[3]);
 						}
-						if (weaponHeldID == 166)
+						if (weaponHeldID == 169)
 						{ // Knife
 							weaponHeldText = "Throwing Knife";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LegendaryWeaponColor[0], Features::Colors::Enemy::LegendaryWeaponColor[1], Features::Colors::Enemy::LegendaryWeaponColor[2], Features::Colors::Enemy::LegendaryWeaponColor[3]);
@@ -1124,7 +1124,7 @@ struct Sense
 							weaponHeldText = "Throwable";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::ThrowableWeaponColor[0], Features::Colors::Enemy::ThrowableWeaponColor[1], Features::Colors::Enemy::ThrowableWeaponColor[2], Features::Colors::Enemy::ThrowableWeaponColor[3]);
 						}
-						if (weaponHeldID == 115)
+						if (weaponHeldID == 116)
 						{ // Melee
 							weaponHeldText = "Melee";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::MeleeWeaponColor[0], Features::Colors::Enemy::MeleeWeaponColor[1], Features::Colors::Enemy::MeleeWeaponColor[2], Features::Colors::Enemy::MeleeWeaponColor[3]);
@@ -1416,22 +1416,22 @@ struct Sense
 					{
 
 						// Light Weapons
-						if (weaponHeldID == 106)
+						if (weaponHeldID == 107)
 						{ // P2020
 							weaponHeldText = "P2020";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
 						}
-						if (weaponHeldID == 81)
+						if (weaponHeldID == 82)
 						{ // RE-45
 							weaponHeldText = "RE-45";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
 						}
-						if (weaponHeldID == 80)
+						if (weaponHeldID == 81)
 						{ // Alternator
 							weaponHeldText = "Alternator";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
 						}
-						if (weaponHeldID == 105)
+						if (weaponHeldID == 106)
 						{ // R-99
 							weaponHeldText = "R-99";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
@@ -1441,90 +1441,90 @@ struct Sense
 							weaponHeldText = "R-301";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
 						}
-						if (weaponHeldID == 107)
+						if (weaponHeldID == 108)
 						{ // Spitfire
 							weaponHeldText = "Spitfire";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
 						}
-						if (weaponHeldID == 90)
+						if (weaponHeldID == 91)
 						{ // G7
 							weaponHeldText = "G7 Scout";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
 						}
 						// Heavy Weapons
-						if (weaponHeldID == 113)
+						if (weaponHeldID == 114)
 						{ // CARSMG
 							weaponHeldText = "CAR SMG";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::HeavyWeaponColor[0], Features::Colors::Enemy::HeavyWeaponColor[1], Features::Colors::Enemy::HeavyWeaponColor[2], Features::Colors::Enemy::HeavyWeaponColor[3]);
 						}
-						if (weaponHeldID == 21)
+						if (weaponHeldID == 6)
 						{ // Rampage
 							weaponHeldText = "Rampage";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::HeavyWeaponColor[0], Features::Colors::Enemy::HeavyWeaponColor[1], Features::Colors::Enemy::HeavyWeaponColor[2], Features::Colors::Enemy::HeavyWeaponColor[3]);
 						}
-						if (weaponHeldID == 112)
+						if (weaponHeldID == 113)
 						{ // Repeater
 							weaponHeldText = "Repeater";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::HeavyWeaponColor[0], Features::Colors::Enemy::HeavyWeaponColor[1], Features::Colors::Enemy::HeavyWeaponColor[2], Features::Colors::Enemy::HeavyWeaponColor[3]);
 						}
-						if (weaponHeldID == 91)
+						if (weaponHeldID == 92)
 						{ // Hemlock
 							weaponHeldText = "Hemlock";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::HeavyWeaponColor[0], Features::Colors::Enemy::HeavyWeaponColor[1], Features::Colors::Enemy::HeavyWeaponColor[2], Features::Colors::Enemy::HeavyWeaponColor[3]);
 						}
-						if (weaponHeldID == 89)
+						if (weaponHeldID == 90)
 						{ // Flatline
 							weaponHeldText = "Flatline";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::HeavyWeaponColor[0], Features::Colors::Enemy::HeavyWeaponColor[1], Features::Colors::Enemy::HeavyWeaponColor[2], Features::Colors::Enemy::HeavyWeaponColor[3]);
 						}
 						// Energy Weapons
-						if (weaponHeldID == 114)
+						if (weaponHeldID == 115)
 						{ // Nemesis
 							weaponHeldText = "Nemesis";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
 						}
-						if (weaponHeldID == 111)
+						if (weaponHeldID == 112)
 						{ // Volt
 							weaponHeldText = "Volt";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
 						}
-						if (weaponHeldID == 108)
+						if (weaponHeldID == 109)
 						{ // TripleTake
 							weaponHeldText = "Triple Take";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
 						}
-						if (weaponHeldID == 94)
+						if (weaponHeldID == 95)
 						{ // LSTAR
 							weaponHeldText = "L-STAR";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
 						}
-						if (weaponHeldID == 84)
+						if (weaponHeldID == 85)
 						{ // Devotion
 							weaponHeldText = "Devotion";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
 						}
-						if (weaponHeldID == 86)
+						if (weaponHeldID == 87)
 						{ // Havoc
 							weaponHeldText = "Havoc";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
 						}
 						// Shotguns
-						if (weaponHeldID == 97)
+						if (weaponHeldID == 98)
 						{ // Mozambique
 							weaponHeldText = "Mozambique";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::ShotgunWeaponColor[0], Features::Colors::Enemy::ShotgunWeaponColor[1], Features::Colors::Enemy::ShotgunWeaponColor[2], Features::Colors::Enemy::ShotgunWeaponColor[3]);
 						}
-						if (weaponHeldID == 88)
+						if (weaponHeldID == 89)
 						{ // EVA8
 							weaponHeldText = "EVA-8 Auto";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::ShotgunWeaponColor[0], Features::Colors::Enemy::ShotgunWeaponColor[1], Features::Colors::Enemy::ShotgunWeaponColor[2], Features::Colors::Enemy::ShotgunWeaponColor[3]);
 						}
-						if (weaponHeldID == 104)
+						if (weaponHeldID == 105)
 						{ // Peacekeeper
 							weaponHeldText = "Peacekeeper";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::ShotgunWeaponColor[0], Features::Colors::Enemy::ShotgunWeaponColor[1], Features::Colors::Enemy::ShotgunWeaponColor[2], Features::Colors::Enemy::ShotgunWeaponColor[3]);
 						}
-						if (weaponHeldID == 96)
+						if (weaponHeldID == 97)
 						{ // Mastiff
 							weaponHeldText = "Mastiff";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::ShotgunWeaponColor[0], Features::Colors::Enemy::ShotgunWeaponColor[1], Features::Colors::Enemy::ShotgunWeaponColor[2], Features::Colors::Enemy::ShotgunWeaponColor[3]);
@@ -1535,23 +1535,23 @@ struct Sense
 							weaponHeldText = "Sentinel";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::SniperWeaponColor[0], Features::Colors::Enemy::SniperWeaponColor[1], Features::Colors::Enemy::SniperWeaponColor[2], Features::Colors::Enemy::SniperWeaponColor[3]);
 						}
-						if (weaponHeldID == 83)
+						if (weaponHeldID == 84)
 						{ // ChargeRifle
 							weaponHeldText = "Charge Rifle";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::SniperWeaponColor[0], Features::Colors::Enemy::SniperWeaponColor[1], Features::Colors::Enemy::SniperWeaponColor[2], Features::Colors::Enemy::SniperWeaponColor[3]);
 						}
-						if (weaponHeldID == 85)
+						if (weaponHeldID == 86)
 						{ // Longbow
 							weaponHeldText = "Longbow";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::SniperWeaponColor[0], Features::Colors::Enemy::SniperWeaponColor[1], Features::Colors::Enemy::SniperWeaponColor[2], Features::Colors::Enemy::SniperWeaponColor[3]);
 						}
 						// Legendary Weapons
-						if (weaponHeldID == 110)
+						if (weaponHeldID == 111)
 						{ // Wingman
 							weaponHeldText = "Wingman";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LegendaryWeaponColor[0], Features::Colors::Enemy::LegendaryWeaponColor[1], Features::Colors::Enemy::LegendaryWeaponColor[2], Features::Colors::Enemy::LegendaryWeaponColor[3]);
 						}
-						if (weaponHeldID == 102)
+						if (weaponHeldID == 103)
 						{ // Prowler
 							weaponHeldText = "Prowler";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LegendaryWeaponColor[0], Features::Colors::Enemy::LegendaryWeaponColor[1], Features::Colors::Enemy::LegendaryWeaponColor[2], Features::Colors::Enemy::LegendaryWeaponColor[3]);
@@ -1561,12 +1561,12 @@ struct Sense
 							weaponHeldText = "Bocek";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LegendaryWeaponColor[0], Features::Colors::Enemy::LegendaryWeaponColor[1], Features::Colors::Enemy::LegendaryWeaponColor[2], Features::Colors::Enemy::LegendaryWeaponColor[3]);
 						}
-						if (weaponHeldID == 92)
+						if (weaponHeldID == 94)
 						{ // Kraber
 							weaponHeldText = "Kraber";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LegendaryWeaponColor[0], Features::Colors::Enemy::LegendaryWeaponColor[1], Features::Colors::Enemy::LegendaryWeaponColor[2], Features::Colors::Enemy::LegendaryWeaponColor[3]);
 						}
-						if (weaponHeldID == 166)
+						if (weaponHeldID == 169)
 						{ // Knife
 							weaponHeldText = "Throwing Knife";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::LegendaryWeaponColor[0], Features::Colors::Enemy::LegendaryWeaponColor[1], Features::Colors::Enemy::LegendaryWeaponColor[2], Features::Colors::Enemy::LegendaryWeaponColor[3]);
@@ -1585,7 +1585,7 @@ struct Sense
 							weaponHeldText = "Throwable";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::ThrowableWeaponColor[0], Features::Colors::Enemy::ThrowableWeaponColor[1], Features::Colors::Enemy::ThrowableWeaponColor[2], Features::Colors::Enemy::ThrowableWeaponColor[3]);
 						}
-						if (weaponHeldID == 115)
+						if (weaponHeldID == 116)
 						{ // Melee
 							weaponHeldText = "Melee";
 							weaponHeldColor = ImColor(Features::Colors::Enemy::MeleeWeaponColor[0], Features::Colors::Enemy::MeleeWeaponColor[1], Features::Colors::Enemy::MeleeWeaponColor[2], Features::Colors::Enemy::MeleeWeaponColor[3]);
@@ -1868,164 +1868,164 @@ struct Sense
 					{
 
 						// Light Weapons
-						if (weaponHeldID == 106)
+						if (weaponHeldID == 107)
 						{ // P2020
 							weaponHeldText = "P2020";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::LightWeaponColor[0], Features::Colors::Teammate::LightWeaponColor[1], Features::Colors::Teammate::LightWeaponColor[2], Features::Colors::Teammate::LightWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
 						}
-						if (weaponHeldID == 81)
+						if (weaponHeldID == 82)
 						{ // RE-45
 							weaponHeldText = "RE-45";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::LightWeaponColor[0], Features::Colors::Teammate::LightWeaponColor[1], Features::Colors::Teammate::LightWeaponColor[2], Features::Colors::Teammate::LightWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
 						}
-						if (weaponHeldID == 80)
+						if (weaponHeldID == 81)
 						{ // Alternator
 							weaponHeldText = "Alternator";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::LightWeaponColor[0], Features::Colors::Teammate::LightWeaponColor[1], Features::Colors::Teammate::LightWeaponColor[2], Features::Colors::Teammate::LightWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
 						}
-						if (weaponHeldID == 105)
+						if (weaponHeldID == 106)
 						{ // R-99
 							weaponHeldText = "R-99";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::LightWeaponColor[0], Features::Colors::Teammate::LightWeaponColor[1], Features::Colors::Teammate::LightWeaponColor[2], Features::Colors::Teammate::LightWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
 						}
 						if (weaponHeldID == 0)
 						{ // R-301
 							weaponHeldText = "R-301";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::LightWeaponColor[0], Features::Colors::Teammate::LightWeaponColor[1], Features::Colors::Teammate::LightWeaponColor[2], Features::Colors::Teammate::LightWeaponColor[3]);
-						}
-						if (weaponHeldID == 107)
-						{ // Spitfire
-							weaponHeldText = "Spitfire";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::LightWeaponColor[0], Features::Colors::Teammate::LightWeaponColor[1], Features::Colors::Teammate::LightWeaponColor[2], Features::Colors::Teammate::LightWeaponColor[3]);
-						}
-						if (weaponHeldID == 90)
-						{ // G7
-							weaponHeldText = "G7 Scout";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::LightWeaponColor[0], Features::Colors::Teammate::LightWeaponColor[1], Features::Colors::Teammate::LightWeaponColor[2], Features::Colors::Teammate::LightWeaponColor[3]);
-						}
-						// Heavy Weapons
-						if (weaponHeldID == 113)
-						{ // CARSMG
-							weaponHeldText = "CAR SMG";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::HeavyWeaponColor[0], Features::Colors::Teammate::HeavyWeaponColor[1], Features::Colors::Teammate::HeavyWeaponColor[2], Features::Colors::Teammate::HeavyWeaponColor[3]);
-						}
-						if (weaponHeldID == 21)
-						{ // Rampage
-							weaponHeldText = "Rampage";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::HeavyWeaponColor[0], Features::Colors::Teammate::HeavyWeaponColor[1], Features::Colors::Teammate::HeavyWeaponColor[2], Features::Colors::Teammate::HeavyWeaponColor[3]);
-						}
-						if (weaponHeldID == 112)
-						{ // Repeater
-							weaponHeldText = "Repeater";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::HeavyWeaponColor[0], Features::Colors::Teammate::HeavyWeaponColor[1], Features::Colors::Teammate::HeavyWeaponColor[2], Features::Colors::Teammate::HeavyWeaponColor[3]);
-						}
-						if (weaponHeldID == 91)
-						{ // Hemlock
-							weaponHeldText = "Hemlock";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::HeavyWeaponColor[0], Features::Colors::Teammate::HeavyWeaponColor[1], Features::Colors::Teammate::HeavyWeaponColor[2], Features::Colors::Teammate::HeavyWeaponColor[3]);
-						}
-						if (weaponHeldID == 89)
-						{ // Flatline
-							weaponHeldText = "Flatline";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::HeavyWeaponColor[0], Features::Colors::Teammate::HeavyWeaponColor[1], Features::Colors::Teammate::HeavyWeaponColor[2], Features::Colors::Teammate::HeavyWeaponColor[3]);
-						}
-						// Energy Weapons
-						if (weaponHeldID == 114)
-						{ // Nemesis
-							weaponHeldText = "Nemesis";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::EnergyWeaponColor[0], Features::Colors::Teammate::EnergyWeaponColor[1], Features::Colors::Teammate::EnergyWeaponColor[2], Features::Colors::Teammate::EnergyWeaponColor[3]);
-						}
-						if (weaponHeldID == 111)
-						{ // Volt
-							weaponHeldText = "Volt";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::EnergyWeaponColor[0], Features::Colors::Teammate::EnergyWeaponColor[1], Features::Colors::Teammate::EnergyWeaponColor[2], Features::Colors::Teammate::EnergyWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
 						}
 						if (weaponHeldID == 108)
+						{ // Spitfire
+							weaponHeldText = "Spitfire";
+							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
+						}
+						if (weaponHeldID == 91)
+						{ // G7
+							weaponHeldText = "G7 Scout";
+							weaponHeldColor = ImColor(Features::Colors::Enemy::LightWeaponColor[0], Features::Colors::Enemy::LightWeaponColor[1], Features::Colors::Enemy::LightWeaponColor[2], Features::Colors::Enemy::LightWeaponColor[3]);
+						}
+						// Heavy Weapons
+						if (weaponHeldID == 114)
+						{ // CARSMG
+							weaponHeldText = "CAR SMG";
+							weaponHeldColor = ImColor(Features::Colors::Enemy::HeavyWeaponColor[0], Features::Colors::Enemy::HeavyWeaponColor[1], Features::Colors::Enemy::HeavyWeaponColor[2], Features::Colors::Enemy::HeavyWeaponColor[3]);
+						}
+						if (weaponHeldID == 6)
+						{ // Rampage
+							weaponHeldText = "Rampage";
+							weaponHeldColor = ImColor(Features::Colors::Enemy::HeavyWeaponColor[0], Features::Colors::Enemy::HeavyWeaponColor[1], Features::Colors::Enemy::HeavyWeaponColor[2], Features::Colors::Enemy::HeavyWeaponColor[3]);
+						}
+						if (weaponHeldID == 113)
+						{ // Repeater
+							weaponHeldText = "Repeater";
+							weaponHeldColor = ImColor(Features::Colors::Enemy::HeavyWeaponColor[0], Features::Colors::Enemy::HeavyWeaponColor[1], Features::Colors::Enemy::HeavyWeaponColor[2], Features::Colors::Enemy::HeavyWeaponColor[3]);
+						}
+						if (weaponHeldID == 92)
+						{ // Hemlock
+							weaponHeldText = "Hemlock";
+							weaponHeldColor = ImColor(Features::Colors::Enemy::HeavyWeaponColor[0], Features::Colors::Enemy::HeavyWeaponColor[1], Features::Colors::Enemy::HeavyWeaponColor[2], Features::Colors::Enemy::HeavyWeaponColor[3]);
+						}
+						if (weaponHeldID == 90)
+						{ // Flatline
+							weaponHeldText = "Flatline";
+							weaponHeldColor = ImColor(Features::Colors::Enemy::HeavyWeaponColor[0], Features::Colors::Enemy::HeavyWeaponColor[1], Features::Colors::Enemy::HeavyWeaponColor[2], Features::Colors::Enemy::HeavyWeaponColor[3]);
+						}
+						// Energy Weapons
+						if (weaponHeldID == 115)
+						{ // Nemesis
+							weaponHeldText = "Nemesis";
+							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
+						}
+						if (weaponHeldID == 112)
+						{ // Volt
+							weaponHeldText = "Volt";
+							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
+						}
+						if (weaponHeldID == 109)
 						{ // TripleTake
 							weaponHeldText = "Triple Take";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::EnergyWeaponColor[0], Features::Colors::Teammate::EnergyWeaponColor[1], Features::Colors::Teammate::EnergyWeaponColor[2], Features::Colors::Teammate::EnergyWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
 						}
-						if (weaponHeldID == 94)
+						if (weaponHeldID == 95)
 						{ // LSTAR
 							weaponHeldText = "L-STAR";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::EnergyWeaponColor[0], Features::Colors::Teammate::EnergyWeaponColor[1], Features::Colors::Teammate::EnergyWeaponColor[2], Features::Colors::Teammate::EnergyWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
 						}
-						if (weaponHeldID == 84)
+						if (weaponHeldID == 85)
 						{ // Devotion
 							weaponHeldText = "Devotion";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::EnergyWeaponColor[0], Features::Colors::Teammate::EnergyWeaponColor[1], Features::Colors::Teammate::EnergyWeaponColor[2], Features::Colors::Teammate::EnergyWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
 						}
-						if (weaponHeldID == 86)
+						if (weaponHeldID == 87)
 						{ // Havoc
 							weaponHeldText = "Havoc";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::EnergyWeaponColor[0], Features::Colors::Teammate::EnergyWeaponColor[1], Features::Colors::Teammate::EnergyWeaponColor[2], Features::Colors::Teammate::EnergyWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::EnergyWeaponColor[0], Features::Colors::Enemy::EnergyWeaponColor[1], Features::Colors::Enemy::EnergyWeaponColor[2], Features::Colors::Enemy::EnergyWeaponColor[3]);
 						}
 						// Shotguns
-						if (weaponHeldID == 97)
+						if (weaponHeldID == 98)
 						{ // Mozambique
 							weaponHeldText = "Mozambique";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::ShotgunWeaponColor[0], Features::Colors::Teammate::ShotgunWeaponColor[1], Features::Colors::Teammate::ShotgunWeaponColor[2], Features::Colors::Teammate::ShotgunWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::ShotgunWeaponColor[0], Features::Colors::Enemy::ShotgunWeaponColor[1], Features::Colors::Enemy::ShotgunWeaponColor[2], Features::Colors::Enemy::ShotgunWeaponColor[3]);
 						}
-						if (weaponHeldID == 88)
+						if (weaponHeldID == 89)
 						{ // EVA8
 							weaponHeldText = "EVA-8 Auto";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::ShotgunWeaponColor[0], Features::Colors::Teammate::ShotgunWeaponColor[1], Features::Colors::Teammate::ShotgunWeaponColor[2], Features::Colors::Teammate::ShotgunWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::ShotgunWeaponColor[0], Features::Colors::Enemy::ShotgunWeaponColor[1], Features::Colors::Enemy::ShotgunWeaponColor[2], Features::Colors::Enemy::ShotgunWeaponColor[3]);
 						}
-						if (weaponHeldID == 104)
+						if (weaponHeldID == 105)
 						{ // Peacekeeper
 							weaponHeldText = "Peacekeeper";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::ShotgunWeaponColor[0], Features::Colors::Teammate::ShotgunWeaponColor[1], Features::Colors::Teammate::ShotgunWeaponColor[2], Features::Colors::Teammate::ShotgunWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::ShotgunWeaponColor[0], Features::Colors::Enemy::ShotgunWeaponColor[1], Features::Colors::Enemy::ShotgunWeaponColor[2], Features::Colors::Enemy::ShotgunWeaponColor[3]);
 						}
-						if (weaponHeldID == 96)
+						if (weaponHeldID == 97)
 						{ // Mastiff
 							weaponHeldText = "Mastiff";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::ShotgunWeaponColor[0], Features::Colors::Teammate::ShotgunWeaponColor[1], Features::Colors::Teammate::ShotgunWeaponColor[2], Features::Colors::Teammate::ShotgunWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::ShotgunWeaponColor[0], Features::Colors::Enemy::ShotgunWeaponColor[1], Features::Colors::Enemy::ShotgunWeaponColor[2], Features::Colors::Enemy::ShotgunWeaponColor[3]);
 						}
 						// Snipers
 						if (weaponHeldID == 1)
 						{ // Sentinel
 							weaponHeldText = "Sentinel";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::SniperWeaponColor[0], Features::Colors::Teammate::SniperWeaponColor[1], Features::Colors::Teammate::SniperWeaponColor[2], Features::Colors::Teammate::SniperWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::SniperWeaponColor[0], Features::Colors::Enemy::SniperWeaponColor[1], Features::Colors::Enemy::SniperWeaponColor[2], Features::Colors::Enemy::SniperWeaponColor[3]);
 						}
-						if (weaponHeldID == 83)
+						if (weaponHeldID == 84)
 						{ // ChargeRifle
 							weaponHeldText = "Charge Rifle";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::SniperWeaponColor[0], Features::Colors::Teammate::SniperWeaponColor[1], Features::Colors::Teammate::SniperWeaponColor[2], Features::Colors::Teammate::SniperWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::SniperWeaponColor[0], Features::Colors::Enemy::SniperWeaponColor[1], Features::Colors::Enemy::SniperWeaponColor[2], Features::Colors::Enemy::SniperWeaponColor[3]);
 						}
-						if (weaponHeldID == 85)
+						if (weaponHeldID == 86)
 						{ // Longbow
 							weaponHeldText = "Longbow";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::SniperWeaponColor[0], Features::Colors::Teammate::SniperWeaponColor[1], Features::Colors::Teammate::SniperWeaponColor[2], Features::Colors::Teammate::SniperWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::SniperWeaponColor[0], Features::Colors::Enemy::SniperWeaponColor[1], Features::Colors::Enemy::SniperWeaponColor[2], Features::Colors::Enemy::SniperWeaponColor[3]);
 						}
 						// Legendary Weapons
-						if (weaponHeldID == 110)
+						if (weaponHeldID == 111)
 						{ // Wingman
 							weaponHeldText = "Wingman";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::LegendaryWeaponColor[0], Features::Colors::Teammate::LegendaryWeaponColor[1], Features::Colors::Teammate::LegendaryWeaponColor[2], Features::Colors::Teammate::LegendaryWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::LegendaryWeaponColor[0], Features::Colors::Enemy::LegendaryWeaponColor[1], Features::Colors::Enemy::LegendaryWeaponColor[2], Features::Colors::Enemy::LegendaryWeaponColor[3]);
 						}
-						if (weaponHeldID == 102)
+						if (weaponHeldID == 103)
 						{ // Prowler
 							weaponHeldText = "Prowler";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::LegendaryWeaponColor[0], Features::Colors::Teammate::LegendaryWeaponColor[1], Features::Colors::Teammate::LegendaryWeaponColor[2], Features::Colors::Teammate::LegendaryWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::LegendaryWeaponColor[0], Features::Colors::Enemy::LegendaryWeaponColor[1], Features::Colors::Enemy::LegendaryWeaponColor[2], Features::Colors::Enemy::LegendaryWeaponColor[3]);
 						}
 						if (weaponHeldID == 2)
 						{ // Bocek
 							weaponHeldText = "Bocek";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::LegendaryWeaponColor[0], Features::Colors::Teammate::LegendaryWeaponColor[1], Features::Colors::Teammate::LegendaryWeaponColor[2], Features::Colors::Teammate::LegendaryWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::LegendaryWeaponColor[0], Features::Colors::Enemy::LegendaryWeaponColor[1], Features::Colors::Enemy::LegendaryWeaponColor[2], Features::Colors::Enemy::LegendaryWeaponColor[3]);
 						}
-						if (weaponHeldID == 92)
+						if (weaponHeldID == 94)
 						{ // Kraber
 							weaponHeldText = "Kraber";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::LegendaryWeaponColor[0], Features::Colors::Teammate::LegendaryWeaponColor[1], Features::Colors::Teammate::LegendaryWeaponColor[2], Features::Colors::Teammate::LegendaryWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::LegendaryWeaponColor[0], Features::Colors::Enemy::LegendaryWeaponColor[1], Features::Colors::Enemy::LegendaryWeaponColor[2], Features::Colors::Enemy::LegendaryWeaponColor[3]);
 						}
-						if (weaponHeldID == 166)
+						if (weaponHeldID == 169)
 						{ // Knife
 							weaponHeldText = "Throwing Knife";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::LegendaryWeaponColor[0], Features::Colors::Teammate::LegendaryWeaponColor[1], Features::Colors::Teammate::LegendaryWeaponColor[2], Features::Colors::Teammate::LegendaryWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::LegendaryWeaponColor[0], Features::Colors::Enemy::LegendaryWeaponColor[1], Features::Colors::Enemy::LegendaryWeaponColor[2], Features::Colors::Enemy::LegendaryWeaponColor[3]);
 						}
 						/*if (weaponHeldID == 3) { //BusterSword
 							weaponHeldText = "Buster Sword";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::LegendaryWeaponColor[0], Features::Colors::Teammate::LegendaryWeaponColor[1], Features::Colors::Teammate::LegendaryWeaponColor[2], Features::Colors::Teammate::LegendaryWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::LegendaryWeaponColor[0], Features::Colors::Enemy::LegendaryWeaponColor[1], Features::Colors::Enemy::LegendaryWeaponColor[2], Features::Colors::Enemy::LegendaryWeaponColor[3]);
 						}*/
 						// Melee & Grenade
 						/*if (weaponHeldID == 213) { //Thermite Grenade
@@ -2035,12 +2035,12 @@ struct Sense
 						if (p->IsHoldingGrenade)
 						{
 							weaponHeldText = "Throwable";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::ThrowableWeaponColor[0], Features::Colors::Teammate::ThrowableWeaponColor[1], Features::Colors::Teammate::ThrowableWeaponColor[2], Features::Colors::Teammate::ThrowableWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::ThrowableWeaponColor[0], Features::Colors::Enemy::ThrowableWeaponColor[1], Features::Colors::Enemy::ThrowableWeaponColor[2], Features::Colors::Enemy::ThrowableWeaponColor[3]);
 						}
-						if (weaponHeldID == 115)
+						if (weaponHeldID == 116)
 						{ // Melee
 							weaponHeldText = "Melee";
-							weaponHeldColor = ImColor(Features::Colors::Teammate::MeleeWeaponColor[0], Features::Colors::Teammate::MeleeWeaponColor[1], Features::Colors::Teammate::MeleeWeaponColor[2], Features::Colors::Teammate::MeleeWeaponColor[3]);
+							weaponHeldColor = ImColor(Features::Colors::Enemy::MeleeWeaponColor[0], Features::Colors::Enemy::MeleeWeaponColor[1], Features::Colors::Enemy::MeleeWeaponColor[2], Features::Colors::Enemy::MeleeWeaponColor[3]);
 						}
 
 						if (Features::Colors::WeaponColorMode == 1)
