@@ -403,7 +403,7 @@ void RenderUI()
         TitleText << "zap-client";
         Date << OverlayWindow.currentDateTime(2);
         Time << OverlayWindow.currentDateTime(3);
-        Version << "Version 1.0.2";
+        Version << "Version 1.0.3";
         UnknownCheats << "unknowncheats.me";
         Spacings << "  |  ";
         std::string combined = TitleText.str() + Spacings.str() + Date.str() + Spacings.str() + Time.str() + Spacings.str() + Version.str() + Spacings.str() + UnknownCheats.str();
@@ -653,11 +653,11 @@ int main(int argc, char *argv[])
     std::cout << "                    ░░░░░                                                                   " << std::endl;
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    std::cout << "zap client - ver 1.0.2" << std::endl;
+    std::cout << "zap client - ver 1.0.3" << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(1));
     std::cout << "By Gerosity" << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    std::cout << "For Game Version v3.0.59.33" << std::endl;
+    std::cout << "For Game Version v3.0.62.29" << std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
     // Initialize Overlay Window //
