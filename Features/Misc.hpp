@@ -174,40 +174,40 @@ struct Misc
 			long wep_entity = Myself->WeaponEntity;
 			std::map<int, int> weaponSkinMap;
 			// Light ammo weapons
-			weaponSkinMap[SkinChangerID::WEAPON_P2020] = Features::Misc::SkinP2020;
-			weaponSkinMap[SkinChangerID::WEAPON_RE45] = Features::Misc::SkinRE45;
-			weaponSkinMap[SkinChangerID::WEAPON_ALTERNATOR] = Features::Misc::SkinALTERNATOR;
-			weaponSkinMap[SkinChangerID::WEAPON_R99] = Features::Misc::SkinR99;
-			weaponSkinMap[SkinChangerID::WEAPON_R301] = Features::Misc::SkinR301;
-			weaponSkinMap[SkinChangerID::WEAPON_SPITFIRE] = Features::Misc::SkinSPITFIRE;
-			weaponSkinMap[SkinChangerID::WEAPON_G7] = Features::Misc::SkinG7;
+			weaponSkinMap[WeaponIDs::WEAPON_P2020] = Features::Misc::SkinP2020;
+			weaponSkinMap[WeaponIDs::WEAPON_RE45] = Features::Misc::SkinRE45;
+			weaponSkinMap[WeaponIDs::WEAPON_ALTERNATOR] = Features::Misc::SkinALTERNATOR;
+			weaponSkinMap[WeaponIDs::WEAPON_R99] = Features::Misc::SkinR99;
+			weaponSkinMap[WeaponIDs::WEAPON_R301] = Features::Misc::SkinR301;
+			weaponSkinMap[WeaponIDs::WEAPON_SPITFIRE] = Features::Misc::SkinSPITFIRE;
+			weaponSkinMap[WeaponIDs::WEAPON_G7] = Features::Misc::SkinG7;
 			// Heavy ammo weapons
-			weaponSkinMap[SkinChangerID::WEAPON_CAR] = Features::Misc::SkinCAR;
-			weaponSkinMap[SkinChangerID::WEAPON_RAMPAGE] = Features::Misc::SkinRAMPAGE;
-			weaponSkinMap[SkinChangerID::WEAPON_REPEATER] = Features::Misc::SkinREPEATER;
-			weaponSkinMap[SkinChangerID::WEAPON_HEMLOCK] = Features::Misc::SkinHEMLOCK;
-			weaponSkinMap[SkinChangerID::WEAPON_FLATLINE] = Features::Misc::SkinFLATLINE;
+			weaponSkinMap[WeaponIDs::WEAPON_CAR] = Features::Misc::SkinCAR;
+			weaponSkinMap[WeaponIDs::WEAPON_RAMPAGE] = Features::Misc::SkinRAMPAGE;
+			weaponSkinMap[WeaponIDs::WEAPON_REPEATER] = Features::Misc::SkinREPEATER;
+			weaponSkinMap[WeaponIDs::WEAPON_HEMLOCK] = Features::Misc::SkinHEMLOCK;
+			weaponSkinMap[WeaponIDs::WEAPON_FLATLINE] = Features::Misc::SkinFLATLINE;
 			// Energy ammo weapons
-			weaponSkinMap[SkinChangerID::WEAPON_NEMESIS] = Features::Misc::SkinNEMESIS;
-			weaponSkinMap[SkinChangerID::WEAPON_VOLT] = Features::Misc::SkinVOLT;
-			weaponSkinMap[SkinChangerID::WEAPON_TRIPLETAKE] = Features::Misc::SkinTRIPLETAKE;
-			weaponSkinMap[SkinChangerID::WEAPON_LSTAR] = Features::Misc::SkinLSTAR;
-			weaponSkinMap[SkinChangerID::WEAPON_DEVOTION] = Features::Misc::SkinDEVOTION;
-			weaponSkinMap[SkinChangerID::WEAPON_HAVOC] = Features::Misc::SkinHAVOC;
+			weaponSkinMap[WeaponIDs::WEAPON_NEMESIS] = Features::Misc::SkinNEMESIS;
+			weaponSkinMap[WeaponIDs::WEAPON_VOLT] = Features::Misc::SkinVOLT;
+			weaponSkinMap[WeaponIDs::WEAPON_TRIPLETAKE] = Features::Misc::SkinTRIPLETAKE;
+			weaponSkinMap[WeaponIDs::WEAPON_LSTAR] = Features::Misc::SkinLSTAR;
+			weaponSkinMap[WeaponIDs::WEAPON_DEVOTION] = Features::Misc::SkinDEVOTION;
+			weaponSkinMap[WeaponIDs::WEAPON_HAVOC] = Features::Misc::SkinHAVOC;
 			// Sniper ammo weapons
-			weaponSkinMap[SkinChangerID::WEAPON_SENTINEL] = Features::Misc::SkinSENTINEL;
-			weaponSkinMap[SkinChangerID::WEAPON_CHARGE_RIFLE] = Features::Misc::SkinCHARGE_RIFLE;
-			weaponSkinMap[SkinChangerID::WEAPON_LONGBOW] = Features::Misc::SkinLONGBOW;
+			weaponSkinMap[WeaponIDs::WEAPON_SENTINEL] = Features::Misc::SkinSENTINEL;
+			weaponSkinMap[WeaponIDs::WEAPON_CHARGE_RIFLE] = Features::Misc::SkinCHARGE_RIFLE;
+			weaponSkinMap[WeaponIDs::WEAPON_LONGBOW] = Features::Misc::SkinLONGBOW;
 			// Shotgun ammo weapons
-			weaponSkinMap[SkinChangerID::WEAPON_MOZAMBIQUE] = Features::Misc::SkinMOZAMBIQUE;
-			weaponSkinMap[SkinChangerID::WEAPON_EVA8] = Features::Misc::SkinEVA8;
-			weaponSkinMap[SkinChangerID::WEAPON_PEACEKEEPER] = Features::Misc::SkinPEACEKEEPER;
-			weaponSkinMap[SkinChangerID::WEAPON_MASTIFF] = Features::Misc::SkinMASTIFF;
+			weaponSkinMap[WeaponIDs::WEAPON_MOZAMBIQUE] = Features::Misc::SkinMOZAMBIQUE;
+			weaponSkinMap[WeaponIDs::WEAPON_EVA8] = Features::Misc::SkinEVA8;
+			weaponSkinMap[WeaponIDs::WEAPON_PEACEKEEPER] = Features::Misc::SkinPEACEKEEPER;
+			weaponSkinMap[WeaponIDs::WEAPON_MASTIFF] = Features::Misc::SkinMASTIFF;
 			// Legendary ammo weapons
-			weaponSkinMap[SkinChangerID::WEAPON_WINGMAN] = Features::Misc::SkinWINGMAN;
-			weaponSkinMap[SkinChangerID::WEAPON_PROWLER] = Features::Misc::SkinPROWLER;
-			weaponSkinMap[SkinChangerID::WEAPON_BOCEK] = Features::Misc::SkinBOCEK;
-			weaponSkinMap[SkinChangerID::WEAPON_KRABER] = Features::Misc::SkinKRABER;
+			weaponSkinMap[WeaponIDs::WEAPON_WINGMAN] = Features::Misc::SkinWINGMAN;
+			weaponSkinMap[WeaponIDs::WEAPON_PROWLER] = Features::Misc::SkinPROWLER;
+			weaponSkinMap[WeaponIDs::WEAPON_BOCEK] = Features::Misc::SkinBOCEK;
+			weaponSkinMap[WeaponIDs::WEAPON_KRABER] = Features::Misc::SkinKRABER;
 
 			int waponIndex = Memory::Read<int>(wep_entity + OFF_WEAPON_INDEX);
 			if (weaponSkinMap.count(waponIndex) == 0)
@@ -227,8 +227,8 @@ struct Misc
 			static float traversalProgressTmp = 0.0;
 
 			float worldtime = Memory::Read<float>(Myself->BasePointer + OFF_TIME_BASE);						   // Current time
-			float traversalStartTime = Memory::Read<float>(Myself->BasePointer + OFFSET_TRAVERSAL_START_TIME); // Time to start wall climbing
-			float traversalProgress = Memory::Read<float>(Myself->BasePointer + OFFSET_TRAVERSAL_PROGRESS);	   // Wall climbing, if > 0.87 it is almost over.
+			float traversalStartTime = Memory::Read<float>(Myself->BasePointer + OFF_TRAVERSAL_START_TIME); // Time to start wall climbing
+			float traversalProgress = Memory::Read<float>(Myself->BasePointer + OFF_TRAVERSAL_PROGRESS);	   // Wall climbing, if > 0.87 it is almost over.
 			float HangOnWall = -(traversalStartTime - worldtime);
 
 			if (HangOnWall > 0.1 && HangOnWall < 0.12)
