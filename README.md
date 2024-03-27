@@ -7,8 +7,6 @@ All credits to original owners
 
 Instructions are down below
 
-# Note: Woudnt use right now as it seems there have been alot of bans going around
-
 # Features:
     Legitbot - Aimbot, RCS
     Ragebot - Aimbot, RCS
