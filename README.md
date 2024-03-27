@@ -7,6 +7,8 @@ All credits to original owners
 
 Instructions are down below
 
+# There was a recent banwave and a lot of linux cheaters were hit. Be warned & never cheat on a main account
+
 # Features:
     Legitbot - Aimbot, RCS
     Ragebot - Aimbot, RCS
