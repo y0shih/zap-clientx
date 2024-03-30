@@ -15,8 +15,6 @@ namespace Features {
     };
 
     namespace Settings {
-        bool GamemodeCheck = true;
-        
         bool ESPEnabled = true;
         bool OverlayEnabled = true;
         bool FPSCap = false;
@@ -134,7 +132,7 @@ namespace Features {
     namespace Aimbot {      
         bool AimbotEnabled = false;
         int BindMethod = 0;
-        int AimbotMode = 0; // Cubic Beizer (xap-client) or Grinder (Possibly linear?)
+        int AimbotMode = 0; // Cubic Beizer (xap-client) or Grinder (Possibly linear?) or [New] Cubic Beizer (Testing)
         int InputMethod = 0; // MoveMouse or Controller (Write To ViewAngles)
 
         bool ClosestHitbox = false;
@@ -153,9 +151,24 @@ namespace Features {
         float Smooth = 0.9;
 
         float Speed = 16;
+        int SmoothingMethod = 0; // 0 = Static, 1 = Random
+
         float HipfireSmooth = 0.9;
         float ADSSmooth = 0.99;
-        float SmoothDistance = 5000;
+        float MinHipfireSmooth = 0.9;
+        float MaxHipfireSmooth = 0.99;
+        float MinADSSmooth = 0.9;
+        float MaxADSSmooth = 0.99;
+
+        //AimMode 3 (Testing)
+        float MouseHipfireSmoothing = 300;
+        float MouseADSSmoothing = 350;
+        float MouseExtraSmoothing = 5000;
+        float MinMouseHipfireSmoothing = 300;
+        float MaxMouseHipfireSmoothing = 315;
+        float MinMouseADSSmoothing = 350;
+        float MaxMouseADSSmoothing = 360;
+
         int Delay = 10;
         float FOV = 15;
         float ZoomScale = 3.3;
@@ -166,11 +179,16 @@ namespace Features {
         //AimMode 2
         float HipfireSmooth1 = 250;
         float ADSSmooth1 = 230;
+        float MinHipfireSmooth1 = 250;
+        float MaxHipfireSmooth1 = 300;
+        float MinADSSmooth1 = 290;
+        float MaxADSSmooth1 = 325;
         float ExtraSmoothing = 1000;
         float Deadzone = 0.5;
         float FOV1 = 10;
         float MinDistance2 = 1;
         float MaxDistance2 = 200;
+
         
         //Weapon Toggles
         std::set<int> AimList = {};
@@ -220,6 +238,7 @@ namespace Features {
         bool AdvancedAim = false;
         bool AdvancedFire = true;
         bool AdvancedADS = false;
+        int AdvancedSmoothingMethod = 0; // 0 = Static, 1 = Random
         //Aimbot Mode 0 - xap-client
         bool AdvancedClosestHitbox = true;
         float AdvancedHitbox = 2;
@@ -227,9 +246,17 @@ namespace Features {
         float AdvancedSmooth = 0.99;
         float AdvancedHipfireSmooth = 0.99;
         float AdvancedADSSmooth = 0.99;
+        float AdvancedMinHipfireSmooth = 0.98;
+        float AdvancedMaxHipfireSmooth = 0.99;
+        float AdvancedMinADSSmooth = 0.98;
+        float AdvancedMaxADSSmooth = 0.99;
         //Aimbot Mode 1 - Grinder
         float AdvancedHipfireSmooth1 = 250;
         float AdvancedADSSmooth1 = 275;
+        float AdvancedMinHipfireSmooth1 = 0.98;
+        float AdvancedMaxHipfireSmooth1 = 0.99;
+        float AdvancedMinADSSmooth1 = 0.98;
+        float AdvancedMaxADSSmooth1 = 0.99;
         float AdvancedExtraSmooth1 = 5000;
         float AdvancedFOV1 = 10;
         float AdvancedDeadzone = 0.5;
@@ -304,6 +331,11 @@ namespace Features {
         float P2020Speed = 10;
         float P2020HipfireSmooth = 0.99;
         float P2020ADSSmooth = 0.99;
+        int P2020SmoothingMethod = 0;
+        float P2020MinHipfireSmooth = 0.98;
+        float P2020MaxHipfireSmooth = 0.99;
+        float P2020MinADSSmooth = 0.98;
+        float P2020MaxADSSmooth = 0.99;
         float P2020FOV = 10;
         float P2020ZoomScale = 3.0;
         bool RE45ClosestHitbox = true;
@@ -311,6 +343,11 @@ namespace Features {
         float RE45Speed = 0.99;
         float RE45HipfireSmooth = 10;
         float RE45ADSSmooth = 0.99;
+        int RE45SmoothingMethod = 0;
+        float RE45MinHipfireSmooth = 0.98;
+        float RE45MaxHipfireSmooth = 0.99;
+        float RE45MinADSSmooth = 0.98;
+        float RE45MaxADSSmooth = 0.99;
         float RE45FOV = 10;
         float RE45ZoomScale = 3.0;
         bool AlternatorClosestHitbox = true;
@@ -318,6 +355,11 @@ namespace Features {
         float AlternatorSpeed = 10;
         float AlternatorHipfireSmooth = 0.99;
         float AlternatorADSSmooth = 0.99;
+        int AlternatorSmoothingMethod = 0;
+        float AlternatorMinHipfireSmooth = 0.98;
+        float AlternatorMaxHipfireSmooth = 0.99;
+        float AlternatorMinADSSmooth = 0.98;
+        float AlternatorMaxADSSmooth = 0.99;
         float AlternatorFOV = 10;
         float AlternatorZoomScale = 3.0;
         bool R99ClosestHitbox = true;
@@ -325,6 +367,11 @@ namespace Features {
         float R99Speed = 10;
         float R99HipfireSmooth = 0.99;
         float R99ADSSmooth = 0.99;
+        int R99SmoothingMethod = 0;
+        float R99MinHipfireSmooth = 0.98;
+        float R99MaxHipfireSmooth = 0.99;
+        float R99MinADSSmooth = 0.98;
+        float R99MaxADSSmooth = 0.99;
         float R99FOV = 10;
         float R99ZoomScale = 3.0;
         bool R301ClosestHitbox = true;
@@ -332,6 +379,11 @@ namespace Features {
         float R301Speed = 10;
         float R301HipfireSmooth = 0.99;
         float R301ADSSmooth = 0.99;
+        int R301SmoothingMethod = 0;
+        float R301MinHipfireSmooth = 0.98;
+        float R301MaxHipfireSmooth = 0.99;
+        float R301MinADSSmooth = 0.98;
+        float R301MaxADSSmooth = 0.99;
         float R301FOV = 10;
         float R301ZoomScale = 3.0;
         bool SpitfireClosestHitbox = true;
@@ -339,6 +391,11 @@ namespace Features {
         float SpitfireSpeed = 10;
         float SpitfireHipfireSmooth = 0.99;
         float SpitfireADSSmooth = 0.99;
+        int SpitfireSmoothingMethod = 0;
+        float SpitfireMinHipfireSmooth = 0.98;
+        float SpitfireMaxHipfireSmooth = 0.99;
+        float SpitfireMinADSSmooth = 0.98;
+        float SpitfireMaxADSSmooth = 0.99;
         float SpitfireFOV = 10;
         float SpitfireZoomScale = 3.0;
         bool G7ClosestHitbox = true;
@@ -346,6 +403,11 @@ namespace Features {
         float G7Speed = 10;
         float G7HipfireSmooth = 0.99;
         float G7ADSSmooth = 0.99;
+        int G7SmoothingMethod = 0;
+        float G7MinHipfireSmooth = 0.98;
+        float G7MaxHipfireSmooth = 0.99;
+        float G7MinADSSmooth = 0.98;
+        float G7MaxADSSmooth = 0.99;
         float G7FOV = 10;
         float G7ZoomScale = 3.0;
         //Heavy
@@ -354,6 +416,11 @@ namespace Features {
         float FlatlineSpeed = 10;
         float FlatlineHipfireSmooth = 0.99;
         float FlatlineADSSmooth = 0.99;
+        int FlatlineSmoothingMethod = 0;
+        float FlatlineMinHipfireSmooth = 0.98;
+        float FlatlineMaxHipfireSmooth = 0.99;
+        float FlatlineMinADSSmooth = 0.98;
+        float FlatlineMaxADSSmooth = 0.99;
         float FlatlineFOV = 10;
         float FlatlineZoomScale = 3.0;
         bool HemlockClosestHitbox = true;
@@ -361,6 +428,11 @@ namespace Features {
         float HemlockSpeed = 10;
         float HemlockHipfireSmooth = 0.99;
         float HemlockADSSmooth = 0.99;
+        int HemlockSmoothingMethod = 0;
+        float HemlockMinHipfireSmooth = 0.98;
+        float HemlockMaxHipfireSmooth = 0.99;
+        float HemlockMinADSSmooth = 0.98;
+        float HemlockMaxADSSmooth = 0.99;
         float HemlockFOV = 10;
         float HemlockZoomScale = 3.0;
         bool RepeaterClosestHitbox = true;
@@ -368,6 +440,11 @@ namespace Features {
         float RepeaterSpeed = 10;
         float RepeaterHipfireSmooth = 0.99;
         float RepeaterADSSmooth = 0.99;
+        int RepeaterSmoothingMethod = 0;
+        float RepeaterMinHipfireSmooth = 0.98;
+        float RepeaterMaxHipfireSmooth = 0.99;
+        float RepeaterMinADSSmooth = 0.98;
+        float RepeaterMaxADSSmooth = 0.99;
         float RepeaterFOV = 10;
         float RepeaterZoomScale = 3.0;
         bool RampageClosestHitbox = true;
@@ -375,6 +452,11 @@ namespace Features {
         float RampageSpeed = 10;
         float RampageHipfireSmooth = 0.99;
         float RampageADSSmooth = 0.99;
+        int RampageSmoothingMethod = 0;
+        float RampageMinHipfireSmooth = 0.98;
+        float RampageMaxHipfireSmooth = 0.99;
+        float RampageMinADSSmooth = 0.98;
+        float RampageMaxADSSmooth = 0.99;
         float RampageFOV = 10;
         float RampageZoomScale = 3.0;
         bool CARSMGClosestHitbox = true;
@@ -382,6 +464,11 @@ namespace Features {
         float CARSMGSpeed = 10;
         float CARSMGHipfireSmooth = 0.99;
         float CARSMGADSSmooth = 0.99;
+        int CARSMGSmoothingMethod = 0;
+        float CARSMGMinHipfireSmooth = 0.98;
+        float CARSMGMaxHipfireSmooth = 0.99;
+        float CARSMGMinADSSmooth = 0.98;
+        float CARSMGMaxADSSmooth = 0.99;
         float CARSMGFOV = 10;
         float CARSMGZoomScale = 3.0;
         //Energy
@@ -390,6 +477,11 @@ namespace Features {
         float HavocSpeed = 10;
         float HavocHipfireSmooth = 0.99;
         float HavocADSSmooth = 0.99;
+        int HavocSmoothingMethod = 0;
+        float HavocMinHipfireSmooth = 0.98;
+        float HavocMaxHipfireSmooth = 0.99;
+        float HavocMinADSSmooth = 0.98;
+        float HavocMaxADSSmooth = 0.99;
         float HavocFOV = 10;
         float HavocZoomScale = 3.0;
         bool DevotionClosestHitbox = true;
@@ -397,6 +489,11 @@ namespace Features {
         float DevotionSpeed = 10;
         float DevotionHipfireSmooth = 0.99;
         float DevotionADSSmooth = 0.99;
+        int DevotionSmoothingMethod = 0;
+        float DevotionMinHipfireSmooth = 0.98;
+        float DevotionMaxHipfireSmooth = 0.99;
+        float DevotionMinADSSmooth = 0.98;
+        float DevotionMaxADSSmooth = 0.99;
         float DevotionFOV = 10;
         float DevotionZoomScale = 3.0;
         bool LSTARClosestHitbox = true;
@@ -404,6 +501,11 @@ namespace Features {
         float LSTARSpeed = 10;
         float LSTARHipfireSmooth = 0.99;
         float LSTARADSSmooth = 0.99;
+        int LSTARSmoothingMethod = 0;
+        float LSTARMinHipfireSmooth = 0.98;
+        float LSTARMaxHipfireSmooth = 0.99;
+        float LSTARMinADSSmooth = 0.98;
+        float LSTARMaxADSSmooth = 0.99;
         float LSTARFOV = 10;
         float LSTARZoomScale = 3.0;
         bool TripleTakeClosestHitbox = true;
@@ -411,6 +513,11 @@ namespace Features {
         float TripleTakeSpeed = 10;
         float TripleTakeHipfireSmooth = 0.99;
         float TripleTakeADSSmooth = 0.99;
+        int TripleTakeSmoothingMethod = 0;
+        float TripleTakeMinHipfireSmooth = 0.98;
+        float TripleTakeMaxHipfireSmooth = 0.99;
+        float TripleTakeMinADSSmooth = 0.98;
+        float TripleTakeMaxADSSmooth = 0.99;
         float TripleTakeFOV = 10;
         float TripleTakeZoomScale = 3.0;
         bool VoltClosestHitbox = true;
@@ -418,6 +525,11 @@ namespace Features {
         float VoltSpeed = 10;
         float VoltHipfireSmooth = 0.99;
         float VoltADSSmooth = 0.99;
+        int VoltSmoothingMethod = 0;
+        float VoltMinHipfireSmooth = 0.98;
+        float VoltMaxHipfireSmooth = 0.99;
+        float VoltMinADSSmooth = 0.98;
+        float VoltMaxADSSmooth = 0.99;
         float VoltFOV = 10;
         float VoltZoomScale = 3.0;
         bool NemesisClosestHitbox = true;
@@ -425,6 +537,11 @@ namespace Features {
         float NemesisSpeed = 10;
         float NemesisHipfireSmooth = 0.99;
         float NemesisADSSmooth = 0.99;
+        int NemesisSmoothingMethod = 0;
+        float NemesisMinHipfireSmooth = 0.98;
+        float NemesisMaxHipfireSmooth = 0.99;
+        float NemesisMinADSSmooth = 0.98;
+        float NemesisMaxADSSmooth = 0.99;
         float NemesisFOV = 10;
         float NemesisZoomScale = 3.0;
         //Shotguns
@@ -433,6 +550,11 @@ namespace Features {
         float MozambiqueSpeed = 10;
         float MozambiqueHipfireSmooth = 0.99;
         float MozambiqueADSSmooth = 0.99;
+        int MozambiqueSmoothingMethod = 0;
+        float MozambiqueMinHipfireSmooth = 0.98;
+        float MozambiqueMaxHipfireSmooth = 0.99;
+        float MozambiqueMinADSSmooth = 0.98;
+        float MozambiqueMaxADSSmooth = 0.99;
         float MozambiqueFOV = 10;
         float MozambiqueZoomScale = 3.0;
         bool EVA8ClosestHitbox = true;
@@ -440,6 +562,11 @@ namespace Features {
         float EVA8Speed = 10;
         float EVA8HipfireSmooth = 0.99;
         float EVA8ADSSmooth = 0.99;
+        int EVA8SmoothingMethod = 0;
+        float EVA8MinHipfireSmooth = 0.98;
+        float EVA8MaxHipfireSmooth = 0.99;
+        float EVA8MinADSSmooth = 0.98;
+        float EVA8MaxADSSmooth = 0.99;
         float EVA8FOV = 10;
         float EVA8ZoomScale = 3.0;
         bool PeacekeeperClosestHitbox = true;
@@ -447,6 +574,11 @@ namespace Features {
         float PeacekeeperSpeed = 10;
         float PeacekeeperHipfireSmooth = 0.99;
         float PeacekeeperADSSmooth = 0.99;
+        int PeacekeeperSmoothingMethod = 0;
+        float PeacekeeperMinHipfireSmooth = 0.98;
+        float PeacekeeperMaxHipfireSmooth = 0.99;
+        float PeacekeeperMinADSSmooth = 0.98;
+        float PeacekeeperMaxADSSmooth = 0.99;
         float PeacekeeperFOV = 10;
         float PeacekeeperZoomScale = 3.0;
         bool MastiffClosestHitbox = true;
@@ -454,6 +586,11 @@ namespace Features {
         float MastiffSpeed = 10;
         float MastiffHipfireSmooth = 0.99;
         float MastiffADSSmooth = 0.99;
+        int MastiffSmoothingMethod = 0;
+        float MastiffMinHipfireSmooth = 0.98;
+        float MastiffMaxHipfireSmooth = 0.99;
+        float MastiffMinADSSmooth = 0.98;
+        float MastiffMaxADSSmooth = 0.99;
         float MastiffFOV = 10;
         float MastiffZoomScale = 3.0;
         //Snipers
@@ -462,6 +599,11 @@ namespace Features {
         float LongbowSpeed = 10;
         float LongbowHipfireSmooth = 0.99;
         float LongbowADSSmooth = 0.99;
+        int LongbowSmoothingMethod = 0;
+        float LongbowMinHipfireSmooth = 0.98;
+        float LongbowMaxHipfireSmooth = 0.99;
+        float LongbowMinADSSmooth = 0.98;
+        float LongbowMaxADSSmooth = 0.99;
         float LongbowFOV = 10;
         float LongbowZoomScale = 3.0;
         bool ChargeRifleClosestHitbox = true;
@@ -469,6 +611,11 @@ namespace Features {
         float ChargeRifleSpeed = 10;
         float ChargeRifleHipfireSmooth = 0.99;
         float ChargeRifleADSSmooth = 0.99;
+        int ChargeRifleSmoothingMethod = 0;
+        float ChargeRifleMinHipfireSmooth = 0.98;
+        float ChargeRifleMaxHipfireSmooth = 0.99;
+        float ChargeRifleMinADSSmooth = 0.98;
+        float ChargeRifleMaxADSSmooth = 0.99;
         float ChargeRifleFOV = 10;
         float ChargeRifleZoomScale = 3.0;
         bool SentinelClosestHitbox = true;
@@ -476,6 +623,11 @@ namespace Features {
         float SentinelSpeed = 10;
         float SentinelHipfireSmooth = 0.99;
         float SentinelADSSmooth = 0.99;
+        int SentinelSmoothingMethod = 0;
+        float SentinelMinHipfireSmooth = 0.98;
+        float SentinelMaxHipfireSmooth = 0.99;
+        float SentinelMinADSSmooth = 0.98;
+        float SentinelMaxADSSmooth = 0.99;
         float SentinelFOV = 10;
         float SentinelZoomScale = 3.0;
         //Legendary
@@ -484,6 +636,11 @@ namespace Features {
         float WingmanSpeed = 10;
         float WingmanHipfireSmooth = 0.99;
         float WingmanADSSmooth = 0.99;
+        int WingmanSmoothingMethod = 0;
+        float WingmanMinHipfireSmooth = 0.98;
+        float WingmanMaxHipfireSmooth = 0.99;
+        float WingmanMinADSSmooth = 0.98;
+        float WingmanMaxADSSmooth = 0.99;
         float WingmanFOV = 10;
         float WingmanZoomScale = 3.0;
         bool ProwlerClosestHitbox = true;
@@ -491,6 +648,11 @@ namespace Features {
         float ProwlerSpeed = 10;
         float ProwlerHipfireSmooth = 0.99;
         float ProwlerADSSmooth = 0.99;
+        int ProwlerSmoothingMethod = 0;
+        float ProwlerMinHipfireSmooth = 0.98;
+        float ProwlerMaxHipfireSmooth = 0.99;
+        float ProwlerMinADSSmooth = 0.98;
+        float ProwlerMaxADSSmooth = 0.99;
         float ProwlerFOV = 10;
         float ProwlerZoomScale = 3.0;
         bool KraberClosestHitbox = true;
@@ -498,6 +660,11 @@ namespace Features {
         float KraberSpeed = 10;
         float KraberHipfireSmooth = 0.99;
         float KraberADSSmooth = 0.99;
+        int KraberSmoothingMethod = 0;
+        float KraberMinHipfireSmooth = 0.98;
+        float KraberMaxHipfireSmooth = 0.99;
+        float KraberMinADSSmooth = 0.98;
+        float KraberMaxADSSmooth = 0.99;
         float KraberFOV = 10;
         float KraberZoomScale = 3.0;
         bool BocekClosestHitbox = true;
@@ -505,6 +672,11 @@ namespace Features {
         float BocekSpeed = 10;
         float BocekHipfireSmooth = 0.99;
         float BocekADSSmooth = 0.99;
+        int BocekSmoothingMethod = 0;
+        float BocekMinHipfireSmooth = 0.98;
+        float BocekMaxHipfireSmooth = 0.99;
+        float BocekMinADSSmooth = 0.98;
+        float BocekMaxADSSmooth = 0.99;
         float BocekFOV = 10;
         float BocekZoomScale = 3.0;
         bool ThrowingKnifeClosestHitbox = true;
@@ -512,12 +684,21 @@ namespace Features {
         float ThrowingKnifeSpeed = 10;
         float ThrowingKnifeHipfireSmooth = 0.99;
         float ThrowingKnifeADSSmooth = 0.99;
+        int ThrowingKnifeSmoothingMethod = 0;
+        float ThrowingKnifeMinHipfireSmooth = 0.98;
+        float ThrowingKnifeMaxHipfireSmooth = 0.99;
+        float ThrowingKnifeMinADSSmooth = 0.98;
+        float ThrowingKnifeMaxADSSmooth = 0.99;
         float ThrowingKnifeFOV = 10;
         float ThrowingKnifeZoomScale = 3.0;
         
         //Advanced Smooth - Aimbot Mode 1 - Grinder
         float P2020HipfireSmooth1 = 250;
         float P2020ADSSmooth1 = 275;
+        float P2020MinHipfireSmooth1 = 250;
+        float P2020MaxHipfireSmooth1 = 275;
+        float P2020MinADSSmooth1 = 275;
+        float P2020MaxADSSmooth1 = 300;
         float P2020ExtraSmooth1 = 5000;
         float P2020Deadzone = 0.5;
         float P2020FOV1 = 10;
@@ -525,6 +706,10 @@ namespace Features {
         float P2020MaxDistance1 = 200;
         float RE45HipfireSmooth1 = 250;
         float RE45ADSSmooth1 = 275;
+        float RE45MinHipfireSmooth1 = 250;
+        float RE45MaxHipfireSmooth1 = 275;
+        float RE45MinADSSmooth1 = 275;
+        float RE45MaxADSSmooth1 = 300;
         float RE45ExtraSmooth1 = 5000;
         float RE45Deadzone = 0.5;
         float RE45FOV1 = 10;
@@ -532,6 +717,10 @@ namespace Features {
         float RE45MaxDistance1 = 200;
         float AlternatorHipfireSmooth1 = 250;
         float AlternatorADSSmooth1 = 275;
+        float AlternatorMinHipfireSmooth1 = 250;
+        float AlternatorMaxHipfireSmooth1 = 275;
+        float AlternatorMinADSSmooth1 = 275;
+        float AlternatorMaxADSSmooth1 = 300;
         float AlternatorExtraSmooth1 = 5000;
         float AlternatorDeadzone = 0.5;
         float AlternatorFOV1 = 10;
@@ -539,6 +728,10 @@ namespace Features {
         float AlternatorMaxDistance1 = 200;
         float R99HipfireSmooth1 = 250;
         float R99ADSSmooth1 = 275;
+        float R99MinHipfireSmooth1 = 250;
+        float R99MaxHipfireSmooth1 = 275;
+        float R99MinADSSmooth1 = 275;
+        float R99MaxADSSmooth1 = 300;
         float R99ExtraSmooth1 = 5000;
         float R99Deadzone = 0.5;
         float R99FOV1 = 10;
@@ -546,6 +739,10 @@ namespace Features {
         float R99MaxDistance1 = 200;
         float R301HipfireSmooth1 = 250;
         float R301ADSSmooth1 = 275;
+        float R301MinHipfireSmooth1 = 250;
+        float R301MaxHipfireSmooth1 = 275;
+        float R301MinADSSmooth1 = 275;
+        float R301MaxADSSmooth1 = 300;
         float R301ExtraSmooth1 = 5000;
         float R301Deadzone = 0.5;
         float R301FOV1 = 10;
@@ -553,6 +750,10 @@ namespace Features {
         float R301MaxDistance1 = 200;
         float SpitfireHipfireSmooth1 = 250;
         float SpitfireADSSmooth1 = 275;
+        float SpitfireMinHipfireSmooth1 = 250;
+        float SpitfireMaxHipfireSmooth1 = 275;
+        float SpitfireMinADSSmooth1 = 275;
+        float SpitfireMaxADSSmooth1 = 300;
         float SpitfireExtraSmooth1 = 5000;
         float SpitfireDeadzone = 0.5;
         float SpitfireFOV1 = 10;
@@ -560,6 +761,10 @@ namespace Features {
         float SpitfireMaxDistance1 = 200;
         float G7HipfireSmooth1 = 250;
         float G7ADSSmooth1 = 275;
+        float G7MinHipfireSmooth1 = 250;
+        float G7MaxHipfireSmooth1 = 275;
+        float G7MinADSSmooth1 = 275;
+        float G7MaxADSSmooth1 = 300;
         float G7ExtraSmooth1 = 5000;
         float G7Deadzone = 0.5;
         float G7FOV1 = 10;
@@ -568,6 +773,10 @@ namespace Features {
         
         float FlatlineHipfireSmooth1 = 250;
         float FlatlineADSSmooth1 = 275;
+        float FlatlineMinHipfireSmooth1 = 250;
+        float FlatlineMaxHipfireSmooth1 = 275;
+        float FlatlineMinADSSmooth1 = 275;
+        float FlatlineMaxADSSmooth1 = 300;
         float FlatlineExtraSmooth1 = 5000;
         float FlatlineDeadzone = 0.5;
         float FlatlineFOV1 = 10;
@@ -575,6 +784,10 @@ namespace Features {
         float FlatlineMaxDistance1 = 200;
         float HemlockHipfireSmooth1 = 250;
         float HemlockADSSmooth1 = 275;
+        float HemlockMinHipfireSmooth1 = 250;
+        float HemlockMaxHipfireSmooth1 = 275;
+        float HemlockMinADSSmooth1 = 275;
+        float HemlockMaxADSSmooth1 = 300;
         float HemlockExtraSmooth1 = 5000;
         float HemlockDeadzone = 0.5;
         float HemlockFOV1 = 10;
@@ -582,12 +795,20 @@ namespace Features {
         float HemlockMaxDistance1 = 200;
         float RepeaterHipfireSmooth1 = 250;
         float RepeaterADSSmooth1 = 275;
+        float RepeaterMinHipfireSmooth1 = 250;
+        float RepeaterMaxHipfireSmooth1 = 275;
+        float RepeaterMinADSSmooth1 = 275;
+        float RepeaterMaxADSSmooth1 = 300;
         float RepeaterExtraSmooth1 = 5000;
         float RepeaterDeadzone = 0.5;
         float RepeaterFOV1 = 10;
         float RepeaterMinDistance1 = 1;
         float RepeaterMaxDistance1 = 200;
         float RampageHipfireSmooth1 = 250;
+        float RampageMinHipfireSmooth1 = 250;
+        float RampageMaxHipfireSmooth1 = 275;
+        float RampageMinADSSmooth1 = 275;
+        float RampageMaxADSSmooth1 = 300;
         float RampageADSSmooth1 = 275;
         float RampageExtraSmooth1 = 5000;
         float RampageDeadzone = 0.5;
@@ -596,6 +817,10 @@ namespace Features {
         float RampageMaxDistance1 = 200;
         float CARSMGHipfireSmooth1 = 250;
         float CARSMGADSSmooth1 = 275;
+        float CARSMGMinHipfireSmooth1 = 250;
+        float CARSMGMaxHipfireSmooth1 = 275;
+        float CARSMGMinADSSmooth1 = 275;
+        float CARSMGMaxADSSmooth1 = 300;
         float CARSMGExtraSmooth1 = 5000;
         float CARSMGDeadzone = 0.5;
         float CARSMGFOV1 = 10;
@@ -604,6 +829,10 @@ namespace Features {
         
         float HavocHipfireSmooth1 = 250;
         float HavocADSSmooth1 = 275;
+        float HavocMinHipfireSmooth1 = 250;
+        float HavocMaxHipfireSmooth1 = 275;
+        float HavocMinADSSmooth1 = 275;
+        float HavocMaxADSSmooth1 = 300;
         float HavocExtraSmooth1 = 5000;
         float HavocDeadzone = 0.5;
         float HavocFOV1 = 10;
@@ -611,6 +840,10 @@ namespace Features {
         float HavocMaxDistance1 = 200;
         float DevotionHipfireSmooth1 = 250;
         float DevotionADSSmooth1 = 275;
+        float DevotionMinHipfireSmooth1 = 250;
+        float DevotionMaxHipfireSmooth1 = 275;
+        float DevotionMinADSSmooth1 = 275;
+        float DevotionMaxADSSmooth1 = 300;
         float DevotionExtraSmooth1 = 5000;
         float DevotionDeadzone = 0.5;
         float DevotionFOV1 = 10;
@@ -618,6 +851,10 @@ namespace Features {
         float DevotionMaxDistance1 = 200;
         float LSTARHipfireSmooth1 = 250;
         float LSTARADSSmooth1 = 275;
+        float LSTARMinHipfireSmooth1 = 250;
+        float LSTARMaxHipfireSmooth1 = 275;
+        float LSTARMinADSSmooth1 = 275;
+        float LSTARMaxADSSmooth1 = 300;
         float LSTARExtraSmooth1 = 5000;
         float LSTARDeadzone = 0.5;
         float LSTARFOV1 = 10;
@@ -625,6 +862,10 @@ namespace Features {
         float LSTARMaxDistance1 = 200;
         float TripleTakeHipfireSmooth1 = 250;
         float TripleTakeADSSmooth1 = 275;
+        float TripleTakeMinHipfireSmooth1 = 250;
+        float TripleTakeMaxHipfireSmooth1 = 275;
+        float TripleTakeMinADSSmooth1 = 275;
+        float TripleTakeMaxADSSmooth1 = 300;
         float TripleTakeExtraSmooth1 = 5000;
         float TripleTakeDeadzone = 0.5;
         float TripleTakeFOV1 = 10;
@@ -632,6 +873,10 @@ namespace Features {
         float TripleTakeMaxDistance1 = 200;
         float VoltHipfireSmooth1 = 250;
         float VoltADSSmooth1 = 275;
+        float VoltMinHipfireSmooth1 = 250;
+        float VoltMaxHipfireSmooth1 = 275;
+        float VoltMinADSSmooth1 = 275;
+        float VoltMaxADSSmooth1 = 300;
         float VoltExtraSmooth1 = 5000;
         float VoltDeadzone = 0.5;
         float VoltFOV1 = 10;
@@ -639,6 +884,10 @@ namespace Features {
         float VoltMaxDistance1 = 200;
         float NemesisHipfireSmooth1 = 250;
         float NemesisADSSmooth1 = 275;
+        float NemesisMinHipfireSmooth1 = 250;
+        float NemesisMaxHipfireSmooth1 = 275;
+        float NemesisMinADSSmooth1 = 275;
+        float NemesisMaxADSSmooth1 = 300;
         float NemesisExtraSmooth1 = 5000;
         float NemesisDeadzone = 0.5;
         float NemesisFOV1 = 10;
@@ -647,6 +896,10 @@ namespace Features {
         
         float MozambiqueHipfireSmooth1 = 250;
         float MozambiqueADSSmooth1 = 275;
+        float MozambiqueMinHipfireSmooth1 = 250;
+        float MozambiqueMaxHipfireSmooth1 = 275;
+        float MozambiqueMinADSSmooth1 = 275;
+        float MozambiqueMaxADSSmooth1 = 300;
         float MozambiqueExtraSmooth1 = 5000;
         float MozambiqueDeadzone = 0.5;
         float MozambiqueFOV1 = 10;
@@ -654,6 +907,10 @@ namespace Features {
         float MozambiqueMaxDistance1 = 200;
         float EVA8HipfireSmooth1 = 250;
         float EVA8ADSSmooth1 = 275;
+        float EVA8MinHipfireSmooth1 = 250;
+        float EVA8MaxHipfireSmooth1 = 275;
+        float EVA8MinADSSmooth1 = 275;
+        float EVA8MaxADSSmooth1 = 300;
         float EVA8ExtraSmooth1 = 5000;
         float EVA8Deadzone = 0.5;
         float EVA8FOV1 = 10;
@@ -661,6 +918,10 @@ namespace Features {
         float EVA8MaxDistance1 = 200;
         float PeacekeeperHipfireSmooth1 = 250;
         float PeacekeeperADSSmooth1 = 275;
+        float PeacekeeperMinHipfireSmooth1 = 250;
+        float PeacekeeperMaxHipfireSmooth1 = 275;
+        float PeacekeeperMinADSSmooth1 = 275;
+        float PeacekeeperMaxADSSmooth1 = 300;
         float PeacekeeperExtraSmooth1 = 5000;
         float PeacekeeperDeadzone = 0.5;
         float PeacekeeperFOV1 = 10;
@@ -668,6 +929,10 @@ namespace Features {
         float PeacekeeperMaxDistance1 = 200;
         float MastiffHipfireSmooth1 = 250;
         float MastiffADSSmooth1 = 275;
+        float MastiffMinHipfireSmooth1 = 250;
+        float MastiffMaxHipfireSmooth1 = 275;
+        float MastiffMinADSSmooth1 = 275;
+        float MastiffMaxADSSmooth1 = 300;
         float MastiffExtraSmooth1 = 5000;
         float MastiffDeadzone = 0.5;
         float MastiffFOV1 = 10;
@@ -676,6 +941,10 @@ namespace Features {
         
         float LongbowHipfireSmooth1 = 250;
         float LongbowADSSmooth1 = 275;
+        float LongbowMinHipfireSmooth1 = 250;
+        float LongbowMaxHipfireSmooth1 = 275;
+        float LongbowMinADSSmooth1 = 275;
+        float LongbowMaxADSSmooth1 = 300;
         float LongbowExtraSmooth1 = 5000;
         float LongbowDeadzone = 0.5;
         float LongbowFOV1 = 10;
@@ -683,6 +952,10 @@ namespace Features {
         float LongbowMaxDistance1 = 200;
         float ChargeRifleHipfireSmooth1 = 250;
         float ChargeRifleADSSmooth1 = 275;
+        float ChargeRifleMinHipfireSmooth1 = 250;
+        float ChargeRifleMaxHipfireSmooth1 = 275;
+        float ChargeRifleMinADSSmooth1 = 275;
+        float ChargeRifleMaxADSSmooth1 = 300;
         float ChargeRifleExtraSmooth1 = 5000;
         float ChargeRifleDeadzone = 0.5;
         float ChargeRifleFOV1 = 10;
@@ -690,6 +963,10 @@ namespace Features {
         float ChargeRifleMaxDistance1 = 200;
         float SentinelHipfireSmooth1 = 250;
         float SentinelADSSmooth1 = 275;
+        float SentinelMinHipfireSmooth1 = 250;
+        float SentinelMaxHipfireSmooth1 = 275;
+        float SentinelMinADSSmooth1 = 275;
+        float SentinelMaxADSSmooth1 = 300;
         float SentinelExtraSmooth1 = 5000;
         float SentinelDeadzone = 0.5;
         float SentinelFOV1 = 10;
@@ -698,6 +975,10 @@ namespace Features {
         
         float WingmanHipfireSmooth1 = 250;
         float WingmanADSSmooth1 = 275;
+        float WingmanMinHipfireSmooth1 = 250;
+        float WingmanMaxHipfireSmooth1 = 275;
+        float WingmanMinADSSmooth1 = 275;
+        float WingmanMaxADSSmooth1 = 300;
         float WingmanExtraSmooth1 = 5000;
         float WingmanDeadzone = 0.5;
         float WingmanFOV1 = 10;
@@ -705,6 +986,10 @@ namespace Features {
         float WingmanMaxDistance1 = 200;
         float ProwlerHipfireSmooth1 = 250;
         float ProwlerADSSmooth1 = 275;
+        float ProwlerMinHipfireSmooth1 = 250;
+        float ProwlerMaxHipfireSmooth1 = 275;
+        float ProwlerMinADSSmooth1 = 275;
+        float ProwlerMaxADSSmooth1 = 300;
         float ProwlerExtraSmooth1 = 5000;
         float ProwlerDeadzone = 0.5;
         float ProwlerFOV1 = 10;
@@ -712,6 +997,10 @@ namespace Features {
         float ProwlerMaxDistance1 = 200;
         float BocekHipfireSmooth1 = 250;
         float BocekADSSmooth1 = 275;
+        float BocekMinHipfireSmooth1 = 250;
+        float BocekMaxHipfireSmooth1 = 275;
+        float BocekMinADSSmooth1 = 275;
+        float BocekMaxADSSmooth1 = 300;
         float BocekExtraSmooth1 = 5000;
         float BocekDeadzone = 0.5;
         float BocekFOV1 = 10;
@@ -719,6 +1008,10 @@ namespace Features {
         float BocekMaxDistance1 = 200;
         float KraberHipfireSmooth1 = 250;
         float KraberADSSmooth1 = 275;
+        float KraberMinHipfireSmooth1 = 250;
+        float KraberMaxHipfireSmooth1 = 275;
+        float KraberMinADSSmooth1 = 275;
+        float KraberMaxADSSmooth1 = 300;
         float KraberExtraSmooth1 = 5000;
         float KraberDeadzone = 0.5;
         float KraberFOV1 = 10;
@@ -726,10 +1019,14 @@ namespace Features {
         float KraberMaxDistance1 = 200;
         float ThrowingKnifeHipfireSmooth1 = 250;
         float ThrowingKnifeADSSmooth1 = 275;
+        float ThrowingKnifeMinHipfireSmooth1 = 250;
+        float ThrowingKnifeMaxHipfireSmooth1 = 275;
+        float ThrowingKnifeMinADSSmooth1 = 275;
+        float ThrowingKnifeMaxADSSmooth1 = 300;
         float ThrowingKnifeExtraSmooth1 = 5000;
         float ThrowingKnifeDeadzone = 0.5;
         float ThrowingKnifeFOV1 = 10;
-        float ThrowingKnifeMinDistance1 = 1;
+        float ThrowingKnifeMinDistance1 = 1;    
         float ThrowingKnifeMaxDistance1 = 200;
     };
 
@@ -1331,6 +1628,7 @@ namespace Features {
     
     namespace Misc {
         bool SuperGlide = true;
+        int SuperGlideFPS = 1; // 0 = 75, 1 = 144, 2 = 240
 
         bool QuickTurn = false;
         int QuickTurnAngle = 180;
@@ -1360,8 +1658,6 @@ namespace Features {
         bool RapidEVA8 = true;
         //Legendary
         bool RapidWingman = true;
-
-        bool TeamGamemode = true;
 
         bool SkinChanger = false;
         //Weapon IDs

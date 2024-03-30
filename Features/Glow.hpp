@@ -999,10 +999,6 @@ struct Glow
         { // Chrome
             ViewmodelGlowID = 49;
         }
-        if (Features::Glow::ViewModelGlowCombo == 20)
-        { // Invisible Red Pulsing
-            ViewmodelGlowID = 93;
-        }
     }
 
     void ItemGlowSettings()

@@ -302,7 +302,7 @@ struct Flickbot
 			Vector2D CurrentAngles = Memory::Read<Vector2D>(Myself->BasePointer + OFF_VIEW_ANGLES);
 
 			// Flick Angles
-			if (InputManager::isKeyDownOrPress(InputKeyType::KEYBOARD_X))
+			if (InputManager::isKeyDownOrPress(Features::Flickbot::FlickBind))
 			{
 				X11Display->MoveMouse(FlickbotDelta.x, FlickbotDelta.y * -1);
 				if (Features::Flickbot::AutoShoot)
@@ -324,7 +324,7 @@ struct Flickbot
 			Vector2D CurrentAngles = Memory::Read<Vector2D>(Myself->BasePointer + OFF_VIEW_ANGLES);
 
 			// Flick Angles
-			if (InputManager::isKeyDownOrPress(InputKeyType::KEYBOARD_X))
+			if (InputManager::isKeyDownOrPress(Features::Flickbot::FlickBind))
 			{
 				//Change QAngle To Vector2D
 				Vector2D VectorDesiredAngles = Vector2D(DesiredAngles.x, DesiredAngles.y);

@@ -7,7 +7,12 @@ All credits to original owners
 
 Instructions are down below
 
-# There was a recent banwave and a lot of linux cheaters were hit. Be careful & never cheat on a main account
+**There was a recent banwave and a lot of accounts were hit. Be careful & never cheat on a main account, its not worth it**
+
+# Other Repositories:
+https://github.com/Gerosity/zap-client-Read-Only-   - A read memory only version
+
+https://github.com/Gerosity/Apex-Protection         - A protection guide, not fully tested but its not like its going to hurt using it
 
 # Features:
     Legitbot - Aimbot, RCS
@@ -21,6 +26,24 @@ Instructions are down below
     Configs - Custom Configs
 
 # Changelog:
+    30.03.24 - Version 1.0.5
+    Legitbot:
+        New Aimbot Mode (An old xap-client smoothing method), testing for now
+        Smoothing Modes (Static and randomised) (For randomised I recommend setting the values close together!)
+    Ragebot:
+        Fixes
+    Flickbot:
+        Fixes
+    Misc:
+        SuperGlide FPS (Set it to your in-game FPS, 75 is probably the best)
+    Settings:
+        Removed Gamemode Toggle - It now automatically switches based on what 
+        gamemode your playing
+    Other:
+        Randomised Overlay Name now actually works
+        Added a run.sh script which randomises the zapclient binary and hides PID once 
+        executed - use this instead of ./zapclient
+
     26.03.24 - Version 1.0.3
     Updated to latest game version (Game Version v3.0.62.29)
 
@@ -68,14 +91,15 @@ Instructions are down below
     git clone https://github.com/Gerosity/zap-client.git
     cd zap-client
 
-**5. Build and Run**
+**5. Build & Run**
 
     mkdir build
     cd build
     cmake ..
     make
-    sudo ./zapclient
-    
+    chmod +x run.sh
+    ./run.sh
+
 **6. Press Insert to toggle the Menu (You can only interact with the Menu and the game when the menu is active).**
 **Note: You will need to alt+tab between the cheat overlay and apex.**
 
@@ -89,3 +113,4 @@ https://www.youtube.com/watch?v=vCsmewJlgk0
     https://github.com/Braziliana/T_TApe - custom config system
     https://www.unknowncheats.me/forum/apex-legends/ - A TON of help, offsets, many additional features & more
     wafflesgaming - aimbot help, Extra ESP Features such as 2D Corners
+    0xAgartha & ghostrazzor - run.sh script (Randomises zapclient binary & Hides PID before execution)

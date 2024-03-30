@@ -55,16 +55,16 @@ struct ConfigManager
 	char configName[64] = {0};
 	int selectedConfig = 0;
 
-	Legitbot* Legit;
-	Ragebot* Rage;
-	Flickbot* Flick;
-	Triggerbot* Trigger;
-	Glow* GlowESP;
-	Sense* ESP;
-	Radar* MapRadar;
-	Misc* MiscTab;
+	Legitbot *Legit;
+	Ragebot *Rage;
+	Flickbot *Flick;
+	Triggerbot *Trigger;
+	Glow *GlowESP;
+	Sense *ESP;
+	Radar *MapRadar;
+	Misc *MiscTab;
 
-	ConfigManager(Legitbot* Legit, Ragebot* Rage, Flickbot* Flick, Triggerbot* Trigger, Glow* GlowESP, Sense* ESP, Radar* MapRadar, Misc* MiscTab)
+	ConfigManager(Legitbot *Legit, Ragebot *Rage, Flickbot *Flick, Triggerbot *Trigger, Glow *GlowESP, Sense *ESP, Radar *MapRadar, Misc *MiscTab)
 	{
 		this->Legit = Legit;
 		this->Rage = Rage;
@@ -94,24 +94,27 @@ struct ConfigManager
 			LoadConfig();
 		}
 
-		ImGui::BeginListBox("##Configs");
-		int n = 0;
-		for (auto config : configFiles)
+		ImGui::BeginListBox("##Configs", ImVec2(600, 300));
 		{
-			const bool is_selected = (selectedConfig == n);
-			if (ImGui::Selectable(config.c_str(), is_selected))
+			int n = 0;
+			for (auto config : configFiles)
 			{
-				selectedConfig = n;
-				strcpy(configName, config.c_str());
+				const bool is_selected = (selectedConfig == n);
+				if (ImGui::Selectable(config.c_str(), is_selected))
+				{
+					selectedConfig = n;
+					strcpy(configName, config.c_str());
+				}
+
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+				n++;
 			}
 
-			if (is_selected)
-			{
-				ImGui::SetItemDefaultFocus();
-			}
-			n++;
+			ImGui::EndListBox();
 		}
-		ImGui::EndListBox();
 	}
 
 	void LoadConfigs() // List Configs For The ListBox
@@ -131,11 +134,12 @@ struct ConfigManager
 	{
 		std::string ConfigName = "Configs/" + std::string(configName) + ".ini";
 		std::ofstream conf(ConfigName);
-    	if (conf.is_open()) {
+		if (conf.is_open())
+		{
 			WriteSection(Aimbot);
 			WritePair(Aimbot, AimbotEnabled);
 			WritePair(Aimbot, BindMethod);
-			WritePair(Aimbot, AimbotMode);	 // Cubic Beizer (xap-client) or Grinder (Possibly linear?)
+			WritePair(Aimbot, AimbotMode);	// Cubic Beizer (xap-client) or Grinder (Possibly linear?)
 			WritePair(Aimbot, InputMethod); // MoveMouse or Controller (Write To ViewAngles)
 
 			WritePair(Aimbot, ClosestHitbox);
@@ -154,9 +158,23 @@ struct ConfigManager
 			WritePair(Aimbot, Smooth);
 
 			WritePair(Aimbot, Speed);
+			WritePair(Aimbot, SmoothingMethod);
+
 			WritePair(Aimbot, HipfireSmooth);
 			WritePair(Aimbot, ADSSmooth);
-			WritePair(Aimbot, SmoothDistance);
+			WritePair(Aimbot, MinHipfireSmooth);
+			WritePair(Aimbot, MaxHipfireSmooth);
+			WritePair(Aimbot, MinADSSmooth);
+			WritePair(Aimbot, MaxADSSmooth);
+
+			WritePair(Aimbot, MouseHipfireSmoothing);
+			WritePair(Aimbot, MouseADSSmoothing);
+			WritePair(Aimbot, MouseExtraSmoothing);
+			WritePair(Aimbot, MinMouseHipfireSmoothing);
+			WritePair(Aimbot, MaxMouseHipfireSmoothing);
+			WritePair(Aimbot, MinMouseADSSmoothing);
+			WritePair(Aimbot, MaxMouseADSSmoothing);
+
 			WritePair(Aimbot, Delay);
 			WritePair(Aimbot, FOV);
 			WritePair(Aimbot, ZoomScale);
@@ -220,6 +238,7 @@ struct ConfigManager
 			WritePair(Aimbot, AdvancedAim);
 			WritePair(Aimbot, AdvancedFire);
 			WritePair(Aimbot, AdvancedADS);
+			WritePair(Aimbot, AdvancedSmoothingMethod);
 			// Aimbot Mode 0 - xap-client
 			WritePair(Aimbot, AdvancedClosestHitbox);
 			WritePair(Aimbot, AdvancedHitbox);
@@ -227,9 +246,17 @@ struct ConfigManager
 			WritePair(Aimbot, AdvancedSmooth);
 			WritePair(Aimbot, AdvancedHipfireSmooth);
 			WritePair(Aimbot, AdvancedADSSmooth);
+			WritePair(Aimbot, AdvancedMinHipfireSmooth);
+			WritePair(Aimbot, AdvancedMaxHipfireSmooth);
+			WritePair(Aimbot, AdvancedMinADSSmooth);
+			WritePair(Aimbot, AdvancedMaxADSSmooth);
 			// Aimbot Mode 1 - Grinder
 			WritePair(Aimbot, AdvancedHipfireSmooth1);
 			WritePair(Aimbot, AdvancedADSSmooth1);
+			WritePair(Aimbot, AdvancedMinHipfireSmooth1);
+			WritePair(Aimbot, AdvancedMaxHipfireSmooth1);
+			WritePair(Aimbot, AdvancedMinADSSmooth1);
+			WritePair(Aimbot, AdvancedMaxADSSmooth1);
 			WritePair(Aimbot, AdvancedExtraSmooth1);
 			WritePair(Aimbot, AdvancedFOV1);
 			WritePair(Aimbot, AdvancedDeadzone);
@@ -304,6 +331,11 @@ struct ConfigManager
 			WritePair(Aimbot, P2020Speed);
 			WritePair(Aimbot, P2020HipfireSmooth);
 			WritePair(Aimbot, P2020ADSSmooth);
+			WritePair(Aimbot, P2020SmoothingMethod);
+			WritePair(Aimbot, P2020MinHipfireSmooth);
+			WritePair(Aimbot, P2020MaxHipfireSmooth);
+			WritePair(Aimbot, P2020MinADSSmooth);
+			WritePair(Aimbot, P2020MaxADSSmooth);
 			WritePair(Aimbot, P2020FOV);
 			WritePair(Aimbot, P2020ZoomScale);
 			WritePair(Aimbot, RE45ClosestHitbox);
@@ -311,6 +343,11 @@ struct ConfigManager
 			WritePair(Aimbot, RE45Speed);
 			WritePair(Aimbot, RE45HipfireSmooth);
 			WritePair(Aimbot, RE45ADSSmooth);
+			WritePair(Aimbot, RE45SmoothingMethod);
+			WritePair(Aimbot, RE45MinHipfireSmooth);
+			WritePair(Aimbot, RE45MaxHipfireSmooth);
+			WritePair(Aimbot, RE45MinADSSmooth);
+			WritePair(Aimbot, RE45MaxADSSmooth);
 			WritePair(Aimbot, RE45FOV);
 			WritePair(Aimbot, RE45ZoomScale);
 			WritePair(Aimbot, AlternatorClosestHitbox);
@@ -318,6 +355,11 @@ struct ConfigManager
 			WritePair(Aimbot, AlternatorSpeed);
 			WritePair(Aimbot, AlternatorHipfireSmooth);
 			WritePair(Aimbot, AlternatorADSSmooth);
+			WritePair(Aimbot, AlternatorSmoothingMethod);
+			WritePair(Aimbot, AlternatorMinHipfireSmooth);
+			WritePair(Aimbot, AlternatorMaxHipfireSmooth);
+			WritePair(Aimbot, AlternatorMinADSSmooth);
+			WritePair(Aimbot, AlternatorMaxADSSmooth);
 			WritePair(Aimbot, AlternatorFOV);
 			WritePair(Aimbot, AlternatorZoomScale);
 			WritePair(Aimbot, R99ClosestHitbox);
@@ -325,6 +367,11 @@ struct ConfigManager
 			WritePair(Aimbot, R99Speed);
 			WritePair(Aimbot, R99HipfireSmooth);
 			WritePair(Aimbot, R99ADSSmooth);
+			WritePair(Aimbot, R99SmoothingMethod);
+			WritePair(Aimbot, R99MinHipfireSmooth);
+			WritePair(Aimbot, R99MaxHipfireSmooth);
+			WritePair(Aimbot, R99MinADSSmooth);
+			WritePair(Aimbot, R99MaxADSSmooth);
 			WritePair(Aimbot, R99FOV);
 			WritePair(Aimbot, R99ZoomScale);
 			WritePair(Aimbot, R301ClosestHitbox);
@@ -332,6 +379,11 @@ struct ConfigManager
 			WritePair(Aimbot, R301Speed);
 			WritePair(Aimbot, R301HipfireSmooth);
 			WritePair(Aimbot, R301ADSSmooth);
+			WritePair(Aimbot, R301SmoothingMethod);
+			WritePair(Aimbot, R301MinHipfireSmooth);
+			WritePair(Aimbot, R301MaxHipfireSmooth);
+			WritePair(Aimbot, R301MinADSSmooth);
+			WritePair(Aimbot, R301MaxADSSmooth);
 			WritePair(Aimbot, R301FOV);
 			WritePair(Aimbot, R301ZoomScale);
 			WritePair(Aimbot, SpitfireClosestHitbox);
@@ -339,6 +391,11 @@ struct ConfigManager
 			WritePair(Aimbot, SpitfireSpeed);
 			WritePair(Aimbot, SpitfireHipfireSmooth);
 			WritePair(Aimbot, SpitfireADSSmooth);
+			WritePair(Aimbot, SpitfireSmoothingMethod);
+			WritePair(Aimbot, SpitfireMinHipfireSmooth);
+			WritePair(Aimbot, SpitfireMaxHipfireSmooth);
+			WritePair(Aimbot, SpitfireMinADSSmooth);
+			WritePair(Aimbot, SpitfireMaxADSSmooth);
 			WritePair(Aimbot, SpitfireFOV);
 			WritePair(Aimbot, SpitfireZoomScale);
 			WritePair(Aimbot, G7ClosestHitbox);
@@ -346,6 +403,11 @@ struct ConfigManager
 			WritePair(Aimbot, G7Speed);
 			WritePair(Aimbot, G7HipfireSmooth);
 			WritePair(Aimbot, G7ADSSmooth);
+			WritePair(Aimbot, G7SmoothingMethod);
+			WritePair(Aimbot, G7MinHipfireSmooth);
+			WritePair(Aimbot, G7MaxHipfireSmooth);
+			WritePair(Aimbot, G7MinADSSmooth);
+			WritePair(Aimbot, G7MaxADSSmooth);
 			WritePair(Aimbot, G7FOV);
 			WritePair(Aimbot, G7ZoomScale);
 			// Heavy
@@ -354,6 +416,11 @@ struct ConfigManager
 			WritePair(Aimbot, FlatlineSpeed);
 			WritePair(Aimbot, FlatlineHipfireSmooth);
 			WritePair(Aimbot, FlatlineADSSmooth);
+			WritePair(Aimbot, FlatlineSmoothingMethod);
+			WritePair(Aimbot, FlatlineMinHipfireSmooth);
+			WritePair(Aimbot, FlatlineMaxHipfireSmooth);
+			WritePair(Aimbot, FlatlineMinADSSmooth);
+			WritePair(Aimbot, FlatlineMaxADSSmooth);
 			WritePair(Aimbot, FlatlineFOV);
 			WritePair(Aimbot, FlatlineZoomScale);
 			WritePair(Aimbot, HemlockClosestHitbox);
@@ -361,6 +428,11 @@ struct ConfigManager
 			WritePair(Aimbot, HemlockSpeed);
 			WritePair(Aimbot, HemlockHipfireSmooth);
 			WritePair(Aimbot, HemlockADSSmooth);
+			WritePair(Aimbot, HemlockSmoothingMethod);
+			WritePair(Aimbot, HemlockMinHipfireSmooth);
+			WritePair(Aimbot, HemlockMaxHipfireSmooth);
+			WritePair(Aimbot, HemlockMinADSSmooth);
+			WritePair(Aimbot, HemlockMaxADSSmooth);
 			WritePair(Aimbot, HemlockFOV);
 			WritePair(Aimbot, HemlockZoomScale);
 			WritePair(Aimbot, RepeaterClosestHitbox);
@@ -368,6 +440,11 @@ struct ConfigManager
 			WritePair(Aimbot, RepeaterSpeed);
 			WritePair(Aimbot, RepeaterHipfireSmooth);
 			WritePair(Aimbot, RepeaterADSSmooth);
+			WritePair(Aimbot, RepeaterSmoothingMethod);
+			WritePair(Aimbot, RepeaterMinHipfireSmooth);
+			WritePair(Aimbot, RepeaterMaxHipfireSmooth);
+			WritePair(Aimbot, RepeaterMinADSSmooth);
+			WritePair(Aimbot, RepeaterMaxADSSmooth);
 			WritePair(Aimbot, RepeaterFOV);
 			WritePair(Aimbot, RepeaterZoomScale);
 			WritePair(Aimbot, RampageClosestHitbox);
@@ -375,6 +452,11 @@ struct ConfigManager
 			WritePair(Aimbot, RampageSpeed);
 			WritePair(Aimbot, RampageHipfireSmooth);
 			WritePair(Aimbot, RampageADSSmooth);
+			WritePair(Aimbot, RampageSmoothingMethod);
+			WritePair(Aimbot, RampageMinHipfireSmooth);
+			WritePair(Aimbot, RampageMaxHipfireSmooth);
+			WritePair(Aimbot, RampageMinADSSmooth);
+			WritePair(Aimbot, RampageMaxADSSmooth);
 			WritePair(Aimbot, RampageFOV);
 			WritePair(Aimbot, RampageZoomScale);
 			WritePair(Aimbot, CARSMGClosestHitbox);
@@ -382,6 +464,11 @@ struct ConfigManager
 			WritePair(Aimbot, CARSMGSpeed);
 			WritePair(Aimbot, CARSMGHipfireSmooth);
 			WritePair(Aimbot, CARSMGADSSmooth);
+			WritePair(Aimbot, CARSMGSmoothingMethod);
+			WritePair(Aimbot, CARSMGMinHipfireSmooth);
+			WritePair(Aimbot, CARSMGMaxHipfireSmooth);
+			WritePair(Aimbot, CARSMGMinADSSmooth);
+			WritePair(Aimbot, CARSMGMaxADSSmooth);
 			WritePair(Aimbot, CARSMGFOV);
 			WritePair(Aimbot, CARSMGZoomScale);
 			// Energy
@@ -390,6 +477,11 @@ struct ConfigManager
 			WritePair(Aimbot, HavocSpeed);
 			WritePair(Aimbot, HavocHipfireSmooth);
 			WritePair(Aimbot, HavocADSSmooth);
+			WritePair(Aimbot, HavocSmoothingMethod);
+			WritePair(Aimbot, HavocMinHipfireSmooth);
+			WritePair(Aimbot, HavocMaxHipfireSmooth);
+			WritePair(Aimbot, HavocMinADSSmooth);
+			WritePair(Aimbot, HavocMaxADSSmooth);
 			WritePair(Aimbot, HavocFOV);
 			WritePair(Aimbot, HavocZoomScale);
 			WritePair(Aimbot, DevotionClosestHitbox);
@@ -397,6 +489,11 @@ struct ConfigManager
 			WritePair(Aimbot, DevotionSpeed);
 			WritePair(Aimbot, DevotionHipfireSmooth);
 			WritePair(Aimbot, DevotionADSSmooth);
+			WritePair(Aimbot, DevotionSmoothingMethod);
+			WritePair(Aimbot, DevotionMinHipfireSmooth);
+			WritePair(Aimbot, DevotionMaxHipfireSmooth);
+			WritePair(Aimbot, DevotionMinADSSmooth);
+			WritePair(Aimbot, DevotionMaxADSSmooth);
 			WritePair(Aimbot, DevotionFOV);
 			WritePair(Aimbot, DevotionZoomScale);
 			WritePair(Aimbot, LSTARClosestHitbox);
@@ -404,6 +501,11 @@ struct ConfigManager
 			WritePair(Aimbot, LSTARSpeed);
 			WritePair(Aimbot, LSTARHipfireSmooth);
 			WritePair(Aimbot, LSTARADSSmooth);
+			WritePair(Aimbot, LSTARSmoothingMethod);
+			WritePair(Aimbot, LSTARMinHipfireSmooth);
+			WritePair(Aimbot, LSTARMaxHipfireSmooth);
+			WritePair(Aimbot, LSTARMinADSSmooth);
+			WritePair(Aimbot, LSTARMaxADSSmooth);
 			WritePair(Aimbot, LSTARFOV);
 			WritePair(Aimbot, LSTARZoomScale);
 			WritePair(Aimbot, TripleTakeClosestHitbox);
@@ -411,6 +513,11 @@ struct ConfigManager
 			WritePair(Aimbot, TripleTakeSpeed);
 			WritePair(Aimbot, TripleTakeHipfireSmooth);
 			WritePair(Aimbot, TripleTakeADSSmooth);
+			WritePair(Aimbot, TripleTakeSmoothingMethod);
+			WritePair(Aimbot, TripleTakeMinHipfireSmooth);
+			WritePair(Aimbot, TripleTakeMaxHipfireSmooth);
+			WritePair(Aimbot, TripleTakeMinADSSmooth);
+			WritePair(Aimbot, TripleTakeMaxADSSmooth);
 			WritePair(Aimbot, TripleTakeFOV);
 			WritePair(Aimbot, TripleTakeZoomScale);
 			WritePair(Aimbot, VoltClosestHitbox);
@@ -418,6 +525,11 @@ struct ConfigManager
 			WritePair(Aimbot, VoltSpeed);
 			WritePair(Aimbot, VoltHipfireSmooth);
 			WritePair(Aimbot, VoltADSSmooth);
+			WritePair(Aimbot, VoltSmoothingMethod);
+			WritePair(Aimbot, VoltMinHipfireSmooth);
+			WritePair(Aimbot, VoltMaxHipfireSmooth);
+			WritePair(Aimbot, VoltMinADSSmooth);
+			WritePair(Aimbot, VoltMaxADSSmooth);
 			WritePair(Aimbot, VoltFOV);
 			WritePair(Aimbot, VoltZoomScale);
 			WritePair(Aimbot, NemesisClosestHitbox);
@@ -425,6 +537,11 @@ struct ConfigManager
 			WritePair(Aimbot, NemesisSpeed);
 			WritePair(Aimbot, NemesisHipfireSmooth);
 			WritePair(Aimbot, NemesisADSSmooth);
+			WritePair(Aimbot, NemesisSmoothingMethod);
+			WritePair(Aimbot, NemesisMinHipfireSmooth);
+			WritePair(Aimbot, NemesisMaxHipfireSmooth);
+			WritePair(Aimbot, NemesisMinADSSmooth);
+			WritePair(Aimbot, NemesisMaxADSSmooth);
 			WritePair(Aimbot, NemesisFOV);
 			WritePair(Aimbot, NemesisZoomScale);
 			// Shotguns
@@ -433,6 +550,11 @@ struct ConfigManager
 			WritePair(Aimbot, MozambiqueSpeed);
 			WritePair(Aimbot, MozambiqueHipfireSmooth);
 			WritePair(Aimbot, MozambiqueADSSmooth);
+			WritePair(Aimbot, MozambiqueSmoothingMethod);
+			WritePair(Aimbot, MozambiqueMinHipfireSmooth);
+			WritePair(Aimbot, MozambiqueMaxHipfireSmooth);
+			WritePair(Aimbot, MozambiqueMinADSSmooth);
+			WritePair(Aimbot, MozambiqueMaxADSSmooth);
 			WritePair(Aimbot, MozambiqueFOV);
 			WritePair(Aimbot, MozambiqueZoomScale);
 			WritePair(Aimbot, EVA8ClosestHitbox);
@@ -440,6 +562,11 @@ struct ConfigManager
 			WritePair(Aimbot, EVA8Speed);
 			WritePair(Aimbot, EVA8HipfireSmooth);
 			WritePair(Aimbot, EVA8ADSSmooth);
+			WritePair(Aimbot, EVA8SmoothingMethod);
+			WritePair(Aimbot, EVA8MinHipfireSmooth);
+			WritePair(Aimbot, EVA8MaxHipfireSmooth);
+			WritePair(Aimbot, EVA8MinADSSmooth);
+			WritePair(Aimbot, EVA8MaxADSSmooth);
 			WritePair(Aimbot, EVA8FOV);
 			WritePair(Aimbot, EVA8ZoomScale);
 			WritePair(Aimbot, PeacekeeperClosestHitbox);
@@ -447,6 +574,11 @@ struct ConfigManager
 			WritePair(Aimbot, PeacekeeperSpeed);
 			WritePair(Aimbot, PeacekeeperHipfireSmooth);
 			WritePair(Aimbot, PeacekeeperADSSmooth);
+			WritePair(Aimbot, PeacekeeperSmoothingMethod);
+			WritePair(Aimbot, PeacekeeperMinHipfireSmooth);
+			WritePair(Aimbot, PeacekeeperMaxHipfireSmooth);
+			WritePair(Aimbot, PeacekeeperMinADSSmooth);
+			WritePair(Aimbot, PeacekeeperMaxADSSmooth);
 			WritePair(Aimbot, PeacekeeperFOV);
 			WritePair(Aimbot, PeacekeeperZoomScale);
 			WritePair(Aimbot, MastiffClosestHitbox);
@@ -454,6 +586,11 @@ struct ConfigManager
 			WritePair(Aimbot, MastiffSpeed);
 			WritePair(Aimbot, MastiffHipfireSmooth);
 			WritePair(Aimbot, MastiffADSSmooth);
+			WritePair(Aimbot, MastiffSmoothingMethod);
+			WritePair(Aimbot, MastiffMinHipfireSmooth);
+			WritePair(Aimbot, MastiffMaxHipfireSmooth);
+			WritePair(Aimbot, MastiffMinADSSmooth);
+			WritePair(Aimbot, MastiffMaxADSSmooth);
 			WritePair(Aimbot, MastiffFOV);
 			WritePair(Aimbot, MastiffZoomScale);
 			// Snipers
@@ -462,6 +599,11 @@ struct ConfigManager
 			WritePair(Aimbot, LongbowSpeed);
 			WritePair(Aimbot, LongbowHipfireSmooth);
 			WritePair(Aimbot, LongbowADSSmooth);
+			WritePair(Aimbot, LongbowSmoothingMethod);
+			WritePair(Aimbot, LongbowMinHipfireSmooth);
+			WritePair(Aimbot, LongbowMaxHipfireSmooth);
+			WritePair(Aimbot, LongbowMinADSSmooth);
+			WritePair(Aimbot, LongbowMaxADSSmooth);
 			WritePair(Aimbot, LongbowFOV);
 			WritePair(Aimbot, LongbowZoomScale);
 			WritePair(Aimbot, ChargeRifleClosestHitbox);
@@ -469,6 +611,11 @@ struct ConfigManager
 			WritePair(Aimbot, ChargeRifleSpeed);
 			WritePair(Aimbot, ChargeRifleHipfireSmooth);
 			WritePair(Aimbot, ChargeRifleADSSmooth);
+			WritePair(Aimbot, ChargeRifleSmoothingMethod);
+			WritePair(Aimbot, ChargeRifleMinHipfireSmooth);
+			WritePair(Aimbot, ChargeRifleMaxHipfireSmooth);
+			WritePair(Aimbot, ChargeRifleMinADSSmooth);
+			WritePair(Aimbot, ChargeRifleMaxADSSmooth);
 			WritePair(Aimbot, ChargeRifleFOV);
 			WritePair(Aimbot, ChargeRifleZoomScale);
 			WritePair(Aimbot, SentinelClosestHitbox);
@@ -476,6 +623,11 @@ struct ConfigManager
 			WritePair(Aimbot, SentinelSpeed);
 			WritePair(Aimbot, SentinelHipfireSmooth);
 			WritePair(Aimbot, SentinelADSSmooth);
+			WritePair(Aimbot, SentinelSmoothingMethod);
+			WritePair(Aimbot, SentinelMinHipfireSmooth);
+			WritePair(Aimbot, SentinelMaxHipfireSmooth);
+			WritePair(Aimbot, SentinelMinADSSmooth);
+			WritePair(Aimbot, SentinelMaxADSSmooth);
 			WritePair(Aimbot, SentinelFOV);
 			WritePair(Aimbot, SentinelZoomScale);
 			// Legendary
@@ -484,6 +636,11 @@ struct ConfigManager
 			WritePair(Aimbot, WingmanSpeed);
 			WritePair(Aimbot, WingmanHipfireSmooth);
 			WritePair(Aimbot, WingmanADSSmooth);
+			WritePair(Aimbot, WingmanSmoothingMethod);
+			WritePair(Aimbot, WingmanMinHipfireSmooth);
+			WritePair(Aimbot, WingmanMaxHipfireSmooth);
+			WritePair(Aimbot, WingmanMinADSSmooth);
+			WritePair(Aimbot, WingmanMaxADSSmooth);
 			WritePair(Aimbot, WingmanFOV);
 			WritePair(Aimbot, WingmanZoomScale);
 			WritePair(Aimbot, ProwlerClosestHitbox);
@@ -491,6 +648,11 @@ struct ConfigManager
 			WritePair(Aimbot, ProwlerSpeed);
 			WritePair(Aimbot, ProwlerHipfireSmooth);
 			WritePair(Aimbot, ProwlerADSSmooth);
+			WritePair(Aimbot, ProwlerSmoothingMethod);
+			WritePair(Aimbot, ProwlerMinHipfireSmooth);
+			WritePair(Aimbot, ProwlerMaxHipfireSmooth);
+			WritePair(Aimbot, ProwlerMinADSSmooth);
+			WritePair(Aimbot, ProwlerMaxADSSmooth);
 			WritePair(Aimbot, ProwlerFOV);
 			WritePair(Aimbot, ProwlerZoomScale);
 			WritePair(Aimbot, KraberClosestHitbox);
@@ -498,6 +660,11 @@ struct ConfigManager
 			WritePair(Aimbot, KraberSpeed);
 			WritePair(Aimbot, KraberHipfireSmooth);
 			WritePair(Aimbot, KraberADSSmooth);
+			WritePair(Aimbot, KraberSmoothingMethod);
+			WritePair(Aimbot, KraberMinHipfireSmooth);
+			WritePair(Aimbot, KraberMaxHipfireSmooth);
+			WritePair(Aimbot, KraberMinADSSmooth);
+			WritePair(Aimbot, KraberMaxADSSmooth);
 			WritePair(Aimbot, KraberFOV);
 			WritePair(Aimbot, KraberZoomScale);
 			WritePair(Aimbot, BocekClosestHitbox);
@@ -505,6 +672,11 @@ struct ConfigManager
 			WritePair(Aimbot, BocekSpeed);
 			WritePair(Aimbot, BocekHipfireSmooth);
 			WritePair(Aimbot, BocekADSSmooth);
+			WritePair(Aimbot, BocekSmoothingMethod);
+			WritePair(Aimbot, BocekMinHipfireSmooth);
+			WritePair(Aimbot, BocekMaxHipfireSmooth);
+			WritePair(Aimbot, BocekMinADSSmooth);
+			WritePair(Aimbot, BocekMaxADSSmooth);
 			WritePair(Aimbot, BocekFOV);
 			WritePair(Aimbot, BocekZoomScale);
 			WritePair(Aimbot, ThrowingKnifeClosestHitbox);
@@ -512,12 +684,21 @@ struct ConfigManager
 			WritePair(Aimbot, ThrowingKnifeSpeed);
 			WritePair(Aimbot, ThrowingKnifeHipfireSmooth);
 			WritePair(Aimbot, ThrowingKnifeADSSmooth);
+			WritePair(Aimbot, ThrowingKnifeSmoothingMethod);
+			WritePair(Aimbot, ThrowingKnifeMinHipfireSmooth);
+			WritePair(Aimbot, ThrowingKnifeMaxHipfireSmooth);
+			WritePair(Aimbot, ThrowingKnifeMinADSSmooth);
+			WritePair(Aimbot, ThrowingKnifeMaxADSSmooth);
 			WritePair(Aimbot, ThrowingKnifeFOV);
 			WritePair(Aimbot, ThrowingKnifeZoomScale);
 
 			// Advanced Smooth - Aimbot Mode 1 - Grinder
 			WritePair(Aimbot, P2020HipfireSmooth1);
 			WritePair(Aimbot, P2020ADSSmooth1);
+			WritePair(Aimbot, P2020MinHipfireSmooth1);
+			WritePair(Aimbot, P2020MaxHipfireSmooth1);
+			WritePair(Aimbot, P2020MinADSSmooth1);
+			WritePair(Aimbot, P2020MaxADSSmooth1);
 			WritePair(Aimbot, P2020ExtraSmooth1);
 			WritePair(Aimbot, P2020Deadzone);
 			WritePair(Aimbot, P2020FOV1);
@@ -525,6 +706,10 @@ struct ConfigManager
 			WritePair(Aimbot, P2020MaxDistance1);
 			WritePair(Aimbot, RE45HipfireSmooth1);
 			WritePair(Aimbot, RE45ADSSmooth1);
+			WritePair(Aimbot, RE45MinHipfireSmooth1);
+			WritePair(Aimbot, RE45MaxHipfireSmooth1);
+			WritePair(Aimbot, RE45MinADSSmooth1);
+			WritePair(Aimbot, RE45MaxADSSmooth1);
 			WritePair(Aimbot, RE45ExtraSmooth1);
 			WritePair(Aimbot, RE45Deadzone);
 			WritePair(Aimbot, RE45FOV1);
@@ -532,6 +717,10 @@ struct ConfigManager
 			WritePair(Aimbot, RE45MaxDistance1);
 			WritePair(Aimbot, AlternatorHipfireSmooth1);
 			WritePair(Aimbot, AlternatorADSSmooth1);
+			WritePair(Aimbot, AlternatorMinHipfireSmooth1);
+			WritePair(Aimbot, AlternatorMaxHipfireSmooth1);
+			WritePair(Aimbot, AlternatorMinADSSmooth1);
+			WritePair(Aimbot, AlternatorMaxADSSmooth1);
 			WritePair(Aimbot, AlternatorExtraSmooth1);
 			WritePair(Aimbot, AlternatorDeadzone);
 			WritePair(Aimbot, AlternatorFOV1);
@@ -539,6 +728,10 @@ struct ConfigManager
 			WritePair(Aimbot, AlternatorMaxDistance1);
 			WritePair(Aimbot, R99HipfireSmooth1);
 			WritePair(Aimbot, R99ADSSmooth1);
+			WritePair(Aimbot, R99MinHipfireSmooth1);
+			WritePair(Aimbot, R99MaxHipfireSmooth1);
+			WritePair(Aimbot, R99MinADSSmooth1);
+			WritePair(Aimbot, R99MaxADSSmooth1);
 			WritePair(Aimbot, R99ExtraSmooth1);
 			WritePair(Aimbot, R99Deadzone);
 			WritePair(Aimbot, R99FOV1);
@@ -546,6 +739,10 @@ struct ConfigManager
 			WritePair(Aimbot, R99MaxDistance1);
 			WritePair(Aimbot, R301HipfireSmooth1);
 			WritePair(Aimbot, R301ADSSmooth1);
+			WritePair(Aimbot, R301MinHipfireSmooth1);
+			WritePair(Aimbot, R301MaxHipfireSmooth1);
+			WritePair(Aimbot, R301MinADSSmooth1);
+			WritePair(Aimbot, R301MaxADSSmooth1);
 			WritePair(Aimbot, R301ExtraSmooth1);
 			WritePair(Aimbot, R301Deadzone);
 			WritePair(Aimbot, R301FOV1);
@@ -553,6 +750,10 @@ struct ConfigManager
 			WritePair(Aimbot, R301MaxDistance1);
 			WritePair(Aimbot, SpitfireHipfireSmooth1);
 			WritePair(Aimbot, SpitfireADSSmooth1);
+			WritePair(Aimbot, SpitfireMinHipfireSmooth1);
+			WritePair(Aimbot, SpitfireMaxHipfireSmooth1);
+			WritePair(Aimbot, SpitfireMinADSSmooth1);
+			WritePair(Aimbot, SpitfireMaxADSSmooth1);
 			WritePair(Aimbot, SpitfireExtraSmooth1);
 			WritePair(Aimbot, SpitfireDeadzone);
 			WritePair(Aimbot, SpitfireFOV1);
@@ -560,6 +761,10 @@ struct ConfigManager
 			WritePair(Aimbot, SpitfireMaxDistance1);
 			WritePair(Aimbot, G7HipfireSmooth1);
 			WritePair(Aimbot, G7ADSSmooth1);
+			WritePair(Aimbot, G7MinHipfireSmooth1);
+			WritePair(Aimbot, G7MaxHipfireSmooth1);
+			WritePair(Aimbot, G7MinADSSmooth1);
+			WritePair(Aimbot, G7MaxADSSmooth1);
 			WritePair(Aimbot, G7ExtraSmooth1);
 			WritePair(Aimbot, G7Deadzone);
 			WritePair(Aimbot, G7FOV1);
@@ -568,6 +773,10 @@ struct ConfigManager
 
 			WritePair(Aimbot, FlatlineHipfireSmooth1);
 			WritePair(Aimbot, FlatlineADSSmooth1);
+			WritePair(Aimbot, FlatlineMinHipfireSmooth1);
+			WritePair(Aimbot, FlatlineMaxHipfireSmooth1);
+			WritePair(Aimbot, FlatlineMinADSSmooth1);
+			WritePair(Aimbot, FlatlineMaxADSSmooth1);
 			WritePair(Aimbot, FlatlineExtraSmooth1);
 			WritePair(Aimbot, FlatlineDeadzone);
 			WritePair(Aimbot, FlatlineFOV1);
@@ -575,6 +784,10 @@ struct ConfigManager
 			WritePair(Aimbot, FlatlineMaxDistance1);
 			WritePair(Aimbot, HemlockHipfireSmooth1);
 			WritePair(Aimbot, HemlockADSSmooth1);
+			WritePair(Aimbot, HemlockMinHipfireSmooth1);
+			WritePair(Aimbot, HemlockMaxHipfireSmooth1);
+			WritePair(Aimbot, HemlockMinADSSmooth1);
+			WritePair(Aimbot, HemlockMaxADSSmooth1);
 			WritePair(Aimbot, HemlockExtraSmooth1);
 			WritePair(Aimbot, HemlockDeadzone);
 			WritePair(Aimbot, HemlockFOV1);
@@ -582,12 +795,20 @@ struct ConfigManager
 			WritePair(Aimbot, HemlockMaxDistance1);
 			WritePair(Aimbot, RepeaterHipfireSmooth1);
 			WritePair(Aimbot, RepeaterADSSmooth1);
+			WritePair(Aimbot, RepeaterMinHipfireSmooth1);
+			WritePair(Aimbot, RepeaterMaxHipfireSmooth1);
+			WritePair(Aimbot, RepeaterMinADSSmooth1);
+			WritePair(Aimbot, RepeaterMaxADSSmooth1);
 			WritePair(Aimbot, RepeaterExtraSmooth1);
 			WritePair(Aimbot, RepeaterDeadzone);
 			WritePair(Aimbot, RepeaterFOV1);
 			WritePair(Aimbot, RepeaterMinDistance1);
 			WritePair(Aimbot, RepeaterMaxDistance1);
 			WritePair(Aimbot, RampageHipfireSmooth1);
+			WritePair(Aimbot, RampageMinHipfireSmooth1);
+			WritePair(Aimbot, RampageMaxHipfireSmooth1);
+			WritePair(Aimbot, RampageMinADSSmooth1);
+			WritePair(Aimbot, RampageMaxADSSmooth1);
 			WritePair(Aimbot, RampageADSSmooth1);
 			WritePair(Aimbot, RampageExtraSmooth1);
 			WritePair(Aimbot, RampageDeadzone);
@@ -596,6 +817,10 @@ struct ConfigManager
 			WritePair(Aimbot, RampageMaxDistance1);
 			WritePair(Aimbot, CARSMGHipfireSmooth1);
 			WritePair(Aimbot, CARSMGADSSmooth1);
+			WritePair(Aimbot, CARSMGMinHipfireSmooth1);
+			WritePair(Aimbot, CARSMGMaxHipfireSmooth1);
+			WritePair(Aimbot, CARSMGMinADSSmooth1);
+			WritePair(Aimbot, CARSMGMaxADSSmooth1);
 			WritePair(Aimbot, CARSMGExtraSmooth1);
 			WritePair(Aimbot, CARSMGDeadzone);
 			WritePair(Aimbot, CARSMGFOV1);
@@ -604,6 +829,10 @@ struct ConfigManager
 
 			WritePair(Aimbot, HavocHipfireSmooth1);
 			WritePair(Aimbot, HavocADSSmooth1);
+			WritePair(Aimbot, HavocMinHipfireSmooth1);
+			WritePair(Aimbot, HavocMaxHipfireSmooth1);
+			WritePair(Aimbot, HavocMinADSSmooth1);
+			WritePair(Aimbot, HavocMaxADSSmooth1);
 			WritePair(Aimbot, HavocExtraSmooth1);
 			WritePair(Aimbot, HavocDeadzone);
 			WritePair(Aimbot, HavocFOV1);
@@ -611,6 +840,10 @@ struct ConfigManager
 			WritePair(Aimbot, HavocMaxDistance1);
 			WritePair(Aimbot, DevotionHipfireSmooth1);
 			WritePair(Aimbot, DevotionADSSmooth1);
+			WritePair(Aimbot, DevotionMinHipfireSmooth1);
+			WritePair(Aimbot, DevotionMaxHipfireSmooth1);
+			WritePair(Aimbot, DevotionMinADSSmooth1);
+			WritePair(Aimbot, DevotionMaxADSSmooth1);
 			WritePair(Aimbot, DevotionExtraSmooth1);
 			WritePair(Aimbot, DevotionDeadzone);
 			WritePair(Aimbot, DevotionFOV1);
@@ -618,6 +851,10 @@ struct ConfigManager
 			WritePair(Aimbot, DevotionMaxDistance1);
 			WritePair(Aimbot, LSTARHipfireSmooth1);
 			WritePair(Aimbot, LSTARADSSmooth1);
+			WritePair(Aimbot, LSTARMinHipfireSmooth1);
+			WritePair(Aimbot, LSTARMaxHipfireSmooth1);
+			WritePair(Aimbot, LSTARMinADSSmooth1);
+			WritePair(Aimbot, LSTARMaxADSSmooth1);
 			WritePair(Aimbot, LSTARExtraSmooth1);
 			WritePair(Aimbot, LSTARDeadzone);
 			WritePair(Aimbot, LSTARFOV1);
@@ -625,6 +862,10 @@ struct ConfigManager
 			WritePair(Aimbot, LSTARMaxDistance1);
 			WritePair(Aimbot, TripleTakeHipfireSmooth1);
 			WritePair(Aimbot, TripleTakeADSSmooth1);
+			WritePair(Aimbot, TripleTakeMinHipfireSmooth1);
+			WritePair(Aimbot, TripleTakeMaxHipfireSmooth1);
+			WritePair(Aimbot, TripleTakeMinADSSmooth1);
+			WritePair(Aimbot, TripleTakeMaxADSSmooth1);
 			WritePair(Aimbot, TripleTakeExtraSmooth1);
 			WritePair(Aimbot, TripleTakeDeadzone);
 			WritePair(Aimbot, TripleTakeFOV1);
@@ -632,6 +873,10 @@ struct ConfigManager
 			WritePair(Aimbot, TripleTakeMaxDistance1);
 			WritePair(Aimbot, VoltHipfireSmooth1);
 			WritePair(Aimbot, VoltADSSmooth1);
+			WritePair(Aimbot, VoltMinHipfireSmooth1);
+			WritePair(Aimbot, VoltMaxHipfireSmooth1);
+			WritePair(Aimbot, VoltMinADSSmooth1);
+			WritePair(Aimbot, VoltMaxADSSmooth1);
 			WritePair(Aimbot, VoltExtraSmooth1);
 			WritePair(Aimbot, VoltDeadzone);
 			WritePair(Aimbot, VoltFOV1);
@@ -639,6 +884,10 @@ struct ConfigManager
 			WritePair(Aimbot, VoltMaxDistance1);
 			WritePair(Aimbot, NemesisHipfireSmooth1);
 			WritePair(Aimbot, NemesisADSSmooth1);
+			WritePair(Aimbot, NemesisMinHipfireSmooth1);
+			WritePair(Aimbot, NemesisMaxHipfireSmooth1);
+			WritePair(Aimbot, NemesisMinADSSmooth1);
+			WritePair(Aimbot, NemesisMaxADSSmooth1);
 			WritePair(Aimbot, NemesisExtraSmooth1);
 			WritePair(Aimbot, NemesisDeadzone);
 			WritePair(Aimbot, NemesisFOV1);
@@ -647,6 +896,10 @@ struct ConfigManager
 
 			WritePair(Aimbot, MozambiqueHipfireSmooth1);
 			WritePair(Aimbot, MozambiqueADSSmooth1);
+			WritePair(Aimbot, MozambiqueMinHipfireSmooth1);
+			WritePair(Aimbot, MozambiqueMaxHipfireSmooth1);
+			WritePair(Aimbot, MozambiqueMinADSSmooth1);
+			WritePair(Aimbot, MozambiqueMaxADSSmooth1);
 			WritePair(Aimbot, MozambiqueExtraSmooth1);
 			WritePair(Aimbot, MozambiqueDeadzone);
 			WritePair(Aimbot, MozambiqueFOV1);
@@ -654,6 +907,10 @@ struct ConfigManager
 			WritePair(Aimbot, MozambiqueMaxDistance1);
 			WritePair(Aimbot, EVA8HipfireSmooth1);
 			WritePair(Aimbot, EVA8ADSSmooth1);
+			WritePair(Aimbot, EVA8MinHipfireSmooth1);
+			WritePair(Aimbot, EVA8MaxHipfireSmooth1);
+			WritePair(Aimbot, EVA8MinADSSmooth1);
+			WritePair(Aimbot, EVA8MaxADSSmooth1);
 			WritePair(Aimbot, EVA8ExtraSmooth1);
 			WritePair(Aimbot, EVA8Deadzone);
 			WritePair(Aimbot, EVA8FOV1);
@@ -661,6 +918,10 @@ struct ConfigManager
 			WritePair(Aimbot, EVA8MaxDistance1);
 			WritePair(Aimbot, PeacekeeperHipfireSmooth1);
 			WritePair(Aimbot, PeacekeeperADSSmooth1);
+			WritePair(Aimbot, PeacekeeperMinHipfireSmooth1);
+			WritePair(Aimbot, PeacekeeperMaxHipfireSmooth1);
+			WritePair(Aimbot, PeacekeeperMinADSSmooth1);
+			WritePair(Aimbot, PeacekeeperMaxADSSmooth1);
 			WritePair(Aimbot, PeacekeeperExtraSmooth1);
 			WritePair(Aimbot, PeacekeeperDeadzone);
 			WritePair(Aimbot, PeacekeeperFOV1);
@@ -668,6 +929,10 @@ struct ConfigManager
 			WritePair(Aimbot, PeacekeeperMaxDistance1);
 			WritePair(Aimbot, MastiffHipfireSmooth1);
 			WritePair(Aimbot, MastiffADSSmooth1);
+			WritePair(Aimbot, MastiffMinHipfireSmooth1);
+			WritePair(Aimbot, MastiffMaxHipfireSmooth1);
+			WritePair(Aimbot, MastiffMinADSSmooth1);
+			WritePair(Aimbot, MastiffMaxADSSmooth1);
 			WritePair(Aimbot, MastiffExtraSmooth1);
 			WritePair(Aimbot, MastiffDeadzone);
 			WritePair(Aimbot, MastiffFOV1);
@@ -676,6 +941,10 @@ struct ConfigManager
 
 			WritePair(Aimbot, LongbowHipfireSmooth1);
 			WritePair(Aimbot, LongbowADSSmooth1);
+			WritePair(Aimbot, LongbowMinHipfireSmooth1);
+			WritePair(Aimbot, LongbowMaxHipfireSmooth1);
+			WritePair(Aimbot, LongbowMinADSSmooth1);
+			WritePair(Aimbot, LongbowMaxADSSmooth1);
 			WritePair(Aimbot, LongbowExtraSmooth1);
 			WritePair(Aimbot, LongbowDeadzone);
 			WritePair(Aimbot, LongbowFOV1);
@@ -683,6 +952,10 @@ struct ConfigManager
 			WritePair(Aimbot, LongbowMaxDistance1);
 			WritePair(Aimbot, ChargeRifleHipfireSmooth1);
 			WritePair(Aimbot, ChargeRifleADSSmooth1);
+			WritePair(Aimbot, ChargeRifleMinHipfireSmooth1);
+			WritePair(Aimbot, ChargeRifleMaxHipfireSmooth1);
+			WritePair(Aimbot, ChargeRifleMinADSSmooth1);
+			WritePair(Aimbot, ChargeRifleMaxADSSmooth1);
 			WritePair(Aimbot, ChargeRifleExtraSmooth1);
 			WritePair(Aimbot, ChargeRifleDeadzone);
 			WritePair(Aimbot, ChargeRifleFOV1);
@@ -690,6 +963,10 @@ struct ConfigManager
 			WritePair(Aimbot, ChargeRifleMaxDistance1);
 			WritePair(Aimbot, SentinelHipfireSmooth1);
 			WritePair(Aimbot, SentinelADSSmooth1);
+			WritePair(Aimbot, SentinelMinHipfireSmooth1);
+			WritePair(Aimbot, SentinelMaxHipfireSmooth1);
+			WritePair(Aimbot, SentinelMinADSSmooth1);
+			WritePair(Aimbot, SentinelMaxADSSmooth1);
 			WritePair(Aimbot, SentinelExtraSmooth1);
 			WritePair(Aimbot, SentinelDeadzone);
 			WritePair(Aimbot, SentinelFOV1);
@@ -698,6 +975,10 @@ struct ConfigManager
 
 			WritePair(Aimbot, WingmanHipfireSmooth1);
 			WritePair(Aimbot, WingmanADSSmooth1);
+			WritePair(Aimbot, WingmanMinHipfireSmooth1);
+			WritePair(Aimbot, WingmanMaxHipfireSmooth1);
+			WritePair(Aimbot, WingmanMinADSSmooth1);
+			WritePair(Aimbot, WingmanMaxADSSmooth1);
 			WritePair(Aimbot, WingmanExtraSmooth1);
 			WritePair(Aimbot, WingmanDeadzone);
 			WritePair(Aimbot, WingmanFOV1);
@@ -705,6 +986,10 @@ struct ConfigManager
 			WritePair(Aimbot, WingmanMaxDistance1);
 			WritePair(Aimbot, ProwlerHipfireSmooth1);
 			WritePair(Aimbot, ProwlerADSSmooth1);
+			WritePair(Aimbot, ProwlerMinHipfireSmooth1);
+			WritePair(Aimbot, ProwlerMaxHipfireSmooth1);
+			WritePair(Aimbot, ProwlerMinADSSmooth1);
+			WritePair(Aimbot, ProwlerMaxADSSmooth1);
 			WritePair(Aimbot, ProwlerExtraSmooth1);
 			WritePair(Aimbot, ProwlerDeadzone);
 			WritePair(Aimbot, ProwlerFOV1);
@@ -712,6 +997,10 @@ struct ConfigManager
 			WritePair(Aimbot, ProwlerMaxDistance1);
 			WritePair(Aimbot, BocekHipfireSmooth1);
 			WritePair(Aimbot, BocekADSSmooth1);
+			WritePair(Aimbot, BocekMinHipfireSmooth1);
+			WritePair(Aimbot, BocekMaxHipfireSmooth1);
+			WritePair(Aimbot, BocekMinADSSmooth1);
+			WritePair(Aimbot, BocekMaxADSSmooth1);
 			WritePair(Aimbot, BocekExtraSmooth1);
 			WritePair(Aimbot, BocekDeadzone);
 			WritePair(Aimbot, BocekFOV1);
@@ -719,6 +1008,10 @@ struct ConfigManager
 			WritePair(Aimbot, BocekMaxDistance1);
 			WritePair(Aimbot, KraberHipfireSmooth1);
 			WritePair(Aimbot, KraberADSSmooth1);
+			WritePair(Aimbot, KraberMinHipfireSmooth1);
+			WritePair(Aimbot, KraberMaxHipfireSmooth1);
+			WritePair(Aimbot, KraberMinADSSmooth1);
+			WritePair(Aimbot, KraberMaxADSSmooth1);
 			WritePair(Aimbot, KraberExtraSmooth1);
 			WritePair(Aimbot, KraberDeadzone);
 			WritePair(Aimbot, KraberFOV1);
@@ -726,6 +1019,10 @@ struct ConfigManager
 			WritePair(Aimbot, KraberMaxDistance1);
 			WritePair(Aimbot, ThrowingKnifeHipfireSmooth1);
 			WritePair(Aimbot, ThrowingKnifeADSSmooth1);
+			WritePair(Aimbot, ThrowingKnifeMinHipfireSmooth1);
+			WritePair(Aimbot, ThrowingKnifeMaxHipfireSmooth1);
+			WritePair(Aimbot, ThrowingKnifeMinADSSmooth1);
+			WritePair(Aimbot, ThrowingKnifeMaxADSSmooth1);
 			WritePair(Aimbot, ThrowingKnifeExtraSmooth1);
 			WritePair(Aimbot, ThrowingKnifeDeadzone);
 			WritePair(Aimbot, ThrowingKnifeFOV1);
@@ -1253,7 +1550,7 @@ struct ConfigManager
 			WritePair(Glow, GlowColorMode);
 			WritePair(Glow, GlowColorShieldMode);
 			WritePair(Glow, GlowRadius);
-			WritePair(Glow, InsideFunction);	   // Leave
+			WritePair(Glow, InsideFunction);  // Leave
 			WritePair(Glow, OutlineFunction); // Leave
 			WritePair(Glow, BodyStyle);
 			WritePair(Glow, OutlineStyle);
@@ -1266,7 +1563,7 @@ struct ConfigManager
 			WriteSection(ItemGlow);
 
 			WritePair(ItemGlow, ItemGlow);
-			WritePair(ItemGlow, SelectedItemSelection ); // 0 = Simple, 1 = Custom
+			WritePair(ItemGlow, SelectedItemSelection); // 0 = Simple, 1 = Custom
 			WritePair(ItemGlow, Common);
 			WritePair(ItemGlow, Rare);
 			WritePair(ItemGlow, Epic);
@@ -1410,6 +1707,7 @@ struct ConfigManager
 			WriteSection(Misc);
 
 			WritePair(Misc, SuperGlide);
+			WritePair(Misc, SuperGlideFPS);
 
 			WritePair(Misc, QuickTurn);
 			WritePair(Misc, QuickTurnAngle);
@@ -1439,8 +1737,6 @@ struct ConfigManager
 			WritePair(Misc, RapidEVA8);
 			// Legendary
 			WritePair(Misc, RapidWingman);
-
-			WritePair(Misc, TeamGamemode);
 
 			WritePair(Misc, SkinChanger);
 			// Weapon IDs
@@ -1773,7 +2069,6 @@ struct ConfigManager
 
 			WriteSection(Settings);
 
-			WritePair(Settings, GamemodeCheck);
 			WritePair(Settings, ESPEnabled);
 			WritePair(Settings, OverlayEnabled);
 			WritePair(Settings, FPSCap);
@@ -1787,15 +2082,24 @@ struct ConfigManager
 
 	void SaveConfig()
 	{
-		if (!Legit->Save()) std::cout << "something went wrong trying to save Legitbot settings" << std::endl;
-		if (!Rage->Save()) std::cout << "something went wrong trying to save Ragebot settings" << std::endl;
-		if (!Trigger->Save()) std::cout << "something went wrong trying to save Triggerbot settings" << std::endl;
-		if (!Flick->Save()) std::cout << "something went wrong trying to save Flickbot settings" << std::endl;
-		if (!GlowESP->Save()) std::cout << "something went wrong trying to save Glow settings" << std::endl;
-		if (!ESP->Save()) std::cout << "something went wrong trying to save Sense/ESP settings" << std::endl;
-		if (!MiscTab->Save()) std::cout << "something went wrong trying to save Misc settings" << std::endl;
-		if (!MapRadar->Save()) std::cout << "something went wrong trying to save Radar settings" << std::endl;
-		if (!SaveOtherSettings()) std::cout << "something went wrong trying to save Other settings" << std::endl;
+		if (!Legit->Save())
+			std::cout << "something went wrong trying to save Legitbot settings" << std::endl;
+		if (!Rage->Save())
+			std::cout << "something went wrong trying to save Ragebot settings" << std::endl;
+		if (!Trigger->Save())
+			std::cout << "something went wrong trying to save Triggerbot settings" << std::endl;
+		if (!Flick->Save())
+			std::cout << "something went wrong trying to save Flickbot settings" << std::endl;
+		if (!GlowESP->Save())
+			std::cout << "something went wrong trying to save Glow settings" << std::endl;
+		if (!ESP->Save())
+			std::cout << "something went wrong trying to save Sense/ESP settings" << std::endl;
+		if (!MiscTab->Save())
+			std::cout << "something went wrong trying to save Misc settings" << std::endl;
+		if (!MapRadar->Save())
+			std::cout << "something went wrong trying to save Radar settings" << std::endl;
+		if (!SaveOtherSettings())
+			std::cout << "something went wrong trying to save Other settings" << std::endl;
 		UpdateConfig();
 	}
 
@@ -1803,7 +2107,6 @@ struct ConfigManager
 	{
 		try
 		{
-			Config::Settings::GamemodeCheck = Features::Settings::GamemodeCheck;
 			Config::Settings::ESPEnabled = Features::Settings::ESPEnabled;
 			Config::Settings::OverlayEnabled = Features::Settings::OverlayEnabled;
 			Config::Settings::FPSCap = Features::Settings::FPSCap;
@@ -1842,80 +2145,101 @@ struct ConfigManager
 		Features::Aimbot::FinalDistance = Config::Aimbot::FinalDistance;
 		Features::Aimbot::Smooth = Config::Aimbot::Smooth;
 		Features::Aimbot::Speed = Config::Aimbot::Speed;
+		Features::Aimbot::SmoothingMethod = Config::Aimbot::SmoothingMethod;
 		Features::Aimbot::HipfireSmooth = Config::Aimbot::HipfireSmooth;
-        Features::Aimbot::ADSSmooth = Config::Aimbot::ADSSmooth;
-        Features::Aimbot::SmoothDistance = Config::Aimbot::SmoothDistance;
-        Features::Aimbot::Delay = Config::Aimbot::Delay;
-        Features::Aimbot::FOV = Config::Aimbot::FOV;
-        Features::Aimbot::ZoomScale = Config::Aimbot::ZoomScale;
-        Features::Aimbot::MinDistance = Config::Aimbot::MinDistance;
-        Features::Aimbot::HipfireDistance = Config::Aimbot::HipfireDistance;
-        Features::Aimbot::ZoomDistance = Config::Aimbot::ZoomDistance;
-        //AimMode 2
-        Features::Aimbot::HipfireSmooth1 = Config::Aimbot::HipfireSmooth1;
-        Features::Aimbot::ADSSmooth1 = Config::Aimbot::ADSSmooth1;
-        Features::Aimbot::ExtraSmoothing = Config::Aimbot::ExtraSmoothing;
-        Features::Aimbot::Deadzone = Config::Aimbot::Deadzone;
-        Features::Aimbot::FOV1 = Config::Aimbot::FOV1;
-        Features::Aimbot::MinDistance2 = Config::Aimbot::MinDistance2;
-        Features::Aimbot::MaxDistance2 = Config::Aimbot::MaxDistance2;
-        //Weapon Toggles
-        //Light
-        Features::Aimbot::P2020 = Config::Aimbot::P2020;
-        Features::Aimbot::RE45 = Config::Aimbot::RE45;
-        Features::Aimbot::Alternator = Config::Aimbot::Alternator;
-        Features::Aimbot::R99 = Config::Aimbot::R99;
-        Features::Aimbot::R301 = Config::Aimbot::R301;
-        Features::Aimbot::Spitfire = Config::Aimbot::Spitfire;
-        Features::Aimbot::G7 = Config::Aimbot::G7;
-        //Heavy
-        Features::Aimbot::Flatline = Config::Aimbot::Flatline;
-        Features::Aimbot::Hemlock = Config::Aimbot::Hemlock;
-        Features::Aimbot::Repeater = Config::Aimbot::Repeater;
-        Features::Aimbot::Rampage = Config::Aimbot::Rampage;
-        Features::Aimbot::CARSMG = Config::Aimbot::CARSMG;
-        //Energy
-        Features::Aimbot::Havoc = Config::Aimbot::Havoc;
-        Features::Aimbot::Devotion = Config::Aimbot::Devotion;
-        Features::Aimbot::LSTAR = Config::Aimbot::LSTAR;
-        Features::Aimbot::TripleTake = Config::Aimbot::TripleTake;
-        Features::Aimbot::Volt = Config::Aimbot::Volt;
-        Features::Aimbot::Nemesis = Config::Aimbot::Nemesis;
-        //Shotgun
-        Features::Aimbot::Mozambique = Config::Aimbot::Mozambique;
-        Features::Aimbot::EVA8 = Config::Aimbot::EVA8;
-        Features::Aimbot::Peacekeeper = Config::Aimbot::Peacekeeper;
-        Features::Aimbot::Mastiff = Config::Aimbot::Mastiff;
-        //Snipers
-        Features::Aimbot::Longbow = Config::Aimbot::Longbow;
-        Features::Aimbot::ChargeRifle = Config::Aimbot::ChargeRifle;
-        Features::Aimbot::Sentinel = Config::Aimbot::Sentinel;
-        //Legendary
-        Features::Aimbot::Wingman = Config::Aimbot::Wingman;
-        Features::Aimbot::Prowler = Config::Aimbot::Prowler;
-        Features::Aimbot::Bocek = Config::Aimbot::Bocek;
-        Features::Aimbot::Kraber = Config::Aimbot::Kraber;
-        Features::Aimbot::Knife = Config::Aimbot::Knife;
-        //---------------Advanced---------------//
-        Features::Aimbot::AdvancedAim = Config::Aimbot::AdvancedAim;
-        Features::Aimbot::AdvancedFire = Config::Aimbot::AdvancedFire;
-        Features::Aimbot::AdvancedADS = Config::Aimbot::AdvancedADS;
-        //Aimbot Mode 0 - xap-client
-        Features::Aimbot::AdvancedClosestHitbox = Config::Aimbot::AdvancedClosestHitbox;
-        Features::Aimbot::AdvancedHitbox = Config::Aimbot::AdvancedHitbox;
-        Features::Aimbot::AdvancedSpeed = Config::Aimbot::AdvancedSpeed;
-        Features::Aimbot::AdvancedSmooth = Config::Aimbot::AdvancedSmooth;
-        Features::Aimbot::AdvancedHipfireSmooth = Config::Aimbot::AdvancedHipfireSmooth;
-        Features::Aimbot::AdvancedADSSmooth = Config::Aimbot::AdvancedADSSmooth;
-        //Aimbot Mode 1 - Grinder
-        Features::Aimbot::AdvancedHipfireSmooth1 = Config::Aimbot::AdvancedHipfireSmooth1;
-        Features::Aimbot::AdvancedADSSmooth1 = Config::Aimbot::AdvancedADSSmooth1;
-        Features::Aimbot::AdvancedExtraSmooth1 = Config::Aimbot::AdvancedExtraSmooth1;
-        Features::Aimbot::AdvancedFOV1 = Config::Aimbot::AdvancedFOV1;
-        Features::Aimbot::AdvancedDeadzone = Config::Aimbot::AdvancedDeadzone;
-        Features::Aimbot::AdvancedMinDistance1 = Config::Aimbot::AdvancedMinDistance1;
-        Features::Aimbot::AdvancedMaxDistance1 = Config::Aimbot::AdvancedMaxDistance1;
-		//Advanced Aimbot Settings
+		Features::Aimbot::ADSSmooth = Config::Aimbot::ADSSmooth;
+		Features::Aimbot::MinHipfireSmooth = Config::Aimbot::MinHipfireSmooth;
+		Features::Aimbot::MaxHipfireSmooth = Config::Aimbot::MaxHipfireSmooth;
+		Features::Aimbot::MinADSSmooth = Config::Aimbot::MinADSSmooth;
+		Features::Aimbot::MaxADSSmooth = Config::Aimbot::MaxADSSmooth;
+		// Aimbot 3 Testing
+		Features::Aimbot::MouseHipfireSmoothing = Config::Aimbot::MouseHipfireSmoothing;
+		Features::Aimbot::MouseADSSmoothing = Config::Aimbot::MouseADSSmoothing;
+		Features::Aimbot::MouseExtraSmoothing = Config::Aimbot::MouseExtraSmoothing;
+		Features::Aimbot::MinMouseHipfireSmoothing = Config::Aimbot::MinMouseHipfireSmoothing;
+		Features::Aimbot::MaxMouseHipfireSmoothing = Config::Aimbot::MaxMouseHipfireSmoothing;
+		Features::Aimbot::MinMouseADSSmoothing = Config::Aimbot::MinMouseADSSmoothing;
+		Features::Aimbot::MaxMouseADSSmoothing = Config::Aimbot::MaxMouseADSSmoothing;
+
+		Features::Aimbot::Delay = Config::Aimbot::Delay;
+		Features::Aimbot::FOV = Config::Aimbot::FOV;
+		Features::Aimbot::ZoomScale = Config::Aimbot::ZoomScale;
+		Features::Aimbot::MinDistance = Config::Aimbot::MinDistance;
+		Features::Aimbot::HipfireDistance = Config::Aimbot::HipfireDistance;
+		Features::Aimbot::ZoomDistance = Config::Aimbot::ZoomDistance;
+		// AimMode 2
+		Features::Aimbot::HipfireSmooth1 = Config::Aimbot::HipfireSmooth1;
+		Features::Aimbot::ADSSmooth1 = Config::Aimbot::ADSSmooth1;
+		Features::Aimbot::ExtraSmoothing = Config::Aimbot::ExtraSmoothing;
+		Features::Aimbot::Deadzone = Config::Aimbot::Deadzone;
+		Features::Aimbot::FOV1 = Config::Aimbot::FOV1;
+		Features::Aimbot::MinDistance2 = Config::Aimbot::MinDistance2;
+		Features::Aimbot::MaxDistance2 = Config::Aimbot::MaxDistance2;
+		// Weapon Toggles
+		// Light
+		Features::Aimbot::P2020 = Config::Aimbot::P2020;
+		Features::Aimbot::RE45 = Config::Aimbot::RE45;
+		Features::Aimbot::Alternator = Config::Aimbot::Alternator;
+		Features::Aimbot::R99 = Config::Aimbot::R99;
+		Features::Aimbot::R301 = Config::Aimbot::R301;
+		Features::Aimbot::Spitfire = Config::Aimbot::Spitfire;
+		Features::Aimbot::G7 = Config::Aimbot::G7;
+		// Heavy
+		Features::Aimbot::Flatline = Config::Aimbot::Flatline;
+		Features::Aimbot::Hemlock = Config::Aimbot::Hemlock;
+		Features::Aimbot::Repeater = Config::Aimbot::Repeater;
+		Features::Aimbot::Rampage = Config::Aimbot::Rampage;
+		Features::Aimbot::CARSMG = Config::Aimbot::CARSMG;
+		// Energy
+		Features::Aimbot::Havoc = Config::Aimbot::Havoc;
+		Features::Aimbot::Devotion = Config::Aimbot::Devotion;
+		Features::Aimbot::LSTAR = Config::Aimbot::LSTAR;
+		Features::Aimbot::TripleTake = Config::Aimbot::TripleTake;
+		Features::Aimbot::Volt = Config::Aimbot::Volt;
+		Features::Aimbot::Nemesis = Config::Aimbot::Nemesis;
+		// Shotgun
+		Features::Aimbot::Mozambique = Config::Aimbot::Mozambique;
+		Features::Aimbot::EVA8 = Config::Aimbot::EVA8;
+		Features::Aimbot::Peacekeeper = Config::Aimbot::Peacekeeper;
+		Features::Aimbot::Mastiff = Config::Aimbot::Mastiff;
+		// Snipers
+		Features::Aimbot::Longbow = Config::Aimbot::Longbow;
+		Features::Aimbot::ChargeRifle = Config::Aimbot::ChargeRifle;
+		Features::Aimbot::Sentinel = Config::Aimbot::Sentinel;
+		// Legendary
+		Features::Aimbot::Wingman = Config::Aimbot::Wingman;
+		Features::Aimbot::Prowler = Config::Aimbot::Prowler;
+		Features::Aimbot::Bocek = Config::Aimbot::Bocek;
+		Features::Aimbot::Kraber = Config::Aimbot::Kraber;
+		Features::Aimbot::Knife = Config::Aimbot::Knife;
+		//---------------Advanced---------------//
+		Features::Aimbot::AdvancedAim = Config::Aimbot::AdvancedAim;
+		Features::Aimbot::AdvancedFire = Config::Aimbot::AdvancedFire;
+		Features::Aimbot::AdvancedADS = Config::Aimbot::AdvancedADS;
+		// Aimbot Mode 0 - xap-client
+		Features::Aimbot::AdvancedClosestHitbox = Config::Aimbot::AdvancedClosestHitbox;
+		Features::Aimbot::AdvancedHitbox = Config::Aimbot::AdvancedHitbox;
+		Features::Aimbot::AdvancedSpeed = Config::Aimbot::AdvancedSpeed;
+		Features::Aimbot::AdvancedSmooth = Config::Aimbot::AdvancedSmooth;
+		Features::Aimbot::AdvancedHipfireSmooth = Config::Aimbot::AdvancedHipfireSmooth;
+		Features::Aimbot::AdvancedADSSmooth = Config::Aimbot::AdvancedADSSmooth;
+		Features::Aimbot::AdvancedMinADSSmooth = Config::Aimbot::AdvancedMinADSSmooth;
+		Features::Aimbot::AdvancedMaxADSSmooth = Config::Aimbot::AdvancedMaxADSSmooth;
+		Features::Aimbot::AdvancedMinHipfireSmooth = Config::Aimbot::AdvancedMinHipfireSmooth;
+		Features::Aimbot::AdvancedMaxHipfireSmooth = Config::Aimbot::AdvancedMaxHipfireSmooth;
+		// Aimbot Mode 1 - Grinder
+		Features::Aimbot::AdvancedHipfireSmooth1 = Config::Aimbot::AdvancedHipfireSmooth1;
+		Features::Aimbot::AdvancedADSSmooth1 = Config::Aimbot::AdvancedADSSmooth1;
+		Features::Aimbot::AdvancedMinHipfireSmooth1 = Config::Aimbot::AdvancedMinHipfireSmooth1;
+		Features::Aimbot::AdvancedMaxHipfireSmooth1 = Config::Aimbot::AdvancedMaxHipfireSmooth1;
+		Features::Aimbot::AdvancedMinADSSmooth1 = Config::Aimbot::AdvancedMinADSSmooth1;
+		Features::Aimbot::AdvancedMaxADSSmooth1 = Config::Aimbot::AdvancedMaxADSSmooth1;
+		Features::Aimbot::AdvancedExtraSmooth1 = Config::Aimbot::AdvancedExtraSmooth1;
+		Features::Aimbot::AdvancedFOV1 = Config::Aimbot::AdvancedFOV1;
+		Features::Aimbot::AdvancedDeadzone = Config::Aimbot::AdvancedDeadzone;
+		Features::Aimbot::AdvancedMinDistance1 = Config::Aimbot::AdvancedMinDistance1;
+		Features::Aimbot::AdvancedMaxDistance1 = Config::Aimbot::AdvancedMaxDistance1;
+		// Advanced Aimbot Settings
 		Features::Aimbot::P2020Fire = Config::Aimbot::P2020Fire;
 		Features::Aimbot::P2020ADS = Config::Aimbot::P2020ADS;
 		Features::Aimbot::P2020ClosestHitbox = Config::Aimbot::P2020ClosestHitbox;
@@ -1923,6 +2247,15 @@ struct ConfigManager
 		Features::Aimbot::P2020Speed = Config::Aimbot::P2020Speed;
 		Features::Aimbot::P2020HipfireSmooth = Config::Aimbot::P2020HipfireSmooth;
 		Features::Aimbot::P2020ADSSmooth = Config::Aimbot::P2020ADSSmooth;
+		Features::Aimbot::P2020SmoothingMethod = Config::Aimbot::P2020SmoothingMethod;
+		Features::Aimbot::P2020MinHipfireSmooth = Config::Aimbot::P2020MinHipfireSmooth;
+		Features::Aimbot::P2020MaxHipfireSmooth = Config::Aimbot::P2020MaxHipfireSmooth;
+		Features::Aimbot::P2020MinADSSmooth = Config::Aimbot::P2020MinADSSmooth;
+		Features::Aimbot::P2020MaxADSSmooth = Config::Aimbot::P2020MaxADSSmooth;
+		Features::Aimbot::P2020MinHipfireSmooth1 = Config::Aimbot::P2020MinHipfireSmooth1;
+		Features::Aimbot::P2020MaxHipfireSmooth1 = Config::Aimbot::P2020MaxHipfireSmooth1;
+		Features::Aimbot::P2020MinADSSmooth1 = Config::Aimbot::P2020MinADSSmooth1;
+		Features::Aimbot::P2020MaxADSSmooth1 = Config::Aimbot::P2020MaxADSSmooth1;
 		Features::Aimbot::P2020FOV = Config::Aimbot::P2020FOV;
 		Features::Aimbot::P2020ZoomScale = Config::Aimbot::P2020ZoomScale;
 		Features::Aimbot::P2020HipfireSmooth1 = Config::Aimbot::P2020HipfireSmooth1;
@@ -1939,6 +2272,15 @@ struct ConfigManager
 		Features::Aimbot::RE45Speed = Config::Aimbot::RE45Speed;
 		Features::Aimbot::RE45HipfireSmooth = Config::Aimbot::RE45HipfireSmooth;
 		Features::Aimbot::RE45ADSSmooth = Config::Aimbot::RE45ADSSmooth;
+		Features::Aimbot::RE45SmoothingMethod = Config::Aimbot::RE45SmoothingMethod;
+		Features::Aimbot::RE45MinHipfireSmooth = Config::Aimbot::RE45MinHipfireSmooth;
+		Features::Aimbot::RE45MaxHipfireSmooth = Config::Aimbot::RE45MaxHipfireSmooth;
+		Features::Aimbot::RE45MinADSSmooth = Config::Aimbot::RE45MinADSSmooth;
+		Features::Aimbot::RE45MaxADSSmooth = Config::Aimbot::RE45MaxADSSmooth;
+		Features::Aimbot::RE45MinHipfireSmooth1 = Config::Aimbot::RE45MinHipfireSmooth1;
+		Features::Aimbot::RE45MaxHipfireSmooth1 = Config::Aimbot::RE45MaxHipfireSmooth1;
+		Features::Aimbot::RE45MinADSSmooth1 = Config::Aimbot::RE45MinADSSmooth1;
+		Features::Aimbot::RE45MaxADSSmooth1 = Config::Aimbot::RE45MaxADSSmooth1;
 		Features::Aimbot::RE45FOV = Config::Aimbot::RE45FOV;
 		Features::Aimbot::RE45ZoomScale = Config::Aimbot::RE45ZoomScale;
 		Features::Aimbot::RE45HipfireSmooth1 = Config::Aimbot::RE45HipfireSmooth1;
@@ -1955,6 +2297,15 @@ struct ConfigManager
 		Features::Aimbot::AlternatorSpeed = Config::Aimbot::AlternatorSpeed;
 		Features::Aimbot::AlternatorHipfireSmooth = Config::Aimbot::AlternatorHipfireSmooth;
 		Features::Aimbot::AlternatorADSSmooth = Config::Aimbot::AlternatorADSSmooth;
+		Features::Aimbot::AlternatorSmoothingMethod = Config::Aimbot::AlternatorSmoothingMethod;
+		Features::Aimbot::AlternatorMinHipfireSmooth = Config::Aimbot::AlternatorMinHipfireSmooth;
+		Features::Aimbot::AlternatorMaxHipfireSmooth = Config::Aimbot::AlternatorMaxHipfireSmooth;
+		Features::Aimbot::AlternatorMinADSSmooth = Config::Aimbot::AlternatorMinADSSmooth;
+		Features::Aimbot::AlternatorMaxADSSmooth = Config::Aimbot::AlternatorMaxADSSmooth;
+		Features::Aimbot::AlternatorMinHipfireSmooth1 = Config::Aimbot::AlternatorMinHipfireSmooth1;
+		Features::Aimbot::AlternatorMaxHipfireSmooth1 = Config::Aimbot::AlternatorMaxHipfireSmooth1;
+		Features::Aimbot::AlternatorMinADSSmooth1 = Config::Aimbot::AlternatorMinADSSmooth1;
+		Features::Aimbot::AlternatorMaxADSSmooth1 = Config::Aimbot::AlternatorMaxADSSmooth1;
 		Features::Aimbot::AlternatorFOV = Config::Aimbot::AlternatorFOV;
 		Features::Aimbot::AlternatorZoomScale = Config::Aimbot::AlternatorZoomScale;
 		Features::Aimbot::AlternatorHipfireSmooth1 = Config::Aimbot::AlternatorHipfireSmooth1;
@@ -1971,6 +2322,15 @@ struct ConfigManager
 		Features::Aimbot::R99Speed = Config::Aimbot::R99Speed;
 		Features::Aimbot::R99HipfireSmooth = Config::Aimbot::R99HipfireSmooth;
 		Features::Aimbot::R99ADSSmooth = Config::Aimbot::R99ADSSmooth;
+		Features::Aimbot::R99SmoothingMethod = Config::Aimbot::R99SmoothingMethod;
+		Features::Aimbot::R99MinHipfireSmooth = Config::Aimbot::R99MinHipfireSmooth;
+		Features::Aimbot::R99MaxHipfireSmooth = Config::Aimbot::R99MaxHipfireSmooth;
+		Features::Aimbot::R99MinADSSmooth = Config::Aimbot::R99MinADSSmooth;
+		Features::Aimbot::R99MaxADSSmooth = Config::Aimbot::R99MaxADSSmooth;
+		Features::Aimbot::R99MinHipfireSmooth1 = Config::Aimbot::R99MinHipfireSmooth1;
+		Features::Aimbot::R99MaxHipfireSmooth1 = Config::Aimbot::R99MaxHipfireSmooth1;
+		Features::Aimbot::R99MinADSSmooth1 = Config::Aimbot::R99MinADSSmooth1;
+		Features::Aimbot::R99MaxADSSmooth1 = Config::Aimbot::R99MaxADSSmooth1;
 		Features::Aimbot::R99FOV = Config::Aimbot::R99FOV;
 		Features::Aimbot::R99ZoomScale = Config::Aimbot::R99ZoomScale;
 		Features::Aimbot::R99HipfireSmooth1 = Config::Aimbot::R99HipfireSmooth1;
@@ -1987,6 +2347,15 @@ struct ConfigManager
 		Features::Aimbot::R301Speed = Config::Aimbot::R301Speed;
 		Features::Aimbot::R301HipfireSmooth = Config::Aimbot::R301HipfireSmooth;
 		Features::Aimbot::R301ADSSmooth = Config::Aimbot::R301ADSSmooth;
+		Features::Aimbot::R301SmoothingMethod = Config::Aimbot::R301SmoothingMethod;
+		Features::Aimbot::R301MinHipfireSmooth = Config::Aimbot::R301MinHipfireSmooth;
+		Features::Aimbot::R301MaxHipfireSmooth = Config::Aimbot::R301MaxHipfireSmooth;
+		Features::Aimbot::R301MinADSSmooth = Config::Aimbot::R301MinADSSmooth;
+		Features::Aimbot::R301MaxADSSmooth = Config::Aimbot::R301MaxADSSmooth;
+		Features::Aimbot::R301MinHipfireSmooth1 = Config::Aimbot::R301MinHipfireSmooth1;
+		Features::Aimbot::R301MaxHipfireSmooth1 = Config::Aimbot::R301MaxHipfireSmooth1;
+		Features::Aimbot::R301MinADSSmooth1 = Config::Aimbot::R301MinADSSmooth1;
+		Features::Aimbot::R301MaxADSSmooth1 = Config::Aimbot::R301MaxADSSmooth1;
 		Features::Aimbot::R301FOV = Config::Aimbot::R301FOV;
 		Features::Aimbot::R301ZoomScale = Config::Aimbot::R301ZoomScale;
 		Features::Aimbot::R301HipfireSmooth1 = Config::Aimbot::R301HipfireSmooth1;
@@ -2003,6 +2372,15 @@ struct ConfigManager
 		Features::Aimbot::SpitfireSpeed = Config::Aimbot::SpitfireSpeed;
 		Features::Aimbot::SpitfireHipfireSmooth = Config::Aimbot::SpitfireHipfireSmooth;
 		Features::Aimbot::SpitfireADSSmooth = Config::Aimbot::SpitfireADSSmooth;
+		Features::Aimbot::SpitfireSmoothingMethod = Config::Aimbot::SpitfireSmoothingMethod;
+		Features::Aimbot::SpitfireMinHipfireSmooth = Config::Aimbot::SpitfireMinHipfireSmooth;
+		Features::Aimbot::SpitfireMaxHipfireSmooth = Config::Aimbot::SpitfireMaxHipfireSmooth;
+		Features::Aimbot::SpitfireMinADSSmooth = Config::Aimbot::SpitfireMinADSSmooth;
+		Features::Aimbot::SpitfireMaxADSSmooth = Config::Aimbot::SpitfireMaxADSSmooth;
+		Features::Aimbot::SpitfireMinHipfireSmooth1 = Config::Aimbot::SpitfireMinHipfireSmooth1;
+		Features::Aimbot::SpitfireMaxHipfireSmooth1 = Config::Aimbot::SpitfireMaxHipfireSmooth1;
+		Features::Aimbot::SpitfireMinADSSmooth1 = Config::Aimbot::SpitfireMinADSSmooth1;
+		Features::Aimbot::SpitfireMaxADSSmooth1 = Config::Aimbot::SpitfireMaxADSSmooth1;
 		Features::Aimbot::SpitfireFOV = Config::Aimbot::SpitfireFOV;
 		Features::Aimbot::SpitfireZoomScale = Config::Aimbot::SpitfireZoomScale;
 		Features::Aimbot::SpitfireHipfireSmooth1 = Config::Aimbot::SpitfireHipfireSmooth1;
@@ -2019,6 +2397,15 @@ struct ConfigManager
 		Features::Aimbot::G7Speed = Config::Aimbot::G7Speed;
 		Features::Aimbot::G7HipfireSmooth = Config::Aimbot::G7HipfireSmooth;
 		Features::Aimbot::G7ADSSmooth = Config::Aimbot::G7ADSSmooth;
+		Features::Aimbot::G7SmoothingMethod = Config::Aimbot::G7SmoothingMethod;
+		Features::Aimbot::G7MinHipfireSmooth = Config::Aimbot::G7MinHipfireSmooth;
+		Features::Aimbot::G7MaxHipfireSmooth = Config::Aimbot::G7MaxHipfireSmooth;
+		Features::Aimbot::G7MinADSSmooth = Config::Aimbot::G7MinADSSmooth;
+		Features::Aimbot::G7MaxADSSmooth = Config::Aimbot::G7MaxADSSmooth;
+		Features::Aimbot::G7MinHipfireSmooth1 = Config::Aimbot::G7MinHipfireSmooth1;
+		Features::Aimbot::G7MaxHipfireSmooth1 = Config::Aimbot::G7MaxHipfireSmooth1;
+		Features::Aimbot::G7MinADSSmooth1 = Config::Aimbot::G7MinADSSmooth1;
+		Features::Aimbot::G7MaxADSSmooth1 = Config::Aimbot::G7MaxADSSmooth1;
 		Features::Aimbot::G7FOV = Config::Aimbot::G7FOV;
 		Features::Aimbot::G7ZoomScale = Config::Aimbot::G7ZoomScale;
 		Features::Aimbot::G7HipfireSmooth1 = Config::Aimbot::G7HipfireSmooth1;
@@ -2035,6 +2422,15 @@ struct ConfigManager
 		Features::Aimbot::FlatlineSpeed = Config::Aimbot::FlatlineSpeed;
 		Features::Aimbot::FlatlineHipfireSmooth = Config::Aimbot::FlatlineHipfireSmooth;
 		Features::Aimbot::FlatlineADSSmooth = Config::Aimbot::FlatlineADSSmooth;
+		Features::Aimbot::FlatlineSmoothingMethod = Config::Aimbot::FlatlineSmoothingMethod;
+		Features::Aimbot::FlatlineMinHipfireSmooth = Config::Aimbot::FlatlineMinHipfireSmooth;
+		Features::Aimbot::FlatlineMaxHipfireSmooth = Config::Aimbot::FlatlineMaxHipfireSmooth;
+		Features::Aimbot::FlatlineMinADSSmooth = Config::Aimbot::FlatlineMinADSSmooth;
+		Features::Aimbot::FlatlineMaxADSSmooth = Config::Aimbot::FlatlineMaxADSSmooth;
+		Features::Aimbot::FlatlineMinHipfireSmooth1 = Config::Aimbot::FlatlineMinHipfireSmooth1;
+		Features::Aimbot::FlatlineMaxHipfireSmooth1 = Config::Aimbot::FlatlineMaxHipfireSmooth1;
+		Features::Aimbot::FlatlineMinADSSmooth1 = Config::Aimbot::FlatlineMinADSSmooth1;
+		Features::Aimbot::FlatlineMaxADSSmooth1 = Config::Aimbot::FlatlineMaxADSSmooth1;
 		Features::Aimbot::FlatlineFOV = Config::Aimbot::FlatlineFOV;
 		Features::Aimbot::FlatlineZoomScale = Config::Aimbot::FlatlineZoomScale;
 		Features::Aimbot::FlatlineHipfireSmooth1 = Config::Aimbot::FlatlineHipfireSmooth1;
@@ -2051,6 +2447,15 @@ struct ConfigManager
 		Features::Aimbot::HemlockSpeed = Config::Aimbot::HemlockSpeed;
 		Features::Aimbot::HemlockHipfireSmooth = Config::Aimbot::HemlockHipfireSmooth;
 		Features::Aimbot::HemlockADSSmooth = Config::Aimbot::HemlockADSSmooth;
+		Features::Aimbot::HemlockSmoothingMethod = Config::Aimbot::HemlockSmoothingMethod;
+		Features::Aimbot::HemlockMinHipfireSmooth = Config::Aimbot::HemlockMinHipfireSmooth;
+		Features::Aimbot::HemlockMaxHipfireSmooth = Config::Aimbot::HemlockMaxHipfireSmooth;
+		Features::Aimbot::HemlockMinADSSmooth = Config::Aimbot::HemlockMinADSSmooth;
+		Features::Aimbot::HemlockMaxADSSmooth = Config::Aimbot::HemlockMaxADSSmooth;
+		Features::Aimbot::HemlockMinHipfireSmooth1 = Config::Aimbot::HemlockMinHipfireSmooth1;
+		Features::Aimbot::HemlockMaxHipfireSmooth1 = Config::Aimbot::HemlockMaxHipfireSmooth1;
+		Features::Aimbot::HemlockMinADSSmooth1 = Config::Aimbot::HemlockMinADSSmooth1;
+		Features::Aimbot::HemlockMaxADSSmooth1 = Config::Aimbot::HemlockMaxADSSmooth1;
 		Features::Aimbot::HemlockFOV = Config::Aimbot::HemlockFOV;
 		Features::Aimbot::HemlockZoomScale = Config::Aimbot::HemlockZoomScale;
 		Features::Aimbot::HemlockHipfireSmooth1 = Config::Aimbot::HemlockHipfireSmooth1;
@@ -2067,6 +2472,15 @@ struct ConfigManager
 		Features::Aimbot::ProwlerSpeed = Config::Aimbot::ProwlerSpeed;
 		Features::Aimbot::ProwlerHipfireSmooth = Config::Aimbot::ProwlerHipfireSmooth;
 		Features::Aimbot::ProwlerADSSmooth = Config::Aimbot::ProwlerADSSmooth;
+		Features::Aimbot::ProwlerSmoothingMethod = Config::Aimbot::ProwlerSmoothingMethod;
+		Features::Aimbot::ProwlerMinHipfireSmooth = Config::Aimbot::ProwlerMinHipfireSmooth;
+		Features::Aimbot::ProwlerMaxHipfireSmooth = Config::Aimbot::ProwlerMaxHipfireSmooth;
+		Features::Aimbot::ProwlerMinADSSmooth = Config::Aimbot::ProwlerMinADSSmooth;
+		Features::Aimbot::ProwlerMaxADSSmooth = Config::Aimbot::ProwlerMaxADSSmooth;
+		Features::Aimbot::ProwlerMinHipfireSmooth1 = Config::Aimbot::ProwlerMinHipfireSmooth1;
+		Features::Aimbot::ProwlerMaxHipfireSmooth1 = Config::Aimbot::ProwlerMaxHipfireSmooth1;
+		Features::Aimbot::ProwlerMinADSSmooth1 = Config::Aimbot::ProwlerMinADSSmooth1;
+		Features::Aimbot::ProwlerMaxADSSmooth1 = Config::Aimbot::ProwlerMaxADSSmooth1;
 		Features::Aimbot::ProwlerFOV = Config::Aimbot::ProwlerFOV;
 		Features::Aimbot::ProwlerZoomScale = Config::Aimbot::ProwlerZoomScale;
 		Features::Aimbot::ProwlerHipfireSmooth1 = Config::Aimbot::ProwlerHipfireSmooth1;
@@ -2083,6 +2497,15 @@ struct ConfigManager
 		Features::Aimbot::RepeaterSpeed = Config::Aimbot::RepeaterSpeed;
 		Features::Aimbot::RepeaterHipfireSmooth = Config::Aimbot::RepeaterHipfireSmooth;
 		Features::Aimbot::RepeaterADSSmooth = Config::Aimbot::RepeaterADSSmooth;
+		Features::Aimbot::RepeaterSmoothingMethod = Config::Aimbot::RepeaterSmoothingMethod;
+		Features::Aimbot::RepeaterMinHipfireSmooth = Config::Aimbot::RepeaterMinHipfireSmooth;
+		Features::Aimbot::RepeaterMaxHipfireSmooth = Config::Aimbot::RepeaterMaxHipfireSmooth;
+		Features::Aimbot::RepeaterMinADSSmooth = Config::Aimbot::RepeaterMinADSSmooth;
+		Features::Aimbot::RepeaterMaxADSSmooth = Config::Aimbot::RepeaterMaxADSSmooth;
+		Features::Aimbot::RepeaterMinHipfireSmooth1 = Config::Aimbot::RepeaterMinHipfireSmooth1;
+		Features::Aimbot::RepeaterMaxHipfireSmooth1 = Config::Aimbot::RepeaterMaxHipfireSmooth1;
+		Features::Aimbot::RepeaterMinADSSmooth1 = Config::Aimbot::RepeaterMinADSSmooth1;
+		Features::Aimbot::RepeaterMaxADSSmooth1 = Config::Aimbot::RepeaterMaxADSSmooth1;
 		Features::Aimbot::RepeaterFOV = Config::Aimbot::RepeaterFOV;
 		Features::Aimbot::RepeaterZoomScale = Config::Aimbot::RepeaterZoomScale;
 		Features::Aimbot::RepeaterHipfireSmooth1 = Config::Aimbot::RepeaterHipfireSmooth1;
@@ -2099,6 +2522,15 @@ struct ConfigManager
 		Features::Aimbot::RampageSpeed = Config::Aimbot::RampageSpeed;
 		Features::Aimbot::RampageHipfireSmooth = Config::Aimbot::RampageHipfireSmooth;
 		Features::Aimbot::RampageADSSmooth = Config::Aimbot::RampageADSSmooth;
+		Features::Aimbot::RampageSmoothingMethod = Config::Aimbot::RampageSmoothingMethod;
+		Features::Aimbot::RampageMinHipfireSmooth = Config::Aimbot::RampageMinHipfireSmooth;
+		Features::Aimbot::RampageMaxHipfireSmooth = Config::Aimbot::RampageMaxHipfireSmooth;
+		Features::Aimbot::RampageMinADSSmooth = Config::Aimbot::RampageMinADSSmooth;
+		Features::Aimbot::RampageMaxADSSmooth = Config::Aimbot::RampageMaxADSSmooth;
+		Features::Aimbot::RampageMinHipfireSmooth1 = Config::Aimbot::RampageMinHipfireSmooth1;
+		Features::Aimbot::RampageMaxHipfireSmooth1 = Config::Aimbot::RampageMaxHipfireSmooth1;
+		Features::Aimbot::RampageMinADSSmooth1 = Config::Aimbot::RampageMinADSSmooth1;
+		Features::Aimbot::RampageMaxADSSmooth1 = Config::Aimbot::RampageMaxADSSmooth1;
 		Features::Aimbot::RampageFOV = Config::Aimbot::RampageFOV;
 		Features::Aimbot::RampageZoomScale = Config::Aimbot::RampageZoomScale;
 		Features::Aimbot::RampageHipfireSmooth1 = Config::Aimbot::RampageHipfireSmooth1;
@@ -2115,6 +2547,15 @@ struct ConfigManager
 		Features::Aimbot::CARSMGSpeed = Config::Aimbot::CARSMGSpeed;
 		Features::Aimbot::CARSMGHipfireSmooth = Config::Aimbot::CARSMGHipfireSmooth;
 		Features::Aimbot::CARSMGADSSmooth = Config::Aimbot::CARSMGADSSmooth;
+		Features::Aimbot::CARSMGSmoothingMethod = Config::Aimbot::CARSMGSmoothingMethod;
+		Features::Aimbot::CARSMGMinHipfireSmooth = Config::Aimbot::CARSMGMinHipfireSmooth;
+		Features::Aimbot::CARSMGMaxHipfireSmooth = Config::Aimbot::CARSMGMaxHipfireSmooth;
+		Features::Aimbot::CARSMGMinADSSmooth = Config::Aimbot::CARSMGMinADSSmooth;
+		Features::Aimbot::CARSMGMaxADSSmooth = Config::Aimbot::CARSMGMaxADSSmooth;
+		Features::Aimbot::CARSMGMinHipfireSmooth1 = Config::Aimbot::CARSMGMinHipfireSmooth1;
+		Features::Aimbot::CARSMGMaxHipfireSmooth1 = Config::Aimbot::CARSMGMaxHipfireSmooth1;
+		Features::Aimbot::CARSMGMinADSSmooth1 = Config::Aimbot::CARSMGMinADSSmooth1;
+		Features::Aimbot::CARSMGMaxADSSmooth1 = Config::Aimbot::CARSMGMaxADSSmooth1;
 		Features::Aimbot::CARSMGFOV = Config::Aimbot::CARSMGFOV;
 		Features::Aimbot::CARSMGZoomScale = Config::Aimbot::CARSMGZoomScale;
 		Features::Aimbot::CARSMGHipfireSmooth1 = Config::Aimbot::CARSMGHipfireSmooth1;
@@ -2131,6 +2572,15 @@ struct ConfigManager
 		Features::Aimbot::HavocSpeed = Config::Aimbot::HavocSpeed;
 		Features::Aimbot::HavocHipfireSmooth = Config::Aimbot::HavocHipfireSmooth;
 		Features::Aimbot::HavocADSSmooth = Config::Aimbot::HavocADSSmooth;
+		Features::Aimbot::HavocSmoothingMethod = Config::Aimbot::HavocSmoothingMethod;
+		Features::Aimbot::HavocMinHipfireSmooth = Config::Aimbot::HavocMinHipfireSmooth;
+		Features::Aimbot::HavocMaxHipfireSmooth = Config::Aimbot::HavocMaxHipfireSmooth;
+		Features::Aimbot::HavocMinADSSmooth = Config::Aimbot::HavocMinADSSmooth;
+		Features::Aimbot::HavocMaxADSSmooth = Config::Aimbot::HavocMaxADSSmooth;
+		Features::Aimbot::HavocMinHipfireSmooth1 = Config::Aimbot::HavocMinHipfireSmooth1;
+		Features::Aimbot::HavocMaxHipfireSmooth1 = Config::Aimbot::HavocMaxHipfireSmooth1;
+		Features::Aimbot::HavocMinADSSmooth1 = Config::Aimbot::HavocMinADSSmooth1;
+		Features::Aimbot::HavocMaxADSSmooth1 = Config::Aimbot::HavocMaxADSSmooth1;
 		Features::Aimbot::HavocFOV = Config::Aimbot::HavocFOV;
 		Features::Aimbot::HavocZoomScale = Config::Aimbot::HavocZoomScale;
 		Features::Aimbot::HavocHipfireSmooth1 = Config::Aimbot::HavocHipfireSmooth1;
@@ -2147,6 +2597,15 @@ struct ConfigManager
 		Features::Aimbot::DevotionSpeed = Config::Aimbot::DevotionSpeed;
 		Features::Aimbot::DevotionHipfireSmooth = Config::Aimbot::DevotionHipfireSmooth;
 		Features::Aimbot::DevotionADSSmooth = Config::Aimbot::DevotionADSSmooth;
+		Features::Aimbot::DevotionSmoothingMethod = Config::Aimbot::DevotionSmoothingMethod;
+		Features::Aimbot::DevotionMinHipfireSmooth = Config::Aimbot::DevotionMinHipfireSmooth;
+		Features::Aimbot::DevotionMaxHipfireSmooth = Config::Aimbot::DevotionMaxHipfireSmooth;
+		Features::Aimbot::DevotionMinADSSmooth = Config::Aimbot::DevotionMinADSSmooth;
+		Features::Aimbot::DevotionMaxADSSmooth = Config::Aimbot::DevotionMaxADSSmooth;
+		Features::Aimbot::DevotionMinHipfireSmooth1 = Config::Aimbot::DevotionMinHipfireSmooth1;
+		Features::Aimbot::DevotionMaxHipfireSmooth1 = Config::Aimbot::DevotionMaxHipfireSmooth1;
+		Features::Aimbot::DevotionMinADSSmooth1 = Config::Aimbot::DevotionMinADSSmooth1;
+		Features::Aimbot::DevotionMaxADSSmooth1 = Config::Aimbot::DevotionMaxADSSmooth1;
 		Features::Aimbot::DevotionFOV = Config::Aimbot::DevotionFOV;
 		Features::Aimbot::DevotionZoomScale = Config::Aimbot::DevotionZoomScale;
 		Features::Aimbot::DevotionHipfireSmooth1 = Config::Aimbot::DevotionHipfireSmooth1;
@@ -2163,6 +2622,15 @@ struct ConfigManager
 		Features::Aimbot::LSTARSpeed = Config::Aimbot::LSTARSpeed;
 		Features::Aimbot::LSTARHipfireSmooth = Config::Aimbot::LSTARHipfireSmooth;
 		Features::Aimbot::LSTARADSSmooth = Config::Aimbot::LSTARADSSmooth;
+		Features::Aimbot::LSTARSmoothingMethod = Config::Aimbot::LSTARSmoothingMethod;
+		Features::Aimbot::LSTARMinHipfireSmooth = Config::Aimbot::LSTARMinHipfireSmooth;
+		Features::Aimbot::LSTARMaxHipfireSmooth = Config::Aimbot::LSTARMaxHipfireSmooth;
+		Features::Aimbot::LSTARMinADSSmooth = Config::Aimbot::LSTARMinADSSmooth;
+		Features::Aimbot::LSTARMaxADSSmooth = Config::Aimbot::LSTARMaxADSSmooth;
+		Features::Aimbot::LSTARMinHipfireSmooth1 = Config::Aimbot::LSTARMinHipfireSmooth1;
+		Features::Aimbot::LSTARMaxHipfireSmooth1 = Config::Aimbot::LSTARMaxHipfireSmooth1;
+		Features::Aimbot::LSTARMinADSSmooth1 = Config::Aimbot::LSTARMinADSSmooth1;
+		Features::Aimbot::LSTARMaxADSSmooth1 = Config::Aimbot::LSTARMaxADSSmooth1;
 		Features::Aimbot::LSTARFOV = Config::Aimbot::LSTARFOV;
 		Features::Aimbot::LSTARZoomScale = Config::Aimbot::LSTARZoomScale;
 		Features::Aimbot::LSTARHipfireSmooth1 = Config::Aimbot::LSTARHipfireSmooth1;
@@ -2179,6 +2647,15 @@ struct ConfigManager
 		Features::Aimbot::TripleTakeSpeed = Config::Aimbot::TripleTakeSpeed;
 		Features::Aimbot::TripleTakeHipfireSmooth = Config::Aimbot::TripleTakeHipfireSmooth;
 		Features::Aimbot::TripleTakeADSSmooth = Config::Aimbot::TripleTakeADSSmooth;
+		Features::Aimbot::TripleTakeSmoothingMethod = Config::Aimbot::TripleTakeSmoothingMethod;
+		Features::Aimbot::TripleTakeMinHipfireSmooth = Config::Aimbot::TripleTakeMinHipfireSmooth;
+		Features::Aimbot::TripleTakeMaxHipfireSmooth = Config::Aimbot::TripleTakeMaxHipfireSmooth;
+		Features::Aimbot::TripleTakeMinADSSmooth = Config::Aimbot::TripleTakeMinADSSmooth;
+		Features::Aimbot::TripleTakeMaxADSSmooth = Config::Aimbot::TripleTakeMaxADSSmooth;
+		Features::Aimbot::TripleTakeMinHipfireSmooth1 = Config::Aimbot::TripleTakeMinHipfireSmooth1;
+		Features::Aimbot::TripleTakeMaxHipfireSmooth1 = Config::Aimbot::TripleTakeMaxHipfireSmooth1;
+		Features::Aimbot::TripleTakeMinADSSmooth1 = Config::Aimbot::TripleTakeMinADSSmooth1;
+		Features::Aimbot::TripleTakeMaxADSSmooth1 = Config::Aimbot::TripleTakeMaxADSSmooth1;
 		Features::Aimbot::TripleTakeFOV = Config::Aimbot::TripleTakeFOV;
 		Features::Aimbot::TripleTakeZoomScale = Config::Aimbot::TripleTakeZoomScale;
 		Features::Aimbot::TripleTakeHipfireSmooth1 = Config::Aimbot::TripleTakeHipfireSmooth1;
@@ -2195,6 +2672,15 @@ struct ConfigManager
 		Features::Aimbot::VoltSpeed = Config::Aimbot::VoltSpeed;
 		Features::Aimbot::VoltHipfireSmooth = Config::Aimbot::VoltHipfireSmooth;
 		Features::Aimbot::VoltADSSmooth = Config::Aimbot::VoltADSSmooth;
+		Features::Aimbot::VoltSmoothingMethod = Config::Aimbot::VoltSmoothingMethod;
+		Features::Aimbot::VoltMinHipfireSmooth = Config::Aimbot::VoltMinHipfireSmooth;
+		Features::Aimbot::VoltMaxHipfireSmooth = Config::Aimbot::VoltMaxHipfireSmooth;
+		Features::Aimbot::VoltMinADSSmooth = Config::Aimbot::VoltMinADSSmooth;
+		Features::Aimbot::VoltMaxADSSmooth = Config::Aimbot::VoltMaxADSSmooth;
+		Features::Aimbot::VoltMinHipfireSmooth1 = Config::Aimbot::VoltMinHipfireSmooth1;
+		Features::Aimbot::VoltMaxHipfireSmooth1 = Config::Aimbot::VoltMaxHipfireSmooth1;
+		Features::Aimbot::VoltMinADSSmooth1 = Config::Aimbot::VoltMinADSSmooth1;
+		Features::Aimbot::VoltMaxADSSmooth1 = Config::Aimbot::VoltMaxADSSmooth1;
 		Features::Aimbot::VoltFOV = Config::Aimbot::VoltFOV;
 		Features::Aimbot::VoltZoomScale = Config::Aimbot::VoltZoomScale;
 		Features::Aimbot::VoltHipfireSmooth1 = Config::Aimbot::VoltHipfireSmooth1;
@@ -2211,6 +2697,15 @@ struct ConfigManager
 		Features::Aimbot::NemesisSpeed = Config::Aimbot::NemesisSpeed;
 		Features::Aimbot::NemesisHipfireSmooth = Config::Aimbot::NemesisHipfireSmooth;
 		Features::Aimbot::NemesisADSSmooth = Config::Aimbot::NemesisADSSmooth;
+		Features::Aimbot::NemesisSmoothingMethod = Config::Aimbot::NemesisSmoothingMethod;
+		Features::Aimbot::NemesisMinHipfireSmooth = Config::Aimbot::NemesisMinHipfireSmooth;
+		Features::Aimbot::NemesisMaxHipfireSmooth = Config::Aimbot::NemesisMaxHipfireSmooth;
+		Features::Aimbot::NemesisMinADSSmooth = Config::Aimbot::NemesisMinADSSmooth;
+		Features::Aimbot::NemesisMaxADSSmooth = Config::Aimbot::NemesisMaxADSSmooth;
+		Features::Aimbot::NemesisMinHipfireSmooth1 = Config::Aimbot::NemesisMinHipfireSmooth1;
+		Features::Aimbot::NemesisMaxHipfireSmooth1 = Config::Aimbot::NemesisMaxHipfireSmooth1;
+		Features::Aimbot::NemesisMinADSSmooth1 = Config::Aimbot::NemesisMinADSSmooth1;
+		Features::Aimbot::NemesisMaxADSSmooth1 = Config::Aimbot::NemesisMaxADSSmooth1;
 		Features::Aimbot::NemesisFOV = Config::Aimbot::NemesisFOV;
 		Features::Aimbot::NemesisZoomScale = Config::Aimbot::NemesisZoomScale;
 		Features::Aimbot::NemesisHipfireSmooth1 = Config::Aimbot::NemesisHipfireSmooth1;
@@ -2227,6 +2722,15 @@ struct ConfigManager
 		Features::Aimbot::MozambiqueSpeed = Config::Aimbot::MozambiqueSpeed;
 		Features::Aimbot::MozambiqueHipfireSmooth = Config::Aimbot::MozambiqueHipfireSmooth;
 		Features::Aimbot::MozambiqueADSSmooth = Config::Aimbot::MozambiqueADSSmooth;
+		Features::Aimbot::MozambiqueSmoothingMethod = Config::Aimbot::MozambiqueSmoothingMethod;
+		Features::Aimbot::MozambiqueMinHipfireSmooth = Config::Aimbot::MozambiqueMinHipfireSmooth;
+		Features::Aimbot::MozambiqueMaxHipfireSmooth = Config::Aimbot::MozambiqueMaxHipfireSmooth;
+		Features::Aimbot::MozambiqueMinADSSmooth = Config::Aimbot::MozambiqueMinADSSmooth;
+		Features::Aimbot::MozambiqueMaxADSSmooth = Config::Aimbot::MozambiqueMaxADSSmooth;
+		Features::Aimbot::MozambiqueMinHipfireSmooth1 = Config::Aimbot::MozambiqueMinHipfireSmooth1;
+		Features::Aimbot::MozambiqueMaxHipfireSmooth1 = Config::Aimbot::MozambiqueMaxHipfireSmooth1;
+		Features::Aimbot::MozambiqueMinADSSmooth1 = Config::Aimbot::MozambiqueMinADSSmooth1;
+		Features::Aimbot::MozambiqueMaxADSSmooth1 = Config::Aimbot::MozambiqueMaxADSSmooth1;
 		Features::Aimbot::MozambiqueFOV = Config::Aimbot::MozambiqueFOV;
 		Features::Aimbot::MozambiqueZoomScale = Config::Aimbot::MozambiqueZoomScale;
 		Features::Aimbot::MozambiqueHipfireSmooth1 = Config::Aimbot::MozambiqueHipfireSmooth1;
@@ -2243,6 +2747,15 @@ struct ConfigManager
 		Features::Aimbot::PeacekeeperSpeed = Config::Aimbot::PeacekeeperSpeed;
 		Features::Aimbot::PeacekeeperHipfireSmooth = Config::Aimbot::PeacekeeperHipfireSmooth;
 		Features::Aimbot::PeacekeeperADSSmooth = Config::Aimbot::PeacekeeperADSSmooth;
+		Features::Aimbot::PeacekeeperSmoothingMethod = Config::Aimbot::PeacekeeperSmoothingMethod;
+		Features::Aimbot::PeacekeeperMinHipfireSmooth = Config::Aimbot::PeacekeeperMinHipfireSmooth;
+		Features::Aimbot::PeacekeeperMaxHipfireSmooth = Config::Aimbot::PeacekeeperMaxHipfireSmooth;
+		Features::Aimbot::PeacekeeperMinADSSmooth = Config::Aimbot::PeacekeeperMinADSSmooth;
+		Features::Aimbot::PeacekeeperMaxADSSmooth = Config::Aimbot::PeacekeeperMaxADSSmooth;
+		Features::Aimbot::PeacekeeperMinHipfireSmooth1 = Config::Aimbot::PeacekeeperMinHipfireSmooth1;
+		Features::Aimbot::PeacekeeperMaxHipfireSmooth1 = Config::Aimbot::PeacekeeperMaxHipfireSmooth1;
+		Features::Aimbot::PeacekeeperMinADSSmooth1 = Config::Aimbot::PeacekeeperMinADSSmooth1;
+		Features::Aimbot::PeacekeeperMaxADSSmooth1 = Config::Aimbot::PeacekeeperMaxADSSmooth1;
 		Features::Aimbot::PeacekeeperFOV = Config::Aimbot::PeacekeeperFOV;
 		Features::Aimbot::PeacekeeperZoomScale = Config::Aimbot::PeacekeeperZoomScale;
 		Features::Aimbot::PeacekeeperHipfireSmooth1 = Config::Aimbot::PeacekeeperHipfireSmooth1;
@@ -2259,6 +2772,15 @@ struct ConfigManager
 		Features::Aimbot::MastiffSpeed = Config::Aimbot::MastiffSpeed;
 		Features::Aimbot::MastiffHipfireSmooth = Config::Aimbot::MastiffHipfireSmooth;
 		Features::Aimbot::MastiffADSSmooth = Config::Aimbot::MastiffADSSmooth;
+		Features::Aimbot::MastiffSmoothingMethod = Config::Aimbot::MastiffSmoothingMethod;
+		Features::Aimbot::MastiffMinHipfireSmooth = Config::Aimbot::MastiffMinHipfireSmooth;
+		Features::Aimbot::MastiffMaxHipfireSmooth = Config::Aimbot::MastiffMaxHipfireSmooth;
+		Features::Aimbot::MastiffMinADSSmooth = Config::Aimbot::MastiffMinADSSmooth;
+		Features::Aimbot::MastiffMaxADSSmooth = Config::Aimbot::MastiffMaxADSSmooth;
+		Features::Aimbot::MastiffMinHipfireSmooth1 = Config::Aimbot::MastiffMinHipfireSmooth1;
+		Features::Aimbot::MastiffMaxHipfireSmooth1 = Config::Aimbot::MastiffMaxHipfireSmooth1;
+		Features::Aimbot::MastiffMinADSSmooth1 = Config::Aimbot::MastiffMinADSSmooth1;
+		Features::Aimbot::MastiffMaxADSSmooth1 = Config::Aimbot::MastiffMaxADSSmooth1;
 		Features::Aimbot::MastiffFOV = Config::Aimbot::MastiffFOV;
 		Features::Aimbot::MastiffZoomScale = Config::Aimbot::MastiffZoomScale;
 		Features::Aimbot::MastiffHipfireSmooth1 = Config::Aimbot::MastiffHipfireSmooth1;
@@ -2275,6 +2797,15 @@ struct ConfigManager
 		Features::Aimbot::LongbowSpeed = Config::Aimbot::LongbowSpeed;
 		Features::Aimbot::LongbowHipfireSmooth = Config::Aimbot::LongbowHipfireSmooth;
 		Features::Aimbot::LongbowADSSmooth = Config::Aimbot::LongbowADSSmooth;
+		Features::Aimbot::LongbowSmoothingMethod = Config::Aimbot::LongbowSmoothingMethod;
+		Features::Aimbot::LongbowMinHipfireSmooth = Config::Aimbot::LongbowMinHipfireSmooth;
+		Features::Aimbot::LongbowMaxHipfireSmooth = Config::Aimbot::LongbowMaxHipfireSmooth;
+		Features::Aimbot::LongbowMinADSSmooth = Config::Aimbot::LongbowMinADSSmooth;
+		Features::Aimbot::LongbowMaxADSSmooth = Config::Aimbot::LongbowMaxADSSmooth;
+		Features::Aimbot::LongbowMinHipfireSmooth1 = Config::Aimbot::LongbowMinHipfireSmooth1;
+		Features::Aimbot::LongbowMaxHipfireSmooth1 = Config::Aimbot::LongbowMaxHipfireSmooth1;
+		Features::Aimbot::LongbowMinADSSmooth1 = Config::Aimbot::LongbowMinADSSmooth1;
+		Features::Aimbot::LongbowMaxADSSmooth1 = Config::Aimbot::LongbowMaxADSSmooth1;
 		Features::Aimbot::LongbowFOV = Config::Aimbot::LongbowFOV;
 		Features::Aimbot::LongbowZoomScale = Config::Aimbot::LongbowZoomScale;
 		Features::Aimbot::LongbowHipfireSmooth1 = Config::Aimbot::LongbowHipfireSmooth1;
@@ -2291,6 +2822,15 @@ struct ConfigManager
 		Features::Aimbot::ChargeRifleSpeed = Config::Aimbot::ChargeRifleSpeed;
 		Features::Aimbot::ChargeRifleHipfireSmooth = Config::Aimbot::ChargeRifleHipfireSmooth;
 		Features::Aimbot::ChargeRifleADSSmooth = Config::Aimbot::ChargeRifleADSSmooth;
+		Features::Aimbot::ChargeRifleSmoothingMethod = Config::Aimbot::ChargeRifleSmoothingMethod;
+		Features::Aimbot::ChargeRifleMinHipfireSmooth = Config::Aimbot::ChargeRifleMinHipfireSmooth;
+		Features::Aimbot::ChargeRifleMaxHipfireSmooth = Config::Aimbot::ChargeRifleMaxHipfireSmooth;
+		Features::Aimbot::ChargeRifleMinADSSmooth = Config::Aimbot::ChargeRifleMinADSSmooth;
+		Features::Aimbot::ChargeRifleMaxADSSmooth = Config::Aimbot::ChargeRifleMaxADSSmooth;
+		Features::Aimbot::ChargeRifleMinHipfireSmooth1 = Config::Aimbot::ChargeRifleMinHipfireSmooth1;
+		Features::Aimbot::ChargeRifleMaxHipfireSmooth1 = Config::Aimbot::ChargeRifleMaxHipfireSmooth1;
+		Features::Aimbot::ChargeRifleMinADSSmooth1 = Config::Aimbot::ChargeRifleMinADSSmooth1;
+		Features::Aimbot::ChargeRifleMaxADSSmooth1 = Config::Aimbot::ChargeRifleMaxADSSmooth1;
 		Features::Aimbot::ChargeRifleFOV = Config::Aimbot::ChargeRifleFOV;
 		Features::Aimbot::ChargeRifleZoomScale = Config::Aimbot::ChargeRifleZoomScale;
 		Features::Aimbot::ChargeRifleHipfireSmooth1 = Config::Aimbot::ChargeRifleHipfireSmooth1;
@@ -2307,6 +2847,15 @@ struct ConfigManager
 		Features::Aimbot::SentinelSpeed = Config::Aimbot::SentinelSpeed;
 		Features::Aimbot::SentinelHipfireSmooth = Config::Aimbot::SentinelHipfireSmooth;
 		Features::Aimbot::SentinelADSSmooth = Config::Aimbot::SentinelADSSmooth;
+		Features::Aimbot::SentinelSmoothingMethod = Config::Aimbot::SentinelSmoothingMethod;
+		Features::Aimbot::SentinelMinHipfireSmooth = Config::Aimbot::SentinelMinHipfireSmooth;
+		Features::Aimbot::SentinelMaxHipfireSmooth = Config::Aimbot::SentinelMaxHipfireSmooth;
+		Features::Aimbot::SentinelMinADSSmooth = Config::Aimbot::SentinelMinADSSmooth;
+		Features::Aimbot::SentinelMaxADSSmooth = Config::Aimbot::SentinelMaxADSSmooth;
+		Features::Aimbot::SentinelMinHipfireSmooth1 = Config::Aimbot::SentinelMinHipfireSmooth1;
+		Features::Aimbot::SentinelMaxHipfireSmooth1 = Config::Aimbot::SentinelMaxHipfireSmooth1;
+		Features::Aimbot::SentinelMinADSSmooth1 = Config::Aimbot::SentinelMinADSSmooth1;
+		Features::Aimbot::SentinelMaxADSSmooth1 = Config::Aimbot::SentinelMaxADSSmooth1;
 		Features::Aimbot::SentinelFOV = Config::Aimbot::SentinelFOV;
 		Features::Aimbot::SentinelZoomScale = Config::Aimbot::SentinelZoomScale;
 		Features::Aimbot::SentinelHipfireSmooth1 = Config::Aimbot::SentinelHipfireSmooth1;
@@ -2323,6 +2872,15 @@ struct ConfigManager
 		Features::Aimbot::WingmanSpeed = Config::Aimbot::WingmanSpeed;
 		Features::Aimbot::WingmanHipfireSmooth = Config::Aimbot::WingmanHipfireSmooth;
 		Features::Aimbot::WingmanADSSmooth = Config::Aimbot::WingmanADSSmooth;
+		Features::Aimbot::WingmanSmoothingMethod = Config::Aimbot::WingmanSmoothingMethod;
+		Features::Aimbot::WingmanMinHipfireSmooth = Config::Aimbot::WingmanMinHipfireSmooth;
+		Features::Aimbot::WingmanMaxHipfireSmooth = Config::Aimbot::WingmanMaxHipfireSmooth;
+		Features::Aimbot::WingmanMinADSSmooth = Config::Aimbot::WingmanMinADSSmooth;
+		Features::Aimbot::WingmanMaxADSSmooth = Config::Aimbot::WingmanMaxADSSmooth;
+		Features::Aimbot::WingmanMinHipfireSmooth1 = Config::Aimbot::WingmanMinHipfireSmooth1;
+		Features::Aimbot::WingmanMaxHipfireSmooth1 = Config::Aimbot::WingmanMaxHipfireSmooth1;
+		Features::Aimbot::WingmanMinADSSmooth1 = Config::Aimbot::WingmanMinADSSmooth1;
+		Features::Aimbot::WingmanMaxADSSmooth1 = Config::Aimbot::WingmanMaxADSSmooth1;
 		Features::Aimbot::WingmanFOV = Config::Aimbot::WingmanFOV;
 		Features::Aimbot::WingmanZoomScale = Config::Aimbot::WingmanZoomScale;
 		Features::Aimbot::WingmanHipfireSmooth1 = Config::Aimbot::WingmanHipfireSmooth1;
@@ -2339,6 +2897,15 @@ struct ConfigManager
 		Features::Aimbot::EVA8Speed = Config::Aimbot::EVA8Speed;
 		Features::Aimbot::EVA8HipfireSmooth = Config::Aimbot::EVA8HipfireSmooth;
 		Features::Aimbot::EVA8ADSSmooth = Config::Aimbot::EVA8ADSSmooth;
+		Features::Aimbot::EVA8SmoothingMethod = Config::Aimbot::EVA8SmoothingMethod;
+		Features::Aimbot::EVA8MinHipfireSmooth = Config::Aimbot::EVA8MinHipfireSmooth;
+		Features::Aimbot::EVA8MaxHipfireSmooth = Config::Aimbot::EVA8MaxHipfireSmooth;
+		Features::Aimbot::EVA8MinADSSmooth = Config::Aimbot::EVA8MinADSSmooth;
+		Features::Aimbot::EVA8MaxADSSmooth = Config::Aimbot::EVA8MaxADSSmooth;
+		Features::Aimbot::EVA8MinHipfireSmooth1 = Config::Aimbot::EVA8MinHipfireSmooth1;
+		Features::Aimbot::EVA8MaxHipfireSmooth1 = Config::Aimbot::EVA8MaxHipfireSmooth1;
+		Features::Aimbot::EVA8MinADSSmooth1 = Config::Aimbot::EVA8MinADSSmooth1;
+		Features::Aimbot::EVA8MaxADSSmooth1 = Config::Aimbot::EVA8MaxADSSmooth1;
 		Features::Aimbot::EVA8FOV = Config::Aimbot::EVA8FOV;
 		Features::Aimbot::EVA8ZoomScale = Config::Aimbot::EVA8ZoomScale;
 		Features::Aimbot::EVA8HipfireSmooth1 = Config::Aimbot::EVA8HipfireSmooth1;
@@ -2355,6 +2922,15 @@ struct ConfigManager
 		Features::Aimbot::BocekSpeed = Config::Aimbot::BocekSpeed;
 		Features::Aimbot::BocekHipfireSmooth = Config::Aimbot::BocekHipfireSmooth;
 		Features::Aimbot::BocekADSSmooth = Config::Aimbot::BocekADSSmooth;
+		Features::Aimbot::BocekSmoothingMethod = Config::Aimbot::BocekSmoothingMethod;
+		Features::Aimbot::BocekMinHipfireSmooth = Config::Aimbot::BocekMinHipfireSmooth;
+		Features::Aimbot::BocekMaxHipfireSmooth = Config::Aimbot::BocekMaxHipfireSmooth;
+		Features::Aimbot::BocekMinADSSmooth = Config::Aimbot::BocekMinADSSmooth;
+		Features::Aimbot::BocekMaxADSSmooth = Config::Aimbot::BocekMaxADSSmooth;
+		Features::Aimbot::BocekMinHipfireSmooth1 = Config::Aimbot::BocekMinHipfireSmooth1;
+		Features::Aimbot::BocekMaxHipfireSmooth1 = Config::Aimbot::BocekMaxHipfireSmooth1;
+		Features::Aimbot::BocekMinADSSmooth1 = Config::Aimbot::BocekMinADSSmooth1;
+		Features::Aimbot::BocekMaxADSSmooth1 = Config::Aimbot::BocekMaxADSSmooth1;
 		Features::Aimbot::BocekFOV = Config::Aimbot::BocekFOV;
 		Features::Aimbot::BocekZoomScale = Config::Aimbot::BocekZoomScale;
 		Features::Aimbot::BocekHipfireSmooth1 = Config::Aimbot::BocekHipfireSmooth1;
@@ -2371,6 +2947,15 @@ struct ConfigManager
 		Features::Aimbot::KraberSpeed = Config::Aimbot::KraberSpeed;
 		Features::Aimbot::KraberHipfireSmooth = Config::Aimbot::KraberHipfireSmooth;
 		Features::Aimbot::KraberADSSmooth = Config::Aimbot::KraberADSSmooth;
+		Features::Aimbot::KraberSmoothingMethod = Config::Aimbot::KraberSmoothingMethod;
+		Features::Aimbot::KraberMinHipfireSmooth = Config::Aimbot::KraberMinHipfireSmooth;
+		Features::Aimbot::KraberMaxHipfireSmooth = Config::Aimbot::KraberMaxHipfireSmooth;
+		Features::Aimbot::KraberMinADSSmooth = Config::Aimbot::KraberMinADSSmooth;
+		Features::Aimbot::KraberMaxADSSmooth = Config::Aimbot::KraberMaxADSSmooth;
+		Features::Aimbot::KraberMinHipfireSmooth1 = Config::Aimbot::KraberMinHipfireSmooth1;
+		Features::Aimbot::KraberMaxHipfireSmooth1 = Config::Aimbot::KraberMaxHipfireSmooth1;
+		Features::Aimbot::KraberMinADSSmooth1 = Config::Aimbot::KraberMinADSSmooth1;
+		Features::Aimbot::KraberMaxADSSmooth1 = Config::Aimbot::KraberMaxADSSmooth1;
 		Features::Aimbot::KraberFOV = Config::Aimbot::KraberFOV;
 		Features::Aimbot::KraberZoomScale = Config::Aimbot::KraberZoomScale;
 		Features::Aimbot::KraberHipfireSmooth1 = Config::Aimbot::KraberHipfireSmooth1;
@@ -2387,6 +2972,15 @@ struct ConfigManager
 		Features::Aimbot::ThrowingKnifeSpeed = Config::Aimbot::ThrowingKnifeSpeed;
 		Features::Aimbot::ThrowingKnifeHipfireSmooth = Config::Aimbot::ThrowingKnifeHipfireSmooth;
 		Features::Aimbot::ThrowingKnifeADSSmooth = Config::Aimbot::ThrowingKnifeADSSmooth;
+		Features::Aimbot::ThrowingKnifeSmoothingMethod = Config::Aimbot::ThrowingKnifeSmoothingMethod;
+		Features::Aimbot::ThrowingKnifeMinHipfireSmooth = Config::Aimbot::ThrowingKnifeMinHipfireSmooth;
+		Features::Aimbot::ThrowingKnifeMaxHipfireSmooth = Config::Aimbot::ThrowingKnifeMaxHipfireSmooth;
+		Features::Aimbot::ThrowingKnifeMinADSSmooth = Config::Aimbot::ThrowingKnifeMinADSSmooth;
+		Features::Aimbot::ThrowingKnifeMaxADSSmooth = Config::Aimbot::ThrowingKnifeMaxADSSmooth;
+		Features::Aimbot::ThrowingKnifeMinHipfireSmooth1 = Config::Aimbot::ThrowingKnifeMinHipfireSmooth1;
+		Features::Aimbot::ThrowingKnifeMaxHipfireSmooth1 = Config::Aimbot::ThrowingKnifeMaxHipfireSmooth1;
+		Features::Aimbot::ThrowingKnifeMinADSSmooth1 = Config::Aimbot::ThrowingKnifeMinADSSmooth1;
+		Features::Aimbot::ThrowingKnifeMaxADSSmooth1 = Config::Aimbot::ThrowingKnifeMaxADSSmooth1;
 		Features::Aimbot::ThrowingKnifeFOV = Config::Aimbot::ThrowingKnifeFOV;
 		Features::Aimbot::ThrowingKnifeZoomScale = Config::Aimbot::ThrowingKnifeZoomScale;
 		Features::Aimbot::ThrowingKnifeHipfireSmooth1 = Config::Aimbot::ThrowingKnifeHipfireSmooth1;
@@ -2399,7 +2993,7 @@ struct ConfigManager
 
 		Features::AimbotBinds::AimBind = static_cast<InputKeyType>(Config::AimbotBinds::AimBind);
 		Features::AimbotBinds::ExtraBind = static_cast<InputKeyType>(Config::AimbotBinds::ExtraBind);
-		//Advanced
+		// Advanced
 		Features::AimbotBinds::P2020AimBind = static_cast<InputKeyType>(Config::AimbotBinds::P2020AimBind);
 		Features::AimbotBinds::P2020ExtraBind = static_cast<InputKeyType>(Config::AimbotBinds::P2020ExtraBind);
 		Features::AimbotBinds::RE45AimBind = static_cast<InputKeyType>(Config::AimbotBinds::RE45AimBind);
@@ -2462,7 +3056,7 @@ struct ConfigManager
 		Features::AimbotBinds::ThrowingKnifeExtraBind = static_cast<InputKeyType>(Config::AimbotBinds::ThrowingKnifeExtraBind);
 
 		Features::AimbotHitboxes::Hitbox = static_cast<HitboxType>(Config::AimbotHitboxes::Hitbox);
-		//Advanced
+		// Advanced
 		Features::AimbotHitboxes::P2020Hitbox = static_cast<HitboxType>(Config::AimbotHitboxes::P2020Hitbox);
 		Features::AimbotHitboxes::RE45Hitbox = static_cast<HitboxType>(Config::AimbotHitboxes::RE45Hitbox);
 		Features::AimbotHitboxes::AlternatorHitbox = static_cast<HitboxType>(Config::AimbotHitboxes::AlternatorHitbox);
@@ -2516,52 +3110,52 @@ struct ConfigManager
 		Features::Ragebot::Smooth = Config::Ragebot::Smooth;
 		Features::Ragebot::Speed = Config::Ragebot::Speed;
 		Features::Ragebot::HipfireSmooth = Config::Ragebot::HipfireSmooth;
-        Features::Ragebot::ADSSmooth = Config::Ragebot::ADSSmooth;
-        Features::Ragebot::SmoothDistance = Config::Ragebot::SmoothDistance;
-        Features::Ragebot::Delay = Config::Ragebot::Delay;
-        Features::Ragebot::FOV = Config::Ragebot::FOV;
-        Features::Ragebot::ZoomScale = Config::Ragebot::ZoomScale;
-        Features::Ragebot::MinDistance = Config::Ragebot::MinDistance;
-        Features::Ragebot::HipfireDistance = Config::Ragebot::HipfireDistance;
-        Features::Ragebot::ZoomDistance = Config::Ragebot::ZoomDistance;
+		Features::Ragebot::ADSSmooth = Config::Ragebot::ADSSmooth;
+		Features::Ragebot::SmoothDistance = Config::Ragebot::SmoothDistance;
+		Features::Ragebot::Delay = Config::Ragebot::Delay;
+		Features::Ragebot::FOV = Config::Ragebot::FOV;
+		Features::Ragebot::ZoomScale = Config::Ragebot::ZoomScale;
+		Features::Ragebot::MinDistance = Config::Ragebot::MinDistance;
+		Features::Ragebot::HipfireDistance = Config::Ragebot::HipfireDistance;
+		Features::Ragebot::ZoomDistance = Config::Ragebot::ZoomDistance;
 		Features::Ragebot::RecoilRate = Config::Ragebot::RecoilRate;
-        //Weapon Toggles
-        //Light
-        Features::Ragebot::P2020 = Config::Ragebot::P2020;
-        Features::Ragebot::RE45 = Config::Ragebot::RE45;
-        Features::Ragebot::Alternator = Config::Ragebot::Alternator;
-        Features::Ragebot::R99 = Config::Ragebot::R99;
-        Features::Ragebot::R301 = Config::Ragebot::R301;
-        Features::Ragebot::Spitfire = Config::Ragebot::Spitfire;
-        Features::Ragebot::G7 = Config::Ragebot::G7;
-        //Heavy
-        Features::Ragebot::Flatline = Config::Ragebot::Flatline;
-        Features::Ragebot::Hemlock = Config::Ragebot::Hemlock;
-        Features::Ragebot::Repeater = Config::Ragebot::Repeater;
-        Features::Ragebot::Rampage = Config::Ragebot::Rampage;
-        Features::Ragebot::CARSMG = Config::Ragebot::CARSMG;
-        //Energy
-        Features::Ragebot::Havoc = Config::Ragebot::Havoc;
-        Features::Ragebot::Devotion = Config::Ragebot::Devotion;
-        Features::Ragebot::LSTAR = Config::Ragebot::LSTAR;
-        Features::Ragebot::TripleTake = Config::Ragebot::TripleTake;
-        Features::Ragebot::Volt = Config::Ragebot::Volt;
-        Features::Ragebot::Nemesis = Config::Ragebot::Nemesis;
-        //Shotgun
-        Features::Ragebot::Mozambique = Config::Ragebot::Mozambique;
-        Features::Ragebot::EVA8 = Config::Ragebot::EVA8;
-        Features::Ragebot::Peacekeeper = Config::Ragebot::Peacekeeper;
-        Features::Ragebot::Mastiff = Config::Ragebot::Mastiff;
-        //Snipers
-        Features::Ragebot::Longbow = Config::Ragebot::Longbow;
-        Features::Ragebot::ChargeRifle = Config::Ragebot::ChargeRifle;
-        Features::Ragebot::Sentinel = Config::Ragebot::Sentinel;
-        //Legendary
-        Features::Ragebot::Wingman = Config::Ragebot::Wingman;
-        Features::Ragebot::Prowler = Config::Ragebot::Prowler;
-        Features::Ragebot::Bocek = Config::Ragebot::Bocek;
-        Features::Ragebot::Kraber = Config::Ragebot::Kraber;
-        Features::Ragebot::Knife = Config::Ragebot::Knife;
+		// Weapon Toggles
+		// Light
+		Features::Ragebot::P2020 = Config::Ragebot::P2020;
+		Features::Ragebot::RE45 = Config::Ragebot::RE45;
+		Features::Ragebot::Alternator = Config::Ragebot::Alternator;
+		Features::Ragebot::R99 = Config::Ragebot::R99;
+		Features::Ragebot::R301 = Config::Ragebot::R301;
+		Features::Ragebot::Spitfire = Config::Ragebot::Spitfire;
+		Features::Ragebot::G7 = Config::Ragebot::G7;
+		// Heavy
+		Features::Ragebot::Flatline = Config::Ragebot::Flatline;
+		Features::Ragebot::Hemlock = Config::Ragebot::Hemlock;
+		Features::Ragebot::Repeater = Config::Ragebot::Repeater;
+		Features::Ragebot::Rampage = Config::Ragebot::Rampage;
+		Features::Ragebot::CARSMG = Config::Ragebot::CARSMG;
+		// Energy
+		Features::Ragebot::Havoc = Config::Ragebot::Havoc;
+		Features::Ragebot::Devotion = Config::Ragebot::Devotion;
+		Features::Ragebot::LSTAR = Config::Ragebot::LSTAR;
+		Features::Ragebot::TripleTake = Config::Ragebot::TripleTake;
+		Features::Ragebot::Volt = Config::Ragebot::Volt;
+		Features::Ragebot::Nemesis = Config::Ragebot::Nemesis;
+		// Shotgun
+		Features::Ragebot::Mozambique = Config::Ragebot::Mozambique;
+		Features::Ragebot::EVA8 = Config::Ragebot::EVA8;
+		Features::Ragebot::Peacekeeper = Config::Ragebot::Peacekeeper;
+		Features::Ragebot::Mastiff = Config::Ragebot::Mastiff;
+		// Snipers
+		Features::Ragebot::Longbow = Config::Ragebot::Longbow;
+		Features::Ragebot::ChargeRifle = Config::Ragebot::ChargeRifle;
+		Features::Ragebot::Sentinel = Config::Ragebot::Sentinel;
+		// Legendary
+		Features::Ragebot::Wingman = Config::Ragebot::Wingman;
+		Features::Ragebot::Prowler = Config::Ragebot::Prowler;
+		Features::Ragebot::Bocek = Config::Ragebot::Bocek;
+		Features::Ragebot::Kraber = Config::Ragebot::Kraber;
+		Features::Ragebot::Knife = Config::Ragebot::Knife;
 
 		Features::Flickbot::Flickbot = Config::Flickbot::Flickbot;
 		Features::Flickbot::FlickbotMethod = Config::Flickbot::FlickbotMethod;
@@ -2579,51 +3173,51 @@ struct ConfigManager
 		Features::Flickbot::PreditcionAmount = Config::Flickbot::PreditcionAmount;
 		Features::Flickbot::FinalDistance = Config::Flickbot::FinalDistance;
 		Features::Flickbot::HipfireSmooth = Config::Flickbot::HipfireSmooth;
-        Features::Flickbot::ADSSmooth = Config::Flickbot::ADSSmooth;
-        Features::Flickbot::SmoothDistance = Config::Flickbot::SmoothDistance;
-        Features::Flickbot::Delay = Config::Flickbot::Delay;
-        Features::Flickbot::FOV = Config::Flickbot::FOV;
-        Features::Flickbot::ZoomScale = Config::Flickbot::ZoomScale;
-        Features::Flickbot::MinDistance = Config::Flickbot::MinDistance;
-        Features::Flickbot::HipfireDistance = Config::Flickbot::HipfireDistance;
-        Features::Flickbot::ZoomDistance = Config::Flickbot::ZoomDistance;
-		//Weapon Toggles
-        //Light
-        Features::Flickbot::P2020 = Config::Flickbot::P2020;
-        Features::Flickbot::RE45 = Config::Flickbot::RE45;
-        Features::Flickbot::Alternator = Config::Flickbot::Alternator;
-        Features::Flickbot::R99 = Config::Flickbot::R99;
-        Features::Flickbot::R301 = Config::Flickbot::R301;
-        Features::Flickbot::Spitfire = Config::Flickbot::Spitfire;
-        Features::Flickbot::G7 = Config::Flickbot::G7;
-        //Heavy
-        Features::Flickbot::Flatline = Config::Flickbot::Flatline;
-        Features::Flickbot::Hemlock = Config::Flickbot::Hemlock;
-        Features::Flickbot::Repeater = Config::Flickbot::Repeater;
-        Features::Flickbot::Rampage = Config::Flickbot::Rampage;
-        Features::Flickbot::CARSMG = Config::Flickbot::CARSMG;
-        //Energy
-        Features::Flickbot::Havoc = Config::Flickbot::Havoc;
-        Features::Flickbot::Devotion = Config::Flickbot::Devotion;
-        Features::Flickbot::LSTAR = Config::Flickbot::LSTAR;
-        Features::Flickbot::TripleTake = Config::Flickbot::TripleTake;
-        Features::Flickbot::Volt = Config::Flickbot::Volt;
-        Features::Flickbot::Nemesis = Config::Flickbot::Nemesis;
-        //Shotgun
-        Features::Flickbot::Mozambique = Config::Flickbot::Mozambique;
-        Features::Flickbot::EVA8 = Config::Flickbot::EVA8;
-        Features::Flickbot::Peacekeeper = Config::Flickbot::Peacekeeper;
-        Features::Flickbot::Mastiff = Config::Flickbot::Mastiff;
-        //Snipers
-        Features::Flickbot::Longbow = Config::Flickbot::Longbow;
-        Features::Flickbot::ChargeRifle = Config::Flickbot::ChargeRifle;
-        Features::Flickbot::Sentinel = Config::Flickbot::Sentinel;
-        //Legendary
-        Features::Flickbot::Wingman = Config::Flickbot::Wingman;
-        Features::Flickbot::Prowler = Config::Flickbot::Prowler;
-        Features::Flickbot::Bocek = Config::Flickbot::Bocek;
-        Features::Flickbot::Kraber = Config::Flickbot::Kraber;
-        Features::Flickbot::Knife = Config::Flickbot::Knife;
+		Features::Flickbot::ADSSmooth = Config::Flickbot::ADSSmooth;
+		Features::Flickbot::SmoothDistance = Config::Flickbot::SmoothDistance;
+		Features::Flickbot::Delay = Config::Flickbot::Delay;
+		Features::Flickbot::FOV = Config::Flickbot::FOV;
+		Features::Flickbot::ZoomScale = Config::Flickbot::ZoomScale;
+		Features::Flickbot::MinDistance = Config::Flickbot::MinDistance;
+		Features::Flickbot::HipfireDistance = Config::Flickbot::HipfireDistance;
+		Features::Flickbot::ZoomDistance = Config::Flickbot::ZoomDistance;
+		// Weapon Toggles
+		// Light
+		Features::Flickbot::P2020 = Config::Flickbot::P2020;
+		Features::Flickbot::RE45 = Config::Flickbot::RE45;
+		Features::Flickbot::Alternator = Config::Flickbot::Alternator;
+		Features::Flickbot::R99 = Config::Flickbot::R99;
+		Features::Flickbot::R301 = Config::Flickbot::R301;
+		Features::Flickbot::Spitfire = Config::Flickbot::Spitfire;
+		Features::Flickbot::G7 = Config::Flickbot::G7;
+		// Heavy
+		Features::Flickbot::Flatline = Config::Flickbot::Flatline;
+		Features::Flickbot::Hemlock = Config::Flickbot::Hemlock;
+		Features::Flickbot::Repeater = Config::Flickbot::Repeater;
+		Features::Flickbot::Rampage = Config::Flickbot::Rampage;
+		Features::Flickbot::CARSMG = Config::Flickbot::CARSMG;
+		// Energy
+		Features::Flickbot::Havoc = Config::Flickbot::Havoc;
+		Features::Flickbot::Devotion = Config::Flickbot::Devotion;
+		Features::Flickbot::LSTAR = Config::Flickbot::LSTAR;
+		Features::Flickbot::TripleTake = Config::Flickbot::TripleTake;
+		Features::Flickbot::Volt = Config::Flickbot::Volt;
+		Features::Flickbot::Nemesis = Config::Flickbot::Nemesis;
+		// Shotgun
+		Features::Flickbot::Mozambique = Config::Flickbot::Mozambique;
+		Features::Flickbot::EVA8 = Config::Flickbot::EVA8;
+		Features::Flickbot::Peacekeeper = Config::Flickbot::Peacekeeper;
+		Features::Flickbot::Mastiff = Config::Flickbot::Mastiff;
+		// Snipers
+		Features::Flickbot::Longbow = Config::Flickbot::Longbow;
+		Features::Flickbot::ChargeRifle = Config::Flickbot::ChargeRifle;
+		Features::Flickbot::Sentinel = Config::Flickbot::Sentinel;
+		// Legendary
+		Features::Flickbot::Wingman = Config::Flickbot::Wingman;
+		Features::Flickbot::Prowler = Config::Flickbot::Prowler;
+		Features::Flickbot::Bocek = Config::Flickbot::Bocek;
+		Features::Flickbot::Kraber = Config::Flickbot::Kraber;
+		Features::Flickbot::Knife = Config::Flickbot::Knife;
 
 		Features::RCS::RCSEnabled = Config::RCS::RCSEnabled;
 		Features::RCS::RCSMode = Config::RCS::RCSMode;
@@ -2632,42 +3226,42 @@ struct ConfigManager
 		Features::RCS::YawPower = Config::RCS::YawPower;
 		Features::RCS::PitchReduction = Config::RCS::PitchReduction;
 		Features::RCS::YawReduction = Config::RCS::YawReduction;
-		//Weapon Toggles
-        //Light
-        Features::RCS::P2020 = Config::RCS::P2020;
-        Features::RCS::RE45 = Config::RCS::RE45;
-        Features::RCS::Alternator = Config::RCS::Alternator;
-        Features::RCS::R99 = Config::RCS::R99;
-        Features::RCS::R301 = Config::RCS::R301;
-        Features::RCS::Spitfire = Config::RCS::Spitfire;
-        Features::RCS::G7 = Config::RCS::G7;
-        //Heavy
-        Features::RCS::Flatline = Config::RCS::Flatline;
-        Features::RCS::Hemlock = Config::RCS::Hemlock;
-        Features::RCS::Repeater = Config::RCS::Repeater;
-        Features::RCS::Rampage = Config::RCS::Rampage;
-        Features::RCS::CARSMG = Config::RCS::CARSMG;
-        //Energy
-        Features::RCS::Havoc = Config::RCS::Havoc;
-        Features::RCS::Devotion = Config::RCS::Devotion;
-        Features::RCS::LSTAR = Config::RCS::LSTAR;
-        Features::RCS::TripleTake = Config::RCS::TripleTake;
-        Features::RCS::Volt = Config::RCS::Volt;
-        Features::RCS::Nemesis = Config::RCS::Nemesis;
-        //Shotgun
-        Features::RCS::Mozambique = Config::RCS::Mozambique;
-        Features::RCS::EVA8 = Config::RCS::EVA8;
-        Features::RCS::Peacekeeper = Config::RCS::Peacekeeper;
-        Features::RCS::Mastiff = Config::RCS::Mastiff;
-        //Snipers
-        Features::RCS::Longbow = Config::RCS::Longbow;
-        Features::RCS::ChargeRifle = Config::RCS::ChargeRifle;
-        Features::RCS::Sentinel = Config::RCS::Sentinel;
-        //Legendary
-        Features::RCS::Wingman = Config::RCS::Wingman;
-        Features::RCS::Prowler = Config::RCS::Prowler;
-        Features::RCS::Kraber = Config::RCS::Kraber;
-		//Advanced
+		// Weapon Toggles
+		// Light
+		Features::RCS::P2020 = Config::RCS::P2020;
+		Features::RCS::RE45 = Config::RCS::RE45;
+		Features::RCS::Alternator = Config::RCS::Alternator;
+		Features::RCS::R99 = Config::RCS::R99;
+		Features::RCS::R301 = Config::RCS::R301;
+		Features::RCS::Spitfire = Config::RCS::Spitfire;
+		Features::RCS::G7 = Config::RCS::G7;
+		// Heavy
+		Features::RCS::Flatline = Config::RCS::Flatline;
+		Features::RCS::Hemlock = Config::RCS::Hemlock;
+		Features::RCS::Repeater = Config::RCS::Repeater;
+		Features::RCS::Rampage = Config::RCS::Rampage;
+		Features::RCS::CARSMG = Config::RCS::CARSMG;
+		// Energy
+		Features::RCS::Havoc = Config::RCS::Havoc;
+		Features::RCS::Devotion = Config::RCS::Devotion;
+		Features::RCS::LSTAR = Config::RCS::LSTAR;
+		Features::RCS::TripleTake = Config::RCS::TripleTake;
+		Features::RCS::Volt = Config::RCS::Volt;
+		Features::RCS::Nemesis = Config::RCS::Nemesis;
+		// Shotgun
+		Features::RCS::Mozambique = Config::RCS::Mozambique;
+		Features::RCS::EVA8 = Config::RCS::EVA8;
+		Features::RCS::Peacekeeper = Config::RCS::Peacekeeper;
+		Features::RCS::Mastiff = Config::RCS::Mastiff;
+		// Snipers
+		Features::RCS::Longbow = Config::RCS::Longbow;
+		Features::RCS::ChargeRifle = Config::RCS::ChargeRifle;
+		Features::RCS::Sentinel = Config::RCS::Sentinel;
+		// Legendary
+		Features::RCS::Wingman = Config::RCS::Wingman;
+		Features::RCS::Prowler = Config::RCS::Prowler;
+		Features::RCS::Kraber = Config::RCS::Kraber;
+		// Advanced
 		Features::RCS::AdvancedRCS = Config::RCS::AdvancedRCS;
 		Features::RCS::AdvancedPitchPower = Config::RCS::AdvancedPitchPower;
 		Features::RCS::AdvancedYawPower = Config::RCS::AdvancedYawPower;
@@ -2792,44 +3386,44 @@ struct ConfigManager
 		Features::Triggerbot::OnADS = Config::Triggerbot::OnADS;
 		Features::Triggerbot::HipfireShotguns = Config::Triggerbot::HipfireShotguns;
 		Features::Triggerbot::Range = Config::Triggerbot::Range;
-		//Weapon Toggles
-        //Light
-        Features::Triggerbot::P2020 = Config::Triggerbot::P2020;
-        Features::Triggerbot::RE45 = Config::Triggerbot::RE45;
-        Features::Triggerbot::Alternator = Config::Triggerbot::Alternator;
-        Features::Triggerbot::R99 = Config::Triggerbot::R99;
-        Features::Triggerbot::R301 = Config::Triggerbot::R301;
-        Features::Triggerbot::Spitfire = Config::Triggerbot::Spitfire;
-        Features::Triggerbot::G7 = Config::Triggerbot::G7;
-        //Heavy
-        Features::Triggerbot::Flatline = Config::Triggerbot::Flatline;
-        Features::Triggerbot::Hemlock = Config::Triggerbot::Hemlock;
-        Features::Triggerbot::Repeater = Config::Triggerbot::Repeater;
-        Features::Triggerbot::Rampage = Config::Triggerbot::Rampage;
-        Features::Triggerbot::CARSMG = Config::Triggerbot::CARSMG;
-        //Energy
-        Features::Triggerbot::Havoc = Config::Triggerbot::Havoc;
-        Features::Triggerbot::Devotion = Config::Triggerbot::Devotion;
-        Features::Triggerbot::LSTAR = Config::Triggerbot::LSTAR;
-        Features::Triggerbot::TripleTake = Config::Triggerbot::TripleTake;
-        Features::Triggerbot::Volt = Config::Triggerbot::Volt;
-        Features::Triggerbot::Nemesis = Config::Triggerbot::Nemesis;
-        //Shotgun
-        Features::Triggerbot::Mozambique = Config::Triggerbot::Mozambique;
-        Features::Triggerbot::EVA8 = Config::Triggerbot::EVA8;
-        Features::Triggerbot::Peacekeeper = Config::Triggerbot::Peacekeeper;
-        Features::Triggerbot::Mastiff = Config::Triggerbot::Mastiff;
-        //Snipers
-        Features::Triggerbot::Longbow = Config::Triggerbot::Longbow;
-        Features::Triggerbot::ChargeRifle = Config::Triggerbot::ChargeRifle;
-        Features::Triggerbot::Sentinel = Config::Triggerbot::Sentinel;
-        //Legendary
-        Features::Triggerbot::Wingman = Config::Triggerbot::Wingman;
-        Features::Triggerbot::Prowler = Config::Triggerbot::Prowler;
-        Features::Triggerbot::Bocek = Config::Triggerbot::Bocek;
-        Features::Triggerbot::Kraber = Config::Triggerbot::Kraber;
-        Features::Triggerbot::Knife = Config::Triggerbot::Knife;
-		//Advanced
+		// Weapon Toggles
+		// Light
+		Features::Triggerbot::P2020 = Config::Triggerbot::P2020;
+		Features::Triggerbot::RE45 = Config::Triggerbot::RE45;
+		Features::Triggerbot::Alternator = Config::Triggerbot::Alternator;
+		Features::Triggerbot::R99 = Config::Triggerbot::R99;
+		Features::Triggerbot::R301 = Config::Triggerbot::R301;
+		Features::Triggerbot::Spitfire = Config::Triggerbot::Spitfire;
+		Features::Triggerbot::G7 = Config::Triggerbot::G7;
+		// Heavy
+		Features::Triggerbot::Flatline = Config::Triggerbot::Flatline;
+		Features::Triggerbot::Hemlock = Config::Triggerbot::Hemlock;
+		Features::Triggerbot::Repeater = Config::Triggerbot::Repeater;
+		Features::Triggerbot::Rampage = Config::Triggerbot::Rampage;
+		Features::Triggerbot::CARSMG = Config::Triggerbot::CARSMG;
+		// Energy
+		Features::Triggerbot::Havoc = Config::Triggerbot::Havoc;
+		Features::Triggerbot::Devotion = Config::Triggerbot::Devotion;
+		Features::Triggerbot::LSTAR = Config::Triggerbot::LSTAR;
+		Features::Triggerbot::TripleTake = Config::Triggerbot::TripleTake;
+		Features::Triggerbot::Volt = Config::Triggerbot::Volt;
+		Features::Triggerbot::Nemesis = Config::Triggerbot::Nemesis;
+		// Shotgun
+		Features::Triggerbot::Mozambique = Config::Triggerbot::Mozambique;
+		Features::Triggerbot::EVA8 = Config::Triggerbot::EVA8;
+		Features::Triggerbot::Peacekeeper = Config::Triggerbot::Peacekeeper;
+		Features::Triggerbot::Mastiff = Config::Triggerbot::Mastiff;
+		// Snipers
+		Features::Triggerbot::Longbow = Config::Triggerbot::Longbow;
+		Features::Triggerbot::ChargeRifle = Config::Triggerbot::ChargeRifle;
+		Features::Triggerbot::Sentinel = Config::Triggerbot::Sentinel;
+		// Legendary
+		Features::Triggerbot::Wingman = Config::Triggerbot::Wingman;
+		Features::Triggerbot::Prowler = Config::Triggerbot::Prowler;
+		Features::Triggerbot::Bocek = Config::Triggerbot::Bocek;
+		Features::Triggerbot::Kraber = Config::Triggerbot::Kraber;
+		Features::Triggerbot::Knife = Config::Triggerbot::Knife;
+		// Advanced
 		Features::Triggerbot::AdvancedTriggerbot = Config::Triggerbot::AdvancedTriggerbot;
 		Features::Triggerbot::P2020Range = Config::Triggerbot::P2020Range;
 		Features::Triggerbot::RE45Range = Config::Triggerbot::RE45Range;
@@ -2992,6 +3586,7 @@ struct ConfigManager
 		Features::Radar::CircleColor[3] = Config::Radar::CircleColorA;
 
 		Features::Misc::SuperGlide = Config::Misc::SuperGlide;
+		Features::Misc::SuperGlideFPS = Config::Misc::SuperGlideFPS;
 		Features::Misc::QuickTurn = Config::Misc::QuickTurn;
 		Features::Misc::QuickTurnAngle = Config::Misc::QuickTurnAngle;
 		Features::Misc::QuickTurnBind = static_cast<InputKeyType>(Config::Misc::QuickTurnBind);
@@ -3302,7 +3897,6 @@ struct ConfigManager
 		Features::Watermark::ProcessingSpeed = Config::Watermark::ProcessingSpeed;
 		Features::Watermark::Spectators = Config::Watermark::Spectators;
 
-		Features::Settings::GamemodeCheck = Config::Settings::GamemodeCheck;
 		Features::Settings::ESPEnabled = Config::Settings::ESPEnabled;
 		Features::Settings::OverlayEnabled = Config::Settings::OverlayEnabled;
 		Features::Settings::FPSCap = Config::Settings::FPSCap;
@@ -3313,44 +3907,71 @@ struct ConfigManager
 	{
 		std::string ConfigName = "Configs/" + std::string(configName) + ".ini";
 		INIReader reader(ConfigName);
-		if (reader.ParseError() < 0) {
+		if (reader.ParseError() < 0)
+		{
 			UpdateConfig();
 			return false;
 		}
-		
+
 		ReadBool(Aimbot, AimbotEnabled);
-		ReadInt(Aimbot, BindMethod);
-		ReadInt(Aimbot, AimbotMode);	 // Cubic Beizer (xap-client) or Grinder (Possibly linear?)
-		ReadInt(Aimbot, InputMethod); // MoveMouse or Controller (Write To ViewAngles)
-		ReadBool(Aimbot, ClosestHitbox);
-		ReadBool(Aimbot, OnFire);
-		ReadBool(Aimbot, OnADS);
-		ReadBool(Aimbot, VisCheck);
-		ReadBool(Aimbot, TeamCheck);
-		ReadBool(Aimbot, TargetSwitching);
-		ReadInt(Aimbot, Priority);
-		ReadBool(Aimbot, PredictMovement);
-		ReadBool(Aimbot, PredictBulletDrop);
-		ReadFloat(Aimbot, FinalDistance);
-		ReadFloat(Aimbot, Smooth);
-		ReadFloat(Aimbot, Speed);
-		ReadFloat(Aimbot, HipfireSmooth);
-		ReadFloat(Aimbot, ADSSmooth);
-		ReadFloat(Aimbot, SmoothDistance);
-		ReadInt(Aimbot, Delay);
-		ReadFloat(Aimbot, FOV);
-		ReadFloat(Aimbot, ZoomScale);
-		ReadFloat(Aimbot, MinDistance);
-		ReadFloat(Aimbot, HipfireDistance);
-		ReadFloat(Aimbot, ZoomDistance);
-		// AimMode 2
-		ReadFloat(Aimbot, HipfireSmooth1);
-		ReadFloat(Aimbot, ADSSmooth1);
-		ReadFloat(Aimbot, ExtraSmoothing);
-		ReadFloat(Aimbot, Deadzone);
-		ReadFloat(Aimbot, FOV1);
-		ReadFloat(Aimbot, MinDistance2);
-		ReadFloat(Aimbot, MaxDistance2);
+        ReadInt(Aimbot, BindMethod);
+        ReadInt(Aimbot, AimbotMode); // Cubic Beizer (xap-client) or Grinder (Possibly linear?) or [New] Cubic Beizer (Testing)
+        ReadInt(Aimbot, InputMethod); // MoveMouse or Controller (Write To ViewAngles)
+
+        ReadBool(Aimbot, ClosestHitbox);
+
+        ReadBool(Aimbot, OnFire);
+        ReadBool(Aimbot, OnADS);
+        ReadBool(Aimbot, VisCheck);
+        ReadBool(Aimbot, TeamCheck);
+        ReadBool(Aimbot, TargetSwitching);
+        ReadInt(Aimbot, Priority);
+
+        ReadBool(Aimbot, PredictMovement);
+        ReadBool(Aimbot, PredictBulletDrop);
+
+        ReadFloat(Aimbot, FinalDistance);
+        ReadFloat(Aimbot, Smooth);
+
+        ReadFloat(Aimbot, Speed);
+        ReadInt(Aimbot, SmoothingMethod); // 0 = Static, 1 = Random
+
+        ReadFloat(Aimbot, HipfireSmooth);
+        ReadFloat(Aimbot, ADSSmooth);
+        ReadFloat(Aimbot, MinHipfireSmooth);
+        ReadFloat(Aimbot, MaxHipfireSmooth);
+        ReadFloat(Aimbot, MinADSSmooth);
+        ReadFloat(Aimbot, MaxADSSmooth);
+
+        //AimMode 3 (Testing)
+        ReadFloat(Aimbot, MouseHipfireSmoothing);
+        ReadFloat(Aimbot, MouseADSSmoothing);
+        ReadFloat(Aimbot, MouseExtraSmoothing);
+        ReadFloat(Aimbot, MinMouseHipfireSmoothing);
+        ReadFloat(Aimbot, MaxMouseHipfireSmoothing);
+        ReadFloat(Aimbot, MinMouseADSSmoothing);
+        ReadFloat(Aimbot, MaxMouseADSSmoothing);
+
+        ReadInt(Aimbot, Delay);
+        ReadFloat(Aimbot, FOV);
+        ReadFloat(Aimbot, ZoomScale);
+        ReadFloat(Aimbot, MinDistance);
+        ReadFloat(Aimbot, HipfireDistance);
+        ReadFloat(Aimbot, ZoomDistance);
+        
+        //AimMode 2
+        ReadFloat(Aimbot, HipfireSmooth1);
+        ReadFloat(Aimbot, ADSSmooth1);
+        ReadFloat(Aimbot, MinHipfireSmooth1);
+        ReadFloat(Aimbot, MaxHipfireSmooth1);
+        ReadFloat(Aimbot, MinADSSmooth1);
+        ReadFloat(Aimbot, MaxADSSmooth1);
+        ReadFloat(Aimbot, ExtraSmoothing);
+        ReadFloat(Aimbot, Deadzone);
+        ReadFloat(Aimbot, FOV1);
+        ReadFloat(Aimbot, MinDistance2);
+        ReadFloat(Aimbot, MaxDistance2);
+
 		// Weapon Toggles
 		// Light
 		ReadBool(Aimbot, P2020);
@@ -3360,12 +3981,14 @@ struct ConfigManager
 		ReadBool(Aimbot, R301);
 		ReadBool(Aimbot, Spitfire);
 		ReadBool(Aimbot, G7);
+
 		// Heavy
 		ReadBool(Aimbot, Flatline);
 		ReadBool(Aimbot, Hemlock);
 		ReadBool(Aimbot, Repeater);
 		ReadBool(Aimbot, Rampage);
 		ReadBool(Aimbot, CARSMG);
+
 		// Energy
 		ReadBool(Aimbot, Havoc);
 		ReadBool(Aimbot, Devotion);
@@ -3373,40 +3996,54 @@ struct ConfigManager
 		ReadBool(Aimbot, TripleTake);
 		ReadBool(Aimbot, Volt);
 		ReadBool(Aimbot, Nemesis);
+
 		// Shotgun
 		ReadBool(Aimbot, Mozambique);
 		ReadBool(Aimbot, EVA8);
 		ReadBool(Aimbot, Peacekeeper);
 		ReadBool(Aimbot, Mastiff);
+
 		// Snipers
 		ReadBool(Aimbot, Longbow);
 		ReadBool(Aimbot, ChargeRifle);
 		ReadBool(Aimbot, Sentinel);
+
 		// Legendary
 		ReadBool(Aimbot, Wingman);
 		ReadBool(Aimbot, Prowler);
 		ReadBool(Aimbot, Bocek);
 		ReadBool(Aimbot, Kraber);
 		ReadBool(Aimbot, Knife);
+
 		//---------------Advanced---------------//
-		ReadBool(Aimbot, AdvancedAim);
-		ReadBool(Aimbot, AdvancedFire);
-		ReadBool(Aimbot, AdvancedADS);
-		// Aimbot Mode 0 - xap-client
-		ReadBool(Aimbot, AdvancedClosestHitbox);
-		ReadFloat(Aimbot, AdvancedHitbox);
-		ReadFloat(Aimbot, AdvancedSpeed);
-		ReadFloat(Aimbot, AdvancedSmooth);
-		ReadFloat(Aimbot, AdvancedHipfireSmooth);
-		ReadFloat(Aimbot, AdvancedADSSmooth);
-		// Aimbot Mode 1 - Grinder
-		ReadFloat(Aimbot, AdvancedHipfireSmooth1);
-		ReadFloat(Aimbot, AdvancedADSSmooth1);
-		ReadFloat(Aimbot, AdvancedExtraSmooth1);
-		ReadFloat(Aimbot, AdvancedFOV1);
-		ReadFloat(Aimbot, AdvancedDeadzone);
-		ReadFloat(Aimbot, AdvancedMinDistance1);
-		ReadFloat(Aimbot, AdvancedMaxDistance1);
+        ReadBool(Aimbot, AdvancedAim);
+        ReadBool(Aimbot, AdvancedFire);
+        ReadBool(Aimbot, AdvancedADS);
+        ReadInt(Aimbot, AdvancedSmoothingMethod); // 0 = Static, 1 = Random
+        //Aimbot Mode 0 - xap-client
+        ReadBool(Aimbot, AdvancedClosestHitbox);
+        ReadFloat(Aimbot, AdvancedHitbox);
+        ReadFloat(Aimbot, AdvancedSpeed);
+        ReadFloat(Aimbot, AdvancedSmooth);
+        ReadFloat(Aimbot, AdvancedHipfireSmooth);
+        ReadFloat(Aimbot, AdvancedADSSmooth);
+        ReadFloat(Aimbot, AdvancedMinHipfireSmooth);
+        ReadFloat(Aimbot, AdvancedMaxHipfireSmooth);
+        ReadFloat(Aimbot, AdvancedMinADSSmooth);
+        ReadFloat(Aimbot, AdvancedMaxADSSmooth);
+        //Aimbot Mode 1 - Grinder
+        ReadFloat(Aimbot, AdvancedHipfireSmooth1);
+        ReadFloat(Aimbot, AdvancedADSSmooth1);
+        ReadFloat(Aimbot, AdvancedMinHipfireSmooth1);
+        ReadFloat(Aimbot, AdvancedMaxHipfireSmooth1);
+        ReadFloat(Aimbot, AdvancedMinADSSmooth1);
+        ReadFloat(Aimbot, AdvancedMaxADSSmooth1);
+        ReadFloat(Aimbot, AdvancedExtraSmooth1);
+        ReadFloat(Aimbot, AdvancedFOV1);
+        ReadFloat(Aimbot, AdvancedDeadzone);
+        ReadFloat(Aimbot, AdvancedMinDistance1);
+        ReadFloat(Aimbot, AdvancedMaxDistance1);
+
 		// Advanced OnFire & OnADS - Aimbot Mode 0 & 1 - xap-client & grinder
 		ReadBool(Aimbot, P2020Fire);
 		ReadBool(Aimbot, P2020ADS);
@@ -3468,438 +4105,710 @@ struct ConfigManager
 		ReadBool(Aimbot, BocekADS);
 		ReadBool(Aimbot, ThrowingKnifeFire);
 		ReadBool(Aimbot, ThrowingKnifeADS);
-		// Advanced Speed, Smooth + Hitbox - Aimbot Mode 0 - xap-client
-		ReadBool(Aimbot, P2020ClosestHitbox);
-		ReadFloat(Aimbot, P2020Hitbox);
-		ReadFloat(Aimbot, P2020Speed);
-		ReadFloat(Aimbot, P2020HipfireSmooth);
-		ReadFloat(Aimbot, P2020ADSSmooth);
-		ReadFloat(Aimbot, P2020FOV);
-		ReadFloat(Aimbot, P2020ZoomScale);
-		ReadBool(Aimbot, RE45ClosestHitbox);
-		ReadFloat(Aimbot, RE45Hitbox);
-		ReadFloat(Aimbot, RE45Speed);
-		ReadFloat(Aimbot, RE45HipfireSmooth);
-		ReadFloat(Aimbot, RE45ADSSmooth);
-		ReadFloat(Aimbot, RE45FOV);
-		ReadFloat(Aimbot, RE45ZoomScale);
-		ReadBool(Aimbot, AlternatorClosestHitbox);
-		ReadFloat(Aimbot, AlternatorHitbox);
-		ReadFloat(Aimbot, AlternatorSpeed);
-		ReadFloat(Aimbot, AlternatorHipfireSmooth);
-		ReadFloat(Aimbot, AlternatorADSSmooth);
-		ReadFloat(Aimbot, AlternatorFOV);
-		ReadFloat(Aimbot, AlternatorZoomScale);
-		ReadBool(Aimbot, R99ClosestHitbox);
-		ReadFloat(Aimbot, R99Hitbox);
-		ReadFloat(Aimbot, R99Speed);
-		ReadFloat(Aimbot, R99HipfireSmooth);
-		ReadFloat(Aimbot, R99ADSSmooth);
-		ReadFloat(Aimbot, R99FOV);
-		ReadFloat(Aimbot, R99ZoomScale);
-		ReadBool(Aimbot, R301ClosestHitbox);
-		ReadFloat(Aimbot, R301Hitbox);
-		ReadFloat(Aimbot, R301Speed);
-		ReadFloat(Aimbot, R301HipfireSmooth);
-		ReadFloat(Aimbot, R301ADSSmooth);
-		ReadFloat(Aimbot, R301FOV);
-		ReadFloat(Aimbot, R301ZoomScale);
-		ReadBool(Aimbot, SpitfireClosestHitbox);
-		ReadFloat(Aimbot, SpitfireHitbox);
-		ReadFloat(Aimbot, SpitfireSpeed);
-		ReadFloat(Aimbot, SpitfireHipfireSmooth);
-		ReadFloat(Aimbot, SpitfireADSSmooth);
-		ReadFloat(Aimbot, SpitfireFOV);
-		ReadFloat(Aimbot, SpitfireZoomScale);
-		ReadBool(Aimbot, G7ClosestHitbox);
-		ReadFloat(Aimbot, G7Hitbox);
-		ReadFloat(Aimbot, G7Speed);
-		ReadFloat(Aimbot, G7HipfireSmooth);
-		ReadFloat(Aimbot, G7ADSSmooth);
-		ReadFloat(Aimbot, G7FOV);
-		ReadFloat(Aimbot, G7ZoomScale);
-		// Heavy
-		ReadBool(Aimbot, FlatlineClosestHitbox);
-		ReadFloat(Aimbot, FlatlineHitbox);
-		ReadFloat(Aimbot, FlatlineSpeed);
-		ReadFloat(Aimbot, FlatlineHipfireSmooth);
-		ReadFloat(Aimbot, FlatlineADSSmooth);
-		ReadFloat(Aimbot, FlatlineFOV);
-		ReadFloat(Aimbot, FlatlineZoomScale);
-		ReadBool(Aimbot, HemlockClosestHitbox);
-		ReadFloat(Aimbot, HemlockHitbox);
-		ReadFloat(Aimbot, HemlockSpeed);
-		ReadFloat(Aimbot, HemlockHipfireSmooth);
-		ReadFloat(Aimbot, HemlockADSSmooth);
-		ReadFloat(Aimbot, HemlockFOV);
-		ReadFloat(Aimbot, HemlockZoomScale);
-		ReadBool(Aimbot, RepeaterClosestHitbox);
-		ReadFloat(Aimbot, RepeaterHitbox);
-		ReadFloat(Aimbot, RepeaterSpeed);
-		ReadFloat(Aimbot, RepeaterHipfireSmooth);
-		ReadFloat(Aimbot, RepeaterADSSmooth);
-		ReadFloat(Aimbot, RepeaterFOV);
-		ReadFloat(Aimbot, RepeaterZoomScale);
-		ReadBool(Aimbot, RampageClosestHitbox);
-		ReadFloat(Aimbot, RampageHitbox);
-		ReadFloat(Aimbot, RampageSpeed);
-		ReadFloat(Aimbot, RampageHipfireSmooth);
-		ReadFloat(Aimbot, RampageADSSmooth);
-		ReadFloat(Aimbot, RampageFOV);
-		ReadFloat(Aimbot, RampageZoomScale);
-		ReadBool(Aimbot, CARSMGClosestHitbox);
-		ReadFloat(Aimbot, CARSMGHitbox);
-		ReadFloat(Aimbot, CARSMGSpeed);
-		ReadFloat(Aimbot, CARSMGHipfireSmooth);
-		ReadFloat(Aimbot, CARSMGADSSmooth);
-		ReadFloat(Aimbot, CARSMGFOV);
-		ReadFloat(Aimbot, CARSMGZoomScale);
-		// Energy
-		ReadBool(Aimbot, HavocClosestHitbox);
-		ReadFloat(Aimbot, HavocHitbox);
-		ReadFloat(Aimbot, HavocSpeed);
-		ReadFloat(Aimbot, HavocHipfireSmooth);
-		ReadFloat(Aimbot, HavocADSSmooth);
-		ReadFloat(Aimbot, HavocFOV);
-		ReadFloat(Aimbot, HavocZoomScale);
-		ReadBool(Aimbot, DevotionClosestHitbox);
-		ReadFloat(Aimbot, DevotionHitbox);
-		ReadFloat(Aimbot, DevotionSpeed);
-		ReadFloat(Aimbot, DevotionHipfireSmooth);
-		ReadFloat(Aimbot, DevotionADSSmooth);
-		ReadFloat(Aimbot, DevotionFOV);
-		ReadFloat(Aimbot, DevotionZoomScale);
-		ReadBool(Aimbot, LSTARClosestHitbox);
-		ReadFloat(Aimbot, LSTARHitbox);
-		ReadFloat(Aimbot, LSTARSpeed);
-		ReadFloat(Aimbot, LSTARHipfireSmooth);
-		ReadFloat(Aimbot, LSTARADSSmooth);
-		ReadFloat(Aimbot, LSTARFOV);
-		ReadFloat(Aimbot, LSTARZoomScale);
-		ReadBool(Aimbot, TripleTakeClosestHitbox);
-		ReadFloat(Aimbot, TripleTakeHitbox);
-		ReadFloat(Aimbot, TripleTakeSpeed);
-		ReadFloat(Aimbot, TripleTakeHipfireSmooth);
-		ReadFloat(Aimbot, TripleTakeADSSmooth);
-		ReadFloat(Aimbot, TripleTakeFOV);
-		ReadFloat(Aimbot, TripleTakeZoomScale);
-		ReadBool(Aimbot, VoltClosestHitbox);
-		ReadFloat(Aimbot, VoltHitbox);
-		ReadFloat(Aimbot, VoltSpeed);
-		ReadFloat(Aimbot, VoltHipfireSmooth);
-		ReadFloat(Aimbot, VoltADSSmooth);
-		ReadFloat(Aimbot, VoltFOV);
-		ReadFloat(Aimbot, VoltZoomScale);
-		ReadBool(Aimbot, NemesisClosestHitbox);
-		ReadFloat(Aimbot, NemesisHitbox);
-		ReadFloat(Aimbot, NemesisSpeed);
-		ReadFloat(Aimbot, NemesisHipfireSmooth);
-		ReadFloat(Aimbot, NemesisADSSmooth);
-		ReadFloat(Aimbot, NemesisFOV);
-		ReadFloat(Aimbot, NemesisZoomScale);
-		// Shotguns
-		ReadBool(Aimbot, MozambiqueClosestHitbox);
-		ReadFloat(Aimbot, MozambiqueHitbox);
-		ReadFloat(Aimbot, MozambiqueSpeed);
-		ReadFloat(Aimbot, MozambiqueHipfireSmooth);
-		ReadFloat(Aimbot, MozambiqueADSSmooth);
-		ReadFloat(Aimbot, MozambiqueFOV);
-		ReadFloat(Aimbot, MozambiqueZoomScale);
-		ReadBool(Aimbot, EVA8ClosestHitbox);
-		ReadFloat(Aimbot, EVA8Hitbox);
-		ReadFloat(Aimbot, EVA8Speed);
-		ReadFloat(Aimbot, EVA8HipfireSmooth);
-		ReadFloat(Aimbot, EVA8ADSSmooth);
-		ReadFloat(Aimbot, EVA8FOV);
-		ReadFloat(Aimbot, EVA8ZoomScale);
-		ReadBool(Aimbot, PeacekeeperClosestHitbox);
-		ReadFloat(Aimbot, PeacekeeperHitbox);
-		ReadFloat(Aimbot, PeacekeeperSpeed);
-		ReadFloat(Aimbot, PeacekeeperHipfireSmooth);
-		ReadFloat(Aimbot, PeacekeeperADSSmooth);
-		ReadFloat(Aimbot, PeacekeeperFOV);
-		ReadFloat(Aimbot, PeacekeeperZoomScale);
-		ReadBool(Aimbot, MastiffClosestHitbox);
-		ReadFloat(Aimbot, MastiffHitbox);
-		ReadFloat(Aimbot, MastiffSpeed);
-		ReadFloat(Aimbot, MastiffHipfireSmooth);
-		ReadFloat(Aimbot, MastiffADSSmooth);
-		ReadFloat(Aimbot, MastiffFOV);
-		ReadFloat(Aimbot, MastiffZoomScale);
-		// Snipers
-		ReadBool(Aimbot, LongbowClosestHitbox);
-		ReadFloat(Aimbot, LongbowHitbox);
-		ReadFloat(Aimbot, LongbowSpeed);
-		ReadFloat(Aimbot, LongbowHipfireSmooth);
-		ReadFloat(Aimbot, LongbowADSSmooth);
-		ReadFloat(Aimbot, LongbowFOV);
-		ReadFloat(Aimbot, LongbowZoomScale);
-		ReadBool(Aimbot, ChargeRifleClosestHitbox);
-		ReadFloat(Aimbot, ChargeRifleHitbox);
-		ReadFloat(Aimbot, ChargeRifleSpeed);
-		ReadFloat(Aimbot, ChargeRifleHipfireSmooth);
-		ReadFloat(Aimbot, ChargeRifleADSSmooth);
-		ReadFloat(Aimbot, ChargeRifleFOV);
-		ReadFloat(Aimbot, ChargeRifleZoomScale);
-		ReadBool(Aimbot, SentinelClosestHitbox);
-		ReadFloat(Aimbot, SentinelHitbox);
-		ReadFloat(Aimbot, SentinelSpeed);
-		ReadFloat(Aimbot, SentinelHipfireSmooth);
-		ReadFloat(Aimbot, SentinelADSSmooth);
-		ReadFloat(Aimbot, SentinelFOV);
-		ReadFloat(Aimbot, SentinelZoomScale);
-		// Legendary
-		ReadBool(Aimbot, WingmanClosestHitbox);
-		ReadFloat(Aimbot, WingmanHitbox);
-		ReadFloat(Aimbot, WingmanSpeed);
-		ReadFloat(Aimbot, WingmanHipfireSmooth);
-		ReadFloat(Aimbot, WingmanADSSmooth);
-		ReadFloat(Aimbot, WingmanFOV);
-		ReadFloat(Aimbot, WingmanZoomScale);
-		ReadBool(Aimbot, ProwlerClosestHitbox);
-		ReadFloat(Aimbot, ProwlerHitbox);
-		ReadFloat(Aimbot, ProwlerSpeed);
-		ReadFloat(Aimbot, ProwlerHipfireSmooth);
-		ReadFloat(Aimbot, ProwlerADSSmooth);
-		ReadFloat(Aimbot, ProwlerFOV);
-		ReadFloat(Aimbot, ProwlerZoomScale);
-		ReadBool(Aimbot, KraberClosestHitbox);
-		ReadFloat(Aimbot, KraberHitbox);
-		ReadFloat(Aimbot, KraberSpeed);
-		ReadFloat(Aimbot, KraberHipfireSmooth);
-		ReadFloat(Aimbot, KraberADSSmooth);
-		ReadFloat(Aimbot, KraberFOV);
-		ReadFloat(Aimbot, KraberZoomScale);
-		ReadBool(Aimbot, BocekClosestHitbox);
-		ReadFloat(Aimbot, BocekHitbox);
-		ReadFloat(Aimbot, BocekSpeed);
-		ReadFloat(Aimbot, BocekHipfireSmooth);
-		ReadFloat(Aimbot, BocekADSSmooth);
-		ReadFloat(Aimbot, BocekFOV);
-		ReadFloat(Aimbot, BocekZoomScale);
-		ReadBool(Aimbot, ThrowingKnifeClosestHitbox);
-		ReadFloat(Aimbot, ThrowingKnifeHitbox);
-		ReadFloat(Aimbot, ThrowingKnifeSpeed);
-		ReadFloat(Aimbot, ThrowingKnifeHipfireSmooth);
-		ReadFloat(Aimbot, ThrowingKnifeADSSmooth);
-		ReadFloat(Aimbot, ThrowingKnifeFOV);
-		ReadFloat(Aimbot, ThrowingKnifeZoomScale);
-		// Advanced Smooth - Aimbot Mode 1 - Grinder
-		ReadFloat(Aimbot, P2020HipfireSmooth1);
-		ReadFloat(Aimbot, P2020ADSSmooth1);
-		ReadFloat(Aimbot, P2020ExtraSmooth1);
-		ReadFloat(Aimbot, P2020Deadzone);
-		ReadFloat(Aimbot, P2020FOV1);
-		ReadFloat(Aimbot, P2020MinDistance1);
-		ReadFloat(Aimbot, P2020MaxDistance1);
-		ReadFloat(Aimbot, RE45HipfireSmooth1);
-		ReadFloat(Aimbot, RE45ADSSmooth1);
-		ReadFloat(Aimbot, RE45ExtraSmooth1);
-		ReadFloat(Aimbot, RE45Deadzone);
-		ReadFloat(Aimbot, RE45FOV1);
-		ReadFloat(Aimbot, RE45MinDistance1);
-		ReadFloat(Aimbot, RE45MaxDistance1);
-		ReadFloat(Aimbot, AlternatorHipfireSmooth1);
-		ReadFloat(Aimbot, AlternatorADSSmooth1);
-		ReadFloat(Aimbot, AlternatorExtraSmooth1);
-		ReadFloat(Aimbot, AlternatorDeadzone);
-		ReadFloat(Aimbot, AlternatorFOV1);
-		ReadFloat(Aimbot, AlternatorMinDistance1);
-		ReadFloat(Aimbot, AlternatorMaxDistance1);
-		ReadFloat(Aimbot, R99HipfireSmooth1);
-		ReadFloat(Aimbot, R99ADSSmooth1);
-		ReadFloat(Aimbot, R99ExtraSmooth1);
-		ReadFloat(Aimbot, R99Deadzone);
-		ReadFloat(Aimbot, R99FOV1);
-		ReadFloat(Aimbot, R99MinDistance1);
-		ReadFloat(Aimbot, R99MaxDistance1);
-		ReadFloat(Aimbot, R301HipfireSmooth1);
-		ReadFloat(Aimbot, R301ADSSmooth1);
-		ReadFloat(Aimbot, R301ExtraSmooth1);
-		ReadFloat(Aimbot, R301Deadzone);
-		ReadFloat(Aimbot, R301FOV1);
-		ReadFloat(Aimbot, R301MinDistance1);
-		ReadFloat(Aimbot, R301MaxDistance1);
-		ReadFloat(Aimbot, SpitfireHipfireSmooth1);
-		ReadFloat(Aimbot, SpitfireADSSmooth1);
-		ReadFloat(Aimbot, SpitfireExtraSmooth1);
-		ReadFloat(Aimbot, SpitfireDeadzone);
-		ReadFloat(Aimbot, SpitfireFOV1);
-		ReadFloat(Aimbot, SpitfireMinDistance1);
-		ReadFloat(Aimbot, SpitfireMaxDistance1);
-		ReadFloat(Aimbot, G7HipfireSmooth1);
-		ReadFloat(Aimbot, G7ADSSmooth1);
-		ReadFloat(Aimbot, G7ExtraSmooth1);
-		ReadFloat(Aimbot, G7Deadzone);
-		ReadFloat(Aimbot, G7FOV1);
-		ReadFloat(Aimbot, G7MinDistance1);
-		ReadFloat(Aimbot, G7MaxDistance1);
 
-		ReadFloat(Aimbot, FlatlineHipfireSmooth1);
-		ReadFloat(Aimbot, FlatlineADSSmooth1);
-		ReadFloat(Aimbot, FlatlineExtraSmooth1);
-		ReadFloat(Aimbot, FlatlineDeadzone);
-		ReadFloat(Aimbot, FlatlineFOV1);
-		ReadFloat(Aimbot, FlatlineMinDistance1);
-		ReadFloat(Aimbot, FlatlineMaxDistance1);
-		ReadFloat(Aimbot, HemlockHipfireSmooth1);
-		ReadFloat(Aimbot, HemlockADSSmooth1);
-		ReadFloat(Aimbot, HemlockExtraSmooth1);
-		ReadFloat(Aimbot, HemlockDeadzone);
-		ReadFloat(Aimbot, HemlockFOV1);
-		ReadFloat(Aimbot, HemlockMinDistance1);
-		ReadFloat(Aimbot, HemlockMaxDistance1);
-		ReadFloat(Aimbot, RepeaterHipfireSmooth1);
-		ReadFloat(Aimbot, RepeaterADSSmooth1);
-		ReadFloat(Aimbot, RepeaterExtraSmooth1);
-		ReadFloat(Aimbot, RepeaterDeadzone);
-		ReadFloat(Aimbot, RepeaterFOV1);
-		ReadFloat(Aimbot, RepeaterMinDistance1);
-		ReadFloat(Aimbot, RepeaterMaxDistance1);
-		ReadFloat(Aimbot, RampageHipfireSmooth1);
-		ReadFloat(Aimbot, RampageADSSmooth1);
-		ReadFloat(Aimbot, RampageExtraSmooth1);
-		ReadFloat(Aimbot, RampageDeadzone);
-		ReadFloat(Aimbot, RampageFOV1);
-		ReadFloat(Aimbot, RampageMinDistance1);
-		ReadFloat(Aimbot, RampageMaxDistance1);
-		ReadFloat(Aimbot, CARSMGHipfireSmooth1);
-		ReadFloat(Aimbot, CARSMGADSSmooth1);
-		ReadFloat(Aimbot, CARSMGExtraSmooth1);
-		ReadFloat(Aimbot, CARSMGDeadzone);
-		ReadFloat(Aimbot, CARSMGFOV1);
-		ReadFloat(Aimbot, CARSMGMinDistance1);
-		ReadFloat(Aimbot, CARSMGMaxDistance1);
-
-		ReadFloat(Aimbot, HavocHipfireSmooth1);
-		ReadFloat(Aimbot, HavocADSSmooth1);
-		ReadFloat(Aimbot, HavocExtraSmooth1);
-		ReadFloat(Aimbot, HavocDeadzone);
-		ReadFloat(Aimbot, HavocFOV1);
-		ReadFloat(Aimbot, HavocMinDistance1);
-		ReadFloat(Aimbot, HavocMaxDistance1);
-		ReadFloat(Aimbot, DevotionHipfireSmooth1);
-		ReadFloat(Aimbot, DevotionADSSmooth1);
-		ReadFloat(Aimbot, DevotionExtraSmooth1);
-		ReadFloat(Aimbot, DevotionDeadzone);
-		ReadFloat(Aimbot, DevotionFOV1);
-		ReadFloat(Aimbot, DevotionMinDistance1);
-		ReadFloat(Aimbot, DevotionMaxDistance1);
-		ReadFloat(Aimbot, LSTARHipfireSmooth1);
-		ReadFloat(Aimbot, LSTARADSSmooth1);
-		ReadFloat(Aimbot, LSTARExtraSmooth1);
-		ReadFloat(Aimbot, LSTARDeadzone);
-		ReadFloat(Aimbot, LSTARFOV1);
-		ReadFloat(Aimbot, LSTARMinDistance1);
-		ReadFloat(Aimbot, LSTARMaxDistance1);
-		ReadFloat(Aimbot, TripleTakeHipfireSmooth1);
-		ReadFloat(Aimbot, TripleTakeADSSmooth1);
-		ReadFloat(Aimbot, TripleTakeExtraSmooth1);
-		ReadFloat(Aimbot, TripleTakeDeadzone);
-		ReadFloat(Aimbot, TripleTakeFOV1);
-		ReadFloat(Aimbot, TripleTakeMinDistance1);
-		ReadFloat(Aimbot, TripleTakeMaxDistance1);
-		ReadFloat(Aimbot, VoltHipfireSmooth1);
-		ReadFloat(Aimbot, VoltADSSmooth1);
-		ReadFloat(Aimbot, VoltExtraSmooth1);
-		ReadFloat(Aimbot, VoltDeadzone);
-		ReadFloat(Aimbot, VoltFOV1);
-		ReadFloat(Aimbot, VoltMinDistance1);
-		ReadFloat(Aimbot, VoltMaxDistance1);
-		ReadFloat(Aimbot, NemesisHipfireSmooth1);
-		ReadFloat(Aimbot, NemesisADSSmooth1);
-		ReadFloat(Aimbot, NemesisExtraSmooth1);
-		ReadFloat(Aimbot, NemesisDeadzone);
-		ReadFloat(Aimbot, NemesisFOV1);
-		ReadFloat(Aimbot, NemesisMinDistance1);
-		ReadFloat(Aimbot, NemesisMaxDistance1);
-
-		ReadFloat(Aimbot, MozambiqueHipfireSmooth1);
-		ReadFloat(Aimbot, MozambiqueADSSmooth1);
-		ReadFloat(Aimbot, MozambiqueExtraSmooth1);
-		ReadFloat(Aimbot, MozambiqueDeadzone);
-		ReadFloat(Aimbot, MozambiqueFOV1);
-		ReadFloat(Aimbot, MozambiqueMinDistance1);
-		ReadFloat(Aimbot, MozambiqueMaxDistance1);
-		ReadFloat(Aimbot, EVA8HipfireSmooth1);
-		ReadFloat(Aimbot, EVA8ADSSmooth1);
-		ReadFloat(Aimbot, EVA8ExtraSmooth1);
-		ReadFloat(Aimbot, EVA8Deadzone);
-		ReadFloat(Aimbot, EVA8FOV1);
-		ReadFloat(Aimbot, EVA8MinDistance1);
-		ReadFloat(Aimbot, EVA8MaxDistance1);
-		ReadFloat(Aimbot, PeacekeeperHipfireSmooth1);
-		ReadFloat(Aimbot, PeacekeeperADSSmooth1);
-		ReadFloat(Aimbot, PeacekeeperExtraSmooth1);
-		ReadFloat(Aimbot, PeacekeeperDeadzone);
-		ReadFloat(Aimbot, PeacekeeperFOV1);
-		ReadFloat(Aimbot, PeacekeeperMinDistance1);
-		ReadFloat(Aimbot, PeacekeeperMaxDistance1);
-		ReadFloat(Aimbot, MastiffHipfireSmooth1);
-		ReadFloat(Aimbot, MastiffADSSmooth1);
-		ReadFloat(Aimbot, MastiffExtraSmooth1);
-		ReadFloat(Aimbot, MastiffDeadzone);
-		ReadFloat(Aimbot, MastiffFOV1);
-		ReadFloat(Aimbot, MastiffMinDistance1);
-		ReadFloat(Aimbot, MastiffMaxDistance1);
-
-		ReadFloat(Aimbot, LongbowHipfireSmooth1);
-		ReadFloat(Aimbot, LongbowADSSmooth1);
-		ReadFloat(Aimbot, LongbowExtraSmooth1);
-		ReadFloat(Aimbot, LongbowDeadzone);
-		ReadFloat(Aimbot, LongbowFOV1);
-		ReadFloat(Aimbot, LongbowMinDistance1);
-		ReadFloat(Aimbot, LongbowMaxDistance1);
-		ReadFloat(Aimbot, ChargeRifleHipfireSmooth1);
-		ReadFloat(Aimbot, ChargeRifleADSSmooth1);
-		ReadFloat(Aimbot, ChargeRifleExtraSmooth1);
-		ReadFloat(Aimbot, ChargeRifleDeadzone);
-		ReadFloat(Aimbot, ChargeRifleFOV1);
-		ReadFloat(Aimbot, ChargeRifleMinDistance1);
-		ReadFloat(Aimbot, ChargeRifleMaxDistance1);
-		ReadFloat(Aimbot, SentinelHipfireSmooth1);
-		ReadFloat(Aimbot, SentinelADSSmooth1);
-		ReadFloat(Aimbot, SentinelExtraSmooth1);
-		ReadFloat(Aimbot, SentinelDeadzone);
-		ReadFloat(Aimbot, SentinelFOV1);
-		ReadFloat(Aimbot, SentinelMinDistance1);
-		ReadFloat(Aimbot, SentinelMaxDistance1);
-
-		ReadFloat(Aimbot, WingmanHipfireSmooth1);
-		ReadFloat(Aimbot, WingmanADSSmooth1);
-		ReadFloat(Aimbot, WingmanExtraSmooth1);
-		ReadFloat(Aimbot, WingmanDeadzone);
-		ReadFloat(Aimbot, WingmanFOV1);
-		ReadFloat(Aimbot, WingmanMinDistance1);
-		ReadFloat(Aimbot, WingmanMaxDistance1);
-		ReadFloat(Aimbot, ProwlerHipfireSmooth1);
-		ReadFloat(Aimbot, ProwlerADSSmooth1);
-		ReadFloat(Aimbot, ProwlerExtraSmooth1);
-		ReadFloat(Aimbot, ProwlerDeadzone);
-		ReadFloat(Aimbot, ProwlerFOV1);
-		ReadFloat(Aimbot, ProwlerMinDistance1);
-		ReadFloat(Aimbot, ProwlerMaxDistance1);
-		ReadFloat(Aimbot, BocekHipfireSmooth1);
-		ReadFloat(Aimbot, BocekADSSmooth1);
-		ReadFloat(Aimbot, BocekExtraSmooth1);
-		ReadFloat(Aimbot, BocekDeadzone);
-		ReadFloat(Aimbot, BocekFOV1);
-		ReadFloat(Aimbot, BocekMinDistance1);
-		ReadFloat(Aimbot, BocekMaxDistance1);
-		ReadFloat(Aimbot, KraberHipfireSmooth1);
-		ReadFloat(Aimbot, KraberADSSmooth1);
-		ReadFloat(Aimbot, KraberExtraSmooth1);
-		ReadFloat(Aimbot, KraberDeadzone);
-		ReadFloat(Aimbot, KraberFOV1);
-		ReadFloat(Aimbot, KraberMinDistance1);
-		ReadFloat(Aimbot, KraberMaxDistance1);
-		ReadFloat(Aimbot, ThrowingKnifeHipfireSmooth1);
-		ReadFloat(Aimbot, ThrowingKnifeADSSmooth1);
-		ReadFloat(Aimbot, ThrowingKnifeExtraSmooth1);
-		ReadFloat(Aimbot, ThrowingKnifeDeadzone);
-		ReadFloat(Aimbot, ThrowingKnifeFOV1);
-		ReadFloat(Aimbot, ThrowingKnifeMinDistance1);
-		ReadFloat(Aimbot, ThrowingKnifeMaxDistance1);
+		//Advanced Speed, Smooth + Hitbox - Aimbot Mode 0 - xap-client
+        ReadBool(Aimbot, P2020ClosestHitbox);
+        ReadFloat(Aimbot, P2020Hitbox);
+        ReadFloat(Aimbot, P2020Speed);
+        ReadFloat(Aimbot, P2020HipfireSmooth);
+        ReadFloat(Aimbot, P2020ADSSmooth);
+        ReadInt(Aimbot, P2020SmoothingMethod);
+        ReadFloat(Aimbot, P2020MinHipfireSmooth);
+        ReadFloat(Aimbot, P2020MaxHipfireSmooth);
+        ReadFloat(Aimbot, P2020MinADSSmooth);
+        ReadFloat(Aimbot, P2020MaxADSSmooth);
+        ReadFloat(Aimbot, P2020FOV);
+        ReadFloat(Aimbot, P2020ZoomScale);
+        ReadBool(Aimbot, RE45ClosestHitbox);
+        ReadFloat(Aimbot, RE45Hitbox);
+        ReadFloat(Aimbot, RE45Speed);
+        ReadFloat(Aimbot, RE45HipfireSmooth);
+        ReadFloat(Aimbot, RE45ADSSmooth);
+        ReadInt(Aimbot, RE45SmoothingMethod);
+        ReadFloat(Aimbot, RE45MinHipfireSmooth);
+        ReadFloat(Aimbot, RE45MaxHipfireSmooth);
+        ReadFloat(Aimbot, RE45MinADSSmooth);
+        ReadFloat(Aimbot, RE45MaxADSSmooth);
+        ReadFloat(Aimbot, RE45FOV);
+        ReadFloat(Aimbot, RE45ZoomScale);
+        ReadBool(Aimbot, AlternatorClosestHitbox);
+        ReadFloat(Aimbot, AlternatorHitbox);
+        ReadFloat(Aimbot, AlternatorSpeed);
+        ReadFloat(Aimbot, AlternatorHipfireSmooth);
+        ReadFloat(Aimbot, AlternatorADSSmooth);
+        ReadInt(Aimbot, AlternatorSmoothingMethod);
+        ReadFloat(Aimbot, AlternatorMinHipfireSmooth);
+        ReadFloat(Aimbot, AlternatorMaxHipfireSmooth);
+        ReadFloat(Aimbot, AlternatorMinADSSmooth);
+        ReadFloat(Aimbot, AlternatorMaxADSSmooth);
+        ReadFloat(Aimbot, AlternatorFOV);
+        ReadFloat(Aimbot, AlternatorZoomScale);
+        ReadBool(Aimbot, R99ClosestHitbox);
+        ReadFloat(Aimbot, R99Hitbox);
+        ReadFloat(Aimbot, R99Speed);
+        ReadFloat(Aimbot, R99HipfireSmooth);
+        ReadFloat(Aimbot, R99ADSSmooth);
+        ReadInt(Aimbot, R99SmoothingMethod);
+        ReadFloat(Aimbot, R99MinHipfireSmooth);
+        ReadFloat(Aimbot, R99MaxHipfireSmooth);
+        ReadFloat(Aimbot, R99MinADSSmooth);
+        ReadFloat(Aimbot, R99MaxADSSmooth);
+        ReadFloat(Aimbot, R99FOV);
+        ReadFloat(Aimbot, R99ZoomScale);
+        ReadBool(Aimbot, R301ClosestHitbox);
+        ReadFloat(Aimbot, R301Hitbox);
+        ReadFloat(Aimbot, R301Speed);
+        ReadFloat(Aimbot, R301HipfireSmooth);
+        ReadFloat(Aimbot, R301ADSSmooth);
+        ReadInt(Aimbot, R301SmoothingMethod);
+        ReadFloat(Aimbot, R301MinHipfireSmooth);
+        ReadFloat(Aimbot, R301MaxHipfireSmooth);
+        ReadFloat(Aimbot, R301MinADSSmooth);
+        ReadFloat(Aimbot, R301MaxADSSmooth);
+        ReadFloat(Aimbot, R301FOV);
+        ReadFloat(Aimbot, R301ZoomScale);
+        ReadBool(Aimbot, SpitfireClosestHitbox);
+        ReadFloat(Aimbot, SpitfireHitbox);
+        ReadFloat(Aimbot, SpitfireSpeed);
+        ReadFloat(Aimbot, SpitfireHipfireSmooth);
+        ReadFloat(Aimbot, SpitfireADSSmooth);
+        ReadInt(Aimbot, SpitfireSmoothingMethod);
+        ReadFloat(Aimbot, SpitfireMinHipfireSmooth);
+        ReadFloat(Aimbot, SpitfireMaxHipfireSmooth);
+        ReadFloat(Aimbot, SpitfireMinADSSmooth);
+        ReadFloat(Aimbot, SpitfireMaxADSSmooth);
+        ReadFloat(Aimbot, SpitfireFOV);
+        ReadFloat(Aimbot, SpitfireZoomScale);
+        ReadBool(Aimbot, G7ClosestHitbox);
+        ReadFloat(Aimbot, G7Hitbox);
+        ReadFloat(Aimbot, G7Speed);
+        ReadFloat(Aimbot, G7HipfireSmooth);
+        ReadFloat(Aimbot, G7ADSSmooth);
+        ReadInt(Aimbot, G7SmoothingMethod);
+        ReadFloat(Aimbot, G7MinHipfireSmooth);
+        ReadFloat(Aimbot, G7MaxHipfireSmooth);
+        ReadFloat(Aimbot, G7MinADSSmooth);
+        ReadFloat(Aimbot, G7MaxADSSmooth);
+        ReadFloat(Aimbot, G7FOV);
+        ReadFloat(Aimbot, G7ZoomScale);
+        //Heavy
+        ReadBool(Aimbot, FlatlineClosestHitbox);
+        ReadFloat(Aimbot, FlatlineHitbox);
+        ReadFloat(Aimbot, FlatlineSpeed);
+        ReadFloat(Aimbot, FlatlineHipfireSmooth);
+        ReadFloat(Aimbot, FlatlineADSSmooth);
+        ReadInt(Aimbot, FlatlineSmoothingMethod);
+        ReadFloat(Aimbot, FlatlineMinHipfireSmooth);
+        ReadFloat(Aimbot, FlatlineMaxHipfireSmooth);
+        ReadFloat(Aimbot, FlatlineMinADSSmooth);
+        ReadFloat(Aimbot, FlatlineMaxADSSmooth);
+        ReadFloat(Aimbot, FlatlineFOV);
+        ReadFloat(Aimbot, FlatlineZoomScale);
+        ReadBool(Aimbot, HemlockClosestHitbox);
+        ReadFloat(Aimbot, HemlockHitbox);
+        ReadFloat(Aimbot, HemlockSpeed);
+        ReadFloat(Aimbot, HemlockHipfireSmooth);
+        ReadFloat(Aimbot, HemlockADSSmooth);
+        ReadInt(Aimbot, HemlockSmoothingMethod);
+        ReadFloat(Aimbot, HemlockMinHipfireSmooth);
+        ReadFloat(Aimbot, HemlockMaxHipfireSmooth);
+        ReadFloat(Aimbot, HemlockMinADSSmooth);
+        ReadFloat(Aimbot, HemlockMaxADSSmooth);
+        ReadFloat(Aimbot, HemlockFOV);
+        ReadFloat(Aimbot, HemlockZoomScale);
+        ReadBool(Aimbot, RepeaterClosestHitbox);
+        ReadFloat(Aimbot, RepeaterHitbox);
+        ReadFloat(Aimbot, RepeaterSpeed);
+        ReadFloat(Aimbot, RepeaterHipfireSmooth);
+        ReadFloat(Aimbot, RepeaterADSSmooth);
+        ReadInt(Aimbot, RepeaterSmoothingMethod);
+        ReadFloat(Aimbot, RepeaterMinHipfireSmooth);
+        ReadFloat(Aimbot, RepeaterMaxHipfireSmooth);
+        ReadFloat(Aimbot, RepeaterMinADSSmooth);
+        ReadFloat(Aimbot, RepeaterMaxADSSmooth);
+        ReadFloat(Aimbot, RepeaterFOV);
+        ReadFloat(Aimbot, RepeaterZoomScale);
+        ReadBool(Aimbot, RampageClosestHitbox);
+        ReadFloat(Aimbot, RampageHitbox);
+        ReadFloat(Aimbot, RampageSpeed);
+        ReadFloat(Aimbot, RampageHipfireSmooth);
+        ReadFloat(Aimbot, RampageADSSmooth);
+        ReadInt(Aimbot, RampageSmoothingMethod);
+        ReadFloat(Aimbot, RampageMinHipfireSmooth);
+        ReadFloat(Aimbot, RampageMaxHipfireSmooth);
+        ReadFloat(Aimbot, RampageMinADSSmooth);
+        ReadFloat(Aimbot, RampageMaxADSSmooth);
+        ReadFloat(Aimbot, RampageFOV);
+        ReadFloat(Aimbot, RampageZoomScale);
+        ReadBool(Aimbot, CARSMGClosestHitbox);
+        ReadFloat(Aimbot, CARSMGHitbox);
+        ReadFloat(Aimbot, CARSMGSpeed);
+        ReadFloat(Aimbot, CARSMGHipfireSmooth);
+        ReadFloat(Aimbot, CARSMGADSSmooth);
+        ReadInt(Aimbot, CARSMGSmoothingMethod);
+        ReadFloat(Aimbot, CARSMGMinHipfireSmooth);
+        ReadFloat(Aimbot, CARSMGMaxHipfireSmooth);
+        ReadFloat(Aimbot, CARSMGMinADSSmooth);
+        ReadFloat(Aimbot, CARSMGMaxADSSmooth);
+        ReadFloat(Aimbot, CARSMGFOV);
+        ReadFloat(Aimbot, CARSMGZoomScale);
+        //Energy
+        ReadBool(Aimbot, HavocClosestHitbox);
+        ReadFloat(Aimbot, HavocHitbox);
+        ReadFloat(Aimbot, HavocSpeed);
+        ReadFloat(Aimbot, HavocHipfireSmooth);
+        ReadFloat(Aimbot, HavocADSSmooth);
+        ReadInt(Aimbot, HavocSmoothingMethod);
+        ReadFloat(Aimbot, HavocMinHipfireSmooth);
+        ReadFloat(Aimbot, HavocMaxHipfireSmooth);
+        ReadFloat(Aimbot, HavocMinADSSmooth);
+        ReadFloat(Aimbot, HavocMaxADSSmooth);
+        ReadFloat(Aimbot, HavocFOV);
+        ReadFloat(Aimbot, HavocZoomScale);
+        ReadBool(Aimbot, DevotionClosestHitbox);
+        ReadFloat(Aimbot, DevotionHitbox);
+        ReadFloat(Aimbot, DevotionSpeed);
+        ReadFloat(Aimbot, DevotionHipfireSmooth);
+        ReadFloat(Aimbot, DevotionADSSmooth);
+        ReadInt(Aimbot, DevotionSmoothingMethod);
+        ReadFloat(Aimbot, DevotionMinHipfireSmooth);
+        ReadFloat(Aimbot, DevotionMaxHipfireSmooth);
+        ReadFloat(Aimbot, DevotionMinADSSmooth);
+        ReadFloat(Aimbot, DevotionMaxADSSmooth);
+        ReadFloat(Aimbot, DevotionFOV);
+        ReadFloat(Aimbot, DevotionZoomScale);
+        ReadBool(Aimbot, LSTARClosestHitbox);
+        ReadFloat(Aimbot, LSTARHitbox);
+        ReadFloat(Aimbot, LSTARSpeed);
+        ReadFloat(Aimbot, LSTARHipfireSmooth);
+        ReadFloat(Aimbot, LSTARADSSmooth);
+        ReadInt(Aimbot, LSTARSmoothingMethod);
+        ReadFloat(Aimbot, LSTARMinHipfireSmooth);
+        ReadFloat(Aimbot, LSTARMaxHipfireSmooth);
+        ReadFloat(Aimbot, LSTARMinADSSmooth);
+        ReadFloat(Aimbot, LSTARMaxADSSmooth);
+        ReadFloat(Aimbot, LSTARFOV);
+        ReadFloat(Aimbot, LSTARZoomScale);
+        ReadBool(Aimbot, TripleTakeClosestHitbox);
+        ReadFloat(Aimbot, TripleTakeHitbox);
+        ReadFloat(Aimbot, TripleTakeSpeed);
+        ReadFloat(Aimbot, TripleTakeHipfireSmooth);
+        ReadFloat(Aimbot, TripleTakeADSSmooth);
+        ReadInt(Aimbot, TripleTakeSmoothingMethod);
+        ReadFloat(Aimbot, TripleTakeMinHipfireSmooth);
+        ReadFloat(Aimbot, TripleTakeMaxHipfireSmooth);
+        ReadFloat(Aimbot, TripleTakeMinADSSmooth);
+        ReadFloat(Aimbot, TripleTakeMaxADSSmooth);
+        ReadFloat(Aimbot, TripleTakeFOV);
+        ReadFloat(Aimbot, TripleTakeZoomScale);
+        ReadBool(Aimbot, VoltClosestHitbox);
+        ReadFloat(Aimbot, VoltHitbox);
+        ReadFloat(Aimbot, VoltSpeed);
+        ReadFloat(Aimbot, VoltHipfireSmooth);
+        ReadFloat(Aimbot, VoltADSSmooth);
+        ReadInt(Aimbot, VoltSmoothingMethod);
+        ReadFloat(Aimbot, VoltMinHipfireSmooth);
+        ReadFloat(Aimbot, VoltMaxHipfireSmooth);
+        ReadFloat(Aimbot, VoltMinADSSmooth);
+        ReadFloat(Aimbot, VoltMaxADSSmooth);
+        ReadFloat(Aimbot, VoltFOV);
+        ReadFloat(Aimbot, VoltZoomScale);
+        ReadBool(Aimbot, NemesisClosestHitbox);
+        ReadFloat(Aimbot, NemesisHitbox);
+        ReadFloat(Aimbot, NemesisSpeed);
+        ReadFloat(Aimbot, NemesisHipfireSmooth);
+        ReadFloat(Aimbot, NemesisADSSmooth);
+        ReadInt(Aimbot, NemesisSmoothingMethod);
+        ReadFloat(Aimbot, NemesisMinHipfireSmooth);
+        ReadFloat(Aimbot, NemesisMaxHipfireSmooth);
+        ReadFloat(Aimbot, NemesisMinADSSmooth);
+        ReadFloat(Aimbot, NemesisMaxADSSmooth);
+        ReadFloat(Aimbot, NemesisFOV);
+        ReadFloat(Aimbot, NemesisZoomScale);
+        //Shotguns
+        ReadBool(Aimbot, MozambiqueClosestHitbox);
+        ReadFloat(Aimbot, MozambiqueHitbox);
+        ReadFloat(Aimbot, MozambiqueSpeed);
+        ReadFloat(Aimbot, MozambiqueHipfireSmooth);
+        ReadFloat(Aimbot, MozambiqueADSSmooth);
+        ReadInt(Aimbot, MozambiqueSmoothingMethod);
+        ReadFloat(Aimbot, MozambiqueMinHipfireSmooth);
+        ReadFloat(Aimbot, MozambiqueMaxHipfireSmooth);
+        ReadFloat(Aimbot, MozambiqueMinADSSmooth);
+        ReadFloat(Aimbot, MozambiqueMaxADSSmooth);
+        ReadFloat(Aimbot, MozambiqueFOV);
+        ReadFloat(Aimbot, MozambiqueZoomScale);
+        ReadBool(Aimbot, EVA8ClosestHitbox);
+        ReadFloat(Aimbot, EVA8Hitbox);
+        ReadFloat(Aimbot, EVA8Speed);
+        ReadFloat(Aimbot, EVA8HipfireSmooth);
+        ReadFloat(Aimbot, EVA8ADSSmooth);
+        ReadInt(Aimbot, EVA8SmoothingMethod);
+        ReadFloat(Aimbot, EVA8MinHipfireSmooth);
+        ReadFloat(Aimbot, EVA8MaxHipfireSmooth);
+        ReadFloat(Aimbot, EVA8MinADSSmooth);
+        ReadFloat(Aimbot, EVA8MaxADSSmooth);
+        ReadFloat(Aimbot, EVA8FOV);
+        ReadFloat(Aimbot, EVA8ZoomScale);
+        ReadBool(Aimbot, PeacekeeperClosestHitbox);
+        ReadFloat(Aimbot, PeacekeeperHitbox);
+        ReadFloat(Aimbot, PeacekeeperSpeed);
+        ReadFloat(Aimbot, PeacekeeperHipfireSmooth);
+        ReadFloat(Aimbot, PeacekeeperADSSmooth);
+        ReadInt(Aimbot, PeacekeeperSmoothingMethod);
+        ReadFloat(Aimbot, PeacekeeperMinHipfireSmooth);
+        ReadFloat(Aimbot, PeacekeeperMaxHipfireSmooth);
+        ReadFloat(Aimbot, PeacekeeperMinADSSmooth);
+        ReadFloat(Aimbot, PeacekeeperMaxADSSmooth);
+        ReadFloat(Aimbot, PeacekeeperFOV);
+        ReadFloat(Aimbot, PeacekeeperZoomScale);
+        ReadBool(Aimbot, MastiffClosestHitbox);
+        ReadFloat(Aimbot, MastiffHitbox);
+        ReadFloat(Aimbot, MastiffSpeed);
+        ReadFloat(Aimbot, MastiffHipfireSmooth);
+        ReadFloat(Aimbot, MastiffADSSmooth);
+        ReadInt(Aimbot, MastiffSmoothingMethod);
+        ReadFloat(Aimbot, MastiffMinHipfireSmooth);
+        ReadFloat(Aimbot, MastiffMaxHipfireSmooth);
+        ReadFloat(Aimbot, MastiffMinADSSmooth);
+        ReadFloat(Aimbot, MastiffMaxADSSmooth);
+        ReadFloat(Aimbot, MastiffFOV);
+        ReadFloat(Aimbot, MastiffZoomScale);
+        //Snipers
+        ReadBool(Aimbot, LongbowClosestHitbox);
+        ReadFloat(Aimbot, LongbowHitbox);
+        ReadFloat(Aimbot, LongbowSpeed);
+        ReadFloat(Aimbot, LongbowHipfireSmooth);
+        ReadFloat(Aimbot, LongbowADSSmooth);
+        ReadInt(Aimbot, LongbowSmoothingMethod);
+        ReadFloat(Aimbot, LongbowMinHipfireSmooth);
+        ReadFloat(Aimbot, LongbowMaxHipfireSmooth);
+        ReadFloat(Aimbot, LongbowMinADSSmooth);
+        ReadFloat(Aimbot, LongbowMaxADSSmooth);
+        ReadFloat(Aimbot, LongbowFOV);
+        ReadFloat(Aimbot, LongbowZoomScale);
+        ReadBool(Aimbot, ChargeRifleClosestHitbox);
+        ReadFloat(Aimbot, ChargeRifleHitbox);
+        ReadFloat(Aimbot, ChargeRifleSpeed);
+        ReadFloat(Aimbot, ChargeRifleHipfireSmooth);
+        ReadFloat(Aimbot, ChargeRifleADSSmooth);
+        ReadInt(Aimbot, ChargeRifleSmoothingMethod);
+        ReadFloat(Aimbot, ChargeRifleMinHipfireSmooth);
+        ReadFloat(Aimbot, ChargeRifleMaxHipfireSmooth);
+        ReadFloat(Aimbot, ChargeRifleMinADSSmooth);
+        ReadFloat(Aimbot, ChargeRifleMaxADSSmooth);
+        ReadFloat(Aimbot, ChargeRifleFOV);
+        ReadFloat(Aimbot, ChargeRifleZoomScale);
+        ReadBool(Aimbot, SentinelClosestHitbox);
+        ReadFloat(Aimbot, SentinelHitbox);
+        ReadFloat(Aimbot, SentinelSpeed);
+        ReadFloat(Aimbot, SentinelHipfireSmooth);
+        ReadFloat(Aimbot, SentinelADSSmooth);
+        ReadInt(Aimbot, SentinelSmoothingMethod);
+        ReadFloat(Aimbot, SentinelMinHipfireSmooth);
+        ReadFloat(Aimbot, SentinelMaxHipfireSmooth);
+        ReadFloat(Aimbot, SentinelMinADSSmooth);
+        ReadFloat(Aimbot, SentinelMaxADSSmooth);
+        ReadFloat(Aimbot, SentinelFOV);
+        ReadFloat(Aimbot, SentinelZoomScale);
+        //Legendary
+        ReadBool(Aimbot, WingmanClosestHitbox);
+        ReadFloat(Aimbot, WingmanHitbox);
+        ReadFloat(Aimbot, WingmanSpeed);
+        ReadFloat(Aimbot, WingmanHipfireSmooth);
+        ReadFloat(Aimbot, WingmanADSSmooth);
+        ReadInt(Aimbot, WingmanSmoothingMethod);
+        ReadFloat(Aimbot, WingmanMinHipfireSmooth);
+        ReadFloat(Aimbot, WingmanMaxHipfireSmooth);
+        ReadFloat(Aimbot, WingmanMinADSSmooth);
+        ReadFloat(Aimbot, WingmanMaxADSSmooth);
+        ReadFloat(Aimbot, WingmanFOV);
+        ReadFloat(Aimbot, WingmanZoomScale);
+        ReadBool(Aimbot, ProwlerClosestHitbox);
+        ReadFloat(Aimbot, ProwlerHitbox);
+        ReadFloat(Aimbot, ProwlerSpeed);
+        ReadFloat(Aimbot, ProwlerHipfireSmooth);
+        ReadFloat(Aimbot, ProwlerADSSmooth);
+        ReadInt(Aimbot, ProwlerSmoothingMethod);
+        ReadFloat(Aimbot, ProwlerMinHipfireSmooth);
+        ReadFloat(Aimbot, ProwlerMaxHipfireSmooth);
+        ReadFloat(Aimbot, ProwlerMinADSSmooth);
+        ReadFloat(Aimbot, ProwlerMaxADSSmooth);
+        ReadFloat(Aimbot, ProwlerFOV);
+        ReadFloat(Aimbot, ProwlerZoomScale);
+        ReadBool(Aimbot, KraberClosestHitbox);
+        ReadFloat(Aimbot, KraberHitbox);
+        ReadFloat(Aimbot, KraberSpeed);
+        ReadFloat(Aimbot, KraberHipfireSmooth);
+        ReadFloat(Aimbot, KraberADSSmooth);
+        ReadInt(Aimbot, KraberSmoothingMethod);
+        ReadFloat(Aimbot, KraberMinHipfireSmooth);
+        ReadFloat(Aimbot, KraberMaxHipfireSmooth);
+        ReadFloat(Aimbot, KraberMinADSSmooth);
+        ReadFloat(Aimbot, KraberMaxADSSmooth);
+        ReadFloat(Aimbot, KraberFOV);
+        ReadFloat(Aimbot, KraberZoomScale);
+        ReadBool(Aimbot, BocekClosestHitbox);
+        ReadFloat(Aimbot, BocekHitbox);
+        ReadFloat(Aimbot, BocekSpeed);
+        ReadFloat(Aimbot, BocekHipfireSmooth);
+        ReadFloat(Aimbot, BocekADSSmooth);
+        ReadInt(Aimbot, BocekSmoothingMethod);
+        ReadFloat(Aimbot, BocekMinHipfireSmooth);
+        ReadFloat(Aimbot, BocekMaxHipfireSmooth);
+        ReadFloat(Aimbot, BocekMinADSSmooth);
+        ReadFloat(Aimbot, BocekMaxADSSmooth);
+        ReadFloat(Aimbot, BocekFOV);
+        ReadFloat(Aimbot, BocekZoomScale);
+        ReadBool(Aimbot, ThrowingKnifeClosestHitbox);
+        ReadFloat(Aimbot, ThrowingKnifeHitbox);
+        ReadFloat(Aimbot, ThrowingKnifeSpeed);
+        ReadFloat(Aimbot, ThrowingKnifeHipfireSmooth);
+        ReadFloat(Aimbot, ThrowingKnifeADSSmooth);
+        ReadInt(Aimbot, ThrowingKnifeSmoothingMethod);
+        ReadFloat(Aimbot, ThrowingKnifeMinHipfireSmooth);
+        ReadFloat(Aimbot, ThrowingKnifeMaxHipfireSmooth);
+        ReadFloat(Aimbot, ThrowingKnifeMinADSSmooth);
+        ReadFloat(Aimbot, ThrowingKnifeMaxADSSmooth);
+        ReadFloat(Aimbot, ThrowingKnifeFOV);
+        ReadFloat(Aimbot, ThrowingKnifeZoomScale);
+        
+        //Advanced Smooth - Aimbot Mode 1 - Grinder
+        ReadFloat(Aimbot, P2020HipfireSmooth1);
+        ReadFloat(Aimbot, P2020ADSSmooth1);
+        ReadFloat(Aimbot, P2020MinHipfireSmooth1);
+        ReadFloat(Aimbot, P2020MaxHipfireSmooth1);
+        ReadFloat(Aimbot, P2020MinADSSmooth1);
+        ReadFloat(Aimbot, P2020MaxADSSmooth1);
+        ReadFloat(Aimbot, P2020ExtraSmooth1);
+        ReadFloat(Aimbot, P2020Deadzone);
+        ReadFloat(Aimbot, P2020FOV1);
+        ReadFloat(Aimbot, P2020MinDistance1);
+        ReadFloat(Aimbot, P2020MaxDistance1);
+        ReadFloat(Aimbot, RE45HipfireSmooth1);
+        ReadFloat(Aimbot, RE45ADSSmooth1);
+        ReadFloat(Aimbot, RE45MinHipfireSmooth1);
+        ReadFloat(Aimbot, RE45MaxHipfireSmooth1);
+        ReadFloat(Aimbot, RE45MinADSSmooth1);
+        ReadFloat(Aimbot, RE45MaxADSSmooth1);
+        ReadFloat(Aimbot, RE45ExtraSmooth1);
+        ReadFloat(Aimbot, RE45Deadzone);
+        ReadFloat(Aimbot, RE45FOV1);
+        ReadFloat(Aimbot, RE45MinDistance1);
+        ReadFloat(Aimbot, RE45MaxDistance1);
+        ReadFloat(Aimbot, AlternatorHipfireSmooth1);
+        ReadFloat(Aimbot, AlternatorADSSmooth1);
+        ReadFloat(Aimbot, AlternatorMinHipfireSmooth1);
+        ReadFloat(Aimbot, AlternatorMaxHipfireSmooth1);
+        ReadFloat(Aimbot, AlternatorMinADSSmooth1);
+        ReadFloat(Aimbot, AlternatorMaxADSSmooth1);
+        ReadFloat(Aimbot, AlternatorExtraSmooth1);
+        ReadFloat(Aimbot, AlternatorDeadzone);
+        ReadFloat(Aimbot, AlternatorFOV1);
+        ReadFloat(Aimbot, AlternatorMinDistance1);
+        ReadFloat(Aimbot, AlternatorMaxDistance1);
+        ReadFloat(Aimbot, R99HipfireSmooth1);
+        ReadFloat(Aimbot, R99ADSSmooth1);
+        ReadFloat(Aimbot, R99MinHipfireSmooth1);
+        ReadFloat(Aimbot, R99MaxHipfireSmooth1);
+        ReadFloat(Aimbot, R99MinADSSmooth1);
+        ReadFloat(Aimbot, R99MaxADSSmooth1);
+        ReadFloat(Aimbot, R99ExtraSmooth1);
+        ReadFloat(Aimbot, R99Deadzone);
+        ReadFloat(Aimbot, R99FOV1);
+        ReadFloat(Aimbot, R99MinDistance1);
+        ReadFloat(Aimbot, R99MaxDistance1);
+        ReadFloat(Aimbot, R301HipfireSmooth1);
+        ReadFloat(Aimbot, R301ADSSmooth1);
+        ReadFloat(Aimbot, R301MinHipfireSmooth1);
+        ReadFloat(Aimbot, R301MaxHipfireSmooth1);
+        ReadFloat(Aimbot, R301MinADSSmooth1);
+        ReadFloat(Aimbot, R301MaxADSSmooth1);
+        ReadFloat(Aimbot, R301ExtraSmooth1);
+        ReadFloat(Aimbot, R301Deadzone);
+        ReadFloat(Aimbot, R301FOV1);
+        ReadFloat(Aimbot, R301MinDistance1);
+        ReadFloat(Aimbot, R301MaxDistance1);
+        ReadFloat(Aimbot, SpitfireHipfireSmooth1);
+        ReadFloat(Aimbot, SpitfireADSSmooth1);
+        ReadFloat(Aimbot, SpitfireMinHipfireSmooth1);
+        ReadFloat(Aimbot, SpitfireMaxHipfireSmooth1);
+        ReadFloat(Aimbot, SpitfireMinADSSmooth1);
+        ReadFloat(Aimbot, SpitfireMaxADSSmooth1);
+        ReadFloat(Aimbot, SpitfireExtraSmooth1);
+        ReadFloat(Aimbot, SpitfireDeadzone);
+        ReadFloat(Aimbot, SpitfireFOV1);
+        ReadFloat(Aimbot, SpitfireMinDistance1);
+        ReadFloat(Aimbot, SpitfireMaxDistance1);
+        ReadFloat(Aimbot, G7HipfireSmooth1);
+        ReadFloat(Aimbot, G7ADSSmooth1);
+        ReadFloat(Aimbot, G7MinHipfireSmooth1);
+        ReadFloat(Aimbot, G7MaxHipfireSmooth1);
+        ReadFloat(Aimbot, G7MinADSSmooth1);
+        ReadFloat(Aimbot, G7MaxADSSmooth1);
+        ReadFloat(Aimbot, G7ExtraSmooth1);
+        ReadFloat(Aimbot, G7Deadzone);
+        ReadFloat(Aimbot, G7FOV1);
+        ReadFloat(Aimbot, G7MinDistance1);
+        ReadFloat(Aimbot, G7MaxDistance1);
+        
+        ReadFloat(Aimbot, FlatlineHipfireSmooth1);
+        ReadFloat(Aimbot, FlatlineADSSmooth1);
+        ReadFloat(Aimbot, FlatlineMinHipfireSmooth1);
+        ReadFloat(Aimbot, FlatlineMaxHipfireSmooth1);
+        ReadFloat(Aimbot, FlatlineMinADSSmooth1);
+        ReadFloat(Aimbot, FlatlineMaxADSSmooth1);
+        ReadFloat(Aimbot, FlatlineExtraSmooth1);
+        ReadFloat(Aimbot, FlatlineDeadzone);
+        ReadFloat(Aimbot, FlatlineFOV1);
+        ReadFloat(Aimbot, FlatlineMinDistance1);
+        ReadFloat(Aimbot, FlatlineMaxDistance1);
+        ReadFloat(Aimbot, HemlockHipfireSmooth1);
+        ReadFloat(Aimbot, HemlockADSSmooth1);
+        ReadFloat(Aimbot, HemlockMinHipfireSmooth1);
+        ReadFloat(Aimbot, HemlockMaxHipfireSmooth1);
+        ReadFloat(Aimbot, HemlockMinADSSmooth1);
+        ReadFloat(Aimbot, HemlockMaxADSSmooth1);
+        ReadFloat(Aimbot, HemlockExtraSmooth1);
+        ReadFloat(Aimbot, HemlockDeadzone);
+        ReadFloat(Aimbot, HemlockFOV1);
+        ReadFloat(Aimbot, HemlockMinDistance1);
+        ReadFloat(Aimbot, HemlockMaxDistance1);
+        ReadFloat(Aimbot, RepeaterHipfireSmooth1);
+        ReadFloat(Aimbot, RepeaterADSSmooth1);
+        ReadFloat(Aimbot, RepeaterMinHipfireSmooth1);
+        ReadFloat(Aimbot, RepeaterMaxHipfireSmooth1);
+        ReadFloat(Aimbot, RepeaterMinADSSmooth1);
+        ReadFloat(Aimbot, RepeaterMaxADSSmooth1);
+        ReadFloat(Aimbot, RepeaterExtraSmooth1);
+        ReadFloat(Aimbot, RepeaterDeadzone);
+        ReadFloat(Aimbot, RepeaterFOV1);
+        ReadFloat(Aimbot, RepeaterMinDistance1);
+        ReadFloat(Aimbot, RepeaterMaxDistance1);
+        ReadFloat(Aimbot, RampageHipfireSmooth1);
+        ReadFloat(Aimbot, RampageMinHipfireSmooth1);
+        ReadFloat(Aimbot, RampageMaxHipfireSmooth1);
+        ReadFloat(Aimbot, RampageMinADSSmooth1);
+        ReadFloat(Aimbot, RampageMaxADSSmooth1);
+        ReadFloat(Aimbot, RampageADSSmooth1);
+        ReadFloat(Aimbot, RampageExtraSmooth1);
+        ReadFloat(Aimbot, RampageDeadzone);
+        ReadFloat(Aimbot, RampageFOV1);
+        ReadFloat(Aimbot, RampageMinDistance1);
+        ReadFloat(Aimbot, RampageMaxDistance1);
+        ReadFloat(Aimbot, CARSMGHipfireSmooth1);
+        ReadFloat(Aimbot, CARSMGADSSmooth1);
+        ReadFloat(Aimbot, CARSMGMinHipfireSmooth1);
+        ReadFloat(Aimbot, CARSMGMaxHipfireSmooth1);
+        ReadFloat(Aimbot, CARSMGMinADSSmooth1);
+        ReadFloat(Aimbot, CARSMGMaxADSSmooth1);
+        ReadFloat(Aimbot, CARSMGExtraSmooth1);
+        ReadFloat(Aimbot, CARSMGDeadzone);
+        ReadFloat(Aimbot, CARSMGFOV1);
+        ReadFloat(Aimbot, CARSMGMinDistance1);
+        ReadFloat(Aimbot, CARSMGMaxDistance1);
+        
+        ReadFloat(Aimbot, HavocHipfireSmooth1);
+        ReadFloat(Aimbot, HavocADSSmooth1);
+        ReadFloat(Aimbot, HavocMinHipfireSmooth1);
+        ReadFloat(Aimbot, HavocMaxHipfireSmooth1);
+        ReadFloat(Aimbot, HavocMinADSSmooth1);
+        ReadFloat(Aimbot, HavocMaxADSSmooth1);
+        ReadFloat(Aimbot, HavocExtraSmooth1);
+        ReadFloat(Aimbot, HavocDeadzone);
+        ReadFloat(Aimbot, HavocFOV1);
+        ReadFloat(Aimbot, HavocMinDistance1);
+        ReadFloat(Aimbot, HavocMaxDistance1);
+        ReadFloat(Aimbot, DevotionHipfireSmooth1);
+        ReadFloat(Aimbot, DevotionADSSmooth1);
+        ReadFloat(Aimbot, DevotionMinHipfireSmooth1);
+        ReadFloat(Aimbot, DevotionMaxHipfireSmooth1);
+        ReadFloat(Aimbot, DevotionMinADSSmooth1);
+        ReadFloat(Aimbot, DevotionMaxADSSmooth1);
+        ReadFloat(Aimbot, DevotionExtraSmooth1);
+        ReadFloat(Aimbot, DevotionDeadzone);
+        ReadFloat(Aimbot, DevotionFOV1);
+        ReadFloat(Aimbot, DevotionMinDistance1);
+        ReadFloat(Aimbot, DevotionMaxDistance1);
+        ReadFloat(Aimbot, LSTARHipfireSmooth1);
+        ReadFloat(Aimbot, LSTARADSSmooth1);
+        ReadFloat(Aimbot, LSTARMinHipfireSmooth1);
+        ReadFloat(Aimbot, LSTARMaxHipfireSmooth1);
+        ReadFloat(Aimbot, LSTARMinADSSmooth1);
+        ReadFloat(Aimbot, LSTARMaxADSSmooth1);
+        ReadFloat(Aimbot, LSTARExtraSmooth1);
+        ReadFloat(Aimbot, LSTARDeadzone);
+        ReadFloat(Aimbot, LSTARFOV1);
+        ReadFloat(Aimbot, LSTARMinDistance1);
+        ReadFloat(Aimbot, LSTARMaxDistance1);
+        ReadFloat(Aimbot, TripleTakeHipfireSmooth1);
+        ReadFloat(Aimbot, TripleTakeADSSmooth1);
+        ReadFloat(Aimbot, TripleTakeMinHipfireSmooth1);
+        ReadFloat(Aimbot, TripleTakeMaxHipfireSmooth1);
+        ReadFloat(Aimbot, TripleTakeMinADSSmooth1);
+        ReadFloat(Aimbot, TripleTakeMaxADSSmooth1);
+        ReadFloat(Aimbot, TripleTakeExtraSmooth1);
+        ReadFloat(Aimbot, TripleTakeDeadzone);
+        ReadFloat(Aimbot, TripleTakeFOV1);
+        ReadFloat(Aimbot, TripleTakeMinDistance1);
+        ReadFloat(Aimbot, TripleTakeMaxDistance1);
+        ReadFloat(Aimbot, VoltHipfireSmooth1);
+        ReadFloat(Aimbot, VoltADSSmooth1);
+        ReadFloat(Aimbot, VoltMinHipfireSmooth1);
+        ReadFloat(Aimbot, VoltMaxHipfireSmooth1);
+        ReadFloat(Aimbot, VoltMinADSSmooth1);
+        ReadFloat(Aimbot, VoltMaxADSSmooth1);
+        ReadFloat(Aimbot, VoltExtraSmooth1);
+        ReadFloat(Aimbot, VoltDeadzone);
+        ReadFloat(Aimbot, VoltFOV1);
+        ReadFloat(Aimbot, VoltMinDistance1);
+        ReadFloat(Aimbot, VoltMaxDistance1);
+        ReadFloat(Aimbot, NemesisHipfireSmooth1);
+        ReadFloat(Aimbot, NemesisADSSmooth1);
+        ReadFloat(Aimbot, NemesisMinHipfireSmooth1);
+        ReadFloat(Aimbot, NemesisMaxHipfireSmooth1);
+        ReadFloat(Aimbot, NemesisMinADSSmooth1);
+        ReadFloat(Aimbot, NemesisMaxADSSmooth1);
+        ReadFloat(Aimbot, NemesisExtraSmooth1);
+        ReadFloat(Aimbot, NemesisDeadzone);
+        ReadFloat(Aimbot, NemesisFOV1);
+        ReadFloat(Aimbot, NemesisMinDistance1);
+        ReadFloat(Aimbot, NemesisMaxDistance1);
+        
+        ReadFloat(Aimbot, MozambiqueHipfireSmooth1);
+        ReadFloat(Aimbot, MozambiqueADSSmooth1);
+        ReadFloat(Aimbot, MozambiqueMinHipfireSmooth1);
+        ReadFloat(Aimbot, MozambiqueMaxHipfireSmooth1);
+        ReadFloat(Aimbot, MozambiqueMinADSSmooth1);
+        ReadFloat(Aimbot, MozambiqueMaxADSSmooth1);
+        ReadFloat(Aimbot, MozambiqueExtraSmooth1);
+        ReadFloat(Aimbot, MozambiqueDeadzone);
+        ReadFloat(Aimbot, MozambiqueFOV1);
+        ReadFloat(Aimbot, MozambiqueMinDistance1);
+        ReadFloat(Aimbot, MozambiqueMaxDistance1);
+        ReadFloat(Aimbot, EVA8HipfireSmooth1);
+        ReadFloat(Aimbot, EVA8ADSSmooth1);
+        ReadFloat(Aimbot, EVA8MinHipfireSmooth1);
+        ReadFloat(Aimbot, EVA8MaxHipfireSmooth1);
+        ReadFloat(Aimbot, EVA8MinADSSmooth1);
+        ReadFloat(Aimbot, EVA8MaxADSSmooth1);
+        ReadFloat(Aimbot, EVA8ExtraSmooth1);
+        ReadFloat(Aimbot, EVA8Deadzone);
+        ReadFloat(Aimbot, EVA8FOV1);
+        ReadFloat(Aimbot, EVA8MinDistance1);
+        ReadFloat(Aimbot, EVA8MaxDistance1);
+        ReadFloat(Aimbot, PeacekeeperHipfireSmooth1);
+        ReadFloat(Aimbot, PeacekeeperADSSmooth1);
+        ReadFloat(Aimbot, PeacekeeperMinHipfireSmooth1);
+        ReadFloat(Aimbot, PeacekeeperMaxHipfireSmooth1);
+        ReadFloat(Aimbot, PeacekeeperMinADSSmooth1);
+        ReadFloat(Aimbot, PeacekeeperMaxADSSmooth1);
+        ReadFloat(Aimbot, PeacekeeperExtraSmooth1);
+        ReadFloat(Aimbot, PeacekeeperDeadzone);
+        ReadFloat(Aimbot, PeacekeeperFOV1);
+        ReadFloat(Aimbot, PeacekeeperMinDistance1);
+        ReadFloat(Aimbot, PeacekeeperMaxDistance1);
+        ReadFloat(Aimbot, MastiffHipfireSmooth1);
+        ReadFloat(Aimbot, MastiffADSSmooth1);
+        ReadFloat(Aimbot, MastiffMinHipfireSmooth1);
+        ReadFloat(Aimbot, MastiffMaxHipfireSmooth1);
+        ReadFloat(Aimbot, MastiffMinADSSmooth1);
+        ReadFloat(Aimbot, MastiffMaxADSSmooth1);
+        ReadFloat(Aimbot, MastiffExtraSmooth1);
+        ReadFloat(Aimbot, MastiffDeadzone);
+        ReadFloat(Aimbot, MastiffFOV1);
+        ReadFloat(Aimbot, MastiffMinDistance1);
+        ReadFloat(Aimbot, MastiffMaxDistance1);
+        
+        ReadFloat(Aimbot, LongbowHipfireSmooth1);
+        ReadFloat(Aimbot, LongbowADSSmooth1);
+        ReadFloat(Aimbot, LongbowMinHipfireSmooth1);
+        ReadFloat(Aimbot, LongbowMaxHipfireSmooth1);
+        ReadFloat(Aimbot, LongbowMinADSSmooth1);
+        ReadFloat(Aimbot, LongbowMaxADSSmooth1);
+        ReadFloat(Aimbot, LongbowExtraSmooth1);
+        ReadFloat(Aimbot, LongbowDeadzone);
+        ReadFloat(Aimbot, LongbowFOV1);
+        ReadFloat(Aimbot, LongbowMinDistance1);
+        ReadFloat(Aimbot, LongbowMaxDistance1);
+        ReadFloat(Aimbot, ChargeRifleHipfireSmooth1);
+        ReadFloat(Aimbot, ChargeRifleADSSmooth1);
+        ReadFloat(Aimbot, ChargeRifleMinHipfireSmooth1);
+        ReadFloat(Aimbot, ChargeRifleMaxHipfireSmooth1);
+        ReadFloat(Aimbot, ChargeRifleMinADSSmooth1);
+        ReadFloat(Aimbot, ChargeRifleMaxADSSmooth1);
+        ReadFloat(Aimbot, ChargeRifleExtraSmooth1);
+        ReadFloat(Aimbot, ChargeRifleDeadzone);
+        ReadFloat(Aimbot, ChargeRifleFOV1);
+        ReadFloat(Aimbot, ChargeRifleMinDistance1);
+        ReadFloat(Aimbot, ChargeRifleMaxDistance1);
+        ReadFloat(Aimbot, SentinelHipfireSmooth1);
+        ReadFloat(Aimbot, SentinelADSSmooth1);
+        ReadFloat(Aimbot, SentinelMinHipfireSmooth1);
+        ReadFloat(Aimbot, SentinelMaxHipfireSmooth1);
+        ReadFloat(Aimbot, SentinelMinADSSmooth1);
+        ReadFloat(Aimbot, SentinelMaxADSSmooth1);
+        ReadFloat(Aimbot, SentinelExtraSmooth1);
+        ReadFloat(Aimbot, SentinelDeadzone);
+        ReadFloat(Aimbot, SentinelFOV1);
+        ReadFloat(Aimbot, SentinelMinDistance1);
+        ReadFloat(Aimbot, SentinelMaxDistance1);
+        
+        ReadFloat(Aimbot, WingmanHipfireSmooth1);
+        ReadFloat(Aimbot, WingmanADSSmooth1);
+        ReadFloat(Aimbot, WingmanMinHipfireSmooth1);
+        ReadFloat(Aimbot, WingmanMaxHipfireSmooth1);
+        ReadFloat(Aimbot, WingmanMinADSSmooth1);
+        ReadFloat(Aimbot, WingmanMaxADSSmooth1);
+        ReadFloat(Aimbot, WingmanExtraSmooth1);
+        ReadFloat(Aimbot, WingmanDeadzone);
+        ReadFloat(Aimbot, WingmanFOV1);
+        ReadFloat(Aimbot, WingmanMinDistance1);
+        ReadFloat(Aimbot, WingmanMaxDistance1);
+        ReadFloat(Aimbot, ProwlerHipfireSmooth1);
+        ReadFloat(Aimbot, ProwlerADSSmooth1);
+        ReadFloat(Aimbot, ProwlerMinHipfireSmooth1);
+        ReadFloat(Aimbot, ProwlerMaxHipfireSmooth1);
+        ReadFloat(Aimbot, ProwlerMinADSSmooth1);
+        ReadFloat(Aimbot, ProwlerMaxADSSmooth1);
+        ReadFloat(Aimbot, ProwlerExtraSmooth1);
+        ReadFloat(Aimbot, ProwlerDeadzone);
+        ReadFloat(Aimbot, ProwlerFOV1);
+        ReadFloat(Aimbot, ProwlerMinDistance1);
+        ReadFloat(Aimbot, ProwlerMaxDistance1);
+        ReadFloat(Aimbot, BocekHipfireSmooth1);
+        ReadFloat(Aimbot, BocekADSSmooth1);
+        ReadFloat(Aimbot, BocekMinHipfireSmooth1);
+        ReadFloat(Aimbot, BocekMaxHipfireSmooth1);
+        ReadFloat(Aimbot, BocekMinADSSmooth1);
+        ReadFloat(Aimbot, BocekMaxADSSmooth1);
+        ReadFloat(Aimbot, BocekExtraSmooth1);
+        ReadFloat(Aimbot, BocekDeadzone);
+        ReadFloat(Aimbot, BocekFOV1);
+        ReadFloat(Aimbot, BocekMinDistance1);
+        ReadFloat(Aimbot, BocekMaxDistance1);
+        ReadFloat(Aimbot, KraberHipfireSmooth1);
+        ReadFloat(Aimbot, KraberADSSmooth1);
+        ReadFloat(Aimbot, KraberMinHipfireSmooth1);
+        ReadFloat(Aimbot, KraberMaxHipfireSmooth1);
+        ReadFloat(Aimbot, KraberMinADSSmooth1);
+        ReadFloat(Aimbot, KraberMaxADSSmooth1);
+        ReadFloat(Aimbot, KraberExtraSmooth1);
+        ReadFloat(Aimbot, KraberDeadzone);
+        ReadFloat(Aimbot, KraberFOV1);
+        ReadFloat(Aimbot, KraberMinDistance1);
+        ReadFloat(Aimbot, KraberMaxDistance1);
+        ReadFloat(Aimbot, ThrowingKnifeHipfireSmooth1);
+        ReadFloat(Aimbot, ThrowingKnifeADSSmooth1);
+        ReadFloat(Aimbot, ThrowingKnifeMinHipfireSmooth1);
+        ReadFloat(Aimbot, ThrowingKnifeMaxHipfireSmooth1);
+        ReadFloat(Aimbot, ThrowingKnifeMinADSSmooth1);
+        ReadFloat(Aimbot, ThrowingKnifeMaxADSSmooth1);
+        ReadFloat(Aimbot, ThrowingKnifeExtraSmooth1);
+        ReadFloat(Aimbot, ThrowingKnifeDeadzone);
+        ReadFloat(Aimbot, ThrowingKnifeFOV1);
+        ReadFloat(Aimbot, ThrowingKnifeMinDistance1);    
+        ReadFloat(Aimbot, ThrowingKnifeMaxDistance1);
 
 		ReadInt(AimbotBinds, AimBind);
 		ReadInt(AimbotBinds, ExtraBind);
@@ -4440,7 +5349,7 @@ struct ConfigManager
 		ReadInt(SenseEnemy, BoxStyle);
 		ReadFloat(SenseEnemy, BoxThickness);
 		ReadBool(SenseEnemy, DrawSkeleton);
-		ReadFloat(SenseEnemy, SkeletonThickness);		
+		ReadFloat(SenseEnemy, SkeletonThickness);
 		ReadBool(SenseEnemy, DrawHeadCircle);
 		ReadFloat(SenseEnemy, HeadCircleThickness);
 		ReadBool(SenseEnemy, DrawBars);
@@ -4520,6 +5429,7 @@ struct ConfigManager
 		ReadFloat(Radar, CircleColorA);
 
 		ReadBool(Misc, SuperGlide);
+		ReadInt(Misc, SuperGlideFPS);
 		ReadBool(Misc, QuickTurn);
 		ReadInt(Misc, QuickTurnAngle);
 		ReadInt(Misc, QuickTurnBind);
@@ -4545,7 +5455,6 @@ struct ConfigManager
 		ReadBool(Misc, RapidEVA8);
 		// Legendary
 		ReadBool(Misc, RapidWingman);
-		ReadBool(Misc, TeamGamemode);
 		ReadBool(Misc, SkinChanger);
 		// Skin IDs
 		// Light
@@ -4849,13 +5758,12 @@ struct ConfigManager
 		ReadBool(Watermark, ProcessingSpeed);
 		ReadBool(Watermark, Spectators);
 
-		ReadBool(Settings, GamemodeCheck);
 		ReadBool(Settings, ESPEnabled);
 		ReadBool(Settings, OverlayEnabled);
 		ReadBool(Settings, FPSCap);
 		ReadInt(Settings, CappedFPS);
 
 		UpdateConfig();
-    	return true;
+		return true;
 	}
 };

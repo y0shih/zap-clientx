@@ -203,7 +203,7 @@ struct Menu
 				ImGui::Checkbox("Enabled", &Features::Aimbot::AimbotEnabled);
 				if (Features::Aimbot::AimbotEnabled)
 				{
-					const char *AimbotModeIndex[] = {"Cubic Bezier [xap-client]", "Grinder"};
+					const char *AimbotModeIndex[] = {"Cubic Bezier [xap-client]", "Grinder", "[New] Cubic Bezier [Testing]"};
 					ImGui::ComboBox("Aimbot Method", &Features::Aimbot::AimbotMode, AimbotModeIndex, IM_ARRAYSIZE(AimbotModeIndex));
 					if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 						ImGui::SetTooltip("What Aimbot Method You Would Like.\nYou may find Grinder To Be More Legit/Smooth.");
@@ -215,7 +215,7 @@ struct Menu
 				ImGui::EndChildFrame();
 			}
 
-			if (Features::Aimbot::AimbotEnabled && Features::Aimbot::AimbotMode == 0 && !Features::Aimbot::AdvancedAim)
+			if (Features::Aimbot::AimbotEnabled && Features::Aimbot::AimbotMode == 0 or Features::Aimbot::AimbotMode == 2 && !Features::Aimbot::AdvancedAim)
 			{
 				ImGui::Columns(2, nullptr, false);
 				ImGui::BeginChildFrame(2, ImVec2(WindowWidth - 613, 93), true);
@@ -261,7 +261,7 @@ struct Menu
 						ImGui::Checkbox("Team Check##Aimbot", &Features::Aimbot::TeamCheck);
 						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Disable this if doing 1v1s in the firing range.\nMay not work with Grinder Aim Method.");
-						if (Features::Aimbot::AimbotMode == 0)
+						if (Features::Aimbot::AimbotMode == 0 or Features::Aimbot::AimbotMode == 2)
 						{ // xap-client
 							ImGui::SameLine();
 							ImGui::Checkbox("Visibility Check", &Features::Aimbot::VisCheck);
@@ -278,11 +278,14 @@ struct Menu
 					ImGui::EndChildFrame();
 				}
 
-				if (!Features::Aimbot::AdvancedAim && Features::Aimbot::AimbotMode == 0)
+				if (!Features::Aimbot::AdvancedAim && Features::Aimbot::AimbotMode == 0 or Features::Aimbot::AimbotMode == 2)
 				{ // Cubic Bezier [xap-client]
 					ImGui::BeginChildFrame(4, ImVec2(WindowWidth - 613, 169), true);
 					{
 						ImGui::Spacing();
+						const char *SmoothingMethodIndex[] = {"Static", "Random"};
+						ImGui::ComboBox("Smoothing Method", &Features::Aimbot::SmoothingMethod, SmoothingMethodIndex, IM_ARRAYSIZE(SmoothingMethodIndex));
+
 						if (Features::Aimbot::InputMethod == 0) // Mouse Only
 						{
 							ImGui::MainSliderFloat("Speed", &Features::Aimbot::Speed, 1, 100, "%.0f");
@@ -290,17 +293,76 @@ struct Menu
 								ImGui::SetTooltip("Speed of the Aim-Assist\nHigher = Faster");
 						}
 
-						ImGui::MainSliderFloat("Hipfire Smoothing", &Features::Aimbot::HipfireSmooth, 0, 0.99, "%.3f");
-						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing for the Aim-Assist whilst hipfiring.\nHigher = Smoother");
+						if (Features::Aimbot::SmoothingMethod == 0) // Static
+						{
+							if (Features::Aimbot::AimbotMode == 0)
+							{
+								ImGui::MainSliderFloat("Hipfire Smoothing", &Features::Aimbot::HipfireSmooth, 0, 0.99, "%.3f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("Smoothing for the Aim-Assist whilst hipfiring.\nHigher = Smoother");
 
-						ImGui::MainSliderFloat("ADS Smoothing", &Features::Aimbot::ADSSmooth, 0, 0.99, "%.3f");
-						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Smoothing for the Aim-Assist whilst ADS.\nHigher = Smoother");
+								ImGui::MainSliderFloat("ADS Smoothing", &Features::Aimbot::ADSSmooth, 0, 0.99, "%.3f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("Smoothing for the Aim-Assist whilst ADS.\nHigher = Smoother");
+							}
+							if (Features::Aimbot::AimbotMode == 2)
+							{
+								ImGui::MainSliderFloat("Hipfire Smoothing##Test", &Features::Aimbot::MouseHipfireSmoothing, 1, 1000, "%.0f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("Smoothing for the Aim-Assist whilst hipfiring.\nHigher = Smoother");
 
-						ImGui::MainSliderFloat("Distance Smoothing", &Features::Aimbot::SmoothDistance, 1, 10000, "%.0f");
-						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.\nMay not change much.");
+								ImGui::MainSliderFloat("ADS Smoothing##Test", &Features::Aimbot::MouseADSSmoothing, 1, 1000, "%.0f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("Smoothing for the Aim-Assist whilst ADS.\nHigher = Smoother");
+							}
+						}
+						if (Features::Aimbot::SmoothingMethod == 1) // Random
+						{
+							if (Features::Aimbot::AimbotMode == 0)
+							{
+								ImGui::MainSliderFloat("Minimum Hipfire Smoothing", &Features::Aimbot::MinHipfireSmooth, 0, 0.99, "%.3f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("Minimum Smoothing for the Aim-Assist whilst hipfiring.\nHigher = Smoother");
+
+								ImGui::MainSliderFloat("Maximum Hipfire Smoothing", &Features::Aimbot::MaxHipfireSmooth, 0, 0.99, "%.3f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("Maximum Smoothing for the Aim-Assist whilst hipfiring.\nHigher = Smoother");
+
+								ImGui::MainSliderFloat("Minimum ADS Smoothing", &Features::Aimbot::MinADSSmooth, 0, 0.99, "%.3f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("Minimum Smoothing for the Aim-Assist whilst ADS.\nHigher = Smoother");
+
+								ImGui::MainSliderFloat("Maximum ADS Smoothing", &Features::Aimbot::MaxADSSmooth, 0, 0.99, "%.3f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("Maximum Smoothing for the Aim-Assist whilst ADS.\nHigher = Smoother");
+							}
+							if (Features::Aimbot::AimbotMode == 2)
+							{
+								ImGui::MainSliderFloat("Minimum Hipfire Smoothing##Test", &Features::Aimbot::MinMouseHipfireSmoothing, 1, 1000, "%.0f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("Minimum Smoothing for the Aim-Assist whilst hipfiring.\nHigher = Smoother");
+
+								ImGui::MainSliderFloat("Maximum Hipfire Smoothing##Test", &Features::Aimbot::MaxMouseHipfireSmoothing, 1, 1000, "%.0f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("Maximum Smoothing for the Aim-Assist whilst hipfiring.\nHigher = Smoother");
+
+								ImGui::MainSliderFloat("Minimum ADS Smoothing##Test", &Features::Aimbot::MinMouseADSSmoothing, 1, 1000, "%.0f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("Minimum Smoothing for the Aim-Assist whilst ADS.\nHigher = Smoother");
+
+								ImGui::MainSliderFloat("Maximum ADS Smoothing##Test", &Features::Aimbot::MaxMouseADSSmoothing, 1, 1000, "%.0f");
+								if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+									ImGui::SetTooltip("Maximum Smoothing for the Aim-Assist whilst ADS.\nHigher = Smoother");
+							}
+						}
+
+						if (Features::Aimbot::AimbotMode == 2)
+						{
+							ImGui::MainSliderFloat("Distance Smoothing##Test", &Features::Aimbot::MouseExtraSmoothing, 1, 9999, "%.0f");
+							if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+								ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
+						}
+
 						ImGui::MainSliderInt("Delay", &Features::Aimbot::Delay, 1, 50);
 						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Delay time for the aimbot smoothing.\n");
@@ -390,12 +452,36 @@ struct Menu
 				{
 					ImGui::Spacing();
 
-					ImGui::MainSliderFloat("Hipfire Smoothing##Grinder", &Features::Aimbot::HipfireSmooth1, 1, 1000, "%.0f");
-					if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						ImGui::SetTooltip("Smoothing Of The Aim-Assist Whilst Hipfiring.\nHigher = Smoother");
-					ImGui::MainSliderFloat("ADS Smoothing##Grinder", &Features::Aimbot::ADSSmooth1, 1, 1000, "%.0f");
-					if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						ImGui::SetTooltip("Smoothing Of The Aim-Assist Longbow Whilst ADS.\nHigher = Smoother");
+					const char *SmoothingMethodIndex[] = {"Static", "Random"};
+					ImGui::ComboBox("Smoothing Method", &Features::Aimbot::SmoothingMethod, SmoothingMethodIndex, IM_ARRAYSIZE(SmoothingMethodIndex));
+					
+					if (Features::Aimbot::SmoothingMethod == 0) // Static
+					{
+						ImGui::MainSliderFloat("Hipfire Smoothing##Grinder", &Features::Aimbot::HipfireSmooth1, 1, 1000, "%.0f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist Whilst Hipfiring.\nHigher = Smoother");
+						ImGui::MainSliderFloat("ADS Smoothing##Grinder", &Features::Aimbot::ADSSmooth1, 1, 1000, "%.0f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Smoothing Of The Aim-Assist Longbow Whilst ADS.\nHigher = Smoother");
+					}
+
+					if (Features::Aimbot::SmoothingMethod == 1) // Random
+					{
+						ImGui::MainSliderFloat("Min Hipfire Smoothing##Grinder", &Features::Aimbot::MinHipfireSmooth1, 1, 1000, "%.0f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Minimum Smoothing Of The Aim-Assist Whilst Hipfiring.\nHigher = Smoother");
+						ImGui::MainSliderFloat("Max Hipfire Smoothing##Grinder", &Features::Aimbot::MaxHipfireSmooth1, 1, 1000, "%.0f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Maximum Smoothing Of The Aim-Assist Whilst Hipfiring.\nHigher = Smoother");
+
+						ImGui::MainSliderFloat("Min ADS Smoothing##Grinder", &Features::Aimbot::MinADSSmooth1, 1, 1000, "%.0f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Minimum Smoothing Of The Aim-Assist Whilst ADS.\nHigher = Smoother");
+						ImGui::MainSliderFloat("Max ADS Smoothing##Grinder", &Features::Aimbot::MaxADSSmooth1, 1, 1000, "%.0f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Maximum Smoothing Of The Aim-Assist Whilst ADS.\nHigher = Smoother");
+					}
+					
 					ImGui::MainSliderFloat("Extra Smoothing##Grinder", &Features::Aimbot::ExtraSmoothing, 1, 9999, "%.0f");
 					if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 						ImGui::SetTooltip("Increases the smoothing depending on the distance of the player.");
@@ -587,6 +673,10 @@ struct Menu
 					}
 
 					if (Features::RCS::RCSMode == 1 && Features::Aimbot::AimbotMode == 1)
+					{
+						ImGui::Text("Selected Aimbot Mode Is Incompatible With Combined RCS! Switch To Standalone!");
+					}
+					if (Features::RCS::RCSMode == 1 && Features::Aimbot::AimbotMode == 2)
 					{
 						ImGui::Text("Selected Aimbot Mode Is Incompatible With Combined RCS! Switch To Standalone!");
 					}
@@ -1465,7 +1555,7 @@ struct Menu
 					ImGui::SetTooltip("Toggle ViewModel Glow.");
 				if (Features::Glow::ViewModelGlow)
 				{
-					const char *ViewmodelGlowIndex[] = {"Cyan Outline", "Light Red Outline", "White Outline", "Orange Outline", "Yellow Outline", "Solid Green", "Solid Orange", "Solid Yellow", "Solid Yellow Pulsing", "Solid Purple", "Solid Light Blue", "Solid Light Grey", "Solid White", "Solid Cyan", "Solid Hot Pink", "Solid Light Yellow", "Solid Light Orange", "Solid Light Green", "Solid Black", "Chrome", "Invisible Pulsing Red"};
+					const char *ViewmodelGlowIndex[] = {"Cyan Outline", "Light Red Outline", "White Outline", "Orange Outline", "Yellow Outline", "Solid Green", "Solid Orange", "Solid Yellow", "Solid Yellow Pulsing", "Solid Purple", "Solid Light Blue", "Solid Light Grey", "Solid White", "Solid Cyan", "Solid Hot Pink", "Solid Light Yellow", "Solid Light Orange", "Solid Light Green", "Solid Black", "Chrome"};
 					ImGui::ComboBox("Selected Color", &Features::Glow::ViewModelGlowCombo, ViewmodelGlowIndex, IM_ARRAYSIZE(ViewmodelGlowIndex));
 				}
 
@@ -2311,6 +2401,13 @@ struct Menu
 				ImGui::Checkbox("SuperGlide", &Features::Misc::SuperGlide);
 				if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 					ImGui::SetTooltip("Hold spacebar whilst climbing over a wall/object to gain extra speed.");
+				if (Features::Misc::SuperGlide)
+				{
+					const char *SuperGlideFPSIndex[] = {"75", "144", "240"};
+					ImGui::ComboBox("SuperGlide FPS", &Features::Misc::SuperGlideFPS, SuperGlideFPSIndex, IM_ARRAYSIZE(SuperGlideFPSIndex));
+					if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("Set this to your in-game FPS to make SuperGlide more accurate!");
+				}
 				ImGui::Checkbox("BHop", &Features::Misc::BHop);
 				if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 					ImGui::SetTooltip("Bouncy!\nActivates Whilst Holding A Selected Keybind & Space.");
@@ -2499,10 +2596,11 @@ struct Menu
 			ImGui::BeginChildFrame(1, ImVec2(WindowWidth - 220, WindowHeight - 110), true);
 			{
 				ImGui::Spacing();
-				ImGui::Text("Main Settings");
+				/*ImGui::Text("Main Settings");
 				ImGui::Checkbox("Gamemode Check", &Features::Settings::GamemodeCheck);
 				if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-					ImGui::SetTooltip("Depending On What Gamemode You Are Playing, You Will Need To Toggle This On Or Off.\nOn: Trios, Duos, Ranked, Gun Run Or Firing Range\nOff: Control, Team Deathmatch");
+					ImGui::SetTooltip("Depending On What Gamemode You Are Playing, You Will Need To Toggle This On Or Off.\nOn: Trios, Duos, Ranked, Gun Run Or Firing Range\nOff: Control, Team Deathmatch");*/
+				//No Longer Needed
 
 				ImGui::Text("Overlay Settings");
 				ImGui::Checkbox("Enable Overlay", &Features::Settings::OverlayEnabled);

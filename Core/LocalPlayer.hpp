@@ -18,6 +18,7 @@ struct LocalPlayer
     bool InJump;
 
     int Team;
+    int Squad;
     Vector3D LocalOrigin;
     Vector3D CameraPosition;
 
@@ -63,16 +64,19 @@ struct LocalPlayer
         InJump = Memory::Read<bool>(OFF_REGION + OFF_IN_JUMP) > 0;
 
         Team = Memory::Read<int>(BasePointer + OFF_TEAM_NUMBER);
+        Squad = Memory::Read<int>(BasePointer + OFF_SQUAD_ID);
+
         localOrigin = Memory::Read<FloatVector3D>(BasePointer + OFF_LOCAL_ORIGIN);
         LocalOrigin = Memory::Read<Vector3D>(BasePointer + OFF_LOCAL_ORIGIN);
+
         CameraPosition = Memory::Read<Vector3D>(BasePointer + OFF_CAMERAORIGIN);
         ViewAngles = Memory::Read<Vector2D>(BasePointer + OFF_VIEW_ANGLES);
         PunchAngles = Memory::Read<Vector2D>(BasePointer + OFF_PUNCH_ANGLES);
         PunchAnglesDifferent = PunchAnglesPrevious.Subtract(PunchAngles);
         PunchAnglesPrevious = PunchAngles;
-
         ViewYaw = Memory::Read<float>(BasePointer + OFF_YAW);
 
+        //Grinder Aimbot Method
         cameraPosition = Memory::Read<FloatVector3D>(BasePointer + OFF_CAMERAORIGIN);
         viewAngles = Memory::Read<FloatVector2D>(BasePointer + OFF_VIEW_ANGLES);
         punchAngles = Memory::Read<FloatVector2D>(BasePointer + OFF_PUNCH_ANGLES);
@@ -118,6 +122,30 @@ struct LocalPlayer
     {
         long ptrLong = BasePointer + OFF_VIEW_ANGLES + sizeof(float);
         Memory::Write<float>(ptrLong, angle);
+    }
+
+    void SetQAngle(QAngle ViewAngle)
+    {
+        Memory::Write<QAngle>(BasePointer + OFF_VIEW_ANGLES, NormalizeQAngle(ViewAngle));
+    }
+
+    inline QAngle NormalizeQAngle(QAngle angle)
+    {
+        while (angle.x > 89.0f)
+            angle.x -= 180.f;
+
+        while (angle.x < -89.0f)
+            angle.x += 180.f;
+
+        while (angle.y > 180.f)
+            angle.y -= 360.f;
+
+        while (angle.y < -180.f)
+        {
+            angle.y += 360.f;
+        }
+
+        return angle;
     }
 
     void SetViewAngle(Vector2D ViewAngle)

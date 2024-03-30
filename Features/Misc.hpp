@@ -42,6 +42,13 @@ struct Misc
 
 	std::set<int> RapidFireList = {};
 
+	float HangOnWall1;
+	float HangOnWall2;
+	float TraversalProgress1;
+	float HangOnWall3;
+	float HangOnWall4;
+	float StartJumpTime1;
+
 	XDisplay *X11Display;
 	Level *Map;
 	LocalPlayer *Myself;
@@ -60,6 +67,7 @@ struct Misc
 		try
 		{
 			Config::Misc::SuperGlide = Features::Misc::SuperGlide;
+			Config::Misc::SuperGlideFPS = Features::Misc::SuperGlideFPS;
 
 			Config::Misc::QuickTurn = Features::Misc::QuickTurn;
 			Config::Misc::QuickTurnAngle = Features::Misc::QuickTurnAngle;
@@ -220,6 +228,7 @@ struct Misc
 
 	void SuperGlide()
 	{
+		UpdateSuperGlide();
 		if (InputManager::isKeyDownOrPress(InputKeyType::KEYBOARD_SPACE))
 		{
 			static float startjumpTime = 0;
@@ -231,11 +240,11 @@ struct Misc
 			float traversalProgress = Memory::Read<float>(Myself->BasePointer + OFF_TRAVERSAL_PROGRESS);	   // Wall climbing, if > 0.87 it is almost over.
 			float HangOnWall = -(traversalStartTime - worldtime);
 
-			if (HangOnWall > 0.1 && HangOnWall < 0.12)
+			if (HangOnWall > HangOnWall1 && HangOnWall < HangOnWall2)
 			{
 				Memory::Write<int>(OFF_REGION + OFF_IN_JUMP + 0x8, 4);
 			}
-			if (traversalProgress > 0.87f && !startSg && HangOnWall > 0.1f && HangOnWall < 1.5f)
+			if (traversalProgress > TraversalProgress1 && !startSg && HangOnWall > HangOnWall3 && HangOnWall < HangOnWall4)
 			{
 				// start SG
 				startjumpTime = worldtime;
@@ -244,8 +253,8 @@ struct Misc
 			if (startSg)
 			{
 				Memory::Write<int>(OFF_REGION + OFF_IN_JUMP + 0x8, 5);
-				while (Memory::Read<float>(Myself->BasePointer + OFF_TIME_BASE) - startjumpTime < 0.011)
-					;
+				while (Memory::Read<float>(Myself->BasePointer + OFF_TIME_BASE) - startjumpTime < StartJumpTime1)
+					; //why is this here...
 				{
 					Memory::Write<int>(OFF_REGION + OFF_IN_DUCK + 0x8, 6);
 					std::this_thread::sleep_for(std::chrono::milliseconds(50));
@@ -254,6 +263,39 @@ struct Misc
 				}
 				startSg = false;
 			}
+		}
+	}
+
+	void UpdateSuperGlide()
+	{
+		if (Features::Misc::SuperGlideFPS == 0) // 75 FPS
+		{
+			HangOnWall1 = 0.1;
+			HangOnWall2 = 0.12;
+			TraversalProgress1 = 0.87f;
+			HangOnWall3 = 0.1f;
+			HangOnWall4 = 1.5f;
+			StartJumpTime1 = 0.011;
+		}
+
+		else if (Features::Misc::SuperGlideFPS == 1) // 144 FPS
+		{
+			HangOnWall1 = 0.05;
+			HangOnWall2 = 0.07;
+			TraversalProgress1 = 0.90f;
+			HangOnWall3 = 0.05f;
+			HangOnWall4 = 0.75f;
+			StartJumpTime1 = 0.007;
+		}
+
+		else if (Features::Misc::SuperGlideFPS == 1) // 240 FPS
+		{
+			HangOnWall1 = 0.033;
+			HangOnWall2 = 0.04;
+			TraversalProgress1 = 0.95f;
+			HangOnWall3 = 0.033f;
+			HangOnWall4 = 0.2f;
+			StartJumpTime1 = 0.004;
 		}
 	}
 

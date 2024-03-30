@@ -297,7 +297,7 @@ struct Triggerbot
 
                 if (!Myself->IsZooming)
                 {
-                    if (Myself->WeaponIndex == 97 or Myself->WeaponIndex == 88 or Myself->WeaponIndex == 104 or Myself->WeaponIndex == 96)
+                    if (Myself->WeaponIndex == WeaponIDs::WEAPON_MOZAMBIQUE or Myself->WeaponIndex == WeaponIDs::WEAPON_EVA8 or Myself->WeaponIndex == WeaponIDs::WEAPON_PEACEKEEPER or Myself->WeaponIndex == WeaponIDs::WEAPON_MASTIFF)
                     { // Shotgun IDs
 
                         for (int i = 0; i < Players->size(); i++)

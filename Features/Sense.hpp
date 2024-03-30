@@ -470,7 +470,7 @@ struct Sense
 		int ScreenHeight;
 		OverlayWindow.GetScreenResolution(ScreenWidth, ScreenHeight);
 
-		/*bool GetWeaponID = true; //For finding weapon IDs (Local Player) DONT USE WITH SHOW SPECTATORS
+		bool GetWeaponID = false; //For finding weapon IDs (Local Player)
 		if (GetWeaponID) {
 			if (!Myself->IsDead) {
 
@@ -489,7 +489,7 @@ struct Sense
 					ImGui::Text(LocalwepText);
 					ImGui::End();
 			}
-		}*/
+		}
 
 		if (!Map->IsPlayable)
 			return;
@@ -859,7 +859,7 @@ struct Sense
 
 						if (!LocalOriginW2S.IsZeroVector())
 						{
-							Renderer::DrawText(Canvas, AboveHeadW2S.Subtract(Vector2D(0, 16)), buffer, ImColor(EnemyDistanceColor), Features::Sense::TextOutline ? true : false, true, false);
+							Renderer::DrawText(Canvas, DistancePosition, buffer, ImColor(EnemyDistanceColor), Features::Sense::TextOutline ? true : false, true, false);
 						}
 					}
 
@@ -1320,7 +1320,7 @@ struct Sense
 
 						if (!LocalOriginW2S.IsZeroVector())
 						{
-							Renderer::DrawText(Canvas, AboveHeadW2S.Subtract(Vector2D(0, 16)), buffer, ImColor(EnemyDistanceColor), Features::Sense::TextOutline ? true : false, true, false);
+							Renderer::DrawText(Canvas, DistancePosition, buffer, ImColor(EnemyDistanceColor), Features::Sense::TextOutline ? true : false, true, false);
 						}
 					}
 
@@ -1772,7 +1772,7 @@ struct Sense
 
 						if (!LocalOriginW2S.IsZeroVector())
 						{
-							Renderer::DrawText(Canvas, AboveHeadW2S.Subtract(Vector2D(0, 16)), buffer, ImColor(TeammateDistanceColor), Features::Sense::TextOutline ? true : false, true, false);
+							Renderer::DrawText(Canvas, DistancePosition, buffer, ImColor(EnemyDistanceColor), Features::Sense::TextOutline ? true : false, true, false);
 						}
 					}
 

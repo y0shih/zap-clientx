@@ -5,6 +5,7 @@
 #include <string>
 #include <stdio.h>
 #include <time.h>
+#include <random>
 #include <GLFW/glfw3.h>
 #include <GL/gl.h>
 #define GLFW_EXPOSE_NATIVE_X11
@@ -37,7 +38,7 @@ private:
         ScreenHeight = vidMode->height;
     }
 
-    std::string RandomString(int ch)
+    /*std::string RandomString(int ch) // Returned the same string everytime
     {
         char alpha[35] = {'a', 'b', 'c', 'd', 'e', 'f', 'g',
                           'h', 'i', 'j', 'k', 'l', 'm', 'n',
@@ -47,6 +48,31 @@ private:
         for (int i = 0; i < ch; i++)
             result = result + alpha[rand() % 35];
         return result;
+    }*/
+
+    std::string RandomString(std::string::size_type length)
+	{
+	    static auto& chrs = "0123456789"
+		"abcdefghijklmnopqrstuvwxyz"
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+	    thread_local static std::mt19937 rg{std::random_device{}()};
+	    thread_local static std::uniform_int_distribution<std::string::size_type> pick(0, sizeof(chrs) - 2);
+
+	    std::string s;
+
+	    s.reserve(length);
+
+	    while(length--)
+		s += chrs[pick(rg)];
+
+	    return s;
+	}
+
+    int RandomInt(int min, int max)
+    {
+        srand( time(NULL) ); //seeding for the first time only!
+        return min + rand() % (( max + 1 ) - min);
     }
 
     static void GLFWErrorCallback(int error, const char *description)
@@ -127,7 +153,7 @@ public:
         glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
         glfwWindowHint(GLFW_REFRESH_RATE, 75);
 
-        OverlayWindow = glfwCreateWindow(ScreenWidth, ScreenHeight, RandomString(12).c_str(), NULL, NULL);
+        OverlayWindow = glfwCreateWindow(ScreenWidth, ScreenHeight, RandomString(RandomInt(10, 20)).c_str(), NULL, NULL);
 
         glfwSetWindowPos(OverlayWindow, ScreenPosX, ScreenPosY);
         CaptureInput(true);
