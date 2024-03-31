@@ -340,8 +340,8 @@ namespace Features {
         float P2020ZoomScale = 3.0;
         bool RE45ClosestHitbox = true;
         float RE45Hitbox = 2;
-        float RE45Speed = 0.99;
-        float RE45HipfireSmooth = 10;
+        float RE45Speed = 10;
+        float RE45HipfireSmooth = 0.99;
         float RE45ADSSmooth = 0.99;
         int RE45SmoothingMethod = 0;
         float RE45MinHipfireSmooth = 0.98;
