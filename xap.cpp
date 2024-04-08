@@ -403,7 +403,7 @@ void RenderUI()
         TitleText << "zap-client";
         Date << OverlayWindow.currentDateTime(2);
         Time << OverlayWindow.currentDateTime(3);
-        Version << "Version 1.0.5";
+        Version << "Version 1.0.6";
         UnknownCheats << "unknowncheats.me";
         Spacings << "  |  ";
         std::string combined = TitleText.str() + Spacings.str() + Date.str() + Spacings.str() + Time.str() + Spacings.str() + Version.str() + Spacings.str() + UnknownCheats.str();
@@ -543,8 +543,6 @@ bool UpdateCore()
         GameCamera->Update();
         GlowESP->Update();
         GlowESP->ViewModelGlow();
-        // Recoil->Update();
-        // AimAssist->Update();
         Legit->UpdateAimbot();
         Legit->UpdateRCS();
         Rage->Update();
@@ -654,11 +652,11 @@ int main(int argc, char *argv[])
     std::cout << "                    ░░░░░                                                                   " << std::endl;
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    std::cout << "zap client - ver 1.0.5" << std::endl;
+    std::cout << "zap client - ver 1.0.6" << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(1));
     std::cout << "By Gerosity" << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    std::cout << "For Game Version v3.0.62.30" << std::endl;
+    std::cout << "For Game Version v3.0.63.32" << std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
     // Initialize Overlay Window //
