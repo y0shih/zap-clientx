@@ -68,8 +68,8 @@ constexpr long OFF_VIEWMODELS = 0x2d18;                       //m_hViewModels
  
 //glow
 constexpr long OFF_HIGHLIGHT_TYPE_SIZE = 0x34;                //                         
-constexpr long OFF_GLOW_ENABLE = 0x26c;                       //[DT_HighlightSettings].        
-constexpr long OFF_GLOW_THROUGH_WALL = 0x26c;                 //[DT_HighlightSettings].       
+constexpr long OFF_GLOW_ENABLE = 0x26c;                       //Script_Highlight_GetCurrentContext
+constexpr long OFF_GLOW_THROUGH_WALL = 0x26c;                 //Script_Highlight_SetVisibilityType     
 constexpr long OFF_GLOW_FIX = 0x268;                        //                                      
 constexpr long OFF_GLOW_HIGHLIGHT_ID = 0x28C;                 //[DT_HighlightSettings].m_highlightServerActiveStates     
 constexpr long OFF_GLOW_HIGHLIGHTS = 0xBB247D0;                //highlightsettings
