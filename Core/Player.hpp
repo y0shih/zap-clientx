@@ -245,7 +245,7 @@ struct Player
 
     bool IsItem()
     {
-        return Name == "prop_survival";
+        return Name == "prop_survival"; //CPropSurvival, add check after name read and print check
     }
 
     float GetViewYaw()
