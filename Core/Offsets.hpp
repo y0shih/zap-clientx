@@ -66,7 +66,7 @@ constexpr long OFF_TIME_BASE = 0x2088;                        //m_currentFramePl
 constexpr long OFF_WEAPON_DISCARDED = 0x1599;                 //[RecvTable.DT_WeaponX]->m_discarded
 constexpr long OFF_VIEWMODELS = 0x2d18;                       //m_hViewModels
  
-//glow
+// Glow
 constexpr long OFF_HIGHLIGHT_TYPE_SIZE = 0x34;                //                         
 constexpr long OFF_GLOW_ENABLE = 0x26c;                       //Script_Highlight_GetCurrentContext
 constexpr long OFF_GLOW_THROUGH_WALL = 0x26c;                 //Script_Highlight_SetVisibilityType     
