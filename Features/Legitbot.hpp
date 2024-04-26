@@ -1791,8 +1791,6 @@ struct Legitbot
 			if (!GetAngle(CurrentTarget, DesiredAngles)) // Get Angle to target + prediction
 				return;
 
-			SmoothAngle(CurrentTarget, DesiredAngles); // Apply Smoothing
-
 			// Recoil Control
 			if (Features::RCS::RCSEnabled)
 			{
@@ -1806,6 +1804,8 @@ struct Legitbot
 			if (DesiredAngles == QAngle(0, 0))
 				return;
 			DesiredAngles.NormalizeAngles();
+
+			SmoothAngle(CurrentTarget, DesiredAngles); // Apply Smoothing
 
 			// Memory Aimbot
 			Vector2D VectorDesiredAngles = Vector2D(DesiredAngles.x, DesiredAngles.y);
